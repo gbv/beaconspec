@@ -39,14 +39,17 @@
 <back>
     <references title="Normative References">
         <?rfc include="ref/reference.RFC.2119.xml"?>
-        <?rfc include="ref/reference.RFC.2882.xml"?>
+        <?rfc include="ref/reference.RFC.3339.xml"?>
         <?rfc include="ref/reference.RFC.3986.xml"?>
         <?rfc include="ref/reference.RFC.3987.xml"?>
         <?rfc include="ref/reference.RFC.4234.xml"?>
+        <?rfc include="ref/reference.RFC.5322.xml"?>
         <?rfc include="ref/reference.RFC.5988.xml"?>
     </references>
-    <!--references title="Informative References">
-		RDF, HTML, Turtle? Sitemaps?
-	</references-->
+    <references title="Informative References">
+        <?rfc include="ref/reference.sitemaps.xml"?>
+		<!-- RDF, HTML, Turtle? -->
+	</references>
+	<?rfc include="appendices.xml"?>
 </back>
 </rfc>

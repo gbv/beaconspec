@@ -3,9 +3,7 @@
 
 # Introduction
 
-## Motivation
-
-...TODO...
+...TODO... (motivation etc.)
 
 ## Overview
 
@@ -19,9 +17,9 @@ and in [BEACON XML format](#beacon-xml-format).
 
 ## Notational Conventions
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in [](#RFC2119).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in [](#RFC2119).
 
 The formal grammar rules in this document are to be interpreted as described in
 [](#RFC4234).
@@ -48,13 +46,16 @@ default link type is the URI `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 In the common case, all source IRIs, or all target URIs, or both respectively
 begin with a common prefix that is used for abbreviation.
 
-Name and description are Unicode strings that annotate a link, as described
-in [](#link-annotation).
-
+Name and description are Unicode strings that annotate a link. The meaning of
+this annotations is not specified in this document but guidelines are given in
+[](#interpreting-beacon-links).
 
 # Meta fields
 
-...TODO...
+A BEACON dump MAY be annotated with a set of meta fields. Each meta field
+is identified by its name, build of lowercase letters `a-z`. Valid fields
+are listed in the following. Additional meta fields, not defined in this
+specification SHOULD be ignored.
 
 ## prefix
 
@@ -85,15 +86,16 @@ equal:
 
 ...TODO...
 
-## feed
-
-...TODO...
-
 ## contact
 
-...TODO...
+The contact field contains an email address or similar contact information to
+reach the maintainer of the BEACON dump.  The contact SHOULD be a mailbox
+address as specified in section 3.4 of [](#RFC5322).
 
-The contact SHOULD be a mailbox address as specified in section 3.4 of [](#RFC2882).
+Examples:
+
+    admin@example.com
+	Barbara Beacon <b.beacon@example.org>
 
 ## description
 
@@ -103,52 +105,98 @@ The contact SHOULD be a mailbox address as specified in section 3.4 of [](#RFC28
 
 ...TODO... (publishing institution or institution repsonsible for the link targets)...
 
-## ISIL
+## feed
 
-...TODO... (should be dropped)
+The feed field contains an URL, conforming to [](#RFC3986), where to download
+the BEACON dump from.
 
 ## timestamp
 
-...TODO...
+The timestamp field contains the date of last modification of the BEACON dump.
+This date MUST conform to the `full-date` or to the `date-time` production rule
+in [](#RFC3339). In addition, an uppercase `T` character MUST be used to
+separate date and time, and an uppercase `Z` character MUST be present in the
+absence of a numeric time zone offset.
 
 ## update
 
-...TODO...
+The update field specifies how frequently the BEACON dump is likely to change.
+The field corresponds to the `<changefreq>` element in [Sitemaps XML
+format](#Sitemaps). Valid values are:
 
-## revisit
+* `always`
+* `hourly`
+* `daily`
+* `weekly`
+* `monthly`
+* `yearly`
+* `never` 
 
-...TODO... (needed?)
+The value `always` SHOULD be used to describe BEACON dumps that change each
+time they are accessed. The value `never` should be used to describe archived
+BEACON dumps.
 
 
 # Link fields
 
 Each link in a serialized BEACON dump is given in form of up to four fields:
 
-* id field,
-* optional label field,
-* optional description field,
-* optional target field.
+* *id field*,
+* optional *label field*,
+* optional *description field*,
+* optional *target field*.
 
-Source, target, name, and description of a [link](#links) are derived from
-these fields combined with the BEACON dump's [meta fields](#meta-fields):
+Form these fields, combined with the BEACON dump's [meta fields](#meta-fields),
+the source, target, name, and description of a [link](#links) is derived:
 
-## Link annotation
+## link source
 
-...(TODO)...
+The link source is the id link field, prepended by the [prefix meta field](#prefix),
+if the latter is specified. The resulting link source MUST be a valid IRI.
 
-In HTML, `label` corresponds to the textual content and `description`
-corresponds to the `title` attribute an HTML link.
+## link target
 
-In RDF...
+The link target is constructed based on
+
+a) the id field,
+b) the target field,
+c) the [target meta field](#target)
+
+with the following cases:
+
+* If neither target field (b) nor target meta field (c) are specified, then the 
+  link target is the id field (a).
+* If target field (b) is specified and target meta field (c) is not specified 
+  with `{TARGET}` URI template parameter, then the link target is the target field.
+* If target field (b) is specified and target meta field (c) is specified with
+  a `{TARGET}` URI template parameter, then the target field is inserted as 
+  `{TARGET}` parameter to get the link target.
+* If target field (b) is not specified and target meta field (c) is specified,
+  then the id field is inserted as `{ID}` parameter to get the link target.
+
+In all cases the resulting link target MUST be a valid IRI. Any other case (no
+id field, target meta field with `{TARGET}` parameter but no target field etc.)
+is an error. A client MUST ignore such links and SHOULD give a warning.
+
+## link name
+
+...TODO... (based in message meta field?)
+
+## link description
+
+...TODO... (based in message meta field?)
 
 
-# BEACON text format
+# BEACON serialization
+
+## BEACON text format
 
 A BEACON text file is an UTF-8 encoded file, separated in lines. A line break
 is ...TODO...
 
+...additional meta field `#FORMAT: BEACON`...
 
-# BEACON XML format
+## BEACON XML format
 
 A BEACON XML file is a valid XML file conforming to the following schema. The
 file should be UTF-8 encoded. The file must:
@@ -172,6 +220,7 @@ An example of a BEACON XML file (TODO):
 	<beacon xmlns="..."
 			link="..."
 	  		target="..."
+			prefix="http://..."
 	>
 		<link>...</link>
 		<link target="">...</link>
@@ -181,4 +230,9 @@ An example of a BEACON XML file (TODO):
 A stream-processing XML parser, such as SAX conforming processor [SAX](), is
 RECOMMENDED to process BEACON XML. Applications SHOULD NOT try to parse BEACON
 XML with regular expressions or similar methods instead of a full XML parser.
+
+# Security Considerations
+
+...TODO... (URLs may be used to inject code and label/description may be used to
+inject HTML?)
 

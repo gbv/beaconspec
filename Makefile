@@ -31,7 +31,10 @@ revision: ${HTML}
 middle.xml: ${MARKDOWN} pandoc2rfc/transform.xsl
 	pandoc -t docbook -s $< | xsltproc --nonet pandoc2rfc/transform.xsl - > $@
 
-draft.xml: rfctemplate.xml middle.xml
+appendices.xml: appendices.md  pandoc2rfc/transform.xsl
+	pandoc -t docbook -s $< | xsltproc --nonet pandoc2rfc/transform.xsl - > $@
+
+draft.xml: rfctemplate.xml middle.xml appendices.xml
 	perl pandoc2rfc/xml-single rfctemplate.xml > draft.xml
 
 
@@ -44,5 +47,8 @@ ${HTML}: draft.xml rfctemplate.xml
 clean:
 	rm -f ${HTML} ${NAME}-*.html ${XML} ${TXT} draft.*
 
+all: html txt
 
-.PHONY: clean
+new: clean all
+
+.PHONY: clean all new

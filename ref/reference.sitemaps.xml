@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <reference anchor='Sitemaps'>
 	<front>
-		<title abbrev='URI Generic Syntax'>Uniform Resource Identifiers (URI): Generic Syntax</title>
-		<author initials='T.' surname='Berners-Lee' fullname='Tim Berners-Lee'>
-		<uri>http://www.sitemaps.org/</uri>
+		<title abbrev='Sitemaps'>Sitemaps XML format</title>
+		<author>Google Inc.</author>
 		<date year='2008' month='February'/>
 	</front>
+	<format type='HTML' target="http://www.sitemaps.org/"/>
 </reference>
