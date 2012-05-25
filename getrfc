@@ -1,0 +1,4 @@
+#!/bin/bash
+cd ref
+wget http://xml.resource.org/public/rfc/bibxml/reference.RFC.$1.xml
+cd ..

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC2882'>
+
+<front>
+<title>Network Access Servers Requirements: Extended RADIUS Practices</title>
+<author initials='D.' surname='Mitton' fullname='D. Mitton'>
+<organization /></author>
+<date year='2000' month='July' />
+<abstract>
+<t>This document describes current practices implemented in NAS products that go beyond the scope of the RADIUS (Remote Authentication Dial In User Service) RFCs 2138, 2139.  This memo provides information for the Internet community.</t></abstract></front>
+
+<seriesInfo name='RFC' value='2882' />
+<format type='TXT' octets='31426' target='http://www.rfc-editor.org/rfc/rfc2882.txt' />
+</reference>
