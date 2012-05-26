@@ -21,12 +21,11 @@ txt: ${TXT}
 revision: ${HTML}
 	cp ${HTML} ${REVHTML}
 
-#website: revision
-#	git checkout gh-pages
-#	echo '<meta HTTP-EQUIV="REFRESH" content="0; url=${REVHTML}">' > ${HTML}
-#	git add ${HTML} ${REVHTML}
-#	git commit -m "added revision ${REVSHRT}"
-#	git checkout master
+website: ${HTML} ${TXT}
+	git checkout gh-pages
+	git add ${HTML} ${TXT}
+	git commit -m "added revision ${REVSHRT}"
+	git checkout master
 
 middle.xml: ${MARKDOWN} pandoc2rfc/transform.xsl
 	pandoc -t docbook -s $< | xsltproc --nonet pandoc2rfc/transform.xsl - > $@
