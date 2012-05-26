@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC3339'>
+
+<front>
+<title>Date and Time on the Internet: Timestamps</title>
+<author initials='G.' surname='Klyne' fullname='Graham Klyne' role='editor'>
+<organization>Clearswift Corporation</organization>
+<address>
+<postal>
+<street>1310 Waterside</street>
+<street>Arlington Business Park</street>
+<city>Theale</city>
+<region>Reading</region>
+<code>RG7 4SA</code>
+<country>UK</country></postal>
+<phone>+44 11 8903 8903</phone>
+<facsimile>+44 11 8903 9000</facsimile>
+<email>GK@ACM.ORG</email></address></author>
+<author initials='C.' surname='Newman' fullname='Chris Newman'>
+<organization>Sun Microsystems</organization>
+<address>
+<postal>
+<street>1050 Lakes Drive, Suite 250</street>
+<city>West Covina</city>
+<region>CA</region>
+<code>91790</code>
+<country>USA</country></postal>
+<email>chris.newman@sun.com</email></address></author>
+<date year='2002' month='July' />
+<abstract>
+<t>
+   This document defines a date and time format for use in Internet
+   protocols that is a profile of the ISO 8601 standard for
+   representation of dates and times using the Gregorian calendar.
+     </t></abstract></front>
+
+<seriesInfo name='RFC' value='3339' />
+<format type='TXT' octets='35064' target='http://www.rfc-editor.org/rfc/rfc3339.txt' />
+<format type='HTML' octets='61277' target='http://xml.resource.org/public/rfc/html/rfc3339.html' />
+<format type='XML' octets='37259' target='http://xml.resource.org/public/rfc/xml/rfc3339.xml' />
+</reference>
