@@ -1,0 +1,1007 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>BEACON link dump format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="BEACON link dump format">
+<meta name="generator" content="xml2rfc v1.34 (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Network Working Group</td><td class="header">J. Voß</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">Verbundzentrale des GBV</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">May 26, 2012</td></tr>
+<tr><td class="header">Expires: November 27, 2012</td><td class="header">&nbsp;</td></tr>
+</table></td></tr></table>
+<h1><br />BEACON link dump format<br />draft-voss-beacon-00</h1>
+
+<h3>Abstract</h3>
+
+<p>This document specifies BEACON, a data interchange 
+			format to serialize a large number of uniform links.
+</p>
+<h3>Status of this Memo</h3>
+<p>
+This Internet-Draft is submitted to IETF in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF), its areas, and its working groups.
+Note that other groups may also distribute working documents as
+Internet-Drafts.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+The list of current Internet-Drafts can be accessed at
+<a href='http://www.ietf.org/ietf/1id-abstracts.txt'>http://www.ietf.org/ietf/1id-abstracts.txt</a>.</p>
+<p>
+The list of Internet-Draft Shadow Directories can be accessed at
+<a href='http://www.ietf.org/shadow.html'>http://www.ietf.org/shadow.html</a>.</p>
+<p>
+This Internet-Draft will expire on November 27, 2012.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2012 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents in effect on the date of
+publication of this document (http://trustee.ietf.org/license-info).
+Please review these documents carefully, as they describe your
+rights and restrictions with respect to this document.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#introduction">1.</a>&nbsp;
+Introduction<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#overview">1.1.</a>&nbsp;
+Overview<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#notational-conventions">1.2.</a>&nbsp;
+Notational Conventions<br />
+<a href="#links">2.</a>&nbsp;
+Links<br />
+<a href="#meta-fields">3.</a>&nbsp;
+Meta fields<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#prefix">3.1.</a>&nbsp;
+prefix<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#target">3.2.</a>&nbsp;
+target<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link">3.3.</a>&nbsp;
+link<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#message">3.4.</a>&nbsp;
+message<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#contact">3.5.</a>&nbsp;
+contact<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">3.6.</a>&nbsp;
+description<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#institution">3.7.</a>&nbsp;
+institution<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed">3.8.</a>&nbsp;
+feed<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#timestamp">3.9.</a>&nbsp;
+timestamp<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update">3.10.</a>&nbsp;
+update<br />
+<a href="#link-fields">4.</a>&nbsp;
+Link fields<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-source">4.1.</a>&nbsp;
+link source<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-target">4.2.</a>&nbsp;
+link target<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-name">4.3.</a>&nbsp;
+link name<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-description">4.4.</a>&nbsp;
+link description<br />
+<a href="#beacon-serialization">5.</a>&nbsp;
+BEACON serialization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-text-format">5.1.</a>&nbsp;
+BEACON text format<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-xml-format">5.2.</a>&nbsp;
+BEACON XML format<br />
+<a href="#security-considerations">6.</a>&nbsp;
+Security Considerations<br />
+<a href="#rfc.references1">7.</a>&nbsp;
+References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">7.1.</a>&nbsp;
+Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">7.2.</a>&nbsp;
+Informative References<br />
+<a href="#interpreting-beacon-links">Appendix&nbsp;A.</a>&nbsp;
+Interpreting BEACON links<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#html-links">A.1.</a>&nbsp;
+HTML links<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rdf-triples">A.2.</a>&nbsp;
+RDF triples<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Author's Address<br />
+</p>
+<br clear="all" />
+
+<a name="introduction"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>
+    ...TODO... (motivation etc.)
+  
+</p>
+<a name="overview"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
+Overview</h3>
+
+<p>
+      A BEACON link dump consists of:
+    
+</p>
+<p></p>
+<ul class="text">
+<li>
+        
+          A set of <a class='info' href='#links'>links<span> (</span><span class='info'>Links</span><span>)</span></a>, each derived from a
+          set of <a class='info' href='#link-fields'>link fields<span> (</span><span class='info'>Link fields</span><span>)</span></a>.
+        
+      
+</li>
+<li>
+        
+          a set of <a class='info' href='#meta-fields'>meta fields<span> (</span><span class='info'>Meta fields</span><span>)</span></a>.
+        
+      
+</li>
+</ul>
+
+<p>
+      The link dump can be serialized in
+      <a class='info' href='#beacon-text-format'>BEACON text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a> and in
+      <a class='info' href='#beacon-xml-format'>BEACON XML format<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a>.
+    
+</p>
+<a name="notational-conventions"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
+Notational Conventions</h3>
+
+<p>
+      The key words "MUST", "MUST NOT",
+      "REQUIRED", "SHALL", "SHALL NOT",
+      "SHOULD", "SHOULD NOT",
+      "RECOMMENDED", "MAY", and "OPTIONAL"
+      in this document are to be interpreted as described in
+      <a class='info' href='#RFC2119'>[RFC2119]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+    
+</p>
+<p>
+      The formal grammar rules in this document are to be interpreted as
+      described in <a class='info' href='#RFC4234'>[RFC4234]<span> (</span><span class='info'>Crocker, D., Ed. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; October&nbsp;2005.</span><span>)</span></a>.
+    
+</p>
+<a name="links"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Links</h3>
+
+<p>
+    In this specification a link is a typed connection between two
+    resources that are identified by Internationalised Resource
+    Identifiers (IRIs) <a class='info' href='#RFC3987'>[RFC3987]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRIs),&rdquo; January&nbsp;2005.</span><span>)</span></a>, and is
+    compromised of:
+  
+</p>
+<p></p>
+<ul class="text">
+<li>
+      
+        A source IRI,
+      
+    
+</li>
+<li>
+      
+        a link relation type,
+      
+    
+</li>
+<li>
+      
+        a target URI
+      
+    
+</li>
+<li>
+      
+        optionally, name and description.
+      
+    
+</li>
+</ul>
+
+<p>
+    Note that in the common case, source IRI and target IRI will also
+    be URIs <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>. A link relation type is
+    either a registered link type from the IANA link relations registry
+    or an URI that uniquely identifies the relation type, as defined in
+    <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>.
+  
+</p>
+<p>
+    A BEACON link dump is an annotated set of links with identical link
+    type. The default link type is the URI
+    <tt>http://www.w3.org/2000/01/rdf-schema#seeAlso</tt>. In
+    the common case, all source IRIs, or all target URIs, or both
+    respectively begin with a common prefix that is used for
+    abbreviation.
+  
+</p>
+<p>
+    Name and description are Unicode strings that annotate a link. The
+    meaning of this annotations is not specified in this document but
+    guidelines are given in
+    <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
+  
+</p>
+<a name="meta-fields"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Meta fields</h3>
+
+<p>
+    A BEACON dump MAY be annotated with a set of meta fields. Each meta
+    field is identified by its name, build of lowercase letters
+    <tt>a-z</tt>. Valid fields are listed in the following.
+    Additional meta fields, not defined in this specification SHOULD be
+    ignored.
+  
+</p>
+<a name="prefix"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
+prefix</h3>
+
+<p>
+      The prefix field specifies a prefix that is prepended to
+      <a class='info' href='#link-fields'>link ids<span> (</span><span class='info'>Link fields</span><span>)</span></a> to construct link
+      sources.
+    
+</p>
+<a name="target"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
+target</h3>
+
+<p>
+      The target field specifies an URI pattern to construct link
+      targets. The URI pattern SHOULD include an URI parameter that is
+      either <tt>{ID}</tt> or <tt>{TARGET}</tt>. If
+      no URI parameter is included, the parameter <tt>{ID}</tt>
+      is appended to the URI pattern, so the following target fields are
+      equal:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ http://example.org/
+ http://example.org/{ID}
+</pre></div>
+<a name="link"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
+link</h3>
+
+<p>
+      The link field specifies the link type for all links in a BEACON
+      dump. In
+      <a class='info' href='#beacon-text-format'>BEACON text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a> the
+      link MAY be specified enclosed in angle brackets if it is an URI,
+      so the following BEACON text link fields are equal:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+#LINK: http://www.w3.org/2002/07/owl#sameAs
+#LINK: &lt;http://www.w3.org/2002/07/owl#sameAs&gt;
+</pre></div>
+<a name="message"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.4"></a><h3>3.4.&nbsp;
+message</h3>
+
+<p>
+      ...TODO...
+    
+</p>
+<a name="contact"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.5"></a><h3>3.5.&nbsp;
+contact</h3>
+
+<p>
+      The contact field contains an email address or similar contact
+      information to reach the maintainer of the BEACON dump. The contact
+      SHOULD be a mailbox address as specified in section 3.4 of
+      <a class='info' href='#RFC5322'>[RFC5322]<span> (</span><span class='info'>Resnick, P., Ed., &ldquo;Internet Message Format,&rdquo; October&nbsp;2008.</span><span>)</span></a>.
+    
+</p>
+<p>
+      Examples:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+admin@example.com
+Barbara Beacon &lt;b.beacon@example.org&gt;
+</pre></div>
+<a name="description"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.6"></a><h3>3.6.&nbsp;
+description</h3>
+
+<p>
+      ...TODO... (needed?)
+    
+</p>
+<a name="institution"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.7"></a><h3>3.7.&nbsp;
+institution</h3>
+
+<p>
+      ...TODO... (publishing institution or institution repsonsible for
+      the link targets)...
+    
+</p>
+<a name="feed"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.8"></a><h3>3.8.&nbsp;
+feed</h3>
+
+<p>
+      The feed field contains an URL, conforming to
+      <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>, where to download the BEACON dump
+      from.
+    
+</p>
+<a name="timestamp"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.9"></a><h3>3.9.&nbsp;
+timestamp</h3>
+
+<p>
+      The timestamp field contains the date of last modification of the
+      BEACON dump. This date MUST conform to the
+      <tt>full-date</tt> or to the <tt>date-time</tt>
+      production rule in <a class='info' href='#RFC3339'>[RFC3339]<span> (</span><span class='info'>Klyne, G., Ed. and C. Newman, &ldquo;Date and Time on the Internet: Timestamps,&rdquo; July&nbsp;2002.</span><span>)</span></a>. In addition, an
+      uppercase <tt>T</tt> character MUST be used to separate
+      date and time, and an uppercase <tt>Z</tt> character MUST
+      be present in the absence of a numeric time zone offset.
+    
+</p>
+<a name="update"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.10"></a><h3>3.10.&nbsp;
+update</h3>
+
+<p>
+      The update field specifies how frequently the BEACON dump is likely
+      to change. The field corresponds to the
+      <tt>&lt;changefreq&gt;</tt> element in
+      <a class='info' href='#Sitemaps'>Sitemaps XML format<span> (</span><span class='info'>, &ldquo;Sitemaps XML format,&rdquo; February&nbsp;2008.</span><span>)</span></a> [Sitemaps]. Valid values
+      are:
+    
+</p>
+<p></p>
+<ul class="text">
+<li>
+        
+          <tt>always</tt>
+        
+      
+</li>
+<li>
+        
+          <tt>hourly</tt>
+        
+      
+</li>
+<li>
+        
+          <tt>daily</tt>
+        
+      
+</li>
+<li>
+        
+          <tt>weekly</tt>
+        
+      
+</li>
+<li>
+        
+          <tt>monthly</tt>
+        
+      
+</li>
+<li>
+        
+          <tt>yearly</tt>
+        
+      
+</li>
+<li>
+        
+          <tt>never</tt>
+        
+      
+</li>
+</ul>
+
+<p>
+      The value <tt>always</tt> SHOULD be used to describe
+      BEACON dumps that change each time they are accessed. The value
+      <tt>never</tt> should be used to describe archived BEACON
+      dumps.
+    
+</p>
+<a name="link-fields"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Link fields</h3>
+
+<p>
+    Each link in a serialized BEACON dump is given in form of up to
+    four fields:
+  
+</p>
+<p></p>
+<ul class="text">
+<li>
+      
+        <em>id field</em>,
+      
+    
+</li>
+<li>
+      
+        optional <em>label field</em>,
+      
+    
+</li>
+<li>
+      
+        optional <em>description field</em>,
+      
+    
+</li>
+<li>
+      
+        optional <em>target field</em>.
+      
+    
+</li>
+</ul>
+
+<p>
+    Form these fields, combined with the BEACON dump's
+    <a class='info' href='#meta-fields'>meta fields<span> (</span><span class='info'>Meta fields</span><span>)</span></a>, the source, target,
+    name, and description of a <a class='info' href='#links'>link<span> (</span><span class='info'>Links</span><span>)</span></a> is
+    derived:
+  
+</p>
+<a name="link-source"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+link source</h3>
+
+<p>
+      The link source is the id link field, prepended by the
+      <a class='info' href='#prefix'>prefix meta field<span> (</span><span class='info'>prefix</span><span>)</span></a>, if the latter is
+      specified. The resulting link source MUST be a valid IRI.
+    
+</p>
+<a name="link-target"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+link target</h3>
+
+<p>
+      The link target is constructed based on
+    
+</p>
+<p></p>
+<blockquote class="text">
+<p>
+        
+          the id field,
+        
+      
+</p>
+<p>
+        
+          the target field,
+        
+      
+</p>
+<p>
+        
+          the <a class='info' href='#target'>target meta field<span> (</span><span class='info'>target</span><span>)</span></a>
+        
+      
+</p>
+</blockquote>
+
+<p>
+      with the following cases:
+    
+</p>
+<p></p>
+<ul class="text">
+<li>
+        
+          If neither target field (b) nor target meta field (c) are
+          specified, then the link target is the id field (a).
+        
+      
+</li>
+<li>
+        
+          If target field (b) is specified and target meta field (c) is not
+          specified with <tt>{TARGET}</tt> URI template parameter,
+          then the link target is the target field.
+        
+      
+</li>
+<li>
+        
+          If target field (b) is specified and target meta field (c) is
+          specified with a <tt>{TARGET}</tt> URI template
+          parameter, then the target field is inserted as
+          <tt>{TARGET}</tt> parameter to get the link target.
+        
+      
+</li>
+<li>
+        
+          If target field (b) is not specified and target meta field (c) is
+          specified, then the id field is inserted as <tt>{ID}</tt>
+          parameter to get the link target.
+        
+      
+</li>
+</ul>
+
+<p>
+      In all cases the resulting link target MUST be a valid IRI. Any
+      other case (no id field, target meta field with
+      <tt>{TARGET}</tt> parameter but no target field etc.) is
+      an error. A client MUST ignore such links and SHOULD give a
+      warning.
+    
+</p>
+<a name="link-name"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
+link name</h3>
+
+<p>
+      ...TODO... (based in message meta field?)
+    
+</p>
+<a name="link-description"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.4"></a><h3>4.4.&nbsp;
+link description</h3>
+
+<p>
+      ...TODO... (based in message meta field?)
+    
+</p>
+<a name="beacon-serialization"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+BEACON serialization</h3>
+
+<a name="beacon-text-format"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+BEACON text format</h3>
+
+<p>
+      A BEACON text file is an UTF-8 encoded file, separated in lines. A
+      line break is ...TODO...
+    
+</p>
+<p>
+      ...additional meta field <tt>#FORMAT: BEACON</tt>...
+    
+</p>
+<a name="beacon-xml-format"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+BEACON XML format</h3>
+
+<p>
+      A BEACON XML file is a valid XML file conforming to the following
+      schema. The file should be UTF-8 encoded. The file must:
+    
+</p>
+<p></p>
+<ul class="text">
+<li>
+        
+          Begin with an opening <tt>&lt;beacon&gt;</tt> tag and end
+          with a closing <tt>&lt;/beacon&gt;</tt> tag.
+        
+      
+</li>
+<li>
+        
+          Specify the namespace
+          <tt>http://example.org/to-be-defined</tt> within the
+          <tt>&lt;beacon&gt;</tt> tag.
+        
+      
+</li>
+<li>
+        
+          Include a non-empty <tt>&lt;link&gt;</tt> tag for each
+          link.
+        
+      
+</li>
+<li>
+        
+          Include the <a class='info' href='#link-fields'>link id<span> (</span><span class='info'>Link fields</span><span>)</span></a> as text
+          content in the <tt>&lt;link&gt;</tt> element for each
+          link.
+        
+      
+</li>
+</ul>
+
+<p>
+      The file may further:
+    
+</p>
+<p></p>
+<ul class="text">
+<li>
+        
+          Specify meta fields as XML attributes to the
+          <tt>&lt;beacon&gt;</tt> tag.
+        
+      
+</li>
+<li>
+        
+          Specify label, description, and/or target of a link as attributes
+          to the <tt>&lt;link&gt;</tt> element.
+        
+      
+</li>
+</ul>
+
+<p>
+      Meta fields attributes MUST be given in lowercase only. Optional
+      links attribute names MUST be one of <tt>label</tt>,
+      <tt>description</tt>, and <tt>target</tt> only.
+    
+</p>
+<p>
+      An example of a BEACON XML file (TODO):
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beacon xmlns="..."
+        link="..."
+        target="..."
+        prefix="http://..."
+&gt;
+    &lt;link&gt;...&lt;/link&gt;
+    &lt;link target=""&gt;...&lt;/link&gt;
+    &lt;link label="" description="..." target="..."&gt;...&lt;/link&gt;
+&lt;/beacon&gt;
+</pre></div>
+<p>
+      A stream-processing XML parser, such as SAX conforming processor
+      <a href=''>SAX</a>, is RECOMMENDED to process BEACON XML.
+      Applications SHOULD NOT try to parse BEACON XML with regular
+      expressions or similar methods instead of a full XML parser.
+    
+</p>
+<a name="security-considerations"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+Security Considerations</h3>
+
+<p>
+    ...TODO... (URLs may be used to inject code and label/description
+    may be used to inject HTML?)
+  
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>7.1.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
+<td class="author-text"><a href="mailto:sob@harvard.edu">Bradner, S.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997 (<a href="http://www.rfc-editor.org/rfc/rfc2119.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2119.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2119.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3339">[RFC3339]</a></td>
+<td class="author-text"><a href="mailto:GK@ACM.ORG">Klyne, G., Ed.</a> and <a href="mailto:chris.newman@sun.com">C. Newman</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3339">Date and Time on the Internet: Timestamps</a>,&rdquo; RFC&nbsp;3339, July&nbsp;2002 (<a href="http://www.rfc-editor.org/rfc/rfc3339.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3339.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3339.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3986">[RFC3986]</a></td>
+<td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc3986.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3986.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3986.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3987">[RFC3987]</a></td>
+<td class="author-text">Duerst, M. and M. Suignard, &ldquo;<a href="http://tools.ietf.org/html/rfc3987">Internationalized Resource Identifiers (IRIs)</a>,&rdquo; RFC&nbsp;3987, January&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc3987.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC4234">[RFC4234]</a></td>
+<td class="author-text"><a href="mailto:dcrocker@bbiw.net">Crocker, D., Ed.</a> and <a href="mailto:paul.overell@thus.net">P. Overell</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc4234">Augmented BNF for Syntax Specifications: ABNF</a>,&rdquo; RFC&nbsp;4234, October&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc4234.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc4234.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc4234.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5322">[RFC5322]</a></td>
+<td class="author-text"><a href="mailto:presnick@qualcomm.com">Resnick, P., Ed.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc5322">Internet Message Format</a>,&rdquo; RFC&nbsp;5322, October&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5322.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc5322.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc5322.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5988">[RFC5988]</a></td>
+<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>,&rdquo; RFC&nbsp;5988, October&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5988.txt">TXT</a>).</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>7.2.&nbsp;Informative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="Sitemaps">[Sitemaps]</a></td>
+<td class="author-text">&ldquo;<a href="http://www.sitemaps.org/">Sitemaps XML format</a>,&rdquo; February&nbsp;2008.</td></tr>
+</table>
+
+<a name="interpreting-beacon-links"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+Interpreting BEACON links</h3>
+
+<p>
+    The interpretation of links in a BEACON dump is not restricted to a
+    specific format. The most common use cases are HTML links and RDF
+    triples.
+  
+</p>
+<a name="html-links"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A.1"></a><h3>A.1.&nbsp;
+HTML links</h3>
+
+<p>
+      A BEACON link can be mapped to a HTML link
+      (<tt>&lt;a&gt;</tt> element) as following:
+    
+</p>
+<p></p>
+<ul class="text">
+<li>
+        
+          The link target corresponds to the <tt>href</tt>
+          attribute.
+        
+      
+</li>
+<li>
+        
+          The link label corresponds to the textual content.
+        
+      
+</li>
+<li>
+        
+          The link description corresponds to the <tt>title</tt>
+          attribute.
+        
+      
+</li>
+</ul>
+
+<p>
+      The link source can be interpreted as the website URL which a HTML
+      link is included at.
+    
+</p>
+<p>
+      Example:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+...|example|sample site|http://example.org
+
+&lt;a href="http://example.org" title="sample site"&gt;example&lt;/a&gt;
+</pre></div>
+<p>
+      A client may also ignore link label and link description but use
+      the meta fields ... and ... instead (TODO).
+    
+</p>
+<a name="rdf-triples"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A.2"></a><h3>A.2.&nbsp;
+RDF triples</h3>
+
+<p>
+      If link type is an URI, each link in a BEACON dump maps to an RDF
+      triple with
+    
+</p>
+<p></p>
+<ul class="text">
+<li>
+        
+          link source as RDF subject,
+        
+      
+</li>
+<li>
+        
+          link type as RDF property,
+        
+      
+</li>
+<li>
+        
+          link target as RDF object.
+        
+      
+</li>
+</ul>
+
+<p>
+      Link name and link description MAY result in additional triples
+      with each of name and description as literal value RDF object. The
+      final intepretation of these link annotations, however, is out of
+      the scope of this specification.
+    
+</p>
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Author's Address</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">J. Voß</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Verbundzentrale des GBV</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Platz der Göttinger Sieben 1</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Göttingen,   37073</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">DE</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+49(551)39-10242</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:voss@gbv.de">voss@gbv.de</a></td></tr>
+</table>
+</body></html>

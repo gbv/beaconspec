@@ -1,0 +1,560 @@
+
+
+
+Network Working Group                                            J. Voss
+Internet-Draft                                   Verbundzentrale des GBV
+Intended status: Informational                              May 26, 2012
+Expires: November 27, 2012
+
+
+                        BEACON link dump format
+                          draft-voss-beacon-00
+
+Abstract
+
+   This document specifies BEACON, a data interchange format to
+   serialize a large number of uniform links.
+
+Status of this Memo
+
+   This Internet-Draft is submitted to IETF in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF), its areas, and its working groups.  Note that
+   other groups may also distribute working documents as Internet-
+   Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   The list of current Internet-Drafts can be accessed at
+   http://www.ietf.org/ietf/1id-abstracts.txt.
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   http://www.ietf.org/shadow.html.
+
+   This Internet-Draft will expire on November 27, 2012.
+
+Copyright Notice
+
+   Copyright (c) 2012 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+
+
+
+Voss                    Expires November 27, 2012               [Page 1]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the BSD License.
+
+
+Table of Contents
+
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
+     1.1.  Overview . . . . . . . . . . . . . . . . . . . . . . . . .  3
+     1.2.  Notational Conventions . . . . . . . . . . . . . . . . . .  3
+   2.  Links  . . . . . . . . . . . . . . . . . . . . . . . . . . . .  3
+   3.  Meta fields  . . . . . . . . . . . . . . . . . . . . . . . . .  4
+     3.1.  prefix . . . . . . . . . . . . . . . . . . . . . . . . . .  4
+     3.2.  target . . . . . . . . . . . . . . . . . . . . . . . . . .  4
+     3.3.  link . . . . . . . . . . . . . . . . . . . . . . . . . . .  4
+     3.4.  message  . . . . . . . . . . . . . . . . . . . . . . . . .  4
+     3.5.  contact  . . . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.6.  description  . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.7.  institution  . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.8.  feed . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.9.  timestamp  . . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.10. update . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+   4.  Link fields  . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     4.1.  link source  . . . . . . . . . . . . . . . . . . . . . . .  6
+     4.2.  link target  . . . . . . . . . . . . . . . . . . . . . . .  6
+     4.3.  link name  . . . . . . . . . . . . . . . . . . . . . . . .  7
+     4.4.  link description . . . . . . . . . . . . . . . . . . . . .  7
+   5.  BEACON serialization . . . . . . . . . . . . . . . . . . . . .  7
+     5.1.  BEACON text format . . . . . . . . . . . . . . . . . . . .  7
+     5.2.  BEACON XML format  . . . . . . . . . . . . . . . . . . . .  7
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  8
+   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+     7.1.  Normative References . . . . . . . . . . . . . . . . . . .  9
+     7.2.  Informative References . . . . . . . . . . . . . . . . . .  9
+   Appendix A.  Interpreting BEACON links . . . . . . . . . . . . . .  9
+     A.1.  HTML links . . . . . . . . . . . . . . . . . . . . . . . .  9
+     A.2.  RDF triples  . . . . . . . . . . . . . . . . . . . . . . . 10
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+Voss                    Expires November 27, 2012               [Page 2]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+1.  Introduction
+
+   ...TODO... (motivation etc.)
+
+1.1.  Overview
+
+   A BEACON link dump consists of:
+
+   o  A set of links (Section 2), each derived from a set of link fields
+      (Section 4).
+
+   o  a set of meta fields (Section 3).
+
+   The link dump can be serialized in BEACON text format (Section 5.1)
+   and in BEACON XML format (Section 5.2).
+
+1.2.  Notational Conventions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+   The formal grammar rules in this document are to be interpreted as
+   described in [RFC4234].
+
+
+2.  Links
+
+   In this specification a link is a typed connection between two
+   resources that are identified by Internationalised Resource
+   Identifiers (IRIs) [RFC3987], and is compromised of:
+
+   o  A source IRI,
+
+   o  a link relation type,
+
+   o  a target URI
+
+   o  optionally, name and description.
+
+   Note that in the common case, source IRI and target IRI will also be
+   URIs [RFC3986].  A link relation type is either a registered link
+   type from the IANA link relations registry or an URI that uniquely
+   identifies the relation type, as defined in [RFC5988].
+
+   A BEACON link dump is an annotated set of links with identical link
+   type.  The default link type is the URI
+   "http://www.w3.org/2000/01/rdf-schema#seeAlso".  In the common case,
+
+
+
+Voss                    Expires November 27, 2012               [Page 3]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+   all source IRIs, or all target URIs, or both respectively begin with
+   a common prefix that is used for abbreviation.
+
+   Name and description are Unicode strings that annotate a link.  The
+   meaning of this annotations is not specified in this document but
+   guidelines are given in Appendix A.
+
+
+3.  Meta fields
+
+   A BEACON dump MAY be annotated with a set of meta fields.  Each meta
+   field is identified by its name, build of lowercase letters "a-z".
+   Valid fields are listed in the following.  Additional meta fields,
+   not defined in this specification SHOULD be ignored.
+
+3.1.  prefix
+
+   The prefix field specifies a prefix that is prepended to link ids
+   (Section 4) to construct link sources.
+
+3.2.  target
+
+   The target field specifies an URI pattern to construct link targets.
+   The URI pattern SHOULD include an URI parameter that is either "{ID}"
+   or "{TARGET}".  If no URI parameter is included, the parameter "{ID}"
+   is appended to the URI pattern, so the following target fields are
+   equal:
+
+    http://example.org/
+    http://example.org/{ID}
+
+3.3.  link
+
+   The link field specifies the link type for all links in a BEACON
+   dump.  In BEACON text format (Section 5.1) the link MAY be specified
+   enclosed in angle brackets if it is an URI, so the following BEACON
+   text link fields are equal:
+
+   #LINK: http://www.w3.org/2002/07/owl#sameAs
+   #LINK: <http://www.w3.org/2002/07/owl#sameAs>
+
+3.4.  message
+
+   ...TODO...
+
+
+
+
+
+
+
+Voss                    Expires November 27, 2012               [Page 4]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+3.5.  contact
+
+   The contact field contains an email address or similar contact
+   information to reach the maintainer of the BEACON dump.  The contact
+   SHOULD be a mailbox address as specified in section 3.4 of [RFC5322].
+
+   Examples:
+
+   admin@example.com
+   Barbara Beacon <b.beacon@example.org>
+
+3.6.  description
+
+   ...TODO... (needed?)
+
+3.7.  institution
+
+   ...TODO... (publishing institution or institution repsonsible for the
+   link targets)...
+
+3.8.  feed
+
+   The feed field contains an URL, conforming to [RFC3986], where to
+   download the BEACON dump from.
+
+3.9.  timestamp
+
+   The timestamp field contains the date of last modification of the
+   BEACON dump.  This date MUST conform to the "full-date" or to the
+   "date-time" production rule in [RFC3339].  In addition, an uppercase
+   "T" character MUST be used to separate date and time, and an
+   uppercase "Z" character MUST be present in the absence of a numeric
+   time zone offset.
+
+3.10.  update
+
+   The update field specifies how frequently the BEACON dump is likely
+   to change.  The field corresponds to the "<changefreq>" element in
+   Sitemaps XML format [Sitemaps].  Valid values are:
+
+   o  "always"
+
+   o  "hourly"
+
+   o  "daily"
+
+   o  "weekly"
+
+
+
+
+Voss                    Expires November 27, 2012               [Page 5]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+   o  "monthly"
+
+   o  "yearly"
+
+   o  "never"
+
+   The value "always" SHOULD be used to describe BEACON dumps that
+   change each time they are accessed.  The value "never" should be used
+   to describe archived BEACON dumps.
+
+
+4.  Link fields
+
+   Each link in a serialized BEACON dump is given in form of up to four
+   fields:
+
+   o  _id field_,
+
+   o  optional _label field_,
+
+   o  optional _description field_,
+
+   o  optional _target field_.
+
+   Form these fields, combined with the BEACON dump's meta fields
+   (Section 3), the source, target, name, and description of a link
+   (Section 2) is derived:
+
+4.1.  link source
+
+   The link source is the id link field, prepended by the prefix meta
+   field (Section 3.1), if the latter is specified.  The resulting link
+   source MUST be a valid IRI.
+
+4.2.  link target
+
+   The link target is constructed based on
+
+      the id field,
+
+      the target field,
+
+      the target meta field (Section 3.2)
+
+   with the following cases:
+
+
+
+
+
+
+Voss                    Expires November 27, 2012               [Page 6]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+   o  If neither target field (b) nor target meta field (c) are
+      specified, then the link target is the id field (a).
+
+   o  If target field (b) is specified and target meta field (c) is not
+      specified with "{TARGET}" URI template parameter, then the link
+      target is the target field.
+
+   o  If target field (b) is specified and target meta field (c) is
+      specified with a "{TARGET}" URI template parameter, then the
+      target field is inserted as "{TARGET}" parameter to get the link
+      target.
+
+   o  If target field (b) is not specified and target meta field (c) is
+      specified, then the id field is inserted as "{ID}" parameter to
+      get the link target.
+
+   In all cases the resulting link target MUST be a valid IRI.  Any
+   other case (no id field, target meta field with "{TARGET}" parameter
+   but no target field etc.) is an error.  A client MUST ignore such
+   links and SHOULD give a warning.
+
+4.3.  link name
+
+   ...TODO... (based in message meta field?)
+
+4.4.  link description
+
+   ...TODO... (based in message meta field?)
+
+
+5.  BEACON serialization
+
+5.1.  BEACON text format
+
+   A BEACON text file is an UTF-8 encoded file, separated in lines.  A
+   line break is ...TODO...
+
+   ...additional meta field "#FORMAT: BEACON"...
+
+5.2.  BEACON XML format
+
+   A BEACON XML file is a valid XML file conforming to the following
+   schema.  The file should be UTF-8 encoded.  The file must:
+
+   o  Begin with an opening "<beacon>" tag and end with a closing
+      "</beacon>" tag.
+
+
+
+
+
+Voss                    Expires November 27, 2012               [Page 7]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+   o  Specify the namespace "http://example.org/to-be-defined" within
+      the "<beacon>" tag.
+
+   o  Include a non-empty "<link>" tag for each link.
+
+   o  Include the link id (Section 4) as text content in the "<link>"
+      element for each link.
+
+   The file may further:
+
+   o  Specify meta fields as XML attributes to the "<beacon>" tag.
+
+   o  Specify label, description, and/or target of a link as attributes
+      to the "<link>" element.
+
+   Meta fields attributes MUST be given in lowercase only.  Optional
+   links attribute names MUST be one of "label", "description", and
+   "target" only.
+
+   An example of a BEACON XML file (TODO):
+
+   <?xml version="1.0" encoding="UTF-8"?>
+   <beacon xmlns="..."
+           link="..."
+           target="..."
+           prefix="http://..."
+   >
+       <link>...</link>
+       <link target="">...</link>
+       <link label="" description="..." target="...">...</link>
+   </beacon>
+
+   A stream-processing XML parser, such as SAX conforming processor
+   SAX [1], is RECOMMENDED to process BEACON XML.  Applications SHOULD
+   NOT try to parse BEACON XML with regular expressions or similar
+   methods instead of a full XML parser.
+
+
+6.  Security Considerations
+
+   ...TODO...  (URLs may be used to inject code and label/description
+   may be used to inject HTML?)
+
+
+7.  References
+
+
+
+
+
+
+Voss                    Expires November 27, 2012               [Page 8]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+7.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+   [RFC3339]  Klyne, G., Ed. and C. Newman, "Date and Time on the
+              Internet: Timestamps", RFC 3339, July 2002.
+
+   [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+              Resource Identifier (URI): Generic Syntax", STD 66,
+              RFC 3986, January 2005.
+
+   [RFC3987]  Duerst, M. and M. Suignard, "Internationalized Resource
+              Identifiers (IRIs)", RFC 3987, January 2005.
+
+   [RFC4234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", RFC 4234, October 2005.
+
+   [RFC5322]  Resnick, P., Ed., "Internet Message Format", RFC 5322,
+              October 2008.
+
+   [RFC5988]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
+
+7.2.  Informative References
+
+   [Sitemaps]
+              "Sitemaps XML format", February 2008.
+
+URIs
+
+   [1]  <>
+
+
+Appendix A.  Interpreting BEACON links
+
+   The interpretation of links in a BEACON dump is not restricted to a
+   specific format.  The most common use cases are HTML links and RDF
+   triples.
+
+A.1.  HTML links
+
+   A BEACON link can be mapped to a HTML link ("<a>" element) as
+   following:
+
+   o  The link target corresponds to the "href" attribute.
+
+   o  The link label corresponds to the textual content.
+
+
+
+
+Voss                    Expires November 27, 2012               [Page 9]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+   o  The link description corresponds to the "title" attribute.
+
+   The link source can be interpreted as the website URL which a HTML
+   link is included at.
+
+   Example:
+
+   ...|example|sample site|http://example.org
+
+   <a href="http://example.org" title="sample site">example</a>
+
+   A client may also ignore link label and link description but use the
+   meta fields ... and ... instead (TODO).
+
+A.2.  RDF triples
+
+   If link type is an URI, each link in a BEACON dump maps to an RDF
+   triple with
+
+   o  link source as RDF subject,
+
+   o  link type as RDF property,
+
+   o  link target as RDF object.
+
+   Link name and link description MAY result in additional triples with
+   each of name and description as literal value RDF object.  The final
+   intepretation of these link annotations, however, is out of the scope
+   of this specification.
+
+
+Author's Address
+
+   J. Voss
+   Verbundzentrale des GBV
+   Platz der Goettinger Sieben 1
+   Goettingen,   37073
+   DE
+
+   Phone: +49(551)39-10242
+   Email: voss@gbv.de
+
+
+
+
+
+
+
+
+
+
+Voss                    Expires November 27, 2012              [Page 10]
+
