@@ -2,7 +2,7 @@
 <html lang="en"><head><title>BEACON link dump format</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="description" content="BEACON link dump format">
-<meta name="generator" content="xml2rfc v1.34 (http://xml.resource.org/)">
+<meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
 <style type='text/css'><!--
         body {
                 font-family: verdana, charcoal, helvetica, arial, sans-serif;
@@ -143,8 +143,8 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">J. Voß</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Verbundzentrale des GBV</td></tr>
-<tr><td class="header">Intended status: Informational</td><td class="header">May 26, 2012</td></tr>
-<tr><td class="header">Expires: November 27, 2012</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">May 30, 2012</td></tr>
+<tr><td class="header">Expires: December 1, 2012</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
 <h1><br />BEACON link dump format<br />draft-voss-beacon-00</h1>
 
@@ -155,26 +155,20 @@
 </p>
 <h3>Status of this Memo</h3>
 <p>
-This Internet-Draft is submitted to IETF in full
+This Internet-Draft is submitted  in full
 conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
 <p>
 Internet-Drafts are working documents of the Internet Engineering
-Task Force (IETF), its areas, and its working groups.
-Note that other groups may also distribute working documents as
-Internet-Drafts.</p>
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>
 Internet-Drafts are draft documents valid for a maximum of six months
 and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-The list of current Internet-Drafts can be accessed at
-<a href='http://www.ietf.org/ietf/1id-abstracts.txt'>http://www.ietf.org/ietf/1id-abstracts.txt</a>.</p>
-<p>
-The list of Internet-Draft Shadow Directories can be accessed at
-<a href='http://www.ietf.org/shadow.html'>http://www.ietf.org/shadow.html</a>.</p>
-<p>
-This Internet-Draft will expire on November 27, 2012.</p>
+This Internet-Draft will expire on December 1, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -182,19 +176,23 @@ Copyright (c) 2012 IETF Trust and the persons identified as the
 document authors.  All rights reserved.</p>
 <p>
 This document is subject to BCP 78 and the IETF Trust's Legal
-Provisions Relating to IETF Documents in effect on the date of
-publication of this document (http://trustee.ietf.org/license-info).
-Please review these documents carefully, as they describe your
-rights and restrictions with respect to this document.</p>
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
 <a name="toc"></a><br /><hr />
 <h3>Table of Contents</h3>
 <p class="toc">
 <a href="#introduction">1.</a>&nbsp;
 Introduction<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#overview">1.1.</a>&nbsp;
-Overview<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#notational-conventions">1.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#notational-conventions">1.1.</a>&nbsp;
 Notational Conventions<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#overview">1.2.</a>&nbsp;
+Overview<br />
 <a href="#links">2.</a>&nbsp;
 Links<br />
 <a href="#meta-fields">3.</a>&nbsp;
@@ -260,44 +258,37 @@ Author's Address<br />
 Introduction</h3>
 
 <p>
-    ...TODO... (motivation etc.)
+    BEACON was developed as minimalistic format for distribution of
+    large number of uniform links between information resources. A
+    typical use case is the expression of a linking tables that map
+    source URLs to target URLs with stable URL prefix and local
+    identifiers as part of the URL:
   
-</p>
-<a name="overview"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
-Overview</h3>
-
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+http://example.com/{sourceID} ---&gt; http://example.org/{targetID}
+</pre></div>
 <p>
-      A BEACON link dump consists of:
-    
-</p>
-<p></p>
-<ul class="text">
-<li>
-        
-          A set of <a class='info' href='#links'>links<span> (</span><span class='info'>Links</span><span>)</span></a>, each derived from a
-          set of <a class='info' href='#link-fields'>link fields<span> (</span><span class='info'>Link fields</span><span>)</span></a>.
-        
-      
-</li>
-<li>
-        
-          a set of <a class='info' href='#meta-fields'>meta fields<span> (</span><span class='info'>Meta fields</span><span>)</span></a>.
-        
-      
-</li>
-</ul>
-
+    With BEACON one can express these links in a very condense form.
+    Each link in BEACON text format is a tuple of local identifiers:
+  
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{sourceID}|{targetID}
+</pre></div>
 <p>
-      The link dump can be serialized in
-      <a class='info' href='#beacon-text-format'>BEACON text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a> and in
-      <a class='info' href='#beacon-xml-format'>BEACON XML format<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a>.
-    
+    If <tt>{sourceID}</tt> and <tt>{targetID}</tt>
+    are equal the link only consists of this id:
+  
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{sourceID}
+</pre></div>
+<p>
+    For easier processing this form can also be mapped to BEACON XML
+    format.
+  
 </p>
 <a name="notational-conventions"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
+<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
 Notational Conventions</h3>
 
 <p>
@@ -312,6 +303,38 @@ Notational Conventions</h3>
 <p>
       The formal grammar rules in this document are to be interpreted as
       described in <a class='info' href='#RFC4234'>[RFC4234]<span> (</span><span class='info'>Crocker, D., Ed. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; October&nbsp;2005.</span><span>)</span></a>.
+    
+</p>
+<a name="overview"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
+Overview</h3>
+
+<p>
+      A BEACON link dump consists of:
+    
+</p>
+<p></p>
+<ul class="text">
+<li>
+        
+          a set of <a class='info' href='#links'>links<span> (</span><span class='info'>Links</span><span>)</span></a>, each derived from
+          a set of <a class='info' href='#link-fields'>link fields<span> (</span><span class='info'>Link fields</span><span>)</span></a>,
+        
+      
+</li>
+<li>
+        
+          a set of <a class='info' href='#meta-fields'>meta fields<span> (</span><span class='info'>Meta fields</span><span>)</span></a>.
+        
+      
+</li>
+</ul>
+
+<p>
+      A BEACON link dump can be serialized in
+      <a class='info' href='#beacon-text-format'>BEACON text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a> and
+      in <a class='info' href='#beacon-xml-format'>BEACON XML format<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a>.
     
 </p>
 <a name="links"></a><br /><hr />
@@ -355,10 +378,10 @@ Links</h3>
 </ul>
 
 <p>
-    Note that in the common case, source IRI and target IRI will also
-    be URIs <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>. A link relation type is
-    either a registered link type from the IANA link relations registry
-    or an URI that uniquely identifies the relation type, as defined in
+    Note that in the common case, source IRI and target IRI will also be
+    URIs <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>. A link relation type is either
+    a registered link type from the IANA link relations registry or an
+    URI that uniquely identifies the relation type, as defined in
     <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>.
   
 </p>
@@ -411,9 +434,9 @@ target</h3>
       The target field specifies an URI pattern to construct link
       targets. The URI pattern SHOULD include an URI parameter that is
       either <tt>{ID}</tt> or <tt>{TARGET}</tt>. If
-      no URI parameter is included, the parameter <tt>{ID}</tt>
-      is appended to the URI pattern, so the following target fields are
-      equal:
+      no URI parameter is included, the parameter
+      <tt>{ID}</tt> is appended to the URI pattern, so the
+      following target fields are equal:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  http://example.org/
@@ -426,10 +449,10 @@ link</h3>
 
 <p>
       The link field specifies the link type for all links in a BEACON
-      dump. In
-      <a class='info' href='#beacon-text-format'>BEACON text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a> the
-      link MAY be specified enclosed in angle brackets if it is an URI,
-      so the following BEACON text link fields are equal:
+      dump. In <a class='info' href='#beacon-text-format'>BEACON text
+      format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a> the link MAY be specified enclosed in angle brackets
+      if it is an URI, so the following BEACON text link fields are
+      equal:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 #LINK: http://www.w3.org/2002/07/owl#sameAs
@@ -451,8 +474,8 @@ contact</h3>
 
 <p>
       The contact field contains an email address or similar contact
-      information to reach the maintainer of the BEACON dump. The contact
-      SHOULD be a mailbox address as specified in section 3.4 of
+      information to reach the maintainer of the BEACON dump. The
+      contact SHOULD be a mailbox address as specified in section 3.4 of
       <a class='info' href='#RFC5322'>[RFC5322]<span> (</span><span class='info'>Resnick, P., Ed., &ldquo;Internet Message Format,&rdquo; October&nbsp;2008.</span><span>)</span></a>.
     
 </p>
@@ -501,11 +524,12 @@ timestamp</h3>
 <p>
       The timestamp field contains the date of last modification of the
       BEACON dump. This date MUST conform to the
-      <tt>full-date</tt> or to the <tt>date-time</tt>
-      production rule in <a class='info' href='#RFC3339'>[RFC3339]<span> (</span><span class='info'>Klyne, G., Ed. and C. Newman, &ldquo;Date and Time on the Internet: Timestamps,&rdquo; July&nbsp;2002.</span><span>)</span></a>. In addition, an
-      uppercase <tt>T</tt> character MUST be used to separate
-      date and time, and an uppercase <tt>Z</tt> character MUST
-      be present in the absence of a numeric time zone offset.
+      <tt>full-date</tt> or to the
+      <tt>date-time</tt> production rule in
+      <a class='info' href='#RFC3339'>[RFC3339]<span> (</span><span class='info'>Klyne, G., Ed. and C. Newman, &ldquo;Date and Time on the Internet: Timestamps,&rdquo; July&nbsp;2002.</span><span>)</span></a>. In addition, an uppercase
+      <tt>T</tt> character MUST be used to separate date and
+      time, and an uppercase <tt>Z</tt> character MUST be
+      present in the absence of a numeric time zone offset.
     
 </p>
 <a name="update"></a><br /><hr />
@@ -514,8 +538,8 @@ timestamp</h3>
 update</h3>
 
 <p>
-      The update field specifies how frequently the BEACON dump is likely
-      to change. The field corresponds to the
+      The update field specifies how frequently the BEACON dump is
+      likely to change. The field corresponds to the
       <tt>&lt;changefreq&gt;</tt> element in
       <a class='info' href='#Sitemaps'>Sitemaps XML format<span> (</span><span class='info'>, &ldquo;Sitemaps XML format,&rdquo; February&nbsp;2008.</span><span>)</span></a> [Sitemaps]. Valid values
       are:
@@ -570,8 +594,8 @@ update</h3>
 <p>
       The value <tt>always</tt> SHOULD be used to describe
       BEACON dumps that change each time they are accessed. The value
-      <tt>never</tt> should be used to describe archived BEACON
-      dumps.
+      <tt>never</tt> should be used to describe archived
+      BEACON dumps.
     
 </p>
 <a name="link-fields"></a><br /><hr />
@@ -580,8 +604,8 @@ update</h3>
 Link fields</h3>
 
 <p>
-    Each link in a serialized BEACON dump is given in form of up to
-    four fields:
+    Each link in a serialized BEACON dump is given in form of up to four
+    fields:
   
 </p>
 <p></p>
@@ -640,26 +664,26 @@ link target</h3>
     
 </p>
 <p></p>
-<blockquote class="text">
-<p>
+<ul class="text">
+<li>
         
           the id field,
         
       
-</p>
-<p>
+</li>
+<li>
         
           the target field,
         
       
-</p>
-<p>
+</li>
+<li>
         
           the <a class='info' href='#target'>target meta field<span> (</span><span class='info'>target</span><span>)</span></a>
         
       
-</p>
-</blockquote>
+</li>
+</ul>
 
 <p>
       with the following cases:
@@ -669,22 +693,22 @@ link target</h3>
 <ul class="text">
 <li>
         
-          If neither target field (b) nor target meta field (c) are
-          specified, then the link target is the id field (a).
+          If neither target field nor target meta field are specified,
+          then the link target is the id field.
         
       
 </li>
 <li>
         
-          If target field (b) is specified and target meta field (c) is not
-          specified with <tt>{TARGET}</tt> URI template parameter,
-          then the link target is the target field.
+          If target field is specified and target meta field is not
+          specified with <tt>{TARGET}</tt> URI template
+          parameter, then the link target is the target field.
         
       
 </li>
 <li>
         
-          If target field (b) is specified and target meta field (c) is
+          If target field is specified and target meta field is
           specified with a <tt>{TARGET}</tt> URI template
           parameter, then the target field is inserted as
           <tt>{TARGET}</tt> parameter to get the link target.
@@ -693,9 +717,9 @@ link target</h3>
 </li>
 <li>
         
-          If target field (b) is not specified and target meta field (c) is
-          specified, then the id field is inserted as <tt>{ID}</tt>
-          parameter to get the link target.
+          If target field is not specified and target meta field is
+          specified, then the id field is inserted as
+          <tt>{ID}</tt> parameter to get the link target.
         
       
 </li>
@@ -760,8 +784,8 @@ BEACON XML format</h3>
 <ul class="text">
 <li>
         
-          Begin with an opening <tt>&lt;beacon&gt;</tt> tag and end
-          with a closing <tt>&lt;/beacon&gt;</tt> tag.
+          Begin with an opening <tt>&lt;beacon&gt;</tt> tag
+          and end with a closing <tt>&lt;/beacon&gt;</tt> tag.
         
       
 </li>
@@ -775,16 +799,16 @@ BEACON XML format</h3>
 </li>
 <li>
         
-          Include a non-empty <tt>&lt;link&gt;</tt> tag for each
-          link.
+          Include a non-empty <tt>&lt;link&gt;</tt> tag for
+          each link.
         
       
 </li>
 <li>
         
           Include the <a class='info' href='#link-fields'>link id<span> (</span><span class='info'>Link fields</span><span>)</span></a> as text
-          content in the <tt>&lt;link&gt;</tt> element for each
-          link.
+          content in the <tt>&lt;link&gt;</tt> element for
+          each link.
         
       
 </li>
@@ -805,8 +829,8 @@ BEACON XML format</h3>
 </li>
 <li>
         
-          Specify label, description, and/or target of a link as attributes
-          to the <tt>&lt;link&gt;</tt> element.
+          Specify label, description, and/or target of a link as
+          attributes to the <tt>&lt;link&gt;</tt> element.
         
       
 </li>
@@ -815,7 +839,8 @@ BEACON XML format</h3>
 <p>
       Meta fields attributes MUST be given in lowercase only. Optional
       links attribute names MUST be one of <tt>label</tt>,
-      <tt>description</tt>, and <tt>target</tt> only.
+      <tt>description</tt>, and <tt>target</tt>
+      only.
     
 </p>
 <p>
@@ -921,8 +946,8 @@ HTML links</h3>
 </li>
 <li>
         
-          The link description corresponds to the <tt>title</tt>
-          attribute.
+          The link description corresponds to the
+          <tt>title</tt> attribute.
         
       
 </li>

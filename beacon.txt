@@ -3,8 +3,8 @@
 
 Network Working Group                                            J. Voss
 Internet-Draft                                   Verbundzentrale des GBV
-Intended status: Informational                              May 26, 2012
-Expires: November 27, 2012
+Intended status: Informational                              May 30, 2012
+Expires: December 1, 2012
 
 
                         BEACON link dump format
@@ -17,26 +17,20 @@ Abstract
 
 Status of this Memo
 
-   This Internet-Draft is submitted to IETF in full conformance with the
+   This Internet-Draft is submitted in full conformance with the
    provisions of BCP 78 and BCP 79.
 
    Internet-Drafts are working documents of the Internet Engineering
-   Task Force (IETF), its areas, and its working groups.  Note that
-   other groups may also distribute working documents as Internet-
-   Drafts.
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   The list of current Internet-Drafts can be accessed at
-   http://www.ietf.org/ietf/1id-abstracts.txt.
-
-   The list of Internet-Draft Shadow Directories can be accessed at
-   http://www.ietf.org/shadow.html.
-
-   This Internet-Draft will expire on November 27, 2012.
+   This Internet-Draft will expire on December 1, 2012.
 
 Copyright Notice
 
@@ -49,50 +43,51 @@ Copyright Notice
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
-
-
-
-Voss                    Expires November 27, 2012               [Page 1]
-
-Internet-Draft                   Beacon                         May 2012
-
-
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
-   described in the BSD License.
+   described in the Simplified BSD License.
+
+
+
+
+
+
+Voss                    Expires December 1, 2012                [Page 1]
+
+Internet-Draft                   Beacon                         May 2012
 
 
 Table of Contents
 
    1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
-     1.1.  Overview . . . . . . . . . . . . . . . . . . . . . . . . .  3
-     1.2.  Notational Conventions . . . . . . . . . . . . . . . . . .  3
+     1.1.  Notational Conventions . . . . . . . . . . . . . . . . . .  3
+     1.2.  Overview . . . . . . . . . . . . . . . . . . . . . . . . .  3
    2.  Links  . . . . . . . . . . . . . . . . . . . . . . . . . . . .  3
    3.  Meta fields  . . . . . . . . . . . . . . . . . . . . . . . . .  4
      3.1.  prefix . . . . . . . . . . . . . . . . . . . . . . . . . .  4
      3.2.  target . . . . . . . . . . . . . . . . . . . . . . . . . .  4
-     3.3.  link . . . . . . . . . . . . . . . . . . . . . . . . . . .  4
-     3.4.  message  . . . . . . . . . . . . . . . . . . . . . . . . .  4
+     3.3.  link . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.4.  message  . . . . . . . . . . . . . . . . . . . . . . . . .  5
      3.5.  contact  . . . . . . . . . . . . . . . . . . . . . . . . .  5
      3.6.  description  . . . . . . . . . . . . . . . . . . . . . . .  5
      3.7.  institution  . . . . . . . . . . . . . . . . . . . . . . .  5
      3.8.  feed . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
      3.9.  timestamp  . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.10. update . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.10. update . . . . . . . . . . . . . . . . . . . . . . . . . .  6
    4.  Link fields  . . . . . . . . . . . . . . . . . . . . . . . . .  6
      4.1.  link source  . . . . . . . . . . . . . . . . . . . . . . .  6
-     4.2.  link target  . . . . . . . . . . . . . . . . . . . . . . .  6
+     4.2.  link target  . . . . . . . . . . . . . . . . . . . . . . .  7
      4.3.  link name  . . . . . . . . . . . . . . . . . . . . . . . .  7
      4.4.  link description . . . . . . . . . . . . . . . . . . . . .  7
    5.  BEACON serialization . . . . . . . . . . . . . . . . . . . . .  7
-     5.1.  BEACON text format . . . . . . . . . . . . . . . . . . . .  7
-     5.2.  BEACON XML format  . . . . . . . . . . . . . . . . . . . .  7
-   6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  8
+     5.1.  BEACON text format . . . . . . . . . . . . . . . . . . . .  8
+     5.2.  BEACON XML format  . . . . . . . . . . . . . . . . . . . .  8
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  9
    7.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
      7.1.  Normative References . . . . . . . . . . . . . . . . . . .  9
      7.2.  Informative References . . . . . . . . . . . . . . . . . .  9
-   Appendix A.  Interpreting BEACON links . . . . . . . . . . . . . .  9
-     A.1.  HTML links . . . . . . . . . . . . . . . . . . . . . . . .  9
+   Appendix A.  Interpreting BEACON links . . . . . . . . . . . . . . 10
+     A.1.  HTML links . . . . . . . . . . . . . . . . . . . . . . . . 10
      A.2.  RDF triples  . . . . . . . . . . . . . . . . . . . . . . . 10
    Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 10
 
@@ -108,28 +103,40 @@ Table of Contents
 
 
 
-Voss                    Expires November 27, 2012               [Page 2]
+
+
+
+
+
+Voss                    Expires December 1, 2012                [Page 2]
 
 Internet-Draft                   Beacon                         May 2012
 
 
 1.  Introduction
 
-   ...TODO... (motivation etc.)
+   BEACON was developed as minimalistic format for distribution of large
+   number of uniform links between information resources.  A typical use
+   case is the expression of a linking tables that map source URLs to
+   target URLs with stable URL prefix and local identifiers as part of
+   the URL:
 
-1.1.  Overview
+   http://example.com/{sourceID} ---> http://example.org/{targetID}
 
-   A BEACON link dump consists of:
+   With BEACON one can express these links in a very condense form.
+   Each link in BEACON text format is a tuple of local identifiers:
 
-   o  A set of links (Section 2), each derived from a set of link fields
-      (Section 4).
+   {sourceID}|{targetID}
 
-   o  a set of meta fields (Section 3).
+   If "{sourceID}" and "{targetID}" are equal the link only consists of
+   this id:
 
-   The link dump can be serialized in BEACON text format (Section 5.1)
-   and in BEACON XML format (Section 5.2).
+   {sourceID}
 
-1.2.  Notational Conventions
+   For easier processing this form can also be mapped to BEACON XML
+   format.
+
+1.1.  Notational Conventions
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
@@ -138,10 +145,30 @@ Internet-Draft                   Beacon                         May 2012
    The formal grammar rules in this document are to be interpreted as
    described in [RFC4234].
 
+1.2.  Overview
+
+   A BEACON link dump consists of:
+
+   o  a set of links (Section 2), each derived from a set of link fields
+      (Section 4),
+
+   o  a set of meta fields (Section 3).
+
+   A BEACON link dump can be serialized in BEACON text format
+   (Section 5.1) and in BEACON XML format (Section 5.2).
+
 
 2.  Links
 
    In this specification a link is a typed connection between two
+
+
+
+Voss                    Expires December 1, 2012                [Page 3]
+
+Internet-Draft                   Beacon                         May 2012
+
+
    resources that are identified by Internationalised Resource
    Identifiers (IRIs) [RFC3987], and is compromised of:
 
@@ -161,14 +188,6 @@ Internet-Draft                   Beacon                         May 2012
    A BEACON link dump is an annotated set of links with identical link
    type.  The default link type is the URI
    "http://www.w3.org/2000/01/rdf-schema#seeAlso".  In the common case,
-
-
-
-Voss                    Expires November 27, 2012               [Page 3]
-
-Internet-Draft                   Beacon                         May 2012
-
-
    all source IRIs, or all target URIs, or both respectively begin with
    a common prefix that is used for abbreviation.
 
@@ -198,6 +217,14 @@ Internet-Draft                   Beacon                         May 2012
    equal:
 
     http://example.org/
+
+
+
+Voss                    Expires December 1, 2012                [Page 4]
+
+Internet-Draft                   Beacon                         May 2012
+
+
     http://example.org/{ID}
 
 3.3.  link
@@ -213,17 +240,6 @@ Internet-Draft                   Beacon                         May 2012
 3.4.  message
 
    ...TODO...
-
-
-
-
-
-
-
-Voss                    Expires November 27, 2012               [Page 4]
-
-Internet-Draft                   Beacon                         May 2012
-
 
 3.5.  contact
 
@@ -257,6 +273,14 @@ Internet-Draft                   Beacon                         May 2012
    "date-time" production rule in [RFC3339].  In addition, an uppercase
    "T" character MUST be used to separate date and time, and an
    uppercase "Z" character MUST be present in the absence of a numeric
+
+
+
+Voss                    Expires December 1, 2012                [Page 5]
+
+Internet-Draft                   Beacon                         May 2012
+
+
    time zone offset.
 
 3.10.  update
@@ -272,14 +296,6 @@ Internet-Draft                   Beacon                         May 2012
    o  "daily"
 
    o  "weekly"
-
-
-
-
-Voss                    Expires November 27, 2012               [Page 5]
-
-Internet-Draft                   Beacon                         May 2012
-
 
    o  "monthly"
 
@@ -313,43 +329,40 @@ Internet-Draft                   Beacon                         May 2012
 
    The link source is the id link field, prepended by the prefix meta
    field (Section 3.1), if the latter is specified.  The resulting link
+
+
+
+Voss                    Expires December 1, 2012                [Page 6]
+
+Internet-Draft                   Beacon                         May 2012
+
+
    source MUST be a valid IRI.
 
 4.2.  link target
 
    The link target is constructed based on
 
-      the id field,
+   o  the id field,
 
-      the target field,
+   o  the target field,
 
-      the target meta field (Section 3.2)
+   o  the target meta field (Section 3.2)
 
    with the following cases:
 
+   o  If neither target field nor target meta field are specified, then
+      the link target is the id field.
 
-
-
-
-
-Voss                    Expires November 27, 2012               [Page 6]
-
-Internet-Draft                   Beacon                         May 2012
-
-
-   o  If neither target field (b) nor target meta field (c) are
-      specified, then the link target is the id field (a).
-
-   o  If target field (b) is specified and target meta field (c) is not
+   o  If target field is specified and target meta field is not
       specified with "{TARGET}" URI template parameter, then the link
       target is the target field.
 
-   o  If target field (b) is specified and target meta field (c) is
-      specified with a "{TARGET}" URI template parameter, then the
-      target field is inserted as "{TARGET}" parameter to get the link
-      target.
+   o  If target field is specified and target meta field is specified
+      with a "{TARGET}" URI template parameter, then the target field is
+      inserted as "{TARGET}" parameter to get the link target.
 
-   o  If target field (b) is not specified and target meta field (c) is
+   o  If target field is not specified and target meta field is
       specified, then the id field is inserted as "{ID}" parameter to
       get the link target.
 
@@ -369,6 +382,17 @@ Internet-Draft                   Beacon                         May 2012
 
 5.  BEACON serialization
 
+
+
+
+
+
+
+Voss                    Expires December 1, 2012                [Page 7]
+
+Internet-Draft                   Beacon                         May 2012
+
+
 5.1.  BEACON text format
 
    A BEACON text file is an UTF-8 encoded file, separated in lines.  A
@@ -383,15 +407,6 @@ Internet-Draft                   Beacon                         May 2012
 
    o  Begin with an opening "<beacon>" tag and end with a closing
       "</beacon>" tag.
-
-
-
-
-
-Voss                    Expires November 27, 2012               [Page 7]
-
-Internet-Draft                   Beacon                         May 2012
-
 
    o  Specify the namespace "http://example.org/to-be-defined" within
       the "<beacon>" tag.
@@ -426,6 +441,14 @@ Internet-Draft                   Beacon                         May 2012
    </beacon>
 
    A stream-processing XML parser, such as SAX conforming processor
+
+
+
+Voss                    Expires December 1, 2012                [Page 8]
+
+Internet-Draft                   Beacon                         May 2012
+
+
    SAX [1], is RECOMMENDED to process BEACON XML.  Applications SHOULD
    NOT try to parse BEACON XML with regular expressions or similar
    methods instead of a full XML parser.
@@ -438,16 +461,6 @@ Internet-Draft                   Beacon                         May 2012
 
 
 7.  References
-
-
-
-
-
-
-Voss                    Expires November 27, 2012               [Page 8]
-
-Internet-Draft                   Beacon                         May 2012
-
 
 7.1.  Normative References
 
@@ -482,6 +495,16 @@ URIs
    [1]  <>
 
 
+
+
+
+
+
+Voss                    Expires December 1, 2012                [Page 9]
+
+Internet-Draft                   Beacon                         May 2012
+
+
 Appendix A.  Interpreting BEACON links
 
    The interpretation of links in a BEACON dump is not restricted to a
@@ -496,14 +519,6 @@ A.1.  HTML links
    o  The link target corresponds to the "href" attribute.
 
    o  The link label corresponds to the textual content.
-
-
-
-
-Voss                    Expires November 27, 2012               [Page 9]
-
-Internet-Draft                   Beacon                         May 2012
-
 
    o  The link description corresponds to the "title" attribute.
 
@@ -536,6 +551,16 @@ A.2.  RDF triples
    of this specification.
 
 
+
+
+
+
+
+Voss                    Expires December 1, 2012               [Page 10]
+
+Internet-Draft                   Beacon                         May 2012
+
+
 Author's Address
 
    J. Voss
@@ -556,5 +581,36 @@ Author's Address
 
 
 
-Voss                    Expires November 27, 2012              [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Voss                    Expires December 1, 2012               [Page 11]
 
