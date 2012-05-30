@@ -33,6 +33,6 @@ with
 * link type as RDF property,
 * link target as RDF object.
 
-Link name and link description MAY result in additional triples with each of
+Link label and link description MAY result in additional triples with each of
 name and description as literal value RDF object. The final intepretation of
 these link annotations, however, is out of the scope of this specification.

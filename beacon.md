@@ -32,6 +32,13 @@ The formal grammar rules in this document are to be interpreted as described in
 [](#RFC4234).
 
 
+## Whitespace Normalization 
+
+A string is normalized according to this specification, by stripping leading
+and trailing whitespace and by replacing sequences of whitespace characters
+(`#x20 | #x9 | #xD | #xA`) by a single space (`#x20`).
+
+
 ## Overview
 
 A BEACON link dump consists of:
@@ -53,21 +60,21 @@ and is compromised of:
 * A source IRI,
 * a link relation type, 
 * a target URI
-* optionally, name and description.
+* an optional label,
+* an optional description.
 
-Note that in the common case, source IRI and target IRI will also be URIs
-[](#RFC3986). A link relation type is either a registered link type from the
-IANA link relations registry or an URI that uniquely identifies the relation
-type, as defined in [](#RFC5988).
+In the common case, source IRI and target IRI will also be URIs [](#RFC3986). A
+link relation type is either a registered link type from the IANA link
+relations registry or an URI that uniquely identifies the relation type, as
+defined in [](#RFC5988). Link label and link description are normalized Unicode
+strings that annotate a link. The meaning of this annotations is not defined in
+this specification, but guidelines are given in [](#interpreting-beacon-links).
 
 A BEACON link dump is an annotated set of links with identical link type. The
 default link type is the URI `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 In the common case, all source IRIs, or all target URIs, or both respectively
 begin with a common prefix that is used for abbreviation.
 
-Name and description are Unicode strings that annotate a link. The meaning of
-this annotations is not specified in this document but guidelines are given in
-[](#interpreting-beacon-links).
 
 # Meta fields
 
@@ -84,9 +91,9 @@ ids](#link-fields) to construct link sources.
 ## target
 
 The target field specifies an URI pattern to construct link targets. The URI
-pattern SHOULD include an URI parameter that is either `{ID}` or `{TARGET}`. If
-no URI parameter is included, the parameter `{ID}` is appended to the URI
-pattern, so the following target fields are equal:
+pattern SHOULD include the URI parameter `{ID}`. If this URI parameter is not
+included it can be appended to the URI pattern, so the following target fields
+are equal:
 
      http://example.org/
 	 http://example.org/{ID}
@@ -101,10 +108,6 @@ equal:
     #LINK: http://www.w3.org/2002/07/owl#sameAs
     #LINK: <http://www.w3.org/2002/07/owl#sameAs>
 
-## message
-
-...TODO...
-
 ## contact
 
 The contact field contains an email address or similar contact information to
@@ -116,13 +119,25 @@ Examples:
     admin@example.com
 	Barbara Beacon <b.beacon@example.org>
 
+
+## message
+
+The message meta field is a normalized Unicode string that is used as template 
+or as default value for [link labels](#link-label).
+
 ## description
 
-...TODO... (needed?)
+The description meta field is a normalized Unicode string that is used as template 
+or as default value for [link descriptions](#link-description).
 
 ## institution
 
 ...TODO... (publishing institution or institution repsonsible for the link targets)...
+
+## name
+
+...TODO... (needed or can we drop this?)
+
 
 ## feed
 
@@ -135,7 +150,11 @@ The timestamp field contains the date of last modification of the BEACON dump.
 This date MUST conform to the `full-date` or to the `date-time` production rule
 in [](#RFC3339). In addition, an uppercase `T` character MUST be used to
 separate date and time, and an uppercase `Z` character MUST be present in the
-absence of a numeric time zone offset.
+absence of a numeric time zone offset. Some examples of valid timestamp values:
+
+   2012-05-30
+   2012-05-30T15:17:36+02:00
+   2012-05-30T13:17:36Z
 
 ## update
 
@@ -160,13 +179,14 @@ BEACON dumps.
 
 Each link in a serialized BEACON dump is given in form of up to four fields:
 
-* *id field*,
-* optional *label field*,
-* optional *description field*,
-* optional *target field*.
+* id field,
+* optional label field,
+* optional description field,
+* optional target field.
 
-Form these fields, combined with the BEACON dump's [meta fields](#meta-fields),
-the source, target, name, and description of a [link](#links) is derived:
+From these fields, combined with the BEACON dump's [meta fields](#meta-fields),
+the full [link](#links) is derived. All field values MUST be
+[normalized](#whitespace-normalization). The full link is derived as following:
 
 ## link source
 
@@ -183,27 +203,55 @@ The link target is constructed based on
 
 with the following cases:
 
-* If neither target field nor target meta field are specified, then the 
-  link target is the id field.
-* If target field is specified and target meta field is not specified 
-  with `{TARGET}` URI template parameter, then the link target is the target field.
-* If target field is specified and target meta field is specified with
-  a `{TARGET}` URI template parameter, then the target field is inserted as 
-  `{TARGET}` parameter to get the link target.
-* If target field is not specified and target meta field is specified,
+* If the target field is specified, then:
+
+  * If the target meta field is specified then the target field is inserted
+    as `{ID}` parameter into the target meta field to get the link target.
+
+  * If the target meta field is not specified, 
+    then the link target is the target field.
+
+* If the target field is not specified and the target meta field is specified,
   then the id field is inserted as `{ID}` parameter to get the link target.
+
+* If neither the target field nor the target meta field are specified, 
+  then the link target is the id field.
 
 In all cases the resulting link target MUST be a valid IRI. Any other case (no
 id field, target meta field with `{TARGET}` parameter but no target field etc.)
 is an error. A client MUST ignore such links and SHOULD give a warning.
 
-## link name
 
-...TODO... (based in message meta field?)
+## link label
+
+The link label is derived from the label field and the [message meta
+field](#message) as following:
+
+* If the message meta field contains the substring `{label}` and the label
+  field is not the empty string, then the substring `{label}` is replaced by 
+  the label field to get the link label.
+* If otherwise the labeln field is not the empty string, the link 
+  label equals to the label field.
+* Otherwise the link label equals to the message meta field.
+
+The resulting string MUST be [normalized](#whitespace-normalization). A missing
+link label equals to the empty string. 
+
 
 ## link description
 
-...TODO... (based in message meta field?)
+The link description is derived from the description field, from the label field,
+and from the [description meta field](#description) as following:
+
+* If the description meta field contains the substring `{label}` and the label
+  field is not the empty string, then the substring `{label}` is replaced by 
+  the label field to get the link description.
+* If otherwise the description field is not the empty string, the link 
+  description equals to the description field.
+* Otherwise the link description equals to the description meta field.
+
+The resulting string MUST be [normalized](#whitespace-normalization). A missing
+link description equals to the empty string. 
 
 
 # BEACON serialization
@@ -214,6 +262,7 @@ A BEACON text file is an UTF-8 encoded file, separated in lines. A line break
 is ...TODO...
 
 ...additional meta field `#FORMAT: BEACON`...
+
 
 ## BEACON XML format
 
