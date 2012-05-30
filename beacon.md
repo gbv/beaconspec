@@ -3,17 +3,24 @@
 
 # Introduction
 
-...TODO... (motivation etc.)
+BEACON was developed as minimalistic format for distribution of large number
+of uniform links between information resources. A typical use case is the
+expression of a linking tables that map source URLs to target URLs with stable
+URL prefix and local identifiers as part of the URL:
 
-## Overview
+    http://example.com/{sourceID} ---> http://example.org/{targetID}
 
-A BEACON link dump consists of:
+With BEACON one can express these links in a very condense form. Each
+link in BEACON text format is a tuple of local identifiers: 
 
-* A set of [links](#links), each derived from a set of [link fields](#link-fields).
-* a set of [meta fields](#meta-fields).
+    {sourceID}|{targetID}
 
-The link dump can be serialized in [BEACON text format](#beacon-text-format)
-and in [BEACON XML format](#beacon-xml-format).
+If `{sourceID}` and `{targetID}` are equal the link only consists of this id:
+
+    {sourceID}
+
+For easier processing this form can also be mapped to BEACON XML format.
+
 
 ## Notational Conventions
 
@@ -23,6 +30,18 @@ interpreted as described in [](#RFC2119).
 
 The formal grammar rules in this document are to be interpreted as described in
 [](#RFC4234).
+
+
+## Overview
+
+A BEACON link dump consists of:
+
+* a set of [links](#links), each derived from a set of 
+  [link fields](#link-fields),
+* a set of [meta fields](#meta-fields).
+
+A BEACON link dump can be serialized in [BEACON text
+format](#beacon-text-format) and in [BEACON XML format](#beacon-xml-format).
 
 
 # Links
@@ -158,20 +177,20 @@ if the latter is specified. The resulting link source MUST be a valid IRI.
 
 The link target is constructed based on
 
-a) the id field,
-b) the target field,
-c) the [target meta field](#target)
+* the id field,
+* the target field,
+* the [target meta field](#target)
 
 with the following cases:
 
-* If neither target field (b) nor target meta field (c) are specified, then the 
-  link target is the id field (a).
-* If target field (b) is specified and target meta field (c) is not specified 
+* If neither target field nor target meta field are specified, then the 
+  link target is the id field.
+* If target field is specified and target meta field is not specified 
   with `{TARGET}` URI template parameter, then the link target is the target field.
-* If target field (b) is specified and target meta field (c) is specified with
+* If target field is specified and target meta field is specified with
   a `{TARGET}` URI template parameter, then the target field is inserted as 
   `{TARGET}` parameter to get the link target.
-* If target field (b) is not specified and target meta field (c) is specified,
+* If target field is not specified and target meta field is specified,
   then the id field is inserted as `{ID}` parameter to get the link target.
 
 In all cases the resulting link target MUST be a valid IRI. Any other case (no

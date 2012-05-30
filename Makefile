@@ -22,7 +22,11 @@ revision: ${HTML}
 	cp ${HTML} ${REVHTML}
 
 website: ${HTML} ${TXT}
+	@cp ${HTML} new.html
+	@cp ${TXT} new.txt
 	git checkout gh-pages
+	@cp new.html ${HTML}
+	@cp new.txt ${TXT}
 	git add ${HTML} ${TXT}
 	git commit -m "added revision ${REVSHRT}"
 	git checkout master
