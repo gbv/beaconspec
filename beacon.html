@@ -191,7 +191,9 @@ described in the Simplified BSD License.</p>
 Introduction<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#notational-conventions">1.1.</a>&nbsp;
 Notational Conventions<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#overview">1.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#whitespace-normalization">1.2.</a>&nbsp;
+Whitespace Normalization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#overview">1.3.</a>&nbsp;
 Overview<br />
 <a href="#links">2.</a>&nbsp;
 Links<br />
@@ -203,19 +205,21 @@ prefix<br />
 target<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#link">3.3.</a>&nbsp;
 link<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#message">3.4.</a>&nbsp;
-message<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#contact">3.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#contact">3.4.</a>&nbsp;
 contact<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#message">3.5.</a>&nbsp;
+message<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">3.6.</a>&nbsp;
 description<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#institution">3.7.</a>&nbsp;
 institution<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed">3.8.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#name">3.8.</a>&nbsp;
+name<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed">3.9.</a>&nbsp;
 feed<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#timestamp">3.9.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#timestamp">3.10.</a>&nbsp;
 timestamp<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update">3.10.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update">3.11.</a>&nbsp;
 update<br />
 <a href="#link-fields">4.</a>&nbsp;
 Link fields<br />
@@ -223,8 +227,8 @@ Link fields<br />
 link source<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-target">4.2.</a>&nbsp;
 link target<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-name">4.3.</a>&nbsp;
-link name<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-label">4.3.</a>&nbsp;
+link label<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-description">4.4.</a>&nbsp;
 link description<br />
 <a href="#beacon-serialization">5.</a>&nbsp;
@@ -305,9 +309,22 @@ Notational Conventions</h3>
       described in <a class='info' href='#RFC4234'>[RFC4234]<span> (</span><span class='info'>Crocker, D., Ed. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; October&nbsp;2005.</span><span>)</span></a>.
     
 </p>
-<a name="overview"></a><br /><hr />
+<a name="whitespace-normalization"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
+Whitespace Normalization</h3>
+
+<p>
+      A string is normalized according to this specification, by
+      stripping leading and trailing whitespace and by replacing
+      sequences of whitespace characters
+      (<tt>#x20 | #x9 | #xD | #xA</tt>) by a single space
+      (<tt>#x20</tt>).
+    
+</p>
+<a name="overview"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
 Overview</h3>
 
 <p>
@@ -371,18 +388,27 @@ Links</h3>
 </li>
 <li>
       
-        optionally, name and description.
+        an optional label,
+      
+    
+</li>
+<li>
+      
+        an optional description.
       
     
 </li>
 </ul>
 
 <p>
-    Note that in the common case, source IRI and target IRI will also be
-    URIs <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>. A link relation type is either
-    a registered link type from the IANA link relations registry or an
-    URI that uniquely identifies the relation type, as defined in
-    <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>.
+    In the common case, source IRI and target IRI will also be URIs
+    <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>. A link relation type is either a
+    registered link type from the IANA link relations registry or an URI
+    that uniquely identifies the relation type, as defined in
+    <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>. Link label and link description are
+    normalized Unicode strings that annotate a link. The meaning of this
+    annotations is not defined in this specification, but guidelines are
+    given in <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
   
 </p>
 <p>
@@ -392,13 +418,6 @@ Links</h3>
     the common case, all source IRIs, or all target URIs, or both
     respectively begin with a common prefix that is used for
     abbreviation.
-  
-</p>
-<p>
-    Name and description are Unicode strings that annotate a link. The
-    meaning of this annotations is not specified in this document but
-    guidelines are given in
-    <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
   
 </p>
 <a name="meta-fields"></a><br /><hr />
@@ -432,11 +451,10 @@ target</h3>
 
 <p>
       The target field specifies an URI pattern to construct link
-      targets. The URI pattern SHOULD include an URI parameter that is
-      either <tt>{ID}</tt> or <tt>{TARGET}</tt>. If
-      no URI parameter is included, the parameter
-      <tt>{ID}</tt> is appended to the URI pattern, so the
-      following target fields are equal:
+      targets. The URI pattern SHOULD include the URI parameter
+      <tt>{ID}</tt>. If this URI parameter is not included it
+      can be appended to the URI pattern, so the following target fields
+      are equal:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  http://example.org/
@@ -458,18 +476,9 @@ link</h3>
 #LINK: http://www.w3.org/2002/07/owl#sameAs
 #LINK: &lt;http://www.w3.org/2002/07/owl#sameAs&gt;
 </pre></div>
-<a name="message"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.4"></a><h3>3.4.&nbsp;
-message</h3>
-
-<p>
-      ...TODO...
-    
-</p>
 <a name="contact"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.5"></a><h3>3.5.&nbsp;
+<a name="rfc.section.3.4"></a><h3>3.4.&nbsp;
 contact</h3>
 
 <p>
@@ -486,13 +495,26 @@ contact</h3>
 admin@example.com
 Barbara Beacon &lt;b.beacon@example.org&gt;
 </pre></div>
+<a name="message"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.5"></a><h3>3.5.&nbsp;
+message</h3>
+
+<p>
+      The message meta field is a normalized Unicode string that is used
+      as template or as default value for
+      <a class='info' href='#link-label'>link labels<span> (</span><span class='info'>link label</span><span>)</span></a>.
+    
+</p>
 <a name="description"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.6"></a><h3>3.6.&nbsp;
 description</h3>
 
 <p>
-      ...TODO... (needed?)
+      The description meta field is a normalized Unicode string that is
+      used as template or as default value for
+      <a class='info' href='#link-description'>link descriptions<span> (</span><span class='info'>link description</span><span>)</span></a>.
     
 </p>
 <a name="institution"></a><br /><hr />
@@ -505,9 +527,18 @@ institution</h3>
       the link targets)...
     
 </p>
-<a name="feed"></a><br /><hr />
+<a name="name"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.8"></a><h3>3.8.&nbsp;
+name</h3>
+
+<p>
+      ...TODO... (needed or can we drop this?)
+    
+</p>
+<a name="feed"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.9"></a><h3>3.9.&nbsp;
 feed</h3>
 
 <p>
@@ -518,7 +549,7 @@ feed</h3>
 </p>
 <a name="timestamp"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.9"></a><h3>3.9.&nbsp;
+<a name="rfc.section.3.10"></a><h3>3.10.&nbsp;
 timestamp</h3>
 
 <p>
@@ -529,12 +560,17 @@ timestamp</h3>
       <a class='info' href='#RFC3339'>[RFC3339]<span> (</span><span class='info'>Klyne, G., Ed. and C. Newman, &ldquo;Date and Time on the Internet: Timestamps,&rdquo; July&nbsp;2002.</span><span>)</span></a>. In addition, an uppercase
       <tt>T</tt> character MUST be used to separate date and
       time, and an uppercase <tt>Z</tt> character MUST be
-      present in the absence of a numeric time zone offset.
+      present in the absence of a numeric time zone offset. Some
+      examples of valid timestamp values:
+    
+</p>
+<p>
+      2012-05-30 2012-05-30T15:17:36+02:00 2012-05-30T13:17:36Z
     
 </p>
 <a name="update"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.10"></a><h3>3.10.&nbsp;
+<a name="rfc.section.3.11"></a><h3>3.11.&nbsp;
 update</h3>
 
 <p>
@@ -612,35 +648,36 @@ Link fields</h3>
 <ul class="text">
 <li>
       
-        <em>id field</em>,
+        id field,
       
     
 </li>
 <li>
       
-        optional <em>label field</em>,
+        optional label field,
       
     
 </li>
 <li>
       
-        optional <em>description field</em>,
+        optional description field,
       
     
 </li>
 <li>
       
-        optional <em>target field</em>.
+        optional target field.
       
     
 </li>
 </ul>
 
 <p>
-    Form these fields, combined with the BEACON dump's
-    <a class='info' href='#meta-fields'>meta fields<span> (</span><span class='info'>Meta fields</span><span>)</span></a>, the source, target,
-    name, and description of a <a class='info' href='#links'>link<span> (</span><span class='info'>Links</span><span>)</span></a> is
-    derived:
+    From these fields, combined with the BEACON dump's
+    <a class='info' href='#meta-fields'>meta fields<span> (</span><span class='info'>Meta fields</span><span>)</span></a>, the full
+    <a class='info' href='#links'>link<span> (</span><span class='info'>Links</span><span>)</span></a> is derived. All field values MUST
+    be <a class='info' href='#whitespace-normalization'>normalized<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>. The
+    full link is derived as following:
   
 </p>
 <a name="link-source"></a><br /><hr />
@@ -693,33 +730,37 @@ link target</h3>
 <ul class="text">
 <li>
         
-          If neither target field nor target meta field are specified,
-          then the link target is the id field.
+          If the target field is specified, then:
         
       
 </li>
 <li>
         
-          If target field is specified and target meta field is not
-          specified with <tt>{TARGET}</tt> URI template
-          parameter, then the link target is the target field.
+          If the target meta field is specified then the target field is
+          inserted as <tt>{ID}</tt> parameter into the target
+          meta field to get the link target.
         
       
 </li>
 <li>
         
-          If target field is specified and target meta field is
-          specified with a <tt>{TARGET}</tt> URI template
-          parameter, then the target field is inserted as
-          <tt>{TARGET}</tt> parameter to get the link target.
+          If the target meta field is not specified, then the link
+          target is the target field.
         
       
 </li>
 <li>
         
-          If target field is not specified and target meta field is
-          specified, then the id field is inserted as
+          If the target field is not specified and the target meta field
+          is specified, then the id field is inserted as
           <tt>{ID}</tt> parameter to get the link target.
+        
+      
+</li>
+<li>
+        
+          If neither the target field nor the target meta field are
+          specified, then the link target is the id field.
         
       
 </li>
@@ -733,13 +774,46 @@ link target</h3>
       warning.
     
 </p>
-<a name="link-name"></a><br /><hr />
+<a name="link-label"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
-link name</h3>
+link label</h3>
 
 <p>
-      ...TODO... (based in message meta field?)
+      The link label is derived from the label field and the
+      <a class='info' href='#message'>message meta field<span> (</span><span class='info'>message</span><span>)</span></a> as following:
+    
+</p>
+<p></p>
+<ul class="text">
+<li>
+        
+          If the message meta field contains the substring
+          <tt>{label}</tt> and the label field is not the
+          empty string, then the substring <tt>{label}</tt> is
+          replaced by the label field to get the link label.
+        
+      
+</li>
+<li>
+        
+          If otherwise the labeln field is not the empty string, the
+          link label equals to the label field.
+        
+      
+</li>
+<li>
+        
+          Otherwise the link label equals to the message meta field.
+        
+      
+</li>
+</ul>
+
+<p>
+      The resulting string MUST be
+      <a class='info' href='#whitespace-normalization'>normalized<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>. A
+      missing link label equals to the empty string.
     
 </p>
 <a name="link-description"></a><br /><hr />
@@ -748,7 +822,43 @@ link name</h3>
 link description</h3>
 
 <p>
-      ...TODO... (based in message meta field?)
+      The link description is derived from the description field, from
+      the label field, and from the
+      <a class='info' href='#description'>description meta field<span> (</span><span class='info'>description</span><span>)</span></a> as
+      following:
+    
+</p>
+<p></p>
+<ul class="text">
+<li>
+        
+          If the description meta field contains the substring
+          <tt>{label}</tt> and the label field is not the
+          empty string, then the substring <tt>{label}</tt> is
+          replaced by the label field to get the link description.
+        
+      
+</li>
+<li>
+        
+          If otherwise the description field is not the empty string,
+          the link description equals to the description field.
+        
+      
+</li>
+<li>
+        
+          Otherwise the link description equals to the description meta
+          field.
+        
+      
+</li>
+</ul>
+
+<p>
+      The resulting string MUST be
+      <a class='info' href='#whitespace-normalization'>normalized<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>. A
+      missing link description equals to the empty string.
     
 </p>
 <a name="beacon-serialization"></a><br /><hr />
@@ -1004,7 +1114,7 @@ RDF triples</h3>
 </ul>
 
 <p>
-      Link name and link description MAY result in additional triples
+      Link label and link description MAY result in additional triples
       with each of name and description as literal value RDF object. The
       final intepretation of these link annotations, however, is out of
       the scope of this specification.

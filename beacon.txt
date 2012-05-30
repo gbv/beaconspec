@@ -61,37 +61,37 @@ Table of Contents
 
    1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
      1.1.  Notational Conventions . . . . . . . . . . . . . . . . . .  3
-     1.2.  Overview . . . . . . . . . . . . . . . . . . . . . . . . .  3
-   2.  Links  . . . . . . . . . . . . . . . . . . . . . . . . . . . .  3
+     1.2.  Whitespace Normalization . . . . . . . . . . . . . . . . .  3
+     1.3.  Overview . . . . . . . . . . . . . . . . . . . . . . . . .  3
+   2.  Links  . . . . . . . . . . . . . . . . . . . . . . . . . . . .  4
    3.  Meta fields  . . . . . . . . . . . . . . . . . . . . . . . . .  4
      3.1.  prefix . . . . . . . . . . . . . . . . . . . . . . . . . .  4
-     3.2.  target . . . . . . . . . . . . . . . . . . . . . . . . . .  4
+     3.2.  target . . . . . . . . . . . . . . . . . . . . . . . . . .  5
      3.3.  link . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.4.  message  . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.5.  contact  . . . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.4.  contact  . . . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.5.  message  . . . . . . . . . . . . . . . . . . . . . . . . .  5
      3.6.  description  . . . . . . . . . . . . . . . . . . . . . . .  5
      3.7.  institution  . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.8.  feed . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.9.  timestamp  . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.10. update . . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.8.  name . . . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.9.  feed . . . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.10. timestamp  . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.11. update . . . . . . . . . . . . . . . . . . . . . . . . . .  6
    4.  Link fields  . . . . . . . . . . . . . . . . . . . . . . . . .  6
-     4.1.  link source  . . . . . . . . . . . . . . . . . . . . . . .  6
+     4.1.  link source  . . . . . . . . . . . . . . . . . . . . . . .  7
      4.2.  link target  . . . . . . . . . . . . . . . . . . . . . . .  7
-     4.3.  link name  . . . . . . . . . . . . . . . . . . . . . . . .  7
-     4.4.  link description . . . . . . . . . . . . . . . . . . . . .  7
-   5.  BEACON serialization . . . . . . . . . . . . . . . . . . . . .  7
-     5.1.  BEACON text format . . . . . . . . . . . . . . . . . . . .  8
-     5.2.  BEACON XML format  . . . . . . . . . . . . . . . . . . . .  8
-   6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  9
-   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
-     7.1.  Normative References . . . . . . . . . . . . . . . . . . .  9
-     7.2.  Informative References . . . . . . . . . . . . . . . . . .  9
-   Appendix A.  Interpreting BEACON links . . . . . . . . . . . . . . 10
-     A.1.  HTML links . . . . . . . . . . . . . . . . . . . . . . . . 10
-     A.2.  RDF triples  . . . . . . . . . . . . . . . . . . . . . . . 10
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 10
-
-
+     4.3.  link label . . . . . . . . . . . . . . . . . . . . . . . .  8
+     4.4.  link description . . . . . . . . . . . . . . . . . . . . .  8
+   5.  BEACON serialization . . . . . . . . . . . . . . . . . . . . .  8
+     5.1.  BEACON text format . . . . . . . . . . . . . . . . . . . .  9
+     5.2.  BEACON XML format  . . . . . . . . . . . . . . . . . . . .  9
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 10
+   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+     7.1.  Normative References . . . . . . . . . . . . . . . . . . . 10
+     7.2.  Informative References . . . . . . . . . . . . . . . . . . 10
+   Appendix A.  Interpreting BEACON links . . . . . . . . . . . . . . 11
+     A.1.  HTML links . . . . . . . . . . . . . . . . . . . . . . . . 11
+     A.2.  RDF triples  . . . . . . . . . . . . . . . . . . . . . . . 11
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 11
 
 
 
@@ -145,7 +145,14 @@ Internet-Draft                   Beacon                         May 2012
    The formal grammar rules in this document are to be interpreted as
    described in [RFC4234].
 
-1.2.  Overview
+1.2.  Whitespace Normalization
+
+   A string is normalized according to this specification, by stripping
+   leading and trailing whitespace and by replacing sequences of
+   whitespace characters ("#x20 | #x9 | #xD | #xA") by a single space
+   ("#x20").
+
+1.3.  Overview
 
    A BEACON link dump consists of:
 
@@ -154,13 +161,6 @@ Internet-Draft                   Beacon                         May 2012
 
    o  a set of meta fields (Section 3).
 
-   A BEACON link dump can be serialized in BEACON text format
-   (Section 5.1) and in BEACON XML format (Section 5.2).
-
-
-2.  Links
-
-   In this specification a link is a typed connection between two
 
 
 
@@ -169,6 +169,13 @@ Voss                    Expires December 1, 2012                [Page 3]
 Internet-Draft                   Beacon                         May 2012
 
 
+   A BEACON link dump can be serialized in BEACON text format
+   (Section 5.1) and in BEACON XML format (Section 5.2).
+
+
+2.  Links
+
+   In this specification a link is a typed connection between two
    resources that are identified by Internationalised Resource
    Identifiers (IRIs) [RFC3987], and is compromised of:
 
@@ -178,22 +185,23 @@ Internet-Draft                   Beacon                         May 2012
 
    o  a target URI
 
-   o  optionally, name and description.
+   o  an optional label,
 
-   Note that in the common case, source IRI and target IRI will also be
-   URIs [RFC3986].  A link relation type is either a registered link
-   type from the IANA link relations registry or an URI that uniquely
-   identifies the relation type, as defined in [RFC5988].
+   o  an optional description.
+
+   In the common case, source IRI and target IRI will also be URIs
+   [RFC3986].  A link relation type is either a registered link type
+   from the IANA link relations registry or an URI that uniquely
+   identifies the relation type, as defined in [RFC5988].  Link label
+   and link description are normalized Unicode strings that annotate a
+   link.  The meaning of this annotations is not defined in this
+   specification, but guidelines are given in Appendix A.
 
    A BEACON link dump is an annotated set of links with identical link
    type.  The default link type is the URI
    "http://www.w3.org/2000/01/rdf-schema#seeAlso".  In the common case,
    all source IRIs, or all target URIs, or both respectively begin with
    a common prefix that is used for abbreviation.
-
-   Name and description are Unicode strings that annotate a link.  The
-   meaning of this annotations is not specified in this document but
-   guidelines are given in Appendix A.
 
 
 3.  Meta fields
@@ -208,15 +216,7 @@ Internet-Draft                   Beacon                         May 2012
    The prefix field specifies a prefix that is prepended to link ids
    (Section 4) to construct link sources.
 
-3.2.  target
 
-   The target field specifies an URI pattern to construct link targets.
-   The URI pattern SHOULD include an URI parameter that is either "{ID}"
-   or "{TARGET}".  If no URI parameter is included, the parameter "{ID}"
-   is appended to the URI pattern, so the following target fields are
-   equal:
-
-    http://example.org/
 
 
 
@@ -225,6 +225,14 @@ Voss                    Expires December 1, 2012                [Page 4]
 Internet-Draft                   Beacon                         May 2012
 
 
+3.2.  target
+
+   The target field specifies an URI pattern to construct link targets.
+   The URI pattern SHOULD include the URI parameter "{ID}".  If this URI
+   parameter is not included it can be appended to the URI pattern, so
+   the following target fields are equal:
+
+    http://example.org/
     http://example.org/{ID}
 
 3.3.  link
@@ -237,11 +245,7 @@ Internet-Draft                   Beacon                         May 2012
    #LINK: http://www.w3.org/2002/07/owl#sameAs
    #LINK: <http://www.w3.org/2002/07/owl#sameAs>
 
-3.4.  message
-
-   ...TODO...
-
-3.5.  contact
+3.4.  contact
 
    The contact field contains an email address or similar contact
    information to reach the maintainer of the BEACON dump.  The contact
@@ -252,27 +256,23 @@ Internet-Draft                   Beacon                         May 2012
    admin@example.com
    Barbara Beacon <b.beacon@example.org>
 
+3.5.  message
+
+   The message meta field is a normalized Unicode string that is used as
+   template or as default value for link labels (Section 4.3).
+
 3.6.  description
 
-   ...TODO... (needed?)
+   The description meta field is a normalized Unicode string that is
+   used as template or as default value for link descriptions
+   (Section 4.4).
 
 3.7.  institution
 
    ...TODO... (publishing institution or institution repsonsible for the
    link targets)...
 
-3.8.  feed
 
-   The feed field contains an URL, conforming to [RFC3986], where to
-   download the BEACON dump from.
-
-3.9.  timestamp
-
-   The timestamp field contains the date of last modification of the
-   BEACON dump.  This date MUST conform to the "full-date" or to the
-   "date-time" production rule in [RFC3339].  In addition, an uppercase
-   "T" character MUST be used to separate date and time, and an
-   uppercase "Z" character MUST be present in the absence of a numeric
 
 
 
@@ -281,9 +281,27 @@ Voss                    Expires December 1, 2012                [Page 5]
 Internet-Draft                   Beacon                         May 2012
 
 
-   time zone offset.
+3.8.  name
 
-3.10.  update
+   ...TODO... (needed or can we drop this?)
+
+3.9.  feed
+
+   The feed field contains an URL, conforming to [RFC3986], where to
+   download the BEACON dump from.
+
+3.10.  timestamp
+
+   The timestamp field contains the date of last modification of the
+   BEACON dump.  This date MUST conform to the "full-date" or to the
+   "date-time" production rule in [RFC3339].  In addition, an uppercase
+   "T" character MUST be used to separate date and time, and an
+   uppercase "Z" character MUST be present in the absence of a numeric
+   time zone offset.  Some examples of valid timestamp values:
+
+   2012-05-30 2012-05-30T15:17:36+02:00 2012-05-30T13:17:36Z
+
+3.11.  update
 
    The update field specifies how frequently the BEACON dump is likely
    to change.  The field corresponds to the "<changefreq>" element in
@@ -311,24 +329,6 @@ Internet-Draft                   Beacon                         May 2012
 4.  Link fields
 
    Each link in a serialized BEACON dump is given in form of up to four
-   fields:
-
-   o  _id field_,
-
-   o  optional _label field_,
-
-   o  optional _description field_,
-
-   o  optional _target field_.
-
-   Form these fields, combined with the BEACON dump's meta fields
-   (Section 3), the source, target, name, and description of a link
-   (Section 2) is derived:
-
-4.1.  link source
-
-   The link source is the id link field, prepended by the prefix meta
-   field (Section 3.1), if the latter is specified.  The resulting link
 
 
 
@@ -337,6 +337,25 @@ Voss                    Expires December 1, 2012                [Page 6]
 Internet-Draft                   Beacon                         May 2012
 
 
+   fields:
+
+   o  id field,
+
+   o  optional label field,
+
+   o  optional description field,
+
+   o  optional target field.
+
+   From these fields, combined with the BEACON dump's meta fields
+   (Section 3), the full link (Section 2) is derived.  All field values
+   MUST be normalized (Section 1.2).  The full link is derived as
+   following:
+
+4.1.  link source
+
+   The link source is the id link field, prepended by the prefix meta
+   field (Section 3.1), if the latter is specified.  The resulting link
    source MUST be a valid IRI.
 
 4.2.  link target
@@ -351,33 +370,70 @@ Internet-Draft                   Beacon                         May 2012
 
    with the following cases:
 
-   o  If neither target field nor target meta field are specified, then
-      the link target is the id field.
+   o  If the target field is specified, then:
 
-   o  If target field is specified and target meta field is not
-      specified with "{TARGET}" URI template parameter, then the link
-      target is the target field.
+   o  If the target meta field is specified then the target field is
+      inserted as "{ID}" parameter into the target meta field to get the
+      link target.
 
-   o  If target field is specified and target meta field is specified
-      with a "{TARGET}" URI template parameter, then the target field is
-      inserted as "{TARGET}" parameter to get the link target.
+   o  If the target meta field is not specified, then the link target is
+      the target field.
 
-   o  If target field is not specified and target meta field is
+   o  If the target field is not specified and the target meta field is
       specified, then the id field is inserted as "{ID}" parameter to
       get the link target.
+
+   o  If neither the target field nor the target meta field are
+      specified, then the link target is the id field.
+
+
+
+Voss                    Expires December 1, 2012                [Page 7]
+
+Internet-Draft                   Beacon                         May 2012
+
 
    In all cases the resulting link target MUST be a valid IRI.  Any
    other case (no id field, target meta field with "{TARGET}" parameter
    but no target field etc.) is an error.  A client MUST ignore such
    links and SHOULD give a warning.
 
-4.3.  link name
+4.3.  link label
 
-   ...TODO... (based in message meta field?)
+   The link label is derived from the label field and the message meta
+   field (Section 3.5) as following:
+
+   o  If the message meta field contains the substring "{label}" and the
+      label field is not the empty string, then the substring "{label}"
+      is replaced by the label field to get the link label.
+
+   o  If otherwise the labeln field is not the empty string, the link
+      label equals to the label field.
+
+   o  Otherwise the link label equals to the message meta field.
+
+   The resulting string MUST be normalized (Section 1.2).  A missing
+   link label equals to the empty string.
 
 4.4.  link description
 
-   ...TODO... (based in message meta field?)
+   The link description is derived from the description field, from the
+   label field, and from the description meta field (Section 3.6) as
+   following:
+
+   o  If the description meta field contains the substring "{label}" and
+      the label field is not the empty string, then the substring
+      "{label}" is replaced by the label field to get the link
+      description.
+
+   o  If otherwise the description field is not the empty string, the
+      link description equals to the description field.
+
+   o  Otherwise the link description equals to the description meta
+      field.
+
+   The resulting string MUST be normalized (Section 1.2).  A missing
+   link description equals to the empty string.
 
 
 5.  BEACON serialization
@@ -388,7 +444,7 @@ Internet-Draft                   Beacon                         May 2012
 
 
 
-Voss                    Expires December 1, 2012                [Page 7]
+Voss                    Expires December 1, 2012                [Page 8]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -444,7 +500,7 @@ Internet-Draft                   Beacon                         May 2012
 
 
 
-Voss                    Expires December 1, 2012                [Page 8]
+Voss                    Expires December 1, 2012                [Page 9]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -500,7 +556,7 @@ URIs
 
 
 
-Voss                    Expires December 1, 2012                [Page 9]
+Voss                    Expires December 1, 2012               [Page 10]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -545,7 +601,7 @@ A.2.  RDF triples
 
    o  link target as RDF object.
 
-   Link name and link description MAY result in additional triples with
+   Link label and link description MAY result in additional triples with
    each of name and description as literal value RDF object.  The final
    intepretation of these link annotations, however, is out of the scope
    of this specification.
@@ -556,7 +612,7 @@ A.2.  RDF triples
 
 
 
-Voss                    Expires December 1, 2012               [Page 10]
+Voss                    Expires December 1, 2012               [Page 11]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -612,5 +668,5 @@ Author's Address
 
 
 
-Voss                    Expires December 1, 2012               [Page 11]
+Voss                    Expires December 1, 2012               [Page 12]
 
