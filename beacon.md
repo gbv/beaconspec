@@ -3,24 +3,14 @@
 
 # Introduction
 
-BEACON was developed as minimalistic format for distribution of large number
-of uniform links between information resources. A typical use case is the
-expression of a linking tables that map source URLs to target URLs with stable
-URL prefix and local identifiers as part of the URL:
+BEACON was developed as minimalistic format for distribution of large number of
+uniform links. A typical use case is the expression of a linking table with source
+URLs and target URLs, that all share a stable URL prefix, respectively:
 
-    http://example.com/{sourceID} ---> http://example.org/{targetID}
+    http://example.com/{source} ---> http://example.org/{target}
 
-With BEACON one can express these links in a very condense form. Each
-link in BEACON text format is a tuple of local identifiers: 
-
-    {sourceID}|{targetID}
-
-If `{sourceID}` and `{targetID}` are equal the link only consists of this id:
-
-    {sourceID}
-
-For easier processing this form can also be mapped to BEACON XML format.
-
+With BEACON one can express these links in a very condense form in a [plain
+text format](#beacon-text-format) and in an [XML format](#beacon-xml-format).
 
 ## Notational Conventions
 
@@ -34,10 +24,10 @@ The formal grammar rules in this document are to be interpreted as described in
 
 ## Whitespace Normalization 
 
-A string is normalized according to this specification, by stripping leading
-and trailing whitespace and by replacing sequences of whitespace characters
-(`#x20 | #x9 | #xD | #xA`) by a single space (`#x20`).
-
+A Unicode string is normalized according to this specification, by stripping
+leading and trailing whitespace and by replacing sequences of whitespace
+characters (`U+0020 | U+0009 | U+000D | U+000A`) by a single space (`U+0020`)
+[](#Unicode).
 
 ## Overview
 
@@ -57,7 +47,7 @@ In this specification a link is a typed connection between two resources that
 are identified by Internationalised Resource Identifiers (IRIs) [](#RFC3987),
 and is compromised of:
 
-* A source IRI,
+* a source IRI,
 * a link relation type, 
 * a target URI
 * an optional label,
@@ -67,8 +57,9 @@ In the common case, source IRI and target IRI will also be URIs [](#RFC3986). A
 link relation type is either a registered link type from the IANA link
 relations registry or an URI that uniquely identifies the relation type, as
 defined in [](#RFC5988). Link label and link description are normalized Unicode
-strings that annotate a link. The meaning of this annotations is not defined in
-this specification, but guidelines are given in [](#interpreting-beacon-links).
+strings that annotate a link [](#Unicode). The meaning of this annotations is
+not defined in this specification, but guidelines are given in
+[](#interpreting-beacon-links).
 
 A BEACON link dump is an annotated set of links with identical link type. The
 default link type is the URI `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
@@ -81,7 +72,8 @@ begin with a common prefix that is used for abbreviation.
 A BEACON dump MAY be annotated with a set of meta fields. Each meta field
 is identified by its name, build of lowercase letters `a-z`. Valid fields
 are listed in the following. Additional meta fields, not defined in this
-specification SHOULD be ignored.
+specification SHOULD be ignored. All meta field values MUST be normalized
+Unicode strings [](#whitespace-normalization).
 
 ## prefix
 
@@ -122,22 +114,24 @@ Examples:
 
 ## message
 
-The message meta field is a normalized Unicode string that is used as template 
-or as default value for [link labels](#link-label).
+The message meta field is used as template or as default value for [link
+labels](#link-label).
 
 ## description
 
-The description meta field is a normalized Unicode string that is used as template 
-or as default value for [link descriptions](#link-description).
+The description meta field is used as template or as default value for [link
+descriptions](#link-description).
 
 ## institution
 
-...TODO... (publishing institution or institution repsonsible for the link targets)...
+The institution meta field contains the name of an institution or publisher
+responsible for the link targets and/or responsible for the BEACON dump.
 
 ## name
 
-...TODO... (needed or can we drop this?)
-
+The name meta field contains a name or title of the BEACON dump and/or of
+all of its targets. For instance if all links point to resources in a database,
+the name meta field contains the name of the database.
 
 ## feed
 
@@ -152,9 +146,9 @@ in [](#RFC3339). In addition, an uppercase `T` character MUST be used to
 separate date and time, and an uppercase `Z` character MUST be present in the
 absence of a numeric time zone offset. Some examples of valid timestamp values:
 
-   2012-05-30
-   2012-05-30T15:17:36+02:00
-   2012-05-30T13:17:36Z
+    2012-05-30
+    2012-05-30T15:17:36+02:00
+    2012-05-30T13:17:36Z
 
 ## update
 
@@ -258,11 +252,20 @@ link description equals to the empty string.
 
 ## BEACON text format
 
-A BEACON text file is an UTF-8 encoded file, separated in lines. A line break
-is ...TODO...
+A BEACON text file is an UTF-8 encoded Unicode file [](#RFC3629), split into
+lines by line breaks. A line break is any combination of the characters
+`U+000A` and `U+000D`. The file consists of a set of lines with meta fields
+(meta lines), followed by a set of lines with links (link lines). An empty line
+SHOULD be used to separate meta lines and link lines. The order of meta lines
+and the order of link lines is irrelevant.
 
-...additional meta field `#FORMAT: BEACON`...
+### Meta lines
 
+...
+
+### Link lines
+
+...
 
 ## BEACON XML format
 
