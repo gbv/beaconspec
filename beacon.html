@@ -143,8 +143,8 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">J. Voß</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Verbundzentrale des GBV</td></tr>
-<tr><td class="header">Intended status: Informational</td><td class="header">May 30, 2012</td></tr>
-<tr><td class="header">Expires: December 1, 2012</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">May 31, 2012</td></tr>
+<tr><td class="header">Expires: December 2, 2012</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
 <h1><br />BEACON link dump format<br />draft-voss-beacon-00</h1>
 
@@ -168,7 +168,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on December 1, 2012.</p>
+This Internet-Draft will expire on December 2, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -251,6 +251,8 @@ Interpreting BEACON links<br />
 HTML links<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rdf-triples">A.2.</a>&nbsp;
 RDF triples<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#resource-discovery-from-authority-files">A.3.</a>&nbsp;
+Resource discovery from authority files<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Author's Address<br />
 </p>
@@ -1043,52 +1045,53 @@ HTML links</h3>
 <ul class="text">
 <li>
         
-          The link target corresponds to the <tt>href</tt>
+          link source corresponds to the website which a HTML link is
+          included at,
+        
+      
+</li>
+<li>
+        
+          link target corresponds to the <tt>href</tt>
+          attribute,
+        
+      
+</li>
+<li>
+        
+          link label corresponds to the textual content,
+        
+      
+</li>
+<li>
+        
+          link description corresponds to the <tt>title</tt>
           attribute.
-        
-      
-</li>
-<li>
-        
-          The link label corresponds to the textual content.
-        
-      
-</li>
-<li>
-        
-          The link description corresponds to the
-          <tt>title</tt> attribute.
         
       
 </li>
 </ul>
 
 <p>
-      The link source can be interpreted as the website URL which a HTML
-      link is included at.
-    
-</p>
-<p>
-      Example:
+      For instance the following link, given in BEACON text format:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-...|example|sample site|http://example.org
-
-&lt;a href="http://example.org" title="sample site"&gt;example&lt;/a&gt;
+http://example.com|example|sample site|http://example.org
 </pre></div>
 <p>
-      A client may also ignore link label and link description but use
-      the meta fields ... and ... instead (TODO).
+      can be mapped to the following HTML link:
     
-</p>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+&lt;a href="http://example.org" title="sample site"&gt;example&lt;/a&gt;
+</pre></div>
 <a name="rdf-triples"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A.2"></a><h3>A.2.&nbsp;
 RDF triples</h3>
 
 <p>
-      If link type is an URI, each link in a BEACON dump maps to an RDF
-      triple with
+      If link type is an URI, each link in a BEACON dump can be mapped
+      to an RDF triple with:
     
 </p>
 <p></p>
@@ -1114,12 +1117,64 @@ RDF triples</h3>
 </ul>
 
 <p>
-      Link label and link description MAY result in additional triples
+      Link label and link description may result in additional triples
       with each of name and description as literal value RDF object. The
       final intepretation of these link annotations, however, is out of
-      the scope of this specification.
+      the scope of this specification (see
+      https://github.com/gbv/beaconspec/issues/2 for open discussion).
     
 </p>
+<p>
+      For instance the following link, given in BEACON text format
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+http://example.com|example|sample site|http://example.org
+</pre></div>
+<p>
+      can be mapped to the following RDF triples in Turtle format:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+
+&lt;http://example.com&gt; rdfs:seeAlso &lt;http://example.org&gt; .
+
+# additional link annotations, to be discussed
+&lt;http://example.org&gt; rdfs:label "example" ;
+                     dc:description "sample site" .
+</pre></div>
+<a name="resource-discovery-from-authority-files"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A.3"></a><h3>A.3.&nbsp;
+Resource discovery from authority files</h3>
+
+<p>
+      Consider an authority file with entities defined by an example.org
+      institution, and an example.com institution which provides
+      resources about these entities. One can express for instance in
+      BEACON text format:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+#PREFIX: http://example.org/entity/
+#TARGET: http://example.com/about/{ID}
+#LINK: http://xmlns.com/foaf/0.1/primaryTopic
+
+foo
+</pre></div>
+<p>
+      to state that the resource
+      <tt>http://example.com/about/foo</tt> is about the
+      entity <tt>http://example.org/entity/foo</tt>. If the
+      institutions do not share local identifiers, but for instance
+      <tt>http://example.com/about/xy</tt> is about
+      <tt>http://example.org/entity/foo</tt>, one can express
+      the link in BEACON text format and in BEACON XML format this way:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+foo|||xy
+
+&lt;link target="xy"&gt;foo&lt;/link&gt;
+</pre></div>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <h3>Author's Address</h3>
