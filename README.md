@@ -24,8 +24,7 @@ To install at Ubuntu Linux, call:
 
     sudo aptitude install pandoc xsltproc xml2rfc
 
-xml2rfc is also included as git submodule in this repository. After cloning the
-repository you must call:
+To further install `pandoc2rfc` after cloning the repository you must call:
 
     git submodule init
     git submodule update
