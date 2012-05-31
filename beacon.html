@@ -235,6 +235,10 @@ link description<br />
 BEACON serialization<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-text-format">5.1.</a>&nbsp;
 BEACON text format<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#meta-lines">5.1.1.</a>&nbsp;
+Meta lines<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-lines">5.1.2.</a>&nbsp;
+Link lines<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-xml-format">5.2.</a>&nbsp;
 BEACON XML format<br />
 <a href="#security-considerations">6.</a>&nbsp;
@@ -265,31 +269,17 @@ Introduction</h3>
 
 <p>
     BEACON was developed as minimalistic format for distribution of
-    large number of uniform links between information resources. A
-    typical use case is the expression of a linking tables that map
-    source URLs to target URLs with stable URL prefix and local
-    identifiers as part of the URL:
+    large number of uniform links. A typical use case is the expression
+    of a linking table with source URLs and target URLs, that all share
+    a stable URL prefix, respectively:
   
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-http://example.com/{sourceID} ---&gt; http://example.org/{targetID}
+http://example.com/{source} ---&gt; http://example.org/{target}
 </pre></div>
 <p>
-    With BEACON one can express these links in a very condense form.
-    Each link in BEACON text format is a tuple of local identifiers:
-  
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-{sourceID}|{targetID}
-</pre></div>
-<p>
-    If <tt>{sourceID}</tt> and <tt>{targetID}</tt>
-    are equal the link only consists of this id:
-  
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-{sourceID}
-</pre></div>
-<p>
-    For easier processing this form can also be mapped to BEACON XML
-    format.
+    With BEACON one can express these links in a very condense form in a
+    <a class='info' href='#beacon-text-format'>plain text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a> and in
+    an <a class='info' href='#beacon-xml-format'>XML format<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a>.
   
 </p>
 <a name="notational-conventions"></a><br /><hr />
@@ -317,11 +307,11 @@ Notational Conventions</h3>
 Whitespace Normalization</h3>
 
 <p>
-      A string is normalized according to this specification, by
+      A Unicode string is normalized according to this specification, by
       stripping leading and trailing whitespace and by replacing
       sequences of whitespace characters
-      (<tt>#x20 | #x9 | #xD | #xA</tt>) by a single space
-      (<tt>#x20</tt>).
+      (<tt>U+0020 | U+0009 | U+000D | U+000A</tt>) by a single
+      space (<tt>U+0020</tt>) <a class='info' href='#Unicode'>[Unicode]<span> (</span><span class='info'>, &ldquo;The Unicode Standard, Version 6.1,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
     
 </p>
 <a name="overview"></a><br /><hr />
@@ -372,7 +362,7 @@ Links</h3>
 <ul class="text">
 <li>
       
-        A source IRI,
+        a source IRI,
       
     
 </li>
@@ -408,9 +398,10 @@ Links</h3>
     registered link type from the IANA link relations registry or an URI
     that uniquely identifies the relation type, as defined in
     <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>. Link label and link description are
-    normalized Unicode strings that annotate a link. The meaning of this
-    annotations is not defined in this specification, but guidelines are
-    given in <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
+    normalized Unicode strings that annotate a link
+    <a class='info' href='#Unicode'>[Unicode]<span> (</span><span class='info'>, &ldquo;The Unicode Standard, Version 6.1,&rdquo; April&nbsp;2012.</span><span>)</span></a>. The meaning of this annotations is
+    not defined in this specification, but guidelines are given in
+    <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
   
 </p>
 <p>
@@ -432,7 +423,8 @@ Meta fields</h3>
     field is identified by its name, build of lowercase letters
     <tt>a-z</tt>. Valid fields are listed in the following.
     Additional meta fields, not defined in this specification SHOULD be
-    ignored.
+    ignored. All meta field values MUST be normalized Unicode strings
+    <a class='info' href='#whitespace-normalization'>Section&nbsp;1.2<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>.
   
 </p>
 <a name="prefix"></a><br /><hr />
@@ -503,8 +495,7 @@ Barbara Beacon &lt;b.beacon@example.org&gt;
 message</h3>
 
 <p>
-      The message meta field is a normalized Unicode string that is used
-      as template or as default value for
+      The message meta field is used as template or as default value for
       <a class='info' href='#link-label'>link labels<span> (</span><span class='info'>link label</span><span>)</span></a>.
     
 </p>
@@ -514,9 +505,8 @@ message</h3>
 description</h3>
 
 <p>
-      The description meta field is a normalized Unicode string that is
-      used as template or as default value for
-      <a class='info' href='#link-description'>link descriptions<span> (</span><span class='info'>link description</span><span>)</span></a>.
+      The description meta field is used as template or as default value
+      for <a class='info' href='#link-description'>link descriptions<span> (</span><span class='info'>link description</span><span>)</span></a>.
     
 </p>
 <a name="institution"></a><br /><hr />
@@ -525,8 +515,9 @@ description</h3>
 institution</h3>
 
 <p>
-      ...TODO... (publishing institution or institution repsonsible for
-      the link targets)...
+      The institution meta field contains the name of an institution or
+      publisher responsible for the link targets and/or responsible for
+      the BEACON dump.
     
 </p>
 <a name="name"></a><br /><hr />
@@ -535,7 +526,10 @@ institution</h3>
 name</h3>
 
 <p>
-      ...TODO... (needed or can we drop this?)
+      The name meta field contains a name or title of the BEACON dump
+      and/or of all of its targets. For instance if all links point to
+      resources in a database, the name meta field contains the name of
+      the database.
     
 </p>
 <a name="feed"></a><br /><hr />
@@ -565,11 +559,11 @@ timestamp</h3>
       present in the absence of a numeric time zone offset. Some
       examples of valid timestamp values:
     
-</p>
-<p>
-      2012-05-30 2012-05-30T15:17:36+02:00 2012-05-30T13:17:36Z
-    
-</p>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+2012-05-30
+2012-05-30T15:17:36+02:00
+2012-05-30T13:17:36Z
+</pre></div>
 <a name="update"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.11"></a><h3>3.11.&nbsp;
@@ -874,13 +868,33 @@ BEACON serialization</h3>
 BEACON text format</h3>
 
 <p>
-      A BEACON text file is an UTF-8 encoded file, separated in lines. A
-      line break is ...TODO...
+      A BEACON text file is an UTF-8 encoded Unicode file
+      <a class='info' href='#RFC3629'>[RFC3629]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>, split into lines by line breaks.
+      A line break is any combination of the characters
+      <tt>U+000A</tt> and <tt>U+000D</tt>. The file
+      consists of a set of lines with meta fields (meta lines), followed
+      by a set of lines with links (link lines). An empty line SHOULD be
+      used to separate meta lines and link lines. The order of meta
+      lines and the order of link lines is irrelevant.
     
 </p>
+<a name="meta-lines"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.1"></a><h3>5.1.1.&nbsp;
+Meta lines</h3>
+
 <p>
-      ...additional meta field <tt>#FORMAT: BEACON</tt>...
-    
+        ...
+      
+</p>
+<a name="link-lines"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1.2"></a><h3>5.1.2.&nbsp;
+Link lines</h3>
+
+<p>
+        ...
+      
 </p>
 <a name="beacon-xml-format"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -1000,6 +1014,8 @@ References</h3>
 <td class="author-text"><a href="mailto:sob@harvard.edu">Bradner, S.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997 (<a href="http://www.rfc-editor.org/rfc/rfc2119.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2119.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2119.xml">XML</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC3339">[RFC3339]</a></td>
 <td class="author-text"><a href="mailto:GK@ACM.ORG">Klyne, G., Ed.</a> and <a href="mailto:chris.newman@sun.com">C. Newman</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3339">Date and Time on the Internet: Timestamps</a>,&rdquo; RFC&nbsp;3339, July&nbsp;2002 (<a href="http://www.rfc-editor.org/rfc/rfc3339.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3339.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3339.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3629">[RFC3629]</a></td>
+<td class="author-text">Yergeau, F., &ldquo;<a href="http://tools.ietf.org/html/rfc3629">UTF-8, a transformation format of ISO 10646</a>,&rdquo; STD&nbsp;63, RFC&nbsp;3629, November&nbsp;2003 (<a href="http://www.rfc-editor.org/rfc/rfc3629.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC3986">[RFC3986]</a></td>
 <td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc3986.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3986.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3986.xml">XML</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC3987">[RFC3987]</a></td>
@@ -1010,6 +1026,8 @@ References</h3>
 <td class="author-text"><a href="mailto:presnick@qualcomm.com">Resnick, P., Ed.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc5322">Internet Message Format</a>,&rdquo; RFC&nbsp;5322, October&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5322.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc5322.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc5322.xml">XML</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC5988">[RFC5988]</a></td>
 <td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>,&rdquo; RFC&nbsp;5988, October&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5988.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="Unicode">[Unicode]</a></td>
+<td class="author-text">&ldquo;<a href="http://www.unicode.org/versions/Unicode6.1.0/">The Unicode Standard, Version 6.1</a>,&rdquo; April&nbsp;2012.</td></tr>
 </table>
 
 <a name="rfc.references2"></a><br /><hr />
