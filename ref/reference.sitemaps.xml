@@ -2,7 +2,7 @@
 <reference anchor='Sitemaps'>
 	<front>
 		<title abbrev='Sitemaps'>Sitemaps XML format</title>
-		<author>Google Inc.</author>
+		<author surname="Google Inc."/>
 		<date year='2008' month='February'/>
 	</front>
 	<format type='HTML' target="http://www.sitemaps.org/"/>

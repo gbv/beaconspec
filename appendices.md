@@ -71,3 +71,33 @@ format and in BEACON XML format this way:
 
 	<link target="xy">foo</link>
 
+
+# RELAX NG Schema for BEACON XML
+
+This a schema of [BEACON XML](#beacon-xml-format) in RELAX NG Compact syntax
+[](#RELAX-NGC). The schema is non-normative and given for reference only.
+
+    default namespace = "http://purl.org/net/beacon"
+
+	element beacon {
+	  attribute prefix      { text }.
+	  attribute target      { text },
+	  attribute link        { xsd:anyURI },
+	  attribute contact     { text },
+	  attribute message     { text },
+	  attribute description { text },
+	  attribute institution { text },
+	  attribute name        { text },
+	  attribute feed        { xsd:anyURI },
+	  attribute timestamp   { text },
+	  attribute update { "always" | "hourly" | "daily" 
+	    | "weekly" | "monthly" | "yearly" | "never" },
+	  element link {
+	    attribute id          { text },
+		attribute target      { text }?,
+		attribute label       { text }?,
+		attribute description { text }?,
+	    empty
+	  }*
+	}
+

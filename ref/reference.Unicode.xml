@@ -2,7 +2,7 @@
 <reference anchor='Unicode'>
 	<front>
 		<title abbrev='Unicode'>The Unicode Standard, Version 6.1</title>
-		<author>The Unicode Consortium</author>
+		<author surname="The Unicode Consortium"/>
 		<date year='2012' month='April'/>
 	</front>
 	<format type='HTML' target="http://www.unicode.org/versions/Unicode6.1.0/"/>

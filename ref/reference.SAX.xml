@@ -1,3 +1,9 @@
- David Megginson, "SAX 1.0: The Simple API for XML",
- http://www.megginson.com/SAX/, May 1998.
-
+<?xml version='1.0' encoding='UTF-8'?>
+<reference anchor='SAX'>
+	<front>
+		<title abbrev='SAX'>SAX 1.0: The Simple API for XML</title>
+		<author initials="D." surname="Bradner" fullname="David Megginson"/>
+		<date year='1998' month='May'/>
+	</front>
+	<format type='HTML' target="http://www.megginson.com/SAX/"/>
+</reference>

@@ -1,20 +1,22 @@
-This git repository contains specification of **BEACON link dump format** to be
-prepared for publication as Request for Comment (RFC).
+This git repository contains a specification of **BEACON link dump format** to
+be prepared for publication as Request for Comment (RFC).
 
 # BEACON format
 
-BEACON is a simple format to serialize a number of uniform links. 
-It is primarily used to collect mappings between authority files
+BEACON is a simple format to serialize a number of uniform links.
+There is a serialization as raw Unicode and a serialization in XML.
+BEACON primarily used to collect mappings between authority files
 and information resources in libraries and related organizations.
 
-# How to modify the specification
+# How to modify this specification
 
-A specification of BEACON link dump format is being prepared in a public git
-repository, located at <https://github.com/gbv/beaconspec>. The specification
-is written in Pandoc Markdown syntax in the file `beacon.md`. Additional parts
-are included in the file `appendices.md`, `rfctemplate.xml`, and bibliographic
-references in the directory `ref`. To compile the specification in RFC style
-there is a `Makefile`. To create a snapshot in HTML and TXT format you need:
+The specification of BEACON link dump format is being prepared in this public
+git repository, located at <https://github.com/gbv/beaconspec>. The
+specification is written in Pandoc Markdown syntax in the file `beacon.md`.
+Additional parts are included in the file `appendices.md`, `rfctemplate.xml`,
+and bibliographic references in the directory `ref`. To compile the
+specification in RFC style there is a `Makefile`. To create a snapshot in HTML
+and TXT format you need:
 
 * [Pandoc](http://johnmacfarlane.net/pandoc/),
 * an XSLT transformator (`xsltproc`),

@@ -50,6 +50,8 @@
     </references>
     <references title="Informative References">
         <?rfc include="ref/reference.sitemaps.xml"?>
+        <?rfc include="ref/reference.SAX.xml"?>
+        <?rfc include="ref/reference.RELAX-NGC.xml"?>
 		<!-- RDF, HTML, Turtle? -->
 	</references>
 	<?rfc include="appendices.xml"?>

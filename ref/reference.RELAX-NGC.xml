@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<reference anchor='RELAX-NGC'>
+	<front>
+		<title abbrev='RELAX NGC'>RELAX NG Compact Syntax</title>
+		<author initials="J." surname="Clark" fullname="James Clark"/>
+		<date year='2002' month='Nov'/>
+	</front>
+	<format type='HTML' target="http://relaxng.org/compact.html"/>
+</reference>

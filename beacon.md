@@ -165,7 +165,7 @@ format](#Sitemaps). Valid values are:
 * `never` 
 
 The value `always` SHOULD be used to describe BEACON dumps that change each
-time they are accessed. The value `never` should be used to describe archived
+time they are accessed. The value `never` SHOULD be used to describe archived
 BEACON dumps.
 
 
@@ -270,40 +270,34 @@ and the order of link lines is irrelevant.
 ## BEACON XML format
 
 A BEACON XML file is a valid XML file conforming to the following schema. The
-file should be UTF-8 encoded. The file must:
+file SHOULD be encoded in UTF-8 [](#RFC3629). The file MUST:
 
   * Begin with an opening `<beacon>` tag and end with a closing `</beacon>` tag.
-  * Specify the namespace `http://example.org/to-be-defined` within the `<beacon>` tag.
-  * Include a non-empty `<link>` tag for each link.
-  * Include the [link id](#link-fields) as text content in the `<link>` element for each link.
+  * Specify the default namespace `http://purl.org/net/example`.
+  * Include an empty `<link/>` tag for each link.
+  * Include the [link id](#link-fields) as XML attribute `id` of each `<link/>` 
+    element.
 
-The file may further:
+The file MAY further:
 
-  * Specify meta fields as XML attributes to the `<beacon>` tag.
-  * Specify label, description, and/or target of a link as attributes to the `<link>` element.
+  * Specify [meta fields](#meta-fields) as XML attributes to the `<beacon>` tag.
+  * Specify link fields `label`, `description`, and/or `target` as attributes to 
+    the `<link>` element.
 
-Meta fields attributes MUST be given in lowercase only. Optional links
-attribute names MUST be one of `label`, `description`, and `target` only.
+All attributes MUST be given in lowercase. An informal schema of BEACON XML is
+given in [](#relax-ng-schema-for-beacon-xml).
 
-An example of a BEACON XML file (TODO):
+To process BEACON XML, a complete and stream-processing XML parser, for
+instance the Simple API for XML [](#SAX), is RECOMMENDED, in favor of
+parsing with regular expressions or similar methods prone to errors.
+Additional XML attributes of `<link>` elements and `<link>` elements without
+`id` attribute SHOULD be ignored.
 
-    <?xml version="1.0" encoding="UTF-8"?>
-	<beacon xmlns="..."
-			link="..."
-	  		target="..."
-			prefix="http://..."
-	>
-		<link>...</link>
-		<link target="">...</link>
-	  	<link label="" description="..." target="...">...</link>
-	</beacon>
-
-A stream-processing XML parser, such as SAX conforming processor [SAX](), is
-RECOMMENDED to process BEACON XML. Applications SHOULD NOT try to parse BEACON
-XML with regular expressions or similar methods instead of a full XML parser.
 
 # Security Considerations
 
-...TODO... (URLs may be used to inject code and label/description may be used to
+...TODO... 
+
+(URLs MAY be used to inject code and label/description MAY be used to
 inject HTML?)
 
