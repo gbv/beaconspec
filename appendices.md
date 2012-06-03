@@ -74,8 +74,9 @@ format and in BEACON XML format this way:
 
 # RELAX NG Schema for BEACON XML
 
-This a schema of [BEACON XML](#beacon-xml-format) in RELAX NG Compact syntax
-[](#RELAX-NGC). The schema is non-normative and given for reference only.
+Below is a schema of [BEACON XML](#beacon-xml-format) in RELAX NG Compact
+syntax [](#RELAX-NGC). The schema is non-normative and given for reference
+only.
 
     default namespace = "http://purl.org/net/beacon"
 

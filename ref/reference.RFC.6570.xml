@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC6570'>
+
+<front>
+<title>URI Template</title>
+<author initials='J.' surname='Gregorio' fullname='J. Gregorio'>
+<organization /></author>
+<author initials='R.' surname='Fielding' fullname='R. Fielding'>
+<organization /></author>
+<author initials='M.' surname='Hadley' fullname='M. Hadley'>
+<organization /></author>
+<author initials='M.' surname='Nottingham' fullname='M. Nottingham'>
+<organization /></author>
+<author initials='D.' surname='Orchard' fullname='D. Orchard'>
+<organization /></author>
+<date year='2012' month='March' />
+<abstract>
+<t>A URI Template is a compact sequence of characters for describing a range of Uniform Resource Identifiers through variable expansion.  This specification defines the URI Template syntax and the process for expanding a URI Template into a URI reference, along with guidelines for the use of URI Templates on the Internet. [STANDARDS-TRACK]</t></abstract></front>
+
+<seriesInfo name='RFC' value='6570' />
+<format type='TXT' octets='79813' target='http://www.rfc-editor.org/rfc/rfc6570.txt' />
+</reference>

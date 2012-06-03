@@ -3,14 +3,28 @@
 
 # Introduction
 
-BEACON was developed as minimalistic format for distribution of large number of
-uniform links. A typical use case is the expression of a linking table with source
-URLs and target URLs, that all share a stable URL prefix, respectively:
+## Overview
 
-    http://example.com/{source} ---> http://example.org/{target}
+BEACON is a data interchange format for large numbers of uniform links.  A
+BEACON link dump consists of:
 
-With BEACON one can express these links in a very condense form in a [plain
-text format](#beacon-text-format) and in an [XML format](#beacon-xml-format).
+* a set of [links](#links), each derived from a set of 
+  [link fields](#link-fields),
+* a set of [meta fields](#meta-fields).
+
+All links typically share a common URI pattern for source and for target,
+respectively. For instance a BEACON dump could consist of links between two
+domains that use different local identifier systems:
+
+    http://example.org/{ID1} ---> http://example.com/{ID2}
+
+A special case is the use of the same local identifier that can be used to
+construct both, source and target of a link, for instance:
+
+    http://example.org/{ID}  ---> http://example.org/?id={ID}&action=view
+
+A BEACON link dump can be serialized in a condense [BEACON text
+format](#beacon-text-format) and in [BEACON XML format](#beacon-xml-format).
 
 ## Notational Conventions
 
@@ -21,7 +35,6 @@ interpreted as described in [](#RFC2119).
 The formal grammar rules in this document are to be interpreted as described in
 [](#RFC4234).
 
-
 ## Whitespace Normalization 
 
 A Unicode string is normalized according to this specification, by stripping
@@ -29,27 +42,34 @@ leading and trailing whitespace and by replacing sequences of whitespace
 characters (`U+0020 | U+0009 | U+000D | U+000A`) by a single space (`U+0020`)
 [](#Unicode).
 
-## Overview
+## IRI patterns
 
-A BEACON link dump consists of:
+An IRI pattern in this specification is a sequence of Unicode characters that
+SHOULD contain the expression `{ID}`. To support compatibility with
+[](#RFC6570), the expression `{+ID}` MAY be used instead and it MUST be treated
+equal to `{ID}`. If the sequence `{ID}` (or `{+ID}`) is not given, the pattern
+is processed as if the sequence was appended. For this reason the following IRI
+patterns are equal:
 
-* a set of [links](#links), each derived from a set of 
-  [link fields](#link-fields),
-* a set of [meta fields](#meta-fields).
+     http://example.org/
+	 http://example.org/{ID}
+	 http://example.org/{+ID}
 
-A BEACON link dump can be serialized in [BEACON text
-format](#beacon-text-format) and in [BEACON XML format](#beacon-xml-format).
-
+An IRI pattern MUST allow its conversion to an absolute IRI [](#RFC3987) by
+replacing all occurrences of `{ID}` with a selected sequence of Unicode
+characters. For instance the string `:{ID}` is not a valid IRI pattern because
+it cannot become a valid IRI. Further restrictions MAY be imposed based on
+syntax rules of the patterns IRI scheme.
 
 # Links
 
-In this specification a link is a typed connection between two resources that
-are identified by Internationalised Resource Identifiers (IRIs) [](#RFC3987),
-and is compromised of:
+A link in BEACON is a typed connection between two resources that are
+identified by Internationalised Resource Identifiers (IRIs), and
+is compromised of:
 
 * a source IRI,
 * a link relation type, 
-* a target URI
+* a target IRI
 * an optional label,
 * an optional description.
 
@@ -63,9 +83,6 @@ not defined in this specification, but guidelines are given in
 
 A BEACON link dump is an annotated set of links with identical link type. The
 default link type is the URI `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
-In the common case, all source IRIs, or all target URIs, or both respectively
-begin with a common prefix that is used for abbreviation.
-
 
 # Meta fields
 
@@ -75,20 +92,16 @@ are listed in the following. Additional meta fields, not defined in this
 specification SHOULD be ignored. All meta field values MUST be normalized
 Unicode strings [](#whitespace-normalization).
 
+
 ## prefix
 
-The prefix field specifies a prefix that is prepended to [link
-ids](#link-fields) to construct link sources.
+The prefix field specifies an IRI pattern that is used to construct link
+sources. The name `prefix` was choosen to keep backwards compatibility with
+existing BEACON dumps.
 
 ## target
 
-The target field specifies an URI pattern to construct link targets. The URI
-pattern SHOULD include the URI parameter `{ID}`. If this URI parameter is not
-included it can be appended to the URI pattern, so the following target fields
-are equal:
-
-     http://example.org/
-	 http://example.org/{ID}
+The target field specifies an IRI pattern to construct link targets. 
 
 ## link
 
