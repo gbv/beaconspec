@@ -151,7 +151,7 @@
 <h3>Abstract</h3>
 
 <p>This document specifies BEACON, a data interchange 
-			format to serialize a large number of uniform links.
+			format for large numbers of uniform links.
 </p>
 <h3>Status of this Memo</h3>
 <p>
@@ -189,12 +189,14 @@ described in the Simplified BSD License.</p>
 <p class="toc">
 <a href="#introduction">1.</a>&nbsp;
 Introduction<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#notational-conventions">1.1.</a>&nbsp;
-Notational Conventions<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#whitespace-normalization">1.2.</a>&nbsp;
-Whitespace Normalization<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#overview">1.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#overview">1.1.</a>&nbsp;
 Overview<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#notational-conventions">1.2.</a>&nbsp;
+Notational Conventions<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#whitespace-normalization">1.3.</a>&nbsp;
+Whitespace Normalization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iri-patterns">1.4.</a>&nbsp;
+IRI patterns<br />
 <a href="#links">2.</a>&nbsp;
 Links<br />
 <a href="#meta-fields">3.</a>&nbsp;
@@ -269,60 +271,14 @@ Author's Address<br />
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>
-    BEACON was developed as minimalistic format for distribution of
-    large number of uniform links. A typical use case is the expression
-    of a linking table with source URLs and target URLs, that all share
-    a stable URL prefix, respectively:
-  
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-http://example.com/{source} ---&gt; http://example.org/{target}
-</pre></div>
-<p>
-    With BEACON one can express these links in a very condense form in a
-    <a class='info' href='#beacon-text-format'>plain text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a> and in
-    an <a class='info' href='#beacon-xml-format'>XML format<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a>.
-  
-</p>
-<a name="notational-conventions"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
-Notational Conventions</h3>
-
-<p>
-      The key words "MUST", "MUST NOT",
-      "REQUIRED", "SHALL", "SHALL NOT",
-      "SHOULD", "SHOULD NOT",
-      "RECOMMENDED", "MAY", and "OPTIONAL"
-      in this document are to be interpreted as described in
-      <a class='info' href='#RFC2119'>[RFC2119]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
-    
-</p>
-<p>
-      The formal grammar rules in this document are to be interpreted as
-      described in <a class='info' href='#RFC4234'>[RFC4234]<span> (</span><span class='info'>Crocker, D., Ed. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; October&nbsp;2005.</span><span>)</span></a>.
-    
-</p>
-<a name="whitespace-normalization"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
-Whitespace Normalization</h3>
-
-<p>
-      A Unicode string is normalized according to this specification, by
-      stripping leading and trailing whitespace and by replacing
-      sequences of whitespace characters
-      (<tt>U+0020 | U+0009 | U+000D | U+000A</tt>) by a single
-      space (<tt>U+0020</tt>) <a class='info' href='#Unicode'>[Unicode]<span> (</span><span class='info'>The Unicode Consortium, &ldquo;The Unicode Standard, Version 6.1,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
-    
-</p>
 <a name="overview"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
+<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
 Overview</h3>
 
 <p>
-      A BEACON link dump consists of:
+      BEACON is a data interchange format for large numbers of uniform
+      links. A BEACON link dump consists of:
     
 </p>
 <p></p>
@@ -343,9 +299,88 @@ Overview</h3>
 </ul>
 
 <p>
-      A BEACON link dump can be serialized in
+      All links typically share a common URI pattern for source and for
+      target, respectively. For instance a BEACON dump could consist of
+      links between two domains that use different local identifier
+      systems:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+http://example.org/{ID1} ---&gt; http://example.com/{ID2}
+</pre></div>
+<p>
+      A special case is the use of the same local identifier that can be
+      used to construct both, source and target of a link, for instance:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+http://example.org/{ID}  ---&gt; http://example.org/?id={ID}&amp;action=view
+</pre></div>
+<p>
+      A BEACON link dump can be serialized in a condense
       <a class='info' href='#beacon-text-format'>BEACON text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a> and
       in <a class='info' href='#beacon-xml-format'>BEACON XML format<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a>.
+    
+</p>
+<a name="notational-conventions"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
+Notational Conventions</h3>
+
+<p>
+      The key words "MUST", "MUST NOT",
+      "REQUIRED", "SHALL", "SHALL NOT",
+      "SHOULD", "SHOULD NOT",
+      "RECOMMENDED", "MAY", and "OPTIONAL"
+      in this document are to be interpreted as described in
+      <a class='info' href='#RFC2119'>[RFC2119]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+    
+</p>
+<p>
+      The formal grammar rules in this document are to be interpreted as
+      described in <a class='info' href='#RFC4234'>[RFC4234]<span> (</span><span class='info'>Crocker, D., Ed. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; October&nbsp;2005.</span><span>)</span></a>.
+    
+</p>
+<a name="whitespace-normalization"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
+Whitespace Normalization</h3>
+
+<p>
+      A Unicode string is normalized according to this specification, by
+      stripping leading and trailing whitespace and by replacing
+      sequences of whitespace characters
+      (<tt>U+0020 | U+0009 | U+000D | U+000A</tt>) by a single
+      space (<tt>U+0020</tt>) <a class='info' href='#Unicode'>[Unicode]<span> (</span><span class='info'>The Unicode Consortium, &ldquo;The Unicode Standard, Version 6.1,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
+    
+</p>
+<a name="iri-patterns"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.4"></a><h3>1.4.&nbsp;
+IRI patterns</h3>
+
+<p>
+      An IRI pattern in this specification is a sequence of Unicode
+      characters that SHOULD contain the expression
+      <tt>{ID}</tt>. To support compatibility with
+      <a class='info' href='#RFC6570'>[RFC6570]<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a>, the expression
+      <tt>{+ID}</tt> MAY be used instead and it MUST be
+      treated equal to <tt>{ID}</tt>. If the sequence
+      <tt>{ID}</tt> (or <tt>{+ID}</tt>) is not
+      given, the pattern is processed as if the sequence was appended.
+      For this reason the following IRI patterns are equal:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ http://example.org/
+ http://example.org/{ID}
+ http://example.org/{+ID}
+</pre></div>
+<p>
+      An IRI pattern MUST allow its conversion to an absolute IRI
+      <a class='info' href='#RFC3987'>[RFC3987]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRIs),&rdquo; January&nbsp;2005.</span><span>)</span></a> by replacing all occurrences of
+      <tt>{ID}</tt> with a selected sequence of Unicode
+      characters. For instance the string <tt>:{ID}</tt> is
+      not a valid IRI pattern because it cannot become a valid IRI.
+      Further restrictions MAY be imposed based on syntax rules of the
+      patterns IRI scheme.
     
 </p>
 <a name="links"></a><br /><hr />
@@ -354,10 +389,9 @@ Overview</h3>
 Links</h3>
 
 <p>
-    In this specification a link is a typed connection between two
-    resources that are identified by Internationalised Resource
-    Identifiers (IRIs) <a class='info' href='#RFC3987'>[RFC3987]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRIs),&rdquo; January&nbsp;2005.</span><span>)</span></a>, and is
-    compromised of:
+    A link in BEACON is a typed connection between two resources that
+    are identified by Internationalised Resource Identifiers (IRIs), and
+    is compromised of:
   
 </p>
 <p></p>
@@ -376,7 +410,7 @@ Links</h3>
 </li>
 <li>
       
-        a target URI
+        a target IRI
       
     
 </li>
@@ -409,10 +443,7 @@ Links</h3>
 <p>
     A BEACON link dump is an annotated set of links with identical link
     type. The default link type is the URI
-    <tt>http://www.w3.org/2000/01/rdf-schema#seeAlso</tt>. In
-    the common case, all source IRIs, or all target URIs, or both
-    respectively begin with a common prefix that is used for
-    abbreviation.
+    <tt>http://www.w3.org/2000/01/rdf-schema#seeAlso</tt>.
   
 </p>
 <a name="meta-fields"></a><br /><hr />
@@ -426,7 +457,7 @@ Meta fields</h3>
     <tt>a-z</tt>. Valid fields are listed in the following.
     Additional meta fields, not defined in this specification SHOULD be
     ignored. All meta field values MUST be normalized Unicode strings
-    <a class='info' href='#whitespace-normalization'>Section&nbsp;1.2<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>.
+    <a class='info' href='#whitespace-normalization'>Section&nbsp;1.3<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>.
   
 </p>
 <a name="prefix"></a><br /><hr />
@@ -435,9 +466,10 @@ Meta fields</h3>
 prefix</h3>
 
 <p>
-      The prefix field specifies a prefix that is prepended to
-      <a class='info' href='#link-fields'>link ids<span> (</span><span class='info'>Link fields</span><span>)</span></a> to construct link
-      sources.
+      The prefix field specifies an IRI pattern that is used to
+      construct link sources. The name <tt>prefix</tt> was
+      choosen to keep backwards compatibility with existing BEACON
+      dumps.
     
 </p>
 <a name="target"></a><br /><hr />
@@ -446,16 +478,10 @@ prefix</h3>
 target</h3>
 
 <p>
-      The target field specifies an URI pattern to construct link
-      targets. The URI pattern SHOULD include the URI parameter
-      <tt>{ID}</tt>. If this URI parameter is not included it
-      can be appended to the URI pattern, so the following target fields
-      are equal:
+      The target field specifies an IRI pattern to construct link
+      targets.
     
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- http://example.org/
- http://example.org/{ID}
-</pre></div>
+</p>
 <a name="link"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
@@ -1031,6 +1057,8 @@ References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RELAX-NGC">[RELAX-NGC]</a></td>
 <td class="author-text">Clark, J., &ldquo;<a href="http://relaxng.org/compact.html">RELAX NG Compact Syntax</a>,&rdquo; Nov&nbsp;2002.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6570">[RFC6570]</a></td>
+<td class="author-text">Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;<a href="http://tools.ietf.org/html/rfc6570">URI Template</a>,&rdquo; RFC&nbsp;6570, March&nbsp;2012 (<a href="http://www.rfc-editor.org/rfc/rfc6570.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="SAX">[SAX]</a></td>
 <td class="author-text">Bradner, D., &ldquo;<a href="http://www.megginson.com/SAX/">SAX 1.0: The Simple API for XML</a>,&rdquo; May&nbsp;1998.</td></tr>
 <tr><td class="author-text" valign="top"><a name="Sitemaps">[Sitemaps]</a></td>
@@ -1198,9 +1226,10 @@ foo|||xy
 RELAX NG Schema for BEACON XML</h3>
 
 <p>
-    This a schema of <a class='info' href='#beacon-xml-format'>BEACON XML<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a>
-    in RELAX NG Compact syntax <a class='info' href='#RELAX-NGC'>[RELAX&#8209;NGC]<span> (</span><span class='info'>Clark, J., &ldquo;RELAX NG Compact Syntax,&rdquo; Nov&nbsp;2002.</span><span>)</span></a>. The
-    schema is non-normative and given for reference only.
+    Below is a schema of <a class='info' href='#beacon-xml-format'>BEACON
+    XML<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a> in RELAX NG Compact syntax
+    <a class='info' href='#RELAX-NGC'>[RELAX&#8209;NGC]<span> (</span><span class='info'>Clark, J., &ldquo;RELAX NG Compact Syntax,&rdquo; Nov&nbsp;2002.</span><span>)</span></a>. The schema is non-normative and
+    given for reference only.
   
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 default namespace = "http://purl.org/net/beacon"
