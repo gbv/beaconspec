@@ -3,8 +3,8 @@
 
 Network Working Group                                            J. Voss
 Internet-Draft                                   Verbundzentrale des GBV
-Intended status: Informational                              May 31, 2012
-Expires: December 2, 2012
+Intended status: Informational                                  May 2012
+Expires: November 2, 2012
 
 
                         BEACON link dump format
@@ -30,7 +30,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 2, 2012.
+   This Internet-Draft will expire on November 2, 2012.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Voss                    Expires December 2, 2012                [Page 1]
+Voss                    Expires November 2, 2012                [Page 1]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -86,7 +86,7 @@ Table of Contents
        5.1.1.  Meta lines . . . . . . . . . . . . . . . . . . . . . .  9
        5.1.2.  Link lines . . . . . . . . . . . . . . . . . . . . . .  9
      5.2.  BEACON XML format  . . . . . . . . . . . . . . . . . . . .  9
-   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 10
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  9
    7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 10
      7.1.  Normative References . . . . . . . . . . . . . . . . . . . 10
      7.2.  Informative References . . . . . . . . . . . . . . . . . . 10
@@ -94,7 +94,8 @@ Table of Contents
      A.1.  HTML links . . . . . . . . . . . . . . . . . . . . . . . . 11
      A.2.  RDF triples  . . . . . . . . . . . . . . . . . . . . . . . 11
      A.3.  Resource discovery from authority files  . . . . . . . . . 12
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 12
+   Appendix B.  RELAX NG Schema for BEACON XML  . . . . . . . . . . . 12
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 13
 
 
 
@@ -107,8 +108,7 @@ Table of Contents
 
 
 
-
-Voss                    Expires December 2, 2012                [Page 2]
+Voss                    Expires November 2, 2012                [Page 2]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -164,7 +164,7 @@ Internet-Draft                   Beacon                         May 2012
 
 
 
-Voss                    Expires December 2, 2012                [Page 3]
+Voss                    Expires November 2, 2012                [Page 3]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -220,7 +220,7 @@ Internet-Draft                   Beacon                         May 2012
 
 
 
-Voss                    Expires December 2, 2012                [Page 4]
+Voss                    Expires November 2, 2012                [Page 4]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -276,7 +276,7 @@ Internet-Draft                   Beacon                         May 2012
 
 
 
-Voss                    Expires December 2, 2012                [Page 5]
+Voss                    Expires November 2, 2012                [Page 5]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -315,7 +315,7 @@ Internet-Draft                   Beacon                         May 2012
    o  "never"
 
    The value "always" SHOULD be used to describe BEACON dumps that
-   change each time they are accessed.  The value "never" should be used
+   change each time they are accessed.  The value "never" SHOULD be used
    to describe archived BEACON dumps.
 
 
@@ -332,7 +332,7 @@ Internet-Draft                   Beacon                         May 2012
 
 
 
-Voss                    Expires December 2, 2012                [Page 6]
+Voss                    Expires November 2, 2012                [Page 6]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -388,7 +388,7 @@ Internet-Draft                   Beacon                         May 2012
 
 
 
-Voss                    Expires December 2, 2012                [Page 7]
+Voss                    Expires November 2, 2012                [Page 7]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -444,7 +444,7 @@ Internet-Draft                   Beacon                         May 2012
 
 
 
-Voss                    Expires December 2, 2012                [Page 8]
+Voss                    Expires November 2, 2012                [Page 8]
 
 Internet-Draft                   Beacon                         May 2012
 
@@ -462,61 +462,51 @@ Internet-Draft                   Beacon                         May 2012
 5.2.  BEACON XML format
 
    A BEACON XML file is a valid XML file conforming to the following
-   schema.  The file should be UTF-8 encoded.  The file must:
+   schema.  The file SHOULD be encoded in UTF-8 [RFC3629].  The file
+   MUST:
 
    o  Begin with an opening "<beacon>" tag and end with a closing
       "</beacon>" tag.
 
-   o  Specify the namespace "http://example.org/to-be-defined" within
-      the "<beacon>" tag.
+   o  Specify the default namespace "http://purl.org/net/example".
 
-   o  Include a non-empty "<link>" tag for each link.
+   o  Include an empty "<link/>" tag for each link.
 
-   o  Include the link id (Section 4) as text content in the "<link>"
-      element for each link.
+   o  Include the link id (Section 4) as XML attribute "id" of each
+      "<link/>" element.
 
-   The file may further:
+   The file MAY further:
 
-   o  Specify meta fields as XML attributes to the "<beacon>" tag.
+   o  Specify meta fields (Section 3) as XML attributes to the
+      "<beacon>" tag.
 
-   o  Specify label, description, and/or target of a link as attributes
-      to the "<link>" element.
+   o  Specify link fields "label", "description", and/or "target" as
+      attributes to the "<link>" element.
 
-   Meta fields attributes MUST be given in lowercase only.  Optional
-   links attribute names MUST be one of "label", "description", and
-   "target" only.
+   All attributes MUST be given in lowercase.  An informal schema of
+   BEACON XML is given in Appendix B.
 
-   An example of a BEACON XML file (TODO):
-
-   <?xml version="1.0" encoding="UTF-8"?>
-   <beacon xmlns="..."
-           link="..."
-           target="..."
-           prefix="http://..."
-   >
-       <link>...</link>
-       <link target="">...</link>
-       <link label="" description="..." target="...">...</link>
-
-
-
-Voss                    Expires December 2, 2012                [Page 9]
-
-Internet-Draft                   Beacon                         May 2012
-
-
-   </beacon>
-
-   A stream-processing XML parser, such as SAX conforming processor
-   SAX [1], is RECOMMENDED to process BEACON XML.  Applications SHOULD
-   NOT try to parse BEACON XML with regular expressions or similar
-   methods instead of a full XML parser.
+   To process BEACON XML, a complete and stream-processing XML parser,
+   for instance the Simple API for XML [SAX], is RECOMMENDED, in favor
+   of parsing with regular expressions or similar methods prone to
+   errors.  Additional XML attributes of "<link>" elements and "<link>"
+   elements without "id" attribute SHOULD be ignored.
 
 
 6.  Security Considerations
 
-   ...TODO...  (URLs may be used to inject code and label/description
-   may be used to inject HTML?)
+   ...TODO...
+
+
+
+
+Voss                    Expires November 2, 2012                [Page 9]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+   (URLs MAY be used to inject code and label/description MAY be used to
+   inject HTML?)
 
 
 7.  References
@@ -547,23 +537,28 @@ Internet-Draft                   Beacon                         May 2012
 
    [RFC5988]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
 
-   [Unicode]  "The Unicode Standard, Version 6.1", April 2012.
+   [Unicode]  The Unicode Consortium, "The Unicode Standard, Version
+              6.1", April 2012.
 
 7.2.  Informative References
 
+   [RELAX-NGC]
+              Clark, J., "RELAX NG Compact Syntax", Nov 2002.
+
+   [SAX]      Bradner, D., "SAX 1.0: The Simple API for XML", May 1998.
+
    [Sitemaps]
-              "Sitemaps XML format", February 2008.
+              Google Inc., "Sitemaps XML format", February 2008.
 
 
 
-Voss                    Expires December 2, 2012               [Page 10]
+
+
+
+
+Voss                    Expires November 2, 2012               [Page 10]
 
 Internet-Draft                   Beacon                         May 2012
-
-
-URIs
-
-   [1]  <>
 
 
 Appendix A.  Interpreting BEACON links
@@ -609,19 +604,18 @@ A.2.  RDF triples
    each of name and description as literal value RDF object.  The final
    intepretation of these link annotations, however, is out of the scope
    of this specification (see https://github.com/gbv/beaconspec/issues/2
-
-
-
-Voss                    Expires December 2, 2012               [Page 11]
-
-Internet-Draft                   Beacon                         May 2012
-
-
    for open discussion).
 
    For instance the following link, given in BEACON text format
 
    http://example.com|example|sample site|http://example.org
+
+
+
+Voss                    Expires November 2, 2012               [Page 11]
+
+Internet-Draft                   Beacon                         May 2012
+
 
    can be mapped to the following RDF triples in Turtle format:
 
@@ -659,6 +653,11 @@ A.3.  Resource discovery from authority files
    <link target="xy">foo</link>
 
 
+Appendix B.  RELAX NG Schema for BEACON XML
+
+   This a schema of BEACON XML (Section 5.2) in RELAX NG Compact syntax
+   [RELAX-NGC].  The schema is non-normative and given for reference
+   only.
 
 
 
@@ -668,9 +667,35 @@ A.3.  Resource discovery from authority files
 
 
 
-Voss                    Expires December 2, 2012               [Page 12]
+
+Voss                    Expires November 2, 2012               [Page 12]
 
 Internet-Draft                   Beacon                         May 2012
+
+
+   default namespace = "http://purl.org/net/beacon"
+
+   element beacon {
+     attribute prefix      { text }.
+     attribute target      { text },
+     attribute link        { xsd:anyURI },
+     attribute contact     { text },
+     attribute message     { text },
+     attribute description { text },
+     attribute institution { text },
+     attribute name        { text },
+     attribute feed        { xsd:anyURI },
+     attribute timestamp   { text },
+     attribute update { "always" | "hourly" | "daily"
+       | "weekly" | "monthly" | "yearly" | "never" },
+     element link {
+       attribute id          { text },
+       attribute target      { text }?,
+       attribute label       { text }?,
+       attribute description { text }?,
+       empty
+     }*
+   }
 
 
 Author's Address
@@ -699,30 +724,5 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Voss                    Expires December 2, 2012               [Page 13]
+Voss                    Expires November 2, 2012               [Page 13]
 

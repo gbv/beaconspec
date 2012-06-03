@@ -143,8 +143,8 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">J. Voß</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Verbundzentrale des GBV</td></tr>
-<tr><td class="header">Intended status: Informational</td><td class="header">May 31, 2012</td></tr>
-<tr><td class="header">Expires: December 2, 2012</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">May 2012</td></tr>
+<tr><td class="header">Expires: November 2, 2012</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
 <h1><br />BEACON link dump format<br />draft-voss-beacon-00</h1>
 
@@ -168,7 +168,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on December 2, 2012.</p>
+This Internet-Draft will expire on November 2, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -257,6 +257,8 @@ HTML links<br />
 RDF triples<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#resource-discovery-from-authority-files">A.3.</a>&nbsp;
 Resource discovery from authority files<br />
+<a href="#relax-ng-schema-for-beacon-xml">Appendix&nbsp;B.</a>&nbsp;
+RELAX NG Schema for BEACON XML<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Author's Address<br />
 </p>
@@ -311,7 +313,7 @@ Whitespace Normalization</h3>
       stripping leading and trailing whitespace and by replacing
       sequences of whitespace characters
       (<tt>U+0020 | U+0009 | U+000D | U+000A</tt>) by a single
-      space (<tt>U+0020</tt>) <a class='info' href='#Unicode'>[Unicode]<span> (</span><span class='info'>, &ldquo;The Unicode Standard, Version 6.1,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
+      space (<tt>U+0020</tt>) <a class='info' href='#Unicode'>[Unicode]<span> (</span><span class='info'>The Unicode Consortium, &ldquo;The Unicode Standard, Version 6.1,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
     
 </p>
 <a name="overview"></a><br /><hr />
@@ -399,7 +401,7 @@ Links</h3>
     that uniquely identifies the relation type, as defined in
     <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>. Link label and link description are
     normalized Unicode strings that annotate a link
-    <a class='info' href='#Unicode'>[Unicode]<span> (</span><span class='info'>, &ldquo;The Unicode Standard, Version 6.1,&rdquo; April&nbsp;2012.</span><span>)</span></a>. The meaning of this annotations is
+    <a class='info' href='#Unicode'>[Unicode]<span> (</span><span class='info'>The Unicode Consortium, &ldquo;The Unicode Standard, Version 6.1,&rdquo; April&nbsp;2012.</span><span>)</span></a>. The meaning of this annotations is
     not defined in this specification, but guidelines are given in
     <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
   
@@ -573,7 +575,7 @@ update</h3>
       The update field specifies how frequently the BEACON dump is
       likely to change. The field corresponds to the
       <tt>&lt;changefreq&gt;</tt> element in
-      <a class='info' href='#Sitemaps'>Sitemaps XML format<span> (</span><span class='info'>, &ldquo;Sitemaps XML format,&rdquo; February&nbsp;2008.</span><span>)</span></a> [Sitemaps]. Valid values
+      <a class='info' href='#Sitemaps'>Sitemaps XML format<span> (</span><span class='info'>Google Inc., &ldquo;Sitemaps XML format,&rdquo; February&nbsp;2008.</span><span>)</span></a> [Sitemaps]. Valid values
       are:
     
 </p>
@@ -626,7 +628,7 @@ update</h3>
 <p>
       The value <tt>always</tt> SHOULD be used to describe
       BEACON dumps that change each time they are accessed. The value
-      <tt>never</tt> should be used to describe archived
+      <tt>never</tt> SHOULD be used to describe archived
       BEACON dumps.
     
 </p>
@@ -903,7 +905,8 @@ BEACON XML format</h3>
 
 <p>
       A BEACON XML file is a valid XML file conforming to the following
-      schema. The file should be UTF-8 encoded. The file must:
+      schema. The file SHOULD be encoded in UTF-8
+      <a class='info' href='#RFC3629'>[RFC3629]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>. The file MUST:
     
 </p>
 <p></p>
@@ -917,78 +920,66 @@ BEACON XML format</h3>
 </li>
 <li>
         
-          Specify the namespace
-          <tt>http://example.org/to-be-defined</tt> within the
-          <tt>&lt;beacon&gt;</tt> tag.
+          Specify the default namespace
+          <tt>http://purl.org/net/example</tt>.
         
       
 </li>
 <li>
         
-          Include a non-empty <tt>&lt;link&gt;</tt> tag for
-          each link.
+          Include an empty <tt>&lt;link/&gt;</tt> tag for each
+          link.
         
       
 </li>
 <li>
         
-          Include the <a class='info' href='#link-fields'>link id<span> (</span><span class='info'>Link fields</span><span>)</span></a> as text
-          content in the <tt>&lt;link&gt;</tt> element for
-          each link.
+          Include the <a class='info' href='#link-fields'>link id<span> (</span><span class='info'>Link fields</span><span>)</span></a> as XML
+          attribute <tt>id</tt> of each
+          <tt>&lt;link/&gt;</tt> element.
         
       
 </li>
 </ul>
 
 <p>
-      The file may further:
+      The file MAY further:
     
 </p>
 <p></p>
 <ul class="text">
 <li>
         
-          Specify meta fields as XML attributes to the
-          <tt>&lt;beacon&gt;</tt> tag.
+          Specify <a class='info' href='#meta-fields'>meta fields<span> (</span><span class='info'>Meta fields</span><span>)</span></a> as XML
+          attributes to the <tt>&lt;beacon&gt;</tt> tag.
         
       
 </li>
 <li>
         
-          Specify label, description, and/or target of a link as
-          attributes to the <tt>&lt;link&gt;</tt> element.
+          Specify link fields <tt>label</tt>,
+          <tt>description</tt>, and/or
+          <tt>target</tt> as attributes to the
+          <tt>&lt;link&gt;</tt> element.
         
       
 </li>
 </ul>
 
 <p>
-      Meta fields attributes MUST be given in lowercase only. Optional
-      links attribute names MUST be one of <tt>label</tt>,
-      <tt>description</tt>, and <tt>target</tt>
-      only.
+      All attributes MUST be given in lowercase. An informal schema of
+      BEACON XML is given in
+      <a class='info' href='#relax-ng-schema-for-beacon-xml'>Appendix&nbsp;B<span> (</span><span class='info'>RELAX NG Schema for BEACON XML</span><span>)</span></a>.
     
 </p>
 <p>
-      An example of a BEACON XML file (TODO):
-    
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;beacon xmlns="..."
-        link="..."
-        target="..."
-        prefix="http://..."
-&gt;
-    &lt;link&gt;...&lt;/link&gt;
-    &lt;link target=""&gt;...&lt;/link&gt;
-    &lt;link label="" description="..." target="..."&gt;...&lt;/link&gt;
-&lt;/beacon&gt;
-</pre></div>
-<p>
-      A stream-processing XML parser, such as SAX conforming processor
-      <a href=''>SAX</a>, is RECOMMENDED to process BEACON XML.
-      Applications SHOULD NOT try to parse BEACON XML with regular
-      expressions or similar methods instead of a full XML parser.
+      To process BEACON XML, a complete and stream-processing XML
+      parser, for instance the Simple API for XML
+      <a class='info' href='#SAX'>[SAX]<span> (</span><span class='info'>Bradner, D., &ldquo;SAX 1.0: The Simple API for XML,&rdquo; May&nbsp;1998.</span><span>)</span></a>, is RECOMMENDED, in favor of parsing
+      with regular expressions or similar methods prone to errors.
+      Additional XML attributes of <tt>&lt;link&gt;</tt>
+      elements and <tt>&lt;link&gt;</tt> elements without
+      <tt>id</tt> attribute SHOULD be ignored.
     
 </p>
 <a name="security-considerations"></a><br /><hr />
@@ -997,8 +988,12 @@ BEACON XML format</h3>
 Security Considerations</h3>
 
 <p>
-    ...TODO... (URLs may be used to inject code and label/description
-    may be used to inject HTML?)
+    ...TODO...
+  
+</p>
+<p>
+    (URLs MAY be used to inject code and label/description MAY be used
+    to inject HTML?)
   
 </p>
 <a name="rfc.references"></a><br /><hr />
@@ -1027,15 +1022,19 @@ References</h3>
 <tr><td class="author-text" valign="top"><a name="RFC5988">[RFC5988]</a></td>
 <td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>,&rdquo; RFC&nbsp;5988, October&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5988.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="Unicode">[Unicode]</a></td>
-<td class="author-text">&ldquo;<a href="http://www.unicode.org/versions/Unicode6.1.0/">The Unicode Standard, Version 6.1</a>,&rdquo; April&nbsp;2012.</td></tr>
+<td class="author-text">The Unicode Consortium, &ldquo;<a href="http://www.unicode.org/versions/Unicode6.1.0/">The Unicode Standard, Version 6.1</a>,&rdquo; April&nbsp;2012.</td></tr>
 </table>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <h3>7.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RELAX-NGC">[RELAX-NGC]</a></td>
+<td class="author-text">Clark, J., &ldquo;<a href="http://relaxng.org/compact.html">RELAX NG Compact Syntax</a>,&rdquo; Nov&nbsp;2002.</td></tr>
+<tr><td class="author-text" valign="top"><a name="SAX">[SAX]</a></td>
+<td class="author-text">Bradner, D., &ldquo;<a href="http://www.megginson.com/SAX/">SAX 1.0: The Simple API for XML</a>,&rdquo; May&nbsp;1998.</td></tr>
 <tr><td class="author-text" valign="top"><a name="Sitemaps">[Sitemaps]</a></td>
-<td class="author-text">&ldquo;<a href="http://www.sitemaps.org/">Sitemaps XML format</a>,&rdquo; February&nbsp;2008.</td></tr>
+<td class="author-text">Google Inc., &ldquo;<a href="http://www.sitemaps.org/">Sitemaps XML format</a>,&rdquo; February&nbsp;2008.</td></tr>
 </table>
 
 <a name="interpreting-beacon-links"></a><br /><hr />
@@ -1192,6 +1191,41 @@ foo
 foo|||xy
 
 &lt;link target="xy"&gt;foo&lt;/link&gt;
+</pre></div>
+<a name="relax-ng-schema-for-beacon-xml"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
+RELAX NG Schema for BEACON XML</h3>
+
+<p>
+    This a schema of <a class='info' href='#beacon-xml-format'>BEACON XML<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a>
+    in RELAX NG Compact syntax <a class='info' href='#RELAX-NGC'>[RELAX&#8209;NGC]<span> (</span><span class='info'>Clark, J., &ldquo;RELAX NG Compact Syntax,&rdquo; Nov&nbsp;2002.</span><span>)</span></a>. The
+    schema is non-normative and given for reference only.
+  
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+default namespace = "http://purl.org/net/beacon"
+
+element beacon {
+  attribute prefix      { text }.
+  attribute target      { text },
+  attribute link        { xsd:anyURI },
+  attribute contact     { text },
+  attribute message     { text },
+  attribute description { text },
+  attribute institution { text },
+  attribute name        { text },
+  attribute feed        { xsd:anyURI },
+  attribute timestamp   { text },
+  attribute update { "always" | "hourly" | "daily"
+    | "weekly" | "monthly" | "yearly" | "never" },
+  element link {
+    attribute id          { text },
+    attribute target      { text }?,
+    attribute label       { text }?,
+    attribute description { text }?,
+    empty
+  }*
+}
 </pre></div>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
