@@ -45,7 +45,7 @@
         <?rfc include="ref/reference.RFC.3629.xml"?>
         <?rfc include="ref/reference.RFC.3986.xml"?>
         <?rfc include="ref/reference.RFC.3987.xml"?>
-        <?rfc include="ref/reference.RFC.4234.xml"?>
+        <?rfc include="ref/reference.RFC.5234.xml"?>
         <?rfc include="ref/reference.RFC.5322.xml"?>
         <?rfc include="ref/reference.RFC.5988.xml"?>
         <?rfc include="ref/reference.Unicode.xml"?>

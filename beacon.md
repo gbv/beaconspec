@@ -33,7 +33,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 interpreted as described in [](#RFC2119).
 
 The formal grammar rules in this document are to be interpreted as described in
-[](#RFC4234).
+[](#RFC5234).
 
 ## Whitespace Normalization 
 
@@ -261,19 +261,37 @@ label or link description equals to the empty string.
 ## BEACON text format
 
 A BEACON text file is an UTF-8 encoded Unicode file [](#RFC3629), split into
-lines by line breaks. A line break is any combination of the characters
-`U+000A` and `U+000D`. The file consists of a set of lines with meta fields
-(meta lines), followed by a set of lines with links (link lines). An empty line
-SHOULD be used to separate meta lines and link lines. The order of meta lines
-and the order of link lines is irrelevant.
+lines by line breaks. The file consists of a set of lines with meta fields,
+followed by a set of lines with link fields. A BEACON text file MAY begin with
+an Unicode Byte Order Mark and it SHOULD end with a line break:
 
-### Meta lines
+    beacon     = [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
+	
+    BOM        = %xEF.BB.BF          ; Unicode UTF-8 Byte Order Mark
 
-A meta line specifies a [meta field](#meta-fields) and its value.
+    LINEBREAK  = *( %x0A / %0x0D )   ; at least linefeed or carriage return
 
-### Link lines
+An empty line SHOULD be used to separate meta lines and link lines. The order
+of meta lines and the order of link lines is irrelevant. 
 
-...
+A meta line specifies a [meta field](#meta-fields) and its value:
+
+    metaline  = "#" metafield ":" metavalue LINEBREAK
+
+    metafield = "PREFIX" | "TARGET" | "LINK" | "CONTACT" | "MESSAGE" |
+	            "DESCRIPTION" | "INSTITUTION" | "NAME" | "ABOUT" |
+				"FEED" | "TIMESTAMP" | "UPDATE"
+
+    metavalue = STRING
+
+Each link ...TODO...
+
+    links    = link *( LINEBREAK link )
+
+    link     = ID [ "|" TARGET ] ...
+
+The terminal symbol `STRING` can be any UTF-8 string that does not include the
+characters `U+000A` or `U+000D`.
 
 ## BEACON XML format
 
