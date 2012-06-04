@@ -49,6 +49,10 @@ can be mapped to the following RDF triples in Turtle format:
     <http://example.org> rdfs:label "example" ;
 	                     dc:description "sample site" .
 
+As RDF is defined on URI references or IRIs, link source and link target URI
+must be transformed to an IRI by following the process defined in Section 3.2 
+of [](#RFC3987).
+
 ## Resource discovery from authority files
 
 Consider an authority file with entities defined by an example.org institution,

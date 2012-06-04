@@ -42,38 +42,42 @@ leading and trailing whitespace and by replacing sequences of whitespace
 characters (`U+0020 | U+0009 | U+000D | U+000A`) by a single space (`U+0020`)
 [](#Unicode).
 
-## IRI patterns
+## URI patterns
 
-An IRI pattern in this specification is a sequence of Unicode characters that
-SHOULD contain the expression `{ID}`. To support compatibility with
-[](#RFC6570), the expression `{+ID}` MAY be used instead and it MUST be treated
-equal to `{ID}`. If the expression `{ID}` or `{+ID}` is not given, the pattern
-is processed as if the expression was appended. For this reason the following
-IRI patterns are equal:
+A URI pattern in this specification is an URI Template, as defined in
+[](#RFC6570), with all template expressions being either `{ID}` for simple
+string expansion or `{+ID}` for reserved expansion. If no template expression
+is given, the pattern MUST be processed as if the expression `{ID}` was
+appended. For this reason the following URI patterns are equal:
 
-	 http://example.org/{ID}
-	 http://example.org/{+ID}
      http://example.org/
+	 http://example.org/{ID}
 
-An IRI pattern MUST allow its conversion to an absolute IRI [](#RFC3987) by
-replacing all occurrences of `{ID}` with a selected sequence of Unicode
-characters. For instance the string ":{ID}" is not a valid IRI pattern because
-it cannot become a valid IRI. Further restrictions MAY be imposed based on
-syntax rules of the specific IRI scheme.
+A URI pattern is used to construct a URI by replacing all template expressions
+with an identifier value. All identifier characters in the `unreserved` range
+from [](#RFC3986), and characters in the `reserved` range or character
+sequences matching the `pct-encoded` rule for expressions being `{+ID}`, are
+copied literally.  All other characters are copied the URI as the sequence of
+pct-encoded triplets corresponding to that character's encoding in UTF-8
+[](#RFC3629).
+
+A URI pattern is allowed to contain the broader set of characters allowed in
+Internationalized Resource Identifiers (IRI) [](#RFC3987). The URI constructed
+from a URI pattern by template processing can be transformed to an IRI by
+following the process defined in Section 3.2 of [](#RFC3987).
 
 # Links
 
 A link in BEACON is a typed connection between two resources that are
-identified by IRIs [](#RFC3987), and is compromised of:
+identified by URIs [](#RFC3986), and is compromised of:
 
-* a source IRI,
-* a target IRI
+* a source URI,
+* a target URI
 * a relation type, 
 * an optional label,
 * an optional description.
 
-In the common case, source IRI and target IRI will also be URIs [](#RFC3986). A
-link relation type is either a registered link type from the IANA link
+A link relation type is either a registered link type from the IANA link
 relations registry  [](#RFC5988) or an URI that uniquely identifies the
 relation type. Link label and link description are normalized Unicode strings
 that annotate a link. The meaning of this annotations is not defined in this
@@ -95,13 +99,13 @@ string as field value MUST be ignored.
 
 ## prefix
 
-The prefix field specifies an IRI pattern that is used to construct link
+The prefix field specifies an URI pattern that is used to construct link
 sources. The name `prefix` was choosen to keep backwards compatibility with
 existing BEACON dumps.
 
 ## target
 
-The target field specifies an IRI pattern to construct link targets.
+The target field specifies an URI pattern to construct link targets.
 
 ## link
 
@@ -200,15 +204,15 @@ the full [link](#links) is derived. All field values MUST be
 link is then derived as following:
 
 The **link source** is constructed based on the id field and the [prefix meta
-field](#prefix) IRI pattern. If no IRI pattern was specified, the default value
+field](#prefix) URI pattern. If no URI pattern was specified, the default value
 `{ID}` is used instead. The link source is then constructed by replacing all
-occurrences of `{ID}` in the IRI pattern by the id field. 
+occurrences of `{ID}` in the URI pattern by the id field. 
 
 The **link target** is constructed based on
 
 * the id field,
 * the target field,
-* the [target meta field](#target) IRI pattern
+* the [target meta field](#target) URI pattern
 
 with the following cases:
 
@@ -228,8 +232,8 @@ with the following cases:
 	* If the target meta field is not specified, then the link target is the 
 	  **id field**.
 
-Both, link source and link target MUST be a syntactically valid IRI. A client
-MUST ignore links with invalid IRIs and it SHOULD give a warning.
+Both, link source and link target MUST be a syntactically valid URI. A client
+MUST ignore links with invalid URIs and it SHOULD give a warning.
 
 The **link label** is derived from the label field and the [message meta
 field](#message) as following:
