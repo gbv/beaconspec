@@ -219,22 +219,16 @@ institution<br />
 name<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed">3.9.</a>&nbsp;
 feed<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#timestamp">3.10.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#about">3.10.</a>&nbsp;
+about<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#timestamp">3.11.</a>&nbsp;
 timestamp<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update">3.11.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update">3.12.</a>&nbsp;
 update<br />
 <a href="#link-fields">4.</a>&nbsp;
 Link fields<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-source">4.1.</a>&nbsp;
-link source<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-target">4.2.</a>&nbsp;
-link target<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-label">4.3.</a>&nbsp;
-link label<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-description">4.4.</a>&nbsp;
-link description<br />
-<a href="#beacon-serialization">5.</a>&nbsp;
-BEACON serialization<br />
+<a href="#serialization">5.</a>&nbsp;
+Serialization<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-text-format">5.1.</a>&nbsp;
 BEACON text format<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#meta-lines">5.1.1.</a>&nbsp;
@@ -363,24 +357,24 @@ IRI patterns</h3>
       <tt>{ID}</tt>. To support compatibility with
       <a class='info' href='#RFC6570'>[RFC6570]<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a>, the expression
       <tt>{+ID}</tt> MAY be used instead and it MUST be
-      treated equal to <tt>{ID}</tt>. If the sequence
-      <tt>{ID}</tt> (or <tt>{+ID}</tt>) is not
-      given, the pattern is processed as if the sequence was appended.
-      For this reason the following IRI patterns are equal:
+      treated equal to <tt>{ID}</tt>. If the expression
+      <tt>{ID}</tt> or <tt>{+ID}</tt> is not given,
+      the pattern is processed as if the expression was appended. For
+      this reason the following IRI patterns are equal:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- http://example.org/
  http://example.org/{ID}
  http://example.org/{+ID}
+ http://example.org/
 </pre></div>
 <p>
       An IRI pattern MUST allow its conversion to an absolute IRI
       <a class='info' href='#RFC3987'>[RFC3987]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRIs),&rdquo; January&nbsp;2005.</span><span>)</span></a> by replacing all occurrences of
       <tt>{ID}</tt> with a selected sequence of Unicode
-      characters. For instance the string <tt>:{ID}</tt> is
-      not a valid IRI pattern because it cannot become a valid IRI.
-      Further restrictions MAY be imposed based on syntax rules of the
-      patterns IRI scheme.
+      characters. For instance the string ":{ID}" is not a
+      valid IRI pattern because it cannot become a valid IRI. Further
+      restrictions MAY be imposed based on syntax rules of the specific
+      IRI scheme.
     
 </p>
 <a name="links"></a><br /><hr />
@@ -390,8 +384,8 @@ Links</h3>
 
 <p>
     A link in BEACON is a typed connection between two resources that
-    are identified by Internationalised Resource Identifiers (IRIs), and
-    is compromised of:
+    are identified by IRIs <a class='info' href='#RFC3987'>[RFC3987]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRIs),&rdquo; January&nbsp;2005.</span><span>)</span></a>, and is
+    compromised of:
   
 </p>
 <p></p>
@@ -404,13 +398,13 @@ Links</h3>
 </li>
 <li>
       
-        a link relation type,
+        a target IRI
       
     
 </li>
 <li>
       
-        a target IRI
+        a relation type,
       
     
 </li>
@@ -431,19 +425,21 @@ Links</h3>
 <p>
     In the common case, source IRI and target IRI will also be URIs
     <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>. A link relation type is either a
-    registered link type from the IANA link relations registry or an URI
-    that uniquely identifies the relation type, as defined in
-    <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>. Link label and link description are
-    normalized Unicode strings that annotate a link
-    <a class='info' href='#Unicode'>[Unicode]<span> (</span><span class='info'>The Unicode Consortium, &ldquo;The Unicode Standard, Version 6.1,&rdquo; April&nbsp;2012.</span><span>)</span></a>. The meaning of this annotations is
-    not defined in this specification, but guidelines are given in
-    <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
+    registered link type from the IANA link relations registry
+    <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> or an URI that uniquely identifies
+    the relation type. Link label and link description are normalized
+    Unicode strings that annotate a link. The meaning of this
+    annotations is not defined in this specification, but guidelines are
+    given in <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
   
 </p>
 <p>
     A BEACON link dump is an annotated set of links with identical link
-    type. The default link type is the URI
-    <tt>http://www.w3.org/2000/01/rdf-schema#seeAlso</tt>.
+    type, which is specified by the <a class='info' href='#link'>link meta
+    field<span> (</span><span class='info'>link</span><span>)</span></a>. In a <a class='info' href='#serialization'>serialized BEACON
+    link dump<span> (</span><span class='info'>Serialization</span><span>)</span></a> a link is specified by
+    <a class='info' href='#link-fields'>link fields<span> (</span><span class='info'>Link fields</span><span>)</span></a>, which a link is
+    constructed from.
   
 </p>
 <a name="meta-fields"></a><br /><hr />
@@ -457,7 +453,8 @@ Meta fields</h3>
     <tt>a-z</tt>. Valid fields are listed in the following.
     Additional meta fields, not defined in this specification SHOULD be
     ignored. All meta field values MUST be normalized Unicode strings
-    <a class='info' href='#whitespace-normalization'>Section&nbsp;1.3<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>.
+    <a class='info' href='#whitespace-normalization'>Section&nbsp;1.3<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>. Meta fields with
+    the empty string as field value MUST be ignored.
   
 </p>
 <a name="prefix"></a><br /><hr />
@@ -498,6 +495,11 @@ link</h3>
 #LINK: http://www.w3.org/2002/07/owl#sameAs
 #LINK: &lt;http://www.w3.org/2002/07/owl#sameAs&gt;
 </pre></div>
+<p>
+      The default link type field value is the URI
+      <tt>http://www.w3.org/2000/01/rdf-schema#seeAlso</tt>.
+    
+</p>
 <a name="contact"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.4"></a><h3>3.4.&nbsp;
@@ -507,11 +509,7 @@ contact</h3>
       The contact field contains an email address or similar contact
       information to reach the maintainer of the BEACON dump. The
       contact SHOULD be a mailbox address as specified in section 3.4 of
-      <a class='info' href='#RFC5322'>[RFC5322]<span> (</span><span class='info'>Resnick, P., Ed., &ldquo;Internet Message Format,&rdquo; October&nbsp;2008.</span><span>)</span></a>.
-    
-</p>
-<p>
-      Examples:
+      <a class='info' href='#RFC5322'>[RFC5322]<span> (</span><span class='info'>Resnick, P., Ed., &ldquo;Internet Message Format,&rdquo; October&nbsp;2008.</span><span>)</span></a>, for instance:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 admin@example.com
@@ -524,7 +522,7 @@ message</h3>
 
 <p>
       The message meta field is used as template or as default value for
-      <a class='info' href='#link-label'>link labels<span> (</span><span class='info'>link label</span><span>)</span></a>.
+      link labels.
     
 </p>
 <a name="description"></a><br /><hr />
@@ -534,7 +532,7 @@ description</h3>
 
 <p>
       The description meta field is used as template or as default value
-      for <a class='info' href='#link-description'>link descriptions<span> (</span><span class='info'>link description</span><span>)</span></a>.
+      for link descriptions.
     
 </p>
 <a name="institution"></a><br /><hr />
@@ -571,9 +569,19 @@ feed</h3>
       from.
     
 </p>
-<a name="timestamp"></a><br /><hr />
+<a name="about"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.10"></a><h3>3.10.&nbsp;
+about</h3>
+
+<p>
+      The about field contains an URL of a website with additional
+      information about this BEACON link dump.
+    
+</p>
+<a name="timestamp"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.11"></a><h3>3.11.&nbsp;
 timestamp</h3>
 
 <p>
@@ -594,7 +602,7 @@ timestamp</h3>
 </pre></div>
 <a name="update"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.11"></a><h3>3.11.&nbsp;
+<a name="rfc.section.3.12"></a><h3>3.12.&nbsp;
 update</h3>
 
 <p>
@@ -700,195 +708,188 @@ Link fields</h3>
     From these fields, combined with the BEACON dump's
     <a class='info' href='#meta-fields'>meta fields<span> (</span><span class='info'>Meta fields</span><span>)</span></a>, the full
     <a class='info' href='#links'>link<span> (</span><span class='info'>Links</span><span>)</span></a> is derived. All field values MUST
-    be <a class='info' href='#whitespace-normalization'>normalized<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>. The
-    full link is derived as following:
+    be <a class='info' href='#whitespace-normalization'>normalized<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a> before
+    further processing. The full link is then derived as following:
   
 </p>
-<a name="link-source"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
-link source</h3>
-
 <p>
-      The link source is the id link field, prepended by the
-      <a class='info' href='#prefix'>prefix meta field<span> (</span><span class='info'>prefix</span><span>)</span></a>, if the latter is
-      specified. The resulting link source MUST be a valid IRI.
-    
+    The <strong>link source</strong> is constructed
+    based on the id field and the <a class='info' href='#prefix'>prefix meta
+    field<span> (</span><span class='info'>prefix</span><span>)</span></a> IRI pattern. If no IRI pattern was specified, the
+    default value <tt>{ID}</tt> is used instead. The link
+    source is then constructed by replacing all occurrences of
+    <tt>{ID}</tt> in the IRI pattern by the id field.
+  
 </p>
-<a name="link-target"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
-link target</h3>
-
 <p>
-      The link target is constructed based on
-    
+    The <strong>link target</strong> is constructed
+    based on
+  
 </p>
 <p></p>
 <ul class="text">
 <li>
-        
-          the id field,
-        
       
+        the id field,
+      
+    
 </li>
 <li>
-        
-          the target field,
-        
       
+        the target field,
+      
+    
 </li>
 <li>
-        
-          the <a class='info' href='#target'>target meta field<span> (</span><span class='info'>target</span><span>)</span></a>
-        
       
+        the <a class='info' href='#target'>target meta field<span> (</span><span class='info'>target</span><span>)</span></a> IRI pattern
+      
+    
 </li>
 </ul>
 
 <p>
-      with the following cases:
-    
+    with the following cases:
+  
 </p>
 <p></p>
 <ul class="text">
 <li>
-        
-          If the target field is specified, then:
-        
       
+        If the target field is specified, then:
+      
+      
+<ul class="text">
+<li>
+          
+            If the target meta field is specified then the
+            <strong>target field</strong> is inserted
+            as <tt>{ID}</tt> expression into the patten, to
+            get the link target.
+          
+        
 </li>
 <li>
+          
+            If the target meta field is not specified, then the link
+            target is the <strong>target
+            field</strong>.
+          
         
-          If the target meta field is specified then the target field is
-          inserted as <tt>{ID}</tt> parameter into the target
-          meta field to get the link target.
-        
-      
+</li>
+</ul>
+    
 </li>
 <li>
-        
-          If the target meta field is not specified, then the link
-          target is the target field.
-        
       
+        If the target field is not specified, then:
+      
+      
+<ul class="text">
+<li>
+          
+            If the target meta field is specified then the
+            <strong>id field</strong> is inserted as
+            <tt>{ID}</tt> expression into the patten, to get
+            the link target.
+          
+        
 </li>
 <li>
+          
+            If the target meta field is not specified, then the link
+            target is the <strong>id field</strong>.
+          
         
-          If the target field is not specified and the target meta field
-          is specified, then the id field is inserted as
-          <tt>{ID}</tt> parameter to get the link target.
-        
-      
 </li>
-<li>
-        
-          If neither the target field nor the target meta field are
-          specified, then the link target is the id field.
-        
-      
+</ul>
+    
 </li>
 </ul>
 
 <p>
-      In all cases the resulting link target MUST be a valid IRI. Any
-      other case (no id field, target meta field with
-      <tt>{TARGET}</tt> parameter but no target field etc.) is
-      an error. A client MUST ignore such links and SHOULD give a
-      warning.
-    
+    Both, link source and link target MUST be a syntactically valid IRI.
+    A client MUST ignore links with invalid IRIs and it SHOULD give a
+    warning.
+  
 </p>
-<a name="link-label"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
-link label</h3>
-
 <p>
-      The link label is derived from the label field and the
-      <a class='info' href='#message'>message meta field<span> (</span><span class='info'>message</span><span>)</span></a> as following:
-    
+    The <strong>link label</strong> is derived from
+    the label field and the <a class='info' href='#message'>message meta
+    field<span> (</span><span class='info'>message</span><span>)</span></a> as following:
+  
 </p>
 <p></p>
 <ul class="text">
 <li>
-        
-          If the message meta field contains the substring
-          <tt>{label}</tt> and the label field is not the
-          empty string, then the substring <tt>{label}</tt> is
-          replaced by the label field to get the link label.
-        
       
+        If the message meta field contains the substring
+        <tt>{label}</tt> and the label field is not the empty
+        string, then the substring <tt>{label}</tt> is
+        replaced by the label field to get the link label.
+      
+    
 </li>
 <li>
-        
-          If otherwise the labeln field is not the empty string, the
-          link label equals to the label field.
-        
       
+        If otherwise the labeln field is not the empty string, the link
+        label equals to the label field.
+      
+    
 </li>
 <li>
-        
-          Otherwise the link label equals to the message meta field.
-        
       
+        Otherwise the link label equals to the message meta field.
+      
+    
 </li>
 </ul>
 
 <p>
-      The resulting string MUST be
-      <a class='info' href='#whitespace-normalization'>normalized<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>. A
-      missing link label equals to the empty string.
-    
-</p>
-<a name="link-description"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4"></a><h3>4.4.&nbsp;
-link description</h3>
-
-<p>
-      The link description is derived from the description field, from
-      the label field, and from the
-      <a class='info' href='#description'>description meta field<span> (</span><span class='info'>description</span><span>)</span></a> as
-      following:
-    
+    The <strong>link description</strong> is derived
+    from the description field, from the label field, and from the
+    <a class='info' href='#description'>description meta field<span> (</span><span class='info'>description</span><span>)</span></a> as
+    following:
+  
 </p>
 <p></p>
 <ul class="text">
 <li>
-        
-          If the description meta field contains the substring
-          <tt>{label}</tt> and the label field is not the
-          empty string, then the substring <tt>{label}</tt> is
-          replaced by the label field to get the link description.
-        
       
+        If the description meta field contains the substring
+        <tt>{label}</tt> and the label field is not the empty
+        string, then the substring <tt>{label}</tt> is
+        replaced by the label field to get the link description.
+      
+    
 </li>
 <li>
-        
-          If otherwise the description field is not the empty string,
-          the link description equals to the description field.
-        
       
+        If otherwise the description field is not the empty string, the
+        link description equals to the description field.
+      
+    
 </li>
 <li>
-        
-          Otherwise the link description equals to the description meta
-          field.
-        
       
+        Otherwise the link description equals to the description meta
+        field.
+      
+    
 </li>
 </ul>
 
 <p>
-      The resulting string MUST be
-      <a class='info' href='#whitespace-normalization'>normalized<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>. A
-      missing link description equals to the empty string.
-    
+    Both, link label and link description MUST be
+    <a class='info' href='#whitespace-normalization'>normalized<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a> after
+    construction. A missing link label or link description equals to the
+    empty string.
+  
 </p>
-<a name="beacon-serialization"></a><br /><hr />
+<a name="serialization"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
-BEACON serialization</h3>
+Serialization</h3>
 
 <a name="beacon-text-format"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -912,7 +913,8 @@ BEACON text format</h3>
 Meta lines</h3>
 
 <p>
-        ...
+        A meta line specifies a <a class='info' href='#meta-fields'>meta
+        field<span> (</span><span class='info'>Meta fields</span><span>)</span></a> and its value.
       
 </p>
 <a name="link-lines"></a><br /><hr />
@@ -1243,6 +1245,7 @@ element beacon {
   attribute description { text },
   attribute institution { text },
   attribute name        { text },
+  attribute about       { xsd:anyURI },
   attribute feed        { xsd:anyURI },
   attribute timestamp   { text },
   attribute update { "always" | "hourly" | "daily"
