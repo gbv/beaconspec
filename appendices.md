@@ -89,6 +89,7 @@ only.
 	  attribute description { text },
 	  attribute institution { text },
 	  attribute name        { text },
+	  attribute about       { xsd:anyURI },
 	  attribute feed        { xsd:anyURI },
 	  attribute timestamp   { text },
 	  attribute update { "always" | "hourly" | "daily" 
