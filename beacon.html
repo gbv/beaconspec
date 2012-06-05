@@ -302,7 +302,7 @@ http://example.org/{ID1} ---&gt; http://example.com/{ID2}
       used to construct both, source and target of a link, for instance:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-http://example.org/{ID}  ---&gt; http://example.org/?id={ID}&amp;action=view
+http://example.org/{ID}  ---&gt; http://example.com/{ID}.html
 </pre></div>
 <p>
       A BEACON link dump can be serialized in a condense
@@ -490,11 +490,17 @@ Links</h3>
 Meta fields</h3>
 
 <p>
-    A BEACON dump MAY be annotated with a set of meta fields. Each meta
-    field is identified by its name, build of lowercase letters
-    <tt>a-z</tt>. Valid fields are listed in the following.
-    Additional meta fields, not defined in this specification SHOULD be
-    ignored. All meta field values MUST be normalized Unicode strings
+    A BEACON dump SHOULD be annotated with a set of meta fields. Each
+    meta field is identified by its name, build of lowercase letters
+    <tt>a-z</tt>. In <a class='info' href='#beacon-text-format'>BEACON
+    text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a>, meta field names are case insensitive and SHOULD
+    be given in uppercase letters.
+  
+</p>
+<p>
+    Valid meta fields are listed in the following. Additional meta
+    fields, not defined in this specification SHOULD be ignored. All
+    meta field values MUST be normalized Unicode strings
     <a class='info' href='#whitespace-normalization'>Section&nbsp;1.3<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>. Meta fields with
     the empty string as field value MUST be ignored.
   
@@ -960,16 +966,17 @@ LINEBREAK   =  *( CR / LF )    ; at least linefeed or carriage return
 </p>
 <p>
       A meta line specifies a <a class='info' href='#meta-fields'>meta
-      field<span> (</span><span class='info'>Meta fields</span><span>)</span></a> and its value:
+      field<span> (</span><span class='info'>Meta fields</span><span>)</span></a> and its value. Meta field names are case insensitive
+      and SHOULD be given in uppercase letters.
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 metaline       =  "#" metafield ":" metavalue LINEBREAK
 
-metafield = "PREFIX" | "TARGET" | "LINK" | "CONTACT" | "MESSAGE" |
-            "DESCRIPTION" | "INSTITUTION" | "NAME" | "ABOUT" |
-            "FEED" | "TIMESTAMP" | "UPDATE"
+metafield      =  "PREFIX" / "TARGET" / "LINK" / "MESSAGE"
+               /  "DESCRIPTION" / "INSTITUTION" / "NAME" / "ABOUT"
+               /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
 
-metavalue = STRING
+metavalue      =  STRING
 </pre></div>
 <p>
       Each link ...TODO...

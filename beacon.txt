@@ -135,7 +135,7 @@ Internet-Draft                   Beacon                         May 2012
    A special case is the use of the same local identifier that can be
    used to construct both, source and target of a link, for instance:
 
-   http://example.org/{ID}  ---> http://example.org/?id={ID}&action=view
+   http://example.org/{ID}  ---> http://example.com/{ID}.html
 
    A BEACON link dump can be serialized in a condense BEACON text format
    (Section 5.1) and in BEACON XML format (Section 5.2).
@@ -289,12 +289,15 @@ Internet-Draft                   Beacon                         May 2012
 
 3.  Meta fields
 
-   A BEACON dump MAY be annotated with a set of meta fields.  Each meta
-   field is identified by its name, build of lowercase letters "a-z".
-   Valid fields are listed in the following.  Additional meta fields,
-   not defined in this specification SHOULD be ignored.  All meta field
-   values MUST be normalized Unicode strings Section 1.3.  Meta fields
-   with the empty string as field value MUST be ignored.
+   A BEACON dump SHOULD be annotated with a set of meta fields.  Each
+   meta field is identified by its name, build of lowercase letters
+   "a-z".  In BEACON text format (Section 5.1), meta field names are
+   case insensitive and SHOULD be given in uppercase letters.
+
+   Valid meta fields are listed in the following.  Additional meta
+   fields, not defined in this specification SHOULD be ignored.  All
+   meta field values MUST be normalized Unicode strings Section 1.3.
+   Meta fields with the empty string as field value MUST be ignored.
 
 3.1.  prefix
 
@@ -326,9 +329,6 @@ Internet-Draft                   Beacon                         May 2012
    SHOULD be a mailbox address as specified in section 3.4 of [RFC5322],
    for instance:
 
-   admin@example.com
-   Barbara Beacon <b.beacon@example.org>
-
 
 
 
@@ -336,6 +336,9 @@ Voss                    Expires November 2, 2012                [Page 6]
 
 Internet-Draft                   Beacon                         May 2012
 
+
+   admin@example.com
+   Barbara Beacon <b.beacon@example.org>
 
 3.5.  message
 
@@ -382,9 +385,6 @@ Internet-Draft                   Beacon                         May 2012
    2012-05-30
    2012-05-30T15:17:36+02:00
    2012-05-30T13:17:36Z
-
-
-
 
 
 
@@ -540,19 +540,19 @@ Internet-Draft                   Beacon                         May 2012
    An empty line SHOULD be used to separate meta lines and link lines.
    The order of meta lines and the order of link lines is irrelevant.
 
-   A meta line specifies a meta field (Section 3) and its value:
+   A meta line specifies a meta field (Section 3) and its value.  Meta
+   field names are case insensitive and SHOULD be given in uppercase
+   letters.
 
    metaline       =  "#" metafield ":" metavalue LINEBREAK
 
-   metafield = "PREFIX" | "TARGET" | "LINK" | "CONTACT" | "MESSAGE" |
-               "DESCRIPTION" | "INSTITUTION" | "NAME" | "ABOUT" |
-               "FEED" | "TIMESTAMP" | "UPDATE"
+   metafield      =  "PREFIX" / "TARGET" / "LINK" / "MESSAGE"
+                  /  "DESCRIPTION" / "INSTITUTION" / "NAME" / "ABOUT"
+                  /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
 
-   metavalue = STRING
+   metavalue      =  STRING
 
    Each link ...TODO...
-
-
 
 
 
