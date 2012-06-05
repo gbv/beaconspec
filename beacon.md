@@ -127,11 +127,14 @@ a link is constructed from.
 # Meta fields
 
 A BEACON dump SHOULD be annotated with a set of meta fields. Each meta field is
-identified by its name, build of lowercase letters `a-z`. Valid fields are
-listed in the following. Additional meta fields, not defined in this
-specification SHOULD be ignored. All meta field values MUST be normalized
-Unicode strings [](#whitespace-normalization). Meta fields with the empty
-string as field value MUST be ignored.
+identified by its name, build of lowercase letters `a-z`. In [BEACON text
+format](#beacon-text-format), meta field names are case insensitive and SHOULD
+be given in uppercase letters.
+
+Valid meta fields are listed in the following. Additional meta fields, not
+defined in this specification SHOULD be ignored. All meta field values MUST be
+normalized Unicode strings [](#whitespace-normalization). Meta fields with the
+empty string as field value MUST be ignored.
 
 ## prefix
 
@@ -314,15 +317,16 @@ an Unicode Byte Order Mark and it SHOULD end with a line break:
 An empty line SHOULD be used to separate meta lines and link lines. The order
 of meta lines and the order of link lines is irrelevant. 
 
-A meta line specifies a [meta field](#meta-fields) and its value:
+A meta line specifies a [meta field](#meta-fields) and its value. Meta field
+names are case insensitive and SHOULD be given in uppercase letters.
 
     metaline       =  "#" metafield ":" metavalue LINEBREAK
 
-    metafield = "PREFIX" | "TARGET" | "LINK" | "CONTACT" | "MESSAGE" |
-	            "DESCRIPTION" | "INSTITUTION" | "NAME" | "ABOUT" |
-				"FEED" | "TIMESTAMP" | "UPDATE"
+    metafield      =  "PREFIX" / "TARGET" / "LINK" / "MESSAGE"
+	               /  "DESCRIPTION" / "INSTITUTION" / "NAME" / "ABOUT"
+				   /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
 
-    metavalue = STRING
+    metavalue      =  STRING
 
 Each link ...TODO...
 
