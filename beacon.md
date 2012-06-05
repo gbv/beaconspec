@@ -8,7 +8,8 @@
 BEACON is a data interchange format for large numbers of uniform links.  A
 BEACON link dump consists of:
 
-* a set of [links](#links), each derived from [link fields](#link-fields),
+* a set of [links](#links), each constructed from a set of 
+  [link fields](#link-fields),
 * a set of [meta fields](#meta-fields).
 
 All links typically share a common URI pattern for source and for target,
@@ -34,21 +35,52 @@ interpreted as described in [](#RFC2119).
 The formal grammar rules in this document are to be interpreted as described in
 [](#RFC5234), including the following core ABNF syntax rules:
 
-     ALPHA         =  %x41-5A / %x61-7A   ; A-Z / a-z
-	 DIGIT         =  %x30-39             ; 0-9
-	 HEXDIG        =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
-     HTAB          =  %x09                ; horizontal tab
-     LF            =  %x0A                ; linefeed
-     CR            =  %x0D                ; carriage return
-     SP            =  %20                 ; space
+     ALPHA       =  %x41-5A / %x61-7A   ; A-Z / a-z
+	 DIGIT       =  %x30-39             ; 0-9
+	 HEXDIG      =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
+     HTAB        =  %x09                ; horizontal tab
+     LF          =  %x0A                ; linefeed
+     CR          =  %x0D                ; carriage return
+     SP          =  %x20                ; space
 
-## Whitespace Normalization 
+The `SCHEME` rule is copied from [](#RFC3986):
+
+     SCHEME      =  ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
+
+In addition, the operator `-` can be used in rules to express exceptions.
+For instance the symbol `LINESTRING` is defined as Unicode string that does
+not include a line break: 
+
+     LINESTRING  =  *( CHAR - LINEBREAK )
+
+     LINEBREAK   =  *( CR / LF ) ; at least linefeed or carriage return
+
+## String normalization 
 
 A Unicode string is normalized according to this specification, by stripping
 leading and trailing whitespace and by replacing all `WHITESPACE` character
 sequences by a single space (`SP`).
 
-     WHITESPACE     =  1*( CR | LF | HTAB | SP )
+     WHITESPACE  =  1*( CR | LF | HTAB | SP )
+
+The set of allowed Unicode characters in BEACON is the set of valid Unicode
+characters from UCS which can also be expressed in XML 1.0, excluding some
+discouraged control characters:
+
+	 CHAR        =  WHITESPACE / %x21-7E / %xA0-D7FF / %xE000-FFFD
+	             /  %x10000-1FFFD / %x20000-2FFFD / %x30000-3FFFD
+	             /  %x40000-4FFFD / %x50000-5FFFD / %x60000-6FFFD
+	             /  %x70000-7FFFD / %x80000-8FFFD / %x90000-9FFFD
+	             /  %xA0000-AFFFD / %xB0000-BFFFD / %xC0000-CFFFD
+	             /  %xD0000-DFFFD / %xE0000-EFFFD / %xF0000-FFFFD
+	             /  %x10000-10FFFD
+
+An application MAY allow additional characters or disallow additional
+characters by stripping them or by replacing them with the replacement
+character `U+FFFD`.
+
+Applications SHOULD further apply Unicode Normalization Form Canonical
+Composition (NFKC) to all strings.
 
 ## URI patterns
 
@@ -106,16 +138,22 @@ identified by URIs [](#RFC3986), and is compromised of:
 * an optional label,
 * an optional description.
 
-A link relation type is either a registered link type from the IANA link
-relations registry  [](#RFC5988) or an URI that uniquely identifies the
-relation type. Link label and link description are normalized Unicode strings
-that annotate a link. The meaning of this annotations is not defined in this
-specification, but guidelines are given in [](#interpreting-beacon-links).
+A BEACON link dump is an annotated set of links with identical relation type.
+A relation type is either a registered link type from the IANA link relations
+registry  [](#RFC5988) or an URI. Some examples of relation types:
 
-A BEACON link dump is an annotated set of links with identical link type, which
-is specified by the [link meta field](#link). In a [serialized BEACON link
-dump](#serialization) a link is specified by [link fields](#link-fields), which
-a link is constructed from.
+	 alternate
+	 describedby
+	 replies
+     http://www.w3.org/2002/07/owl#sameAs
+	 http://xmlns.com/foaf/0.1/primaryTopicOf
+	 http://purl.org/spar/cito/cites
+
+In a [serialized BEACON dump](#serialization) the relation type is specified by
+the link [meta field](#meta-fields) and the other parts of each link are
+specified by a set of [link fields](#link-fields). The meaning of a link and
+its parts is not defined by this specification, but guidelines are given in
+[](#interpreting-beacon-links).
 
 # Meta fields
 
@@ -126,24 +164,26 @@ be given in uppercase letters.
 
 Valid meta fields are listed in the following. Additional meta fields, not
 defined in this specification SHOULD be ignored. All meta field values MUST be
-normalized Unicode strings [](#whitespace-normalization). Meta fields with the
-empty string as field value MUST be ignored.
+normalized Unicode strings [](#string-normalization). Missing meta fields
+and meta fields with the empty string as normalized field value MUST be set to
+their default value, which is the empty string unless noted otherwise.
 
 ## prefix
 
 The prefix field specifies an URI pattern that is used to construct link
-sources. The name `prefix` was choosen to keep backwards compatibility with
+sources.  If no prefix meta field was specified, the default value `{+ID}` is
+used.  The name `prefix` was choosen to keep backwards compatibility with
 existing BEACON dumps.
 
 ## target
 
-The target field specifies an URI pattern to construct link targets.
+The target field specifies an URI pattern to construct link targets.  If no
+target meta field was specified, the default value `{+ID}` is used.
 
 ## link
 
-The link field specifies the link type for all links in a BEACON dump.
-The default link type field value is the URI
-`http://www.w3.org/2000/01/rdf-schema#seeAlso`.
+The link field specifies the relation type for all links in a BEACON dump.
+The default relation type is `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 
 ## contact
 
@@ -156,12 +196,13 @@ address as specified in section 3.4 of [](#RFC5322), for instance:
 
 ## message
 
-The message meta field is used as template or as default value for link labels.
+The message meta field is used as template for link labels. The default value
+is `{label}`.
 
 ## description
 
-The description meta field is used as template or as default value for link
-descriptions.
+The description meta field is used as template for link descriptions. The
+default value is `{description}`.
 
 ## institution
 
@@ -176,8 +217,9 @@ the name meta field contains the name of the database.
 
 ## feed
 
-The feed field contains an URL, conforming to [](#RFC3986), where to download
-the BEACON dump from.
+The feed field contains an URL, where to download the BEACON dump from. In
+addition to standard URL schemes, alternative established URI forms for
+retrieval, such as magnet URIs MAY be allowed.
 
 ## about
 
@@ -224,66 +266,39 @@ Each link in a serialized BEACON dump is given in form of up to four fields:
 * optional target field.
 
 From these fields, combined with the BEACON dump's [meta fields](#meta-fields),
-the full [link](#links) is derived. All field values MUST be
-[normalized](#whitespace-normalization) before further processing. The full
-link is then derived as following:
+the full [link](#links) is constructed. All field values MUST be
+[normalized](#string-normalization) before further processing. Missing
+optional fields MUST be set to the empty string.  The full link is then
+constructed as following:
 
-The **link source** is constructed based on the id field and the [prefix meta
-field](#prefix) URI pattern. If no URI pattern was specified, the default value
-`{ID}` is used instead. The link source is then constructed by replacing all
-occurrences of `{ID}` in the URI pattern by the id field. 
+The **link source** is constructed from the [prefix meta field](#prefix) URI
+pattern by inserting the id field as identifier value, as defined in
+[](#uri-patterns).
 
-The **link target** is constructed based on
+The **link target** is constructed from the [target meta field](#target) URI
+pattern by inserting as identifier value, as defined in [](#uri-patterns):
 
-* the id field,
-* the target field,
-* the [target meta field](#target) URI pattern
+* the target field, if the target field is not the empty string,
+* the id field, otherwise.
 
-with the following cases:
+Constructed link sources and link targets MUST be a syntactically valid URIs. A
+client MUST ignore links with invalid URIs and it SHOULD give a warning.
 
-* If the target field is specified, then:
+The **link label** and the **link description** are constructed from the
+[message meta field](#message) or the [description meta field](#description),
+respectively, as following. The respective meta field value is used as string
+pattern in which the following character sequences are replaced literally:
 
-	* If the target meta field is specified then the **target field** is
-	  inserted as `{ID}` expression into the patten, to get the link target.
+* `{id}` is replaced by the id field,
+* `{label}` and `{hits}` is replaced by the label field (the latter is 
+  supported for backwards compatibility),
+* `{description}` is replaced by the description field,
+* `{target}` is replaced by the target field,
+* `{bracket}` is replaced by the left curly bracket character `{` (`%x7D`).
 
-	* If the target meta field is not specified, then the link target is the 
-	  **target field**.
-
-* If the target field is not specified, then:
-
-	* If the target meta field is specified then the **id field** is
-	  inserted as `{ID}` expression into the patten, to get the link target.
-
-	* If the target meta field is not specified, then the link target is the 
-	  **id field**.
-
-Both, link source and link target MUST be a syntactically valid URI. A client
-MUST ignore links with invalid URIs and it SHOULD give a warning.
-
-The **link label** is derived from the label field and the [message meta
-field](#message) as following:
-
-* If the message meta field contains the substring `{label}` and the label
-  field is not the empty string, then the substring `{label}` is replaced by 
-  the label field to get the link label.
-* If otherwise the labeln field is not the empty string, the link 
-  label equals to the label field.
-* Otherwise the link label equals to the message meta field.
-
-The **link description** is derived from the description field, from the label field,
-and from the [description meta field](#description) as following:
-
-* If the description meta field contains the substring `{label}` and the label
-  field is not the empty string, then the substring `{label}` is replaced by 
-  the label field to get the link description.
-* If otherwise the description field is not the empty string, the link 
-  description equals to the description field.
-* Otherwise the link description equals to the description meta field.
-
-Both, link label and link description MUST be
-[normalized](#whitespace-normalization) after construction. A missing link
-label or link description equals to the empty string. 
-
+Additional encoding MUST NOT be applied to field values during this process.
+The resulting string MUST be [normalized](#string-normalization) after
+construction.
 
 # Serialization
 
@@ -298,8 +313,6 @@ an Unicode Byte Order Mark and it SHOULD end with a line break:
 	
      BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 
-     LINEBREAK   =  *( CR / LF )   ; at least linefeed or carriage return
-
 An empty line SHOULD be used to separate meta lines and link lines. The order
 of meta lines and the order of link lines is irrelevant. 
 
@@ -312,26 +325,31 @@ names are case insensitive and SHOULD be given in uppercase letters.
 	                /  "DESCRIPTION" / "INSTITUTION" / "NAME" / "ABOUT"
                     /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
  
-     metavalue      =  STRING
+     metavalue      =  LINESTRING
 
-Each link ...TODO...
+Each link is given on a link line with its id field, optionally follwed by
+additional fields:
 
      links          =  link *( LINEBREAK link )
 
-     VBAR           =  "|"                ; vertical bar
-
      link           =  ID 
-	                /  ID VBAR TARGET   ; only if TARGET looks like URI
-                    /  ID VBAR LABEL    ; only if LABEL not like URI
+	                /  ID VBAR XTARGET   ; only if TARGET looks like URI
+                    /  ID VBAR XLABEL    ; only if LABEL not like URI
 					/  ID VBAR LABEL [ VBAR DESCRIPTION ] VBAR [ TARGET ]
 
-     DESCRIPTION    = STRING
+     VBAR           =  "|"                ; vertical bar
 
-The terminal symbol `STRING` can be any UTF-8 string that does not include a 
-`LINEBREAK`.
+     DESCRIPTION    =  LINESTRING
 
-The terminal symbols `ID`, `TARGET`, and `LABEL` each can be any UTF-8 string
-that does not include a `LINEBREAK` or a `VBAR`.
+     ID             =  *( CHAR - ( LINEBREAK / VBAR ) )
+
+     TARGET         =  *( CHAR - ( LINEBREAK / VBAR ) )
+
+     LABEL          =  *( CHAR - ( LINEBREAK / VBAR ) )
+
+     XTARGET        =  SCHEME ":" LINESTRING
+
+     XLABEL         =  LABEL - XTARGET
 
 
 ## BEACON XML format
@@ -363,7 +381,7 @@ Additional XML attributes of `<link>` elements and `<link>` elements without
 Note that in contrast to BEACON text format, link fields MAY include line
 breaks, which are removed by whitespace normalization. Furthermore id field,
 label field and target field MAY include a vertical bar, which is encoded as
-`%7F` during construction the link.
+`%7C` during construction the link.
 
 
 # Security Considerations
