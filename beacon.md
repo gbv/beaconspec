@@ -126,7 +126,7 @@ a link is constructed from.
 
 # Meta fields
 
-A BEACON dump MAY be annotated with a set of meta fields. Each meta field is
+A BEACON dump SHOULD be annotated with a set of meta fields. Each meta field is
 identified by its name, build of lowercase letters `a-z`. Valid fields are
 listed in the following. Additional meta fields, not defined in this
 specification SHOULD be ignored. All meta field values MUST be normalized
