@@ -8,8 +8,7 @@
 BEACON is a data interchange format for large numbers of uniform links.  A
 BEACON link dump consists of:
 
-* a set of [links](#links), each derived from a set of 
-  [link fields](#link-fields),
+* a set of [links](#links), each derived from [link fields](#link-fields),
 * a set of [meta fields](#meta-fields).
 
 All links typically share a common URI pattern for source and for target,
@@ -35,19 +34,13 @@ interpreted as described in [](#RFC2119).
 The formal grammar rules in this document are to be interpreted as described in
 [](#RFC5234), including the following core ABNF syntax rules:
 
-    ALPHA          =  %x41-5A / %x61-7A   ; A-Z / a-z
-
-	DIGIT          =  %x30-39             ; 0-9
-
-	HEXDIG         =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
-
-    HTAB           =  %x09                ; horizontal tab
-
-    LF             =  %x0A                ; linefeed
-
-    CR             =  %x0D                ; carriage return
-
-    SP             =  %20                 ; space
+     ALPHA         =  %x41-5A / %x61-7A   ; A-Z / a-z
+	 DIGIT         =  %x30-39             ; 0-9
+	 HEXDIG        =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
+     HTAB          =  %x09                ; horizontal tab
+     LF            =  %x0A                ; linefeed
+     CR            =  %x0D                ; carriage return
+     SP            =  %20                 ; space
 
 ## Whitespace Normalization 
 
@@ -55,7 +48,7 @@ A Unicode string is normalized according to this specification, by stripping
 leading and trailing whitespace and by replacing all `WHITESPACE` character
 sequences by a single space (`SP`).
 
-    WHITESPACE     =  1*( CR | LF | HTAB | SP )
+     WHITESPACE     =  1*( CR | LF | HTAB | SP )
 
 ## URI patterns
 
@@ -148,14 +141,7 @@ The target field specifies an URI pattern to construct link targets.
 
 ## link
 
-The link field specifies the link type for all links in a BEACON dump. In
-[BEACON text format](#beacon-text-format) the link MAY be specified enclosed in
-angle brackets if it is an URI, so the following BEACON text link fields are
-equal:
-
-    #LINK: http://www.w3.org/2002/07/owl#sameAs
-    #LINK: <http://www.w3.org/2002/07/owl#sameAs>
-
+The link field specifies the link type for all links in a BEACON dump.
 The default link type field value is the URI
 `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 
@@ -165,8 +151,8 @@ The contact field contains an email address or similar contact information to
 reach the maintainer of the BEACON dump.  The contact SHOULD be a mailbox
 address as specified in section 3.4 of [](#RFC5322), for instance:
 
-    admin@example.com
-	Barbara Beacon <b.beacon@example.org>
+     admin@example.com
+	 Barbara Beacon <b.beacon@example.org>
 
 ## message
 
@@ -206,9 +192,9 @@ in [](#RFC3339). In addition, an uppercase `T` character MUST be used to
 separate date and time, and an uppercase `Z` character MUST be present in the
 absence of a numeric time zone offset. Some examples of valid timestamp values:
 
-    2012-05-30
-    2012-05-30T15:17:36+02:00
-    2012-05-30T13:17:36Z
+     2012-05-30
+     2012-05-30T15:17:36+02:00
+     2012-05-30T13:17:36Z
 
 ## update
 
@@ -308,11 +294,11 @@ lines by line breaks. The file consists of a set of lines with meta fields,
 followed by a set of lines with link fields. A BEACON text file MAY begin with
 an Unicode Byte Order Mark and it SHOULD end with a line break:
 
-    BEACONTEXT  =  [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
+     BEACONTEXT  =  [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
 	
-    BOM         =  %xEF.BB.BF      ; Unicode UTF-8 Byte Order Mark
+     BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 
-    LINEBREAK   =  *( CR / LF )    ; at least linefeed or carriage return
+     LINEBREAK   =  *( CR / LF )   ; at least linefeed or carriage return
 
 An empty line SHOULD be used to separate meta lines and link lines. The order
 of meta lines and the order of link lines is irrelevant. 
@@ -320,26 +306,32 @@ of meta lines and the order of link lines is irrelevant.
 A meta line specifies a [meta field](#meta-fields) and its value. Meta field
 names are case insensitive and SHOULD be given in uppercase letters.
 
-    metaline       =  "#" metafield ":" metavalue LINEBREAK
+     metaline       =  "#" metafield ":" metavalue LINEBREAK
 
-    metafield      =  "PREFIX" / "TARGET" / "LINK" / "MESSAGE"
-	               /  "DESCRIPTION" / "INSTITUTION" / "NAME" / "ABOUT"
-				   /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
-
-    metavalue      =  STRING
+     metafield      =  "PREFIX" / "TARGET" / "LINK" / "MESSAGE"
+	                /  "DESCRIPTION" / "INSTITUTION" / "NAME" / "ABOUT"
+                    /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
+ 
+     metavalue      =  STRING
 
 Each link ...TODO...
 
-    links    = link *( LINEBREAK link )
+     links          =  link *( LINEBREAK link )
 
-    VBAR     = "|"                ; vertical bar
-    link     = ID [ VBAR TARGET ] ...
+     VBAR           =  "|"                ; vertical bar
+
+     link           =  ID 
+	                /  ID VBAR TARGET   ; only if TARGET looks like URI
+                    /  ID VBAR LABEL    ; only if LABEL not like URI
+					/  ID VBAR LABEL [ VBAR DESCRIPTION ] VBAR [ TARGET ]
+
+     DESCRIPTION    = STRING
 
 The terminal symbol `STRING` can be any UTF-8 string that does not include a 
 `LINEBREAK`.
 
-The terminal symbols `ID` and `TARGET` each can be any UTF-8 string that does not
-include a `LINEBREAK` or a `VBAR`.
+The terminal symbols `ID`, `TARGET`, and `LABEL` each can be any UTF-8 string
+that does not include a `LINEBREAK` or a `VBAR`.
 
 
 ## BEACON XML format
@@ -368,7 +360,10 @@ parsing with regular expressions or similar methods prone to errors.
 Additional XML attributes of `<link>` elements and `<link>` elements without
 `id` attribute SHOULD be ignored.
 
-Note that in contrast to BEACON text format, link fields MAY include line breaks, which are removed by 
+Note that in contrast to BEACON text format, link fields MAY include line
+breaks, which are removed by whitespace normalization. Furthermore id field,
+label field and target field MAY include a vertical bar, which is encoded as
+`%7F` during construction the link.
 
 
 # Security Considerations

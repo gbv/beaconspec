@@ -73,7 +73,7 @@ format and in BEACON XML format this way:
 
     foo|||xy
 
-	<link target="xy">foo</link>
+	<link source="foo" target="xy"/>
 
 
 # RELAX NG Schema for BEACON XML
