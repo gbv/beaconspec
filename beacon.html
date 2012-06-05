@@ -326,9 +326,24 @@ Notational Conventions</h3>
 </p>
 <p>
       The formal grammar rules in this document are to be interpreted as
-      described in <a class='info' href='#RFC5234'>[RFC5234]<span> (</span><span class='info'>Crocker, D. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; January&nbsp;2008.</span><span>)</span></a>.
+      described in <a class='info' href='#RFC5234'>[RFC5234]<span> (</span><span class='info'>Crocker, D. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; January&nbsp;2008.</span><span>)</span></a>, including the
+      following core ABNF syntax rules:
     
-</p>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ALPHA          =  %x41-5A / %x61-7A   ; A-Z / a-z
+
+DIGIT          =  %x30-39             ; 0-9
+
+HEXDIG         =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
+
+HTAB           =  %x09                ; horizontal tab
+
+LF             =  %x0A                ; linefeed
+
+CR             =  %x0D                ; carriage return
+
+SP             =  %20                 ; space
+</pre></div>
 <a name="whitespace-normalization"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
@@ -336,12 +351,13 @@ Whitespace Normalization</h3>
 
 <p>
       A Unicode string is normalized according to this specification, by
-      stripping leading and trailing whitespace and by replacing
-      sequences of whitespace characters
-      (<tt>U+0020 | U+0009 | U+000D | U+000A</tt>) by a single
-      space (<tt>U+0020</tt>) <a class='info' href='#Unicode'>[Unicode]<span> (</span><span class='info'>The Unicode Consortium, &ldquo;The Unicode Standard, Version 6.1,&rdquo; April&nbsp;2012.</span><span>)</span></a>.
+      stripping leading and trailing whitespace and by replacing all
+      <tt>WHITESPACE</tt> character sequences by a single
+      space (<tt>SP</tt>).
     
-</p>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+WHITESPACE     =  1*( CR | LF | HTAB | SP )
+</pre></div>
 <a name="uri-patterns"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.4"></a><h3>1.4.&nbsp;
@@ -370,9 +386,18 @@ URI patterns</h3>
       <tt>{+ID}</tt>, are copied literally. All other
       characters are copied the URI as the sequence of pct-encoded
       triplets corresponding to that character's encoding in UTF-8
-      <a class='info' href='#RFC3629'>[RFC3629]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>.
+      <a class='info' href='#RFC3629'>[RFC3629]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>. The referenced character ranges
+      are imported here from <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> for
+      convenience:
     
-</p>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ pct-encoded    =  "%" HEXDIG HEXDIG
+ unreserved     =  ALPHA / DIGIT / "-" / "." / "_" / "~"
+ reserved       =  gen-delims / sub-delims
+ gen-delims     =  ":" / "/" / "?" / "#" / "[" / "]" / "@"
+ sub-delims     =  "!" / "$" / "&amp;" / "'" / "(" / ")"
+                /  "*" / "+" / "," / ";" / "="
+</pre></div>
 <p>
       A URI pattern is allowed to contain the broader set of characters
       allowed in Internationalized Resource Identifiers (IRI)
@@ -381,7 +406,20 @@ URI patterns</h3>
       following the process defined in Section 3.2 of
       <a class='info' href='#RFC3987'>[RFC3987]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRIs),&rdquo; January&nbsp;2005.</span><span>)</span></a>.
     
-</p>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ Example value    Expression   Copied as
+
+  path/dir          {ID}        path%2Fdir
+  path/dir          {+ID}       path/dir
+  Hello World!      {ID}        Hello%20World%21
+  Hello World!      {+ID}       Hello%20World!
+  Hello%20World     {ID}        Hello%2520World
+  Hello%20World     {+ID}       Hello%20World
+  Müller            {ID}        M%C3%BCller
+  Müller            {+ID}       M%C3%BCller
+  M%C3%BCller       {ID}        M%25C3%25BCller
+  M%C3%BCller       {+ID}       M%C3%BCller
+</pre></div>
 <a name="links"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
@@ -908,11 +946,11 @@ BEACON text format</h3>
       an Unicode Byte Order Mark and it SHOULD end with a line break:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-beacon     = [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
+BEACONTEXT  =  [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
 
-BOM        = %xEF.BB.BF          ; Unicode UTF-8 Byte Order Mark
+BOM         =  %xEF.BB.BF      ; Unicode UTF-8 Byte Order Mark
 
-LINEBREAK  = *( %x0A / %0x0D )   ; at least linefeed or carriage return
+LINEBREAK   =  *( CR / LF )    ; at least linefeed or carriage return
 </pre></div>
 <p>
       An empty line SHOULD be used to separate meta lines and link
@@ -925,7 +963,7 @@ LINEBREAK  = *( %x0A / %0x0D )   ; at least linefeed or carriage return
       field<span> (</span><span class='info'>Meta fields</span><span>)</span></a> and its value:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-metaline  = "#" metafield ":" metavalue LINEBREAK
+metaline       =  "#" metafield ":" metavalue LINEBREAK
 
 metafield = "PREFIX" | "TARGET" | "LINK" | "CONTACT" | "MESSAGE" |
             "DESCRIPTION" | "INSTITUTION" | "NAME" | "ABOUT" |
@@ -939,12 +977,19 @@ metavalue = STRING
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 links    = link *( LINEBREAK link )
 
-link     = ID [ "|" TARGET ] ...
+VBAR     = "|"                ; vertical bar
+link     = ID [ VBAR TARGET ] ...
 </pre></div>
 <p>
       The terminal symbol <tt>STRING</tt> can be any UTF-8
-      string that does not include the characters
-      <tt>U+000A</tt> or <tt>U+000D</tt>.
+      string that does not include a <tt>LINEBREAK</tt>.
+    
+</p>
+<p>
+      The terminal symbols <tt>ID</tt> and
+      <tt>TARGET</tt> each can be any UTF-8 string that does
+      not include a <tt>LINEBREAK</tt> or a
+      <tt>VBAR</tt>.
     
 </p>
 <a name="beacon-xml-format"></a><br /><hr />
@@ -1029,6 +1074,11 @@ BEACON XML format</h3>
       Additional XML attributes of <tt>&lt;link&gt;</tt>
       elements and <tt>&lt;link&gt;</tt> elements without
       <tt>id</tt> attribute SHOULD be ignored.
+    
+</p>
+<p>
+      Note that in contrast to BEACON text format, link fields MAY
+      include line breaks, which are removed by
     
 </p>
 <a name="security-considerations"></a><br /><hr />

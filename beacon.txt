@@ -62,36 +62,36 @@ Table of Contents
    1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
      1.1.  Overview . . . . . . . . . . . . . . . . . . . . . . . . .  3
      1.2.  Notational Conventions . . . . . . . . . . . . . . . . . .  3
-     1.3.  Whitespace Normalization . . . . . . . . . . . . . . . . .  3
-     1.4.  URI patterns . . . . . . . . . . . . . . . . . . . . . . .  3
-   2.  Links  . . . . . . . . . . . . . . . . . . . . . . . . . . . .  4
-   3.  Meta fields  . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.1.  prefix . . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.2.  target . . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.3.  link . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.4.  contact  . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.5.  message  . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     3.6.  description  . . . . . . . . . . . . . . . . . . . . . . .  6
-     3.7.  institution  . . . . . . . . . . . . . . . . . . . . . . .  6
-     3.8.  name . . . . . . . . . . . . . . . . . . . . . . . . . . .  6
-     3.9.  feed . . . . . . . . . . . . . . . . . . . . . . . . . . .  6
-     3.10. about  . . . . . . . . . . . . . . . . . . . . . . . . . .  6
-     3.11. timestamp  . . . . . . . . . . . . . . . . . . . . . . . .  6
-     3.12. update . . . . . . . . . . . . . . . . . . . . . . . . . .  6
-   4.  Link fields  . . . . . . . . . . . . . . . . . . . . . . . . .  7
-   5.  Serialization  . . . . . . . . . . . . . . . . . . . . . . . .  9
-     5.1.  BEACON text format . . . . . . . . . . . . . . . . . . . .  9
-     5.2.  BEACON XML format  . . . . . . . . . . . . . . . . . . . . 10
-   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 10
-   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 10
-     7.1.  Normative References . . . . . . . . . . . . . . . . . . . 10
-     7.2.  Informative References . . . . . . . . . . . . . . . . . . 11
-   Appendix A.  Interpreting BEACON links . . . . . . . . . . . . . . 11
-     A.1.  HTML links . . . . . . . . . . . . . . . . . . . . . . . . 11
-     A.2.  RDF triples  . . . . . . . . . . . . . . . . . . . . . . . 12
-     A.3.  Resource discovery from authority files  . . . . . . . . . 13
-   Appendix B.  RELAX NG Schema for BEACON XML  . . . . . . . . . . . 13
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 14
+     1.3.  Whitespace Normalization . . . . . . . . . . . . . . . . .  4
+     1.4.  URI patterns . . . . . . . . . . . . . . . . . . . . . . .  4
+   2.  Links  . . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
+   3.  Meta fields  . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.1.  prefix . . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.2.  target . . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.3.  link . . . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.4.  contact  . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.5.  message  . . . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.6.  description  . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.7.  institution  . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.8.  name . . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.9.  feed . . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.10. about  . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.11. timestamp  . . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.12. update . . . . . . . . . . . . . . . . . . . . . . . . . .  8
+   4.  Link fields  . . . . . . . . . . . . . . . . . . . . . . . . .  8
+   5.  Serialization  . . . . . . . . . . . . . . . . . . . . . . . . 10
+     5.1.  BEACON text format . . . . . . . . . . . . . . . . . . . . 10
+     5.2.  BEACON XML format  . . . . . . . . . . . . . . . . . . . . 11
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 12
+   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+     7.1.  Normative References . . . . . . . . . . . . . . . . . . . 12
+     7.2.  Informative References . . . . . . . . . . . . . . . . . . 12
+   Appendix A.  Interpreting BEACON links . . . . . . . . . . . . . . 13
+     A.1.  HTML links . . . . . . . . . . . . . . . . . . . . . . . . 13
+     A.2.  RDF triples  . . . . . . . . . . . . . . . . . . . . . . . 13
+     A.3.  Resource discovery from authority files  . . . . . . . . . 14
+   Appendix B.  RELAX NG Schema for BEACON XML  . . . . . . . . . . . 14
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 15
 
 
 
@@ -147,20 +147,20 @@ Internet-Draft                   Beacon                         May 2012
    document are to be interpreted as described in [RFC2119].
 
    The formal grammar rules in this document are to be interpreted as
-   described in [RFC5234].
+   described in [RFC5234], including the following core ABNF syntax
+   rules:
 
-1.3.  Whitespace Normalization
 
-   A Unicode string is normalized according to this specification, by
-   stripping leading and trailing whitespace and by replacing sequences
-   of whitespace characters ("U+0020 | U+0009 | U+000D | U+000A") by a
-   single space ("U+0020") [Unicode].
 
-1.4.  URI patterns
 
-   A URI pattern in this specification is an URI Template, as defined in
-   [RFC6570], with all template expressions being either "{ID}" for
-   simple string expansion or "{+ID}" for reserved expansion.  If no
+
+
+
+
+
+
+
+
 
 
 
@@ -169,6 +169,33 @@ Voss                    Expires November 2, 2012                [Page 3]
 Internet-Draft                   Beacon                         May 2012
 
 
+   ALPHA          =  %x41-5A / %x61-7A   ; A-Z / a-z
+
+   DIGIT          =  %x30-39             ; 0-9
+
+   HEXDIG         =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
+
+   HTAB           =  %x09                ; horizontal tab
+
+   LF             =  %x0A                ; linefeed
+
+   CR             =  %x0D                ; carriage return
+
+   SP             =  %20                 ; space
+
+1.3.  Whitespace Normalization
+
+   A Unicode string is normalized according to this specification, by
+   stripping leading and trailing whitespace and by replacing all
+   "WHITESPACE" character sequences by a single space ("SP").
+
+   WHITESPACE     =  1*( CR | LF | HTAB | SP )
+
+1.4.  URI patterns
+
+   A URI pattern in this specification is an URI Template, as defined in
+   [RFC6570], with all template expressions being either "{ID}" for
+   simple string expansion or "{+ID}" for reserved expansion.  If no
    template expression is given, the pattern MUST be processed as if the
    expression "{ID}" was appended.  For this reason the following URI
    patterns are equal:
@@ -182,13 +209,47 @@ Internet-Draft                   Beacon                         May 2012
    "reserved" range or character sequences matching the "pct-encoded"
    rule for expressions being "{+ID}", are copied literally.  All other
    characters are copied the URI as the sequence of pct-encoded triplets
-   corresponding to that character's encoding in UTF-8 [RFC3629].
+   corresponding to that character's encoding in UTF-8 [RFC3629].  The
+   referenced character ranges are imported here from [RFC3986] for
+   convenience:
+
+
+
+
+
+
+
+
+Voss                    Expires November 2, 2012                [Page 4]
+
+Internet-Draft                   Beacon                         May 2012
+
+
+    pct-encoded    =  "%" HEXDIG HEXDIG
+    unreserved     =  ALPHA / DIGIT / "-" / "." / "_" / "~"
+    reserved       =  gen-delims / sub-delims
+    gen-delims     =  ":" / "/" / "?" / "#" / "[" / "]" / "@"
+    sub-delims     =  "!" / "$" / "&" / "'" / "(" / ")"
+                   /  "*" / "+" / "," / ";" / "="
 
    A URI pattern is allowed to contain the broader set of characters
    allowed in Internationalized Resource Identifiers (IRI) [RFC3987].
    The URI constructed from a URI pattern by template processing can be
    transformed to an IRI by following the process defined in Section 3.2
    of [RFC3987].
+
+    Example value    Expression   Copied as
+
+     path/dir          {ID}        path%2Fdir
+     path/dir          {+ID}       path/dir
+     Hello World!      {ID}        Hello%20World%21
+     Hello World!      {+ID}       Hello%20World!
+     Hello%20World     {ID}        Hello%2520World
+     Hello%20World     {+ID}       Hello%20World
+     Mueller            {ID}        M%C3%BCller
+     Mueller            {+ID}       M%C3%BCller
+     M%C3%BCller       {ID}        M%25C3%25BCller
+     M%C3%BCller       {+ID}       M%C3%BCller
 
 
 2.  Links
@@ -213,16 +274,17 @@ Internet-Draft                   Beacon                         May 2012
    annotations is not defined in this specification, but guidelines are
    given in Appendix A.
 
+
+
+Voss                    Expires November 2, 2012                [Page 5]
+
+Internet-Draft                   Beacon                         May 2012
+
+
    A BEACON link dump is an annotated set of links with identical link
    type, which is specified by the link meta field (Section 3.3).  In a
    serialized BEACON link dump (Section 5) a link is specified by link
    fields (Section 4), which a link is constructed from.
-
-
-
-Voss                    Expires November 2, 2012                [Page 4]
-
-Internet-Draft                   Beacon                         May 2012
 
 
 3.  Meta fields
@@ -267,19 +329,18 @@ Internet-Draft                   Beacon                         May 2012
    admin@example.com
    Barbara Beacon <b.beacon@example.org>
 
+
+
+
+Voss                    Expires November 2, 2012                [Page 6]
+
+Internet-Draft                   Beacon                         May 2012
+
+
 3.5.  message
 
    The message meta field is used as template or as default value for
    link labels.
-
-
-
-
-
-Voss                    Expires November 2, 2012                [Page 5]
-
-Internet-Draft                   Beacon                         May 2012
-
 
 3.6.  description
 
@@ -322,20 +383,21 @@ Internet-Draft                   Beacon                         May 2012
    2012-05-30T15:17:36+02:00
    2012-05-30T13:17:36Z
 
+
+
+
+
+
+Voss                    Expires November 2, 2012                [Page 7]
+
+Internet-Draft                   Beacon                         May 2012
+
+
 3.12.  update
 
    The update field specifies how frequently the BEACON dump is likely
    to change.  The field corresponds to the "<changefreq>" element in
    Sitemaps XML format [Sitemaps].  Valid values are:
-
-
-
-
-
-Voss                    Expires November 2, 2012                [Page 6]
-
-Internet-Draft                   Beacon                         May 2012
-
 
    -  "always"
 
@@ -380,18 +442,16 @@ Internet-Draft                   Beacon                         May 2012
    is then constructed by replacing all occurrences of "{ID}" in the URI
    pattern by the id field.
 
-   The *link target* is constructed based on
-
-   -  the id field,
 
 
-
-
-
-Voss                    Expires November 2, 2012                [Page 7]
+Voss                    Expires November 2, 2012                [Page 8]
 
 Internet-Draft                   Beacon                         May 2012
 
+
+   The *link target* is constructed based on
+
+   -  the id field,
 
    -  the target field,
 
@@ -437,17 +497,18 @@ Internet-Draft                   Beacon                         May 2012
    the label field, and from the description meta field (Section 3.6) as
    following:
 
+
+
+
+Voss                    Expires November 2, 2012                [Page 9]
+
+Internet-Draft                   Beacon                         May 2012
+
+
    -  If the description meta field contains the substring "{label}" and
       the label field is not the empty string, then the substring
       "{label}" is replaced by the label field to get the link
       description.
-
-
-
-Voss                    Expires November 2, 2012                [Page 8]
-
-Internet-Draft                   Beacon                         May 2012
-
 
    -  If otherwise the description field is not the empty string, the
       link description equals to the description field.
@@ -470,18 +531,18 @@ Internet-Draft                   Beacon                         May 2012
    text file MAY begin with an Unicode Byte Order Mark and it SHOULD end
    with a line break:
 
- beacon     = [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
+   BEACONTEXT  =  [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
 
- BOM        = %xEF.BB.BF          ; Unicode UTF-8 Byte Order Mark
+   BOM         =  %xEF.BB.BF      ; Unicode UTF-8 Byte Order Mark
 
- LINEBREAK  = *( %x0A / %0x0D )   ; at least linefeed or carriage return
+   LINEBREAK   =  *( CR / LF )    ; at least linefeed or carriage return
 
    An empty line SHOULD be used to separate meta lines and link lines.
    The order of meta lines and the order of link lines is irrelevant.
 
    A meta line specifies a meta field (Section 3) and its value:
 
-   metaline  = "#" metafield ":" metavalue LINEBREAK
+   metaline       =  "#" metafield ":" metavalue LINEBREAK
 
    metafield = "PREFIX" | "TARGET" | "LINK" | "CONTACT" | "MESSAGE" |
                "DESCRIPTION" | "INSTITUTION" | "NAME" | "ABOUT" |
@@ -491,19 +552,25 @@ Internet-Draft                   Beacon                         May 2012
 
    Each link ...TODO...
 
-   links    = link *( LINEBREAK link )
-
-   link     = ID [ "|" TARGET ] ...
-
-   The terminal symbol "STRING" can be any UTF-8 string that does not
-   include the characters "U+000A" or "U+000D".
 
 
 
-Voss                    Expires November 2, 2012                [Page 9]
+
+Voss                    Expires November 2, 2012               [Page 10]
 
 Internet-Draft                   Beacon                         May 2012
 
+
+   links    = link *( LINEBREAK link )
+
+   VBAR     = "|"                ; vertical bar
+   link     = ID [ VBAR TARGET ] ...
+
+   The terminal symbol "STRING" can be any UTF-8 string that does not
+   include a "LINEBREAK".
+
+   The terminal symbols "ID" and "TARGET" each can be any UTF-8 string
+   that does not include a "LINEBREAK" or a "VBAR".
 
 5.2.  BEACON XML format
 
@@ -538,6 +605,17 @@ Internet-Draft                   Beacon                         May 2012
    errors.  Additional XML attributes of "<link>" elements and "<link>"
    elements without "id" attribute SHOULD be ignored.
 
+   Note that in contrast to BEACON text format, link fields MAY include
+   line breaks, which are removed by
+
+
+
+
+
+Voss                    Expires November 2, 2012               [Page 11]
+
+Internet-Draft                   Beacon                         May 2012
+
 
 6.  Security Considerations
 
@@ -553,13 +631,6 @@ Internet-Draft                   Beacon                         May 2012
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
-
-
-
-Voss                    Expires November 2, 2012               [Page 10]
-
-Internet-Draft                   Beacon                         May 2012
-
 
    [RFC3339]  Klyne, G., Ed. and C. Newman, "Date and Time on the
               Internet: Timestamps", RFC 3339, July 2002.
@@ -595,6 +666,13 @@ Internet-Draft                   Beacon                         May 2012
 
    [SAX]      Bradner, D., "SAX 1.0: The Simple API for XML", May 1998.
 
+
+
+Voss                    Expires November 2, 2012               [Page 12]
+
+Internet-Draft                   Beacon                         May 2012
+
+
    [Sitemaps]
               Google Inc., "Sitemaps XML format", February 2008.
 
@@ -609,13 +687,6 @@ A.1.  HTML links
 
    A BEACON link can be mapped to a HTML link ("<a>" element) as
    following:
-
-
-
-Voss                    Expires November 2, 2012               [Page 11]
-
-Internet-Draft                   Beacon                         May 2012
-
 
    -  link source corresponds to the website which a HTML link is
       included at,
@@ -651,6 +722,13 @@ A.2.  RDF triples
    of this specification (see https://github.com/gbv/beaconspec/issues/2
    for open discussion).
 
+
+
+Voss                    Expires November 2, 2012               [Page 13]
+
+Internet-Draft                   Beacon                         May 2012
+
+
    For instance the following link, given in BEACON text format
 
    http://example.com|example|sample site|http://example.org
@@ -665,13 +743,6 @@ A.2.  RDF triples
    # additional link annotations, to be discussed
    <http://example.org> rdfs:label "example" ;
                         dc:description "sample site" .
-
-
-
-Voss                    Expires November 2, 2012               [Page 12]
-
-Internet-Draft                   Beacon                         May 2012
-
 
    As RDF is defined on URI references or IRIs, link source and link
    target URI must be transformed to an IRI by following the process
@@ -706,28 +777,15 @@ Appendix B.  RELAX NG Schema for BEACON XML
 
    Below is a schema of BEACON XML (Section 5.2) in RELAX NG Compact
    syntax [RELAX-NGC].  The schema is non-normative and given for
-   reference only.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Voss                    Expires November 2, 2012               [Page 13]
+Voss                    Expires November 2, 2012               [Page 14]
 
 Internet-Draft                   Beacon                         May 2012
 
+
+   reference only.
 
    default namespace = "http://purl.org/net/beacon"
 
@@ -778,7 +836,5 @@ Author's Address
 
 
 
-
-
-Voss                    Expires November 2, 2012               [Page 14]
+Voss                    Expires November 2, 2012               [Page 15]
 
