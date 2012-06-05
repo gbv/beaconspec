@@ -21,7 +21,7 @@ domains that use different local identifier systems:
 A special case is the use of the same local identifier that can be used to
 construct both, source and target of a link, for instance:
 
-    http://example.org/{ID}  ---> http://example.org/?id={ID}&action=view
+    http://example.org/{ID}  ---> http://example.com/{ID}.html
 
 A BEACON link dump can be serialized in a condense [BEACON text
 format](#beacon-text-format) and in [BEACON XML format](#beacon-xml-format).
