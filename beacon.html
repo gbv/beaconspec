@@ -193,8 +193,8 @@ Introduction<br />
 Overview<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#notational-conventions">1.2.</a>&nbsp;
 Notational Conventions<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#whitespace-normalization">1.3.</a>&nbsp;
-Whitespace Normalization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#string-normalization">1.3.</a>&nbsp;
+String normalization<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#uri-patterns">1.4.</a>&nbsp;
 URI patterns<br />
 <a href="#links">2.</a>&nbsp;
@@ -275,8 +275,8 @@ Overview</h3>
 <ul class="text">
 <li>
         
-          a set of <a class='info' href='#links'>links<span> (</span><span class='info'>Links</span><span>)</span></a>, each derived from
-          <a class='info' href='#link-fields'>link fields<span> (</span><span class='info'>Link fields</span><span>)</span></a>,
+          a set of <a class='info' href='#links'>links<span> (</span><span class='info'>Links</span><span>)</span></a>, each constructed
+          from a set of <a class='info' href='#link-fields'>link fields<span> (</span><span class='info'>Link fields</span><span>)</span></a>,
         
       
 </li>
@@ -330,18 +330,36 @@ Notational Conventions</h3>
       following core ABNF syntax rules:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- ALPHA         =  %x41-5A / %x61-7A   ; A-Z / a-z
- DIGIT         =  %x30-39             ; 0-9
- HEXDIG        =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
- HTAB          =  %x09                ; horizontal tab
- LF            =  %x0A                ; linefeed
- CR            =  %x0D                ; carriage return
- SP            =  %20                 ; space
+ ALPHA       =  %x41-5A / %x61-7A   ; A-Z / a-z
+ DIGIT       =  %x30-39             ; 0-9
+ HEXDIG      =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
+ HTAB        =  %x09                ; horizontal tab
+ LF          =  %x0A                ; linefeed
+ CR          =  %x0D                ; carriage return
+ SP          =  %x20                ; space
 </pre></div>
-<a name="whitespace-normalization"></a><br /><hr />
+<p>
+      The <tt>SCHEME</tt> rule is copied from
+      <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ SCHEME      =  ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
+</pre></div>
+<p>
+      In addition, the operator <tt>-</tt> can be used in
+      rules to express exceptions. For instance the symbol
+      <tt>LINESTRING</tt> is defined as Unicode string that
+      does not include a line break:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ LINESTRING  =  *( CHAR - LINEBREAK )
+
+ LINEBREAK   =  *( CR / LF ) ; at least linefeed or carriage return
+</pre></div>
+<a name="string-normalization"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
-Whitespace Normalization</h3>
+String normalization</h3>
 
 <p>
       A Unicode string is normalized according to this specification, by
@@ -350,8 +368,33 @@ Whitespace Normalization</h3>
       space (<tt>SP</tt>).
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- WHITESPACE     =  1*( CR | LF | HTAB | SP )
+ WHITESPACE  =  1*( CR | LF | HTAB | SP )
 </pre></div>
+<p>
+      The set of allowed Unicode characters in BEACON is the set of
+      valid Unicode characters from UCS which can also be expressed in
+      XML 1.0, excluding some discouraged control characters:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ CHAR        =  WHITESPACE / %x21-7E / %xA0-D7FF / %xE000-FFFD
+             /  %x10000-1FFFD / %x20000-2FFFD / %x30000-3FFFD
+             /  %x40000-4FFFD / %x50000-5FFFD / %x60000-6FFFD
+             /  %x70000-7FFFD / %x80000-8FFFD / %x90000-9FFFD
+             /  %xA0000-AFFFD / %xB0000-BFFFD / %xC0000-CFFFD
+             /  %xD0000-DFFFD / %xE0000-EFFFD / %xF0000-FFFFD
+             /  %x10000-10FFFD
+</pre></div>
+<p>
+      An application MAY allow additional characters or disallow
+      additional characters by stripping them or by replacing them with
+      the replacement character <tt>U+FFFD</tt>.
+    
+</p>
+<p>
+      Applications SHOULD further apply Unicode Normalization Form
+      Canonical Composition (NFKC) to all strings.
+    
+</p>
 <a name="uri-patterns"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.4"></a><h3>1.4.&nbsp;
@@ -460,22 +503,27 @@ Links</h3>
 </ul>
 
 <p>
-    A link relation type is either a registered link type from the IANA
-    link relations registry <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> or an URI
-    that uniquely identifies the relation type. Link label and link
-    description are normalized Unicode strings that annotate a link. The
-    meaning of this annotations is not defined in this specification,
-    but guidelines are given in
-    <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
+    A BEACON link dump is an annotated set of links with identical
+    relation type. A relation type is either a registered link type from
+    the IANA link relations registry <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> or
+    an URI. Some examples of relation types:
   
-</p>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ alternate
+ describedby
+ replies
+ http://www.w3.org/2002/07/owl#sameAs
+ http://xmlns.com/foaf/0.1/primaryTopicOf
+ http://purl.org/spar/cito/cites
+</pre></div>
 <p>
-    A BEACON link dump is an annotated set of links with identical link
-    type, which is specified by the <a class='info' href='#link'>link meta
-    field<span> (</span><span class='info'>link</span><span>)</span></a>. In a <a class='info' href='#serialization'>serialized BEACON
-    link dump<span> (</span><span class='info'>Serialization</span><span>)</span></a> a link is specified by
-    <a class='info' href='#link-fields'>link fields<span> (</span><span class='info'>Link fields</span><span>)</span></a>, which a link is
-    constructed from.
+    In a <a class='info' href='#serialization'>serialized BEACON dump<span> (</span><span class='info'>Serialization</span><span>)</span></a> the
+    relation type is specified by the link
+    <a class='info' href='#meta-fields'>meta field<span> (</span><span class='info'>Meta fields</span><span>)</span></a> and the other parts of
+    each link are specified by a set of <a class='info' href='#link-fields'>link
+    fields<span> (</span><span class='info'>Link fields</span><span>)</span></a>. The meaning of a link and its parts is not defined by
+    this specification, but guidelines are given in
+    <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
   
 </p>
 <a name="meta-fields"></a><br /><hr />
@@ -495,8 +543,10 @@ Meta fields</h3>
     Valid meta fields are listed in the following. Additional meta
     fields, not defined in this specification SHOULD be ignored. All
     meta field values MUST be normalized Unicode strings
-    <a class='info' href='#whitespace-normalization'>Section&nbsp;1.3<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a>. Meta fields with
-    the empty string as field value MUST be ignored.
+    <a class='info' href='#string-normalization'>Section&nbsp;1.3<span> (</span><span class='info'>String normalization</span><span>)</span></a>. Missing meta fields
+    and meta fields with the empty string as normalized field value MUST
+    be set to their default value, which is the empty string unless
+    noted otherwise.
   
 </p>
 <a name="prefix"></a><br /><hr />
@@ -506,9 +556,10 @@ prefix</h3>
 
 <p>
       The prefix field specifies an URI pattern that is used to
-      construct link sources. The name <tt>prefix</tt> was
-      choosen to keep backwards compatibility with existing BEACON
-      dumps.
+      construct link sources. If no prefix meta field was specified, the
+      default value <tt>{+ID}</tt> is used. The name
+      <tt>prefix</tt> was choosen to keep backwards
+      compatibility with existing BEACON dumps.
     
 </p>
 <a name="target"></a><br /><hr />
@@ -518,7 +569,8 @@ target</h3>
 
 <p>
       The target field specifies an URI pattern to construct link
-      targets.
+      targets. If no target meta field was specified, the default value
+      <tt>{+ID}</tt> is used.
     
 </p>
 <a name="link"></a><br /><hr />
@@ -527,8 +579,8 @@ target</h3>
 link</h3>
 
 <p>
-      The link field specifies the link type for all links in a BEACON
-      dump. The default link type field value is the URI
+      The link field specifies the relation type for all links in a
+      BEACON dump. The default relation type is
       <tt>http://www.w3.org/2000/01/rdf-schema#seeAlso</tt>.
     
 </p>
@@ -553,8 +605,8 @@ contact</h3>
 message</h3>
 
 <p>
-      The message meta field is used as template or as default value for
-      link labels.
+      The message meta field is used as template for link labels. The
+      default value is <tt>{label}</tt>.
     
 </p>
 <a name="description"></a><br /><hr />
@@ -563,8 +615,9 @@ message</h3>
 description</h3>
 
 <p>
-      The description meta field is used as template or as default value
-      for link descriptions.
+      The description meta field is used as template for link
+      descriptions. The default value is
+      <tt>{description}</tt>.
     
 </p>
 <a name="institution"></a><br /><hr />
@@ -596,9 +649,9 @@ name</h3>
 feed</h3>
 
 <p>
-      The feed field contains an URL, conforming to
-      <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>, where to download the BEACON dump
-      from.
+      The feed field contains an URL, where to download the BEACON dump
+      from. In addition to standard URL schemes, alternative established
+      URI forms for retrieval, such as magnet URIs MAY be allowed.
     
 </p>
 <a name="about"></a><br /><hr />
@@ -739,183 +792,102 @@ Link fields</h3>
 <p>
     From these fields, combined with the BEACON dump's
     <a class='info' href='#meta-fields'>meta fields<span> (</span><span class='info'>Meta fields</span><span>)</span></a>, the full
-    <a class='info' href='#links'>link<span> (</span><span class='info'>Links</span><span>)</span></a> is derived. All field values MUST
-    be <a class='info' href='#whitespace-normalization'>normalized<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a> before
-    further processing. The full link is then derived as following:
+    <a class='info' href='#links'>link<span> (</span><span class='info'>Links</span><span>)</span></a> is constructed. All field values
+    MUST be <a class='info' href='#string-normalization'>normalized<span> (</span><span class='info'>String normalization</span><span>)</span></a>
+    before further processing. Missing optional fields MUST be set to
+    the empty string. The full link is then constructed as following:
   
 </p>
 <p>
     The <strong>link source</strong> is constructed
-    based on the id field and the <a class='info' href='#prefix'>prefix meta
-    field<span> (</span><span class='info'>prefix</span><span>)</span></a> URI pattern. If no URI pattern was specified, the
-    default value <tt>{ID}</tt> is used instead. The link
-    source is then constructed by replacing all occurrences of
-    <tt>{ID}</tt> in the URI pattern by the id field.
+    from the <a class='info' href='#prefix'>prefix meta field<span> (</span><span class='info'>prefix</span><span>)</span></a> URI pattern
+    by inserting the id field as identifier value, as defined in
+    <a class='info' href='#uri-patterns'>Section&nbsp;1.4<span> (</span><span class='info'>URI patterns</span><span>)</span></a>.
   
 </p>
 <p>
     The <strong>link target</strong> is constructed
-    based on
+    from the <a class='info' href='#target'>target meta field<span> (</span><span class='info'>target</span><span>)</span></a> URI pattern
+    by inserting as identifier value, as defined in
+    <a class='info' href='#uri-patterns'>Section&nbsp;1.4<span> (</span><span class='info'>URI patterns</span><span>)</span></a>:
   
 </p>
 <p></p>
 <ul class="text">
 <li>
       
-        the id field,
+        the target field, if the target field is not the empty string,
       
     
 </li>
 <li>
       
-        the target field,
-      
-    
-</li>
-<li>
-      
-        the <a class='info' href='#target'>target meta field<span> (</span><span class='info'>target</span><span>)</span></a> URI pattern
+        the id field, otherwise.
       
     
 </li>
 </ul>
 
 <p>
-    with the following cases:
+    Constructed link sources and link targets MUST be a syntactically
+    valid URIs. A client MUST ignore links with invalid URIs and it
+    SHOULD give a warning.
+  
+</p>
+<p>
+    The <strong>link label</strong> and the
+    <strong>link description</strong> are constructed
+    from the <a class='info' href='#message'>message meta field<span> (</span><span class='info'>message</span><span>)</span></a> or the
+    <a class='info' href='#description'>description meta field<span> (</span><span class='info'>description</span><span>)</span></a>,
+    respectively, as following. The respective meta field value is used
+    as string pattern in which the following character sequences are
+    replaced literally:
   
 </p>
 <p></p>
 <ul class="text">
 <li>
       
-        If the target field is specified, then:
-      
-      
-<ul class="text">
-<li>
-          
-            If the target meta field is specified then the
-            <strong>target field</strong> is inserted
-            as <tt>{ID}</tt> expression into the patten, to
-            get the link target.
-          
-        
-</li>
-<li>
-          
-            If the target meta field is not specified, then the link
-            target is the <strong>target
-            field</strong>.
-          
-        
-</li>
-</ul>
-    
-</li>
-<li>
-      
-        If the target field is not specified, then:
-      
-      
-<ul class="text">
-<li>
-          
-            If the target meta field is specified then the
-            <strong>id field</strong> is inserted as
-            <tt>{ID}</tt> expression into the patten, to get
-            the link target.
-          
-        
-</li>
-<li>
-          
-            If the target meta field is not specified, then the link
-            target is the <strong>id field</strong>.
-          
-        
-</li>
-</ul>
-    
-</li>
-</ul>
-
-<p>
-    Both, link source and link target MUST be a syntactically valid URI.
-    A client MUST ignore links with invalid URIs and it SHOULD give a
-    warning.
-  
-</p>
-<p>
-    The <strong>link label</strong> is derived from
-    the label field and the <a class='info' href='#message'>message meta
-    field<span> (</span><span class='info'>message</span><span>)</span></a> as following:
-  
-</p>
-<p></p>
-<ul class="text">
-<li>
-      
-        If the message meta field contains the substring
-        <tt>{label}</tt> and the label field is not the empty
-        string, then the substring <tt>{label}</tt> is
-        replaced by the label field to get the link label.
+        <tt>{id}</tt> is replaced by the id field,
       
     
 </li>
 <li>
       
-        If otherwise the labeln field is not the empty string, the link
-        label equals to the label field.
+        <tt>{label}</tt> and <tt>{hits}</tt> is
+        replaced by the label field (the latter is supported for
+        backwards compatibility),
       
     
 </li>
 <li>
       
-        Otherwise the link label equals to the message meta field.
+        <tt>{description}</tt> is replaced by the description
+        field,
+      
+    
+</li>
+<li>
+      
+        <tt>{target}</tt> is replaced by the target field,
+      
+    
+</li>
+<li>
+      
+        <tt>{bracket}</tt> is replaced by the left curly
+        bracket character <tt>{</tt>
+        (<tt>%x7D</tt>).
       
     
 </li>
 </ul>
 
 <p>
-    The <strong>link description</strong> is derived
-    from the description field, from the label field, and from the
-    <a class='info' href='#description'>description meta field<span> (</span><span class='info'>description</span><span>)</span></a> as
-    following:
-  
-</p>
-<p></p>
-<ul class="text">
-<li>
-      
-        If the description meta field contains the substring
-        <tt>{label}</tt> and the label field is not the empty
-        string, then the substring <tt>{label}</tt> is
-        replaced by the label field to get the link description.
-      
-    
-</li>
-<li>
-      
-        If otherwise the description field is not the empty string, the
-        link description equals to the description field.
-      
-    
-</li>
-<li>
-      
-        Otherwise the link description equals to the description meta
-        field.
-      
-    
-</li>
-</ul>
-
-<p>
-    Both, link label and link description MUST be
-    <a class='info' href='#whitespace-normalization'>normalized<span> (</span><span class='info'>Whitespace Normalization</span><span>)</span></a> after
-    construction. A missing link label or link description equals to the
-    empty string.
+    Additional encoding MUST NOT be applied to field values during this
+    process. The resulting string MUST be
+    <a class='info' href='#string-normalization'>normalized<span> (</span><span class='info'>String normalization</span><span>)</span></a> after
+    construction.
   
 </p>
 <a name="serialization"></a><br /><hr />
@@ -939,8 +911,6 @@ BEACON text format</h3>
  BEACONTEXT  =  [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
 
  BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
-
- LINEBREAK   =  *( CR / LF )   ; at least linefeed or carriage return
 </pre></div>
 <p>
       An empty line SHOULD be used to separate meta lines and link
@@ -960,35 +930,34 @@ BEACON text format</h3>
                 /  "DESCRIPTION" / "INSTITUTION" / "NAME" / "ABOUT"
                 /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
 
- metavalue      =  STRING
+ metavalue      =  LINESTRING
 </pre></div>
 <p>
-      Each link ...TODO...
+      Each link is given on a link line with its id field, optionally
+      follwed by additional fields:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  links          =  link *( LINEBREAK link )
 
- VBAR           =  "|"                ; vertical bar
-
  link           =  ID
-                /  ID VBAR TARGET   ; only if TARGET looks like URI
-                /  ID VBAR LABEL    ; only if LABEL not like URI
+                /  ID VBAR XTARGET   ; only if TARGET looks like URI
+                /  ID VBAR XLABEL    ; only if LABEL not like URI
                 /  ID VBAR LABEL [ VBAR DESCRIPTION ] VBAR [ TARGET ]
 
- DESCRIPTION    = STRING
+ VBAR           =  "|"                ; vertical bar
+
+ DESCRIPTION    =  LINESTRING
+
+ ID             =  *( CHAR - ( LINEBREAK / VBAR ) )
+
+ TARGET         =  *( CHAR - ( LINEBREAK / VBAR ) )
+
+ LABEL          =  *( CHAR - ( LINEBREAK / VBAR ) )
+
+ XTARGET        =  SCHEME ":" LINESTRING
+
+ XLABEL         =  LABEL - XTARGET
 </pre></div>
-<p>
-      The terminal symbol <tt>STRING</tt> can be any UTF-8
-      string that does not include a <tt>LINEBREAK</tt>.
-    
-</p>
-<p>
-      The terminal symbols <tt>ID</tt>,
-      <tt>TARGET</tt>, and <tt>LABEL</tt> each can
-      be any UTF-8 string that does not include a
-      <tt>LINEBREAK</tt> or a <tt>VBAR</tt>.
-    
-</p>
 <a name="beacon-xml-format"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
@@ -1078,7 +1047,7 @@ BEACON XML format</h3>
       include line breaks, which are removed by whitespace
       normalization. Furthermore id field, label field and target field
       MAY include a vertical bar, which is encoded as
-      <tt>%7F</tt> during construction the link.
+      <tt>%7C</tt> during construction the link.
     
 </p>
 <a name="security-considerations"></a><br /><hr />
