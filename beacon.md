@@ -33,14 +33,29 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 interpreted as described in [](#RFC2119).
 
 The formal grammar rules in this document are to be interpreted as described in
-[](#RFC5234).
+[](#RFC5234), including the following core ABNF syntax rules:
+
+    ALPHA          =  %x41-5A / %x61-7A   ; A-Z / a-z
+
+	DIGIT          =  %x30-39             ; 0-9
+
+	HEXDIG         =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
+
+    HTAB           =  %x09                ; horizontal tab
+
+    LF             =  %x0A                ; linefeed
+
+    CR             =  %x0D                ; carriage return
+
+    SP             =  %20                 ; space
 
 ## Whitespace Normalization 
 
 A Unicode string is normalized according to this specification, by stripping
-leading and trailing whitespace and by replacing sequences of whitespace
-characters (`U+0020 | U+0009 | U+000D | U+000A`) by a single space (`U+0020`)
-[](#Unicode).
+leading and trailing whitespace and by replacing all `WHITESPACE` character
+sequences by a single space (`SP`).
+
+    WHITESPACE     =  1*( CR | LF | HTAB | SP )
 
 ## URI patterns
 
@@ -59,12 +74,33 @@ from [](#RFC3986), and characters in the `reserved` range or character
 sequences matching the `pct-encoded` rule for expressions being `{+ID}`, are
 copied literally.  All other characters are copied the URI as the sequence of
 pct-encoded triplets corresponding to that character's encoding in UTF-8
-[](#RFC3629).
+[](#RFC3629). The referenced character ranges are imported here from
+[](#RFC3986) for convenience:
+
+     pct-encoded    =  "%" HEXDIG HEXDIG
+     unreserved     =  ALPHA / DIGIT / "-" / "." / "_" / "~"
+     reserved       =  gen-delims / sub-delims
+     gen-delims     =  ":" / "/" / "?" / "#" / "[" / "]" / "@"
+     sub-delims     =  "!" / "$" / "&" / "'" / "(" / ")"
+                    /  "*" / "+" / "," / ";" / "="
 
 A URI pattern is allowed to contain the broader set of characters allowed in
 Internationalized Resource Identifiers (IRI) [](#RFC3987). The URI constructed
 from a URI pattern by template processing can be transformed to an IRI by
 following the process defined in Section 3.2 of [](#RFC3987).
+
+     Example value    Expression   Copied as
+
+      path/dir          {ID}        path%2Fdir
+	  path/dir          {+ID}       path/dir
+	  Hello World!      {ID}        Hello%20World%21
+	  Hello World!      {+ID}       Hello%20World!
+	  Hello%20World     {ID}        Hello%2520World
+	  Hello%20World     {+ID}       Hello%20World
+	  Müller            {ID}        M%C3%BCller
+	  Müller            {+ID}       M%C3%BCller
+      M%C3%BCller       {ID}        M%25C3%25BCller
+      M%C3%BCller       {+ID}       M%C3%BCller
 
 # Links
 
@@ -269,18 +305,18 @@ lines by line breaks. The file consists of a set of lines with meta fields,
 followed by a set of lines with link fields. A BEACON text file MAY begin with
 an Unicode Byte Order Mark and it SHOULD end with a line break:
 
-    beacon     = [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
+    BEACONTEXT  =  [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
 	
-    BOM        = %xEF.BB.BF          ; Unicode UTF-8 Byte Order Mark
+    BOM         =  %xEF.BB.BF      ; Unicode UTF-8 Byte Order Mark
 
-    LINEBREAK  = *( %x0A / %0x0D )   ; at least linefeed or carriage return
+    LINEBREAK   =  *( CR / LF )    ; at least linefeed or carriage return
 
 An empty line SHOULD be used to separate meta lines and link lines. The order
 of meta lines and the order of link lines is irrelevant. 
 
 A meta line specifies a [meta field](#meta-fields) and its value:
 
-    metaline  = "#" metafield ":" metavalue LINEBREAK
+    metaline       =  "#" metafield ":" metavalue LINEBREAK
 
     metafield = "PREFIX" | "TARGET" | "LINK" | "CONTACT" | "MESSAGE" |
 	            "DESCRIPTION" | "INSTITUTION" | "NAME" | "ABOUT" |
@@ -292,10 +328,15 @@ Each link ...TODO...
 
     links    = link *( LINEBREAK link )
 
-    link     = ID [ "|" TARGET ] ...
+    VBAR     = "|"                ; vertical bar
+    link     = ID [ VBAR TARGET ] ...
 
-The terminal symbol `STRING` can be any UTF-8 string that does not include the
-characters `U+000A` or `U+000D`.
+The terminal symbol `STRING` can be any UTF-8 string that does not include a 
+`LINEBREAK`.
+
+The terminal symbols `ID` and `TARGET` each can be any UTF-8 string that does not
+include a `LINEBREAK` or a `VBAR`.
+
 
 ## BEACON XML format
 
@@ -322,6 +363,8 @@ instance the Simple API for XML [](#SAX), is RECOMMENDED, in favor of
 parsing with regular expressions or similar methods prone to errors.
 Additional XML attributes of `<link>` elements and `<link>` elements without
 `id` attribute SHOULD be ignored.
+
+Note that in contrast to BEACON text format, link fields MAY include line breaks, which are removed by 
 
 
 # Security Considerations
