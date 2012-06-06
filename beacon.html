@@ -464,8 +464,8 @@ Links</h3>
 
 <p>
     A link in BEACON is a typed connection between two resources that
-    are identified by URIs <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>, and is
-    compromised of:
+    are identified by URIs <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>. A link is
+    compromised of five elements:
   
 </p>
 <p></p>
@@ -890,6 +890,17 @@ Link fields</h3>
     construction.
   
 </p>
+<p>
+    The following table illustrates construction of a link:
+  
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+meta field    link field(s)                 --&gt;  link element
+ prefix        id                           --&gt;   source
+ target        id,target                    --&gt;   target
+ link          -                            --&gt;   relation type
+ message       id,label,description,target  --&gt;   label
+ description   id,label,description,target  --&gt;   description
+</pre></div>
 <a name="serialization"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;

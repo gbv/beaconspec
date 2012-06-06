@@ -264,14 +264,14 @@ Internet-Draft                   Beacon                         May 2012
 2.  Links
 
    A link in BEACON is a typed connection between two resources that are
-   identified by URIs [RFC3986], and is compromised of:
+   identified by URIs [RFC3986].  A link is compromised of five
+   elements:
 
    -  a source URI,
 
    -  a target URI
 
    -  a relation type,
-
 
 
 
@@ -509,6 +509,15 @@ Internet-Draft                   Beacon                         May 2012
    process.  The resulting string MUST be normalized (Section 1.3) after
    construction.
 
+   The following table illustrates construction of a link:
+
+   meta field    link field(s)                 -->  link element
+    prefix        id                           -->   source
+    target        id,target                    -->   target
+    link          -                            -->   relation type
+    message       id,label,description,target  -->   label
+    description   id,label,description,target  -->   description
+
 
 5.  Serialization
 
@@ -541,15 +550,6 @@ Internet-Draft                   Beacon                         May 2012
 
    Each link is given on a link line with its id field, optionally
    follwed by additional fields:
-
-
-
-
-
-
-
-
-
 
 
 
