@@ -130,7 +130,7 @@ following the process defined in Section 3.2 of [](#RFC3987).
 # Links
 
 A link in BEACON is a typed connection between two resources that are
-identified by URIs [](#RFC3986), and is compromised of:
+identified by URIs [](#RFC3986). A link is compromised of five elements:
 
 * a source URI,
 * a target URI
@@ -299,6 +299,15 @@ pattern in which the following character sequences are replaced literally:
 Additional encoding MUST NOT be applied to field values during this process.
 The resulting string MUST be [normalized](#string-normalization) after
 construction.
+
+The following table illustrates construction of a link:
+
+    meta field    link field(s)                 -->  link element
+     prefix        id                           -->   source
+     target        id,target                    -->   target
+	 link          -                            -->   relation type
+	 message       id,label,description,target  -->   label
+	 description   id,label,description,target  -->   description
 
 # Serialization
 
