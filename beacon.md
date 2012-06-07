@@ -8,8 +8,7 @@
 BEACON is a data interchange format for large numbers of uniform links.  A
 BEACON link dump consists of:
 
-* a set of [links](#links), each constructed from a set of 
-  [link fields](#link-fields),
+* a set of [links](#links), each consisting of four elements ([](#links)),
 * a set of [meta fields](#meta-fields).
 
 All links typically share a common URI pattern for source and for target,
@@ -47,13 +46,16 @@ The `SCHEME` rule is copied from [](#RFC3986):
 
      SCHEME      =  ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
 
-In addition, the operator `-` can be used in rules to express exceptions.
-For instance the symbol `LINESTRING` is defined as Unicode string that does
-not include a line break: 
+In addition, the operator `-` is used to express exceptions to forbid line
+breaks and vertical bars in the following rules: 
 
-     LINESTRING  =  *( CHAR - LINEBREAK )
+     BEACONLINE  =  *( CHAR - LINEBREAK )
+
+     BEACONVALUE =  *( CHAR - ( LINEBREAK / VBAR ) )
 
      LINEBREAK   =  *( CR / LF ) ; at least linefeed or carriage return
+
+     VBAR        =  "|"          ; vertical bar
 
 ## String normalization 
 
@@ -130,13 +132,12 @@ following the process defined in Section 3.2 of [](#RFC3987).
 # Links
 
 A link in BEACON is a typed connection between two resources that are
-identified by URIs [](#RFC3986). A link is compromised of five elements:
+identified by URIs [](#RFC3986). A link is compromised of four elements:
 
 * a source URI,
-* a target URI
+* a target URI,
 * a relation type, 
-* an optional label,
-* an optional description.
+* a qualifier.
 
 A BEACON link dump is an annotated set of links with identical relation type.
 A relation type is either a registered link type from the IANA link relations
@@ -150,10 +151,17 @@ registry  [](#RFC5988) or an URI. Some examples of relation types:
 	 http://purl.org/spar/cito/cites
 
 In a [serialized BEACON dump](#serialization) the relation type is specified by
-the link [meta field](#meta-fields) and the other parts of each link are
-specified by a set of [link fields](#link-fields). The meaning of a link and
-its parts is not defined by this specification, but guidelines are given in
-[](#interpreting-beacon-links).
+the link [meta field](#meta-fields). The other elements of a link are
+constructed from [link fields](#link-fields) and meta fields given in a
+serialization. 
+
+A qualifier is an optional Unciode that can be used to further describe the
+link or parts of it. Its value is the empty string by default.
+
+     QUALIFIER      =  BEACONVALUE
+
+The meaning of a link and its elements is not defined by this specification,
+but guidelines are given in [](#interpreting-beacon-links).
 
 # Meta fields
 
@@ -185,6 +193,11 @@ target meta field was specified, the default value `{+ID}` is used.
 The link field specifies the relation type for all links in a BEACON dump.
 The default relation type is `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 
+## qualifier
+
+The optional qualifier field specifies the relation type of relations between
+link target and link qualifier.
+
 ## contact
 
 The contact field contains an email address or similar contact information to
@@ -196,13 +209,8 @@ address as specified in section 3.4 of [](#RFC5322), for instance:
 
 ## message
 
-The message meta field is used as template for link labels. The default value
-is `{label}`.
-
-## description
-
-The description meta field is used as template for link descriptions. The
-default value is `{description}`.
+The message meta field is used as template for link qualifiers. The default
+value is `{about}`. (TODO: drop this because mixed with `description` anyway?)
 
 ## institution
 
@@ -215,16 +223,21 @@ The name meta field contains a name or title of the BEACON dump and/or of
 all of its targets. For instance if all links point to resources in a database,
 the name meta field contains the name of the database.
 
+## description
+
+The description meta field contains a human readable description of the BEACON
+dump _(TODO: drop or merge with about meta field?)_
+
+## reference
+
+The reference field contains an URL of a website with additional information
+about this BEACON link dump.
+
 ## feed
 
 The feed field contains an URL, where to download the BEACON dump from. In
 addition to standard URL schemes, alternative established URI forms for
 retrieval, such as magnet URIs MAY be allowed.
-
-## about
-
-The about field contains an URL of a website with additional information about
-this BEACON link dump.
 
 ## timestamp
 
@@ -254,15 +267,15 @@ format](#Sitemaps). Valid values are:
 
 The value `always` SHOULD be used to describe BEACON dumps that change each
 time they are accessed. The value `never` SHOULD be used to describe archived
-BEACON dumps.
+BEACON dumps. Please note that the value of this tag is considered a hint and
+not a command. 
 
 # Link fields
 
 Each link in a serialized BEACON dump is given in form of up to four fields:
 
 * id field,
-* optional label field,
-* optional description field,
+* optional qualifier field,
 * optional target field.
 
 From these fields, combined with the BEACON dump's [meta fields](#meta-fields),
@@ -284,15 +297,14 @@ pattern by inserting as identifier value, as defined in [](#uri-patterns):
 Constructed link sources and link targets MUST be a syntactically valid URIs. A
 client MUST ignore links with invalid URIs and it SHOULD give a warning.
 
-The **link label** and the **link description** are constructed from the
-[message meta field](#message) or the [description meta field](#description),
-respectively, as following. The respective meta field value is used as string
-pattern in which the following character sequences are replaced literally:
+The **link qualifier** is constructed from the qualifier field and the [message
+meta field](#message) as following. The message field value
+is used as string pattern in which the following character sequences are
+replaced literally:
 
 * `{id}` is replaced by the id field,
-* `{label}` and `{hits}` is replaced by the label field (the latter is 
-  supported for backwards compatibility),
-* `{description}` is replaced by the description field,
+* `{about}` is replaced by the qualifier field, 
+   (`{hits}` was supported first for backwards compatibility),
 * `{target}` is replaced by the target field,
 * `{bracket}` is replaced by the left curly bracket character `{` (`%x7D`).
 
@@ -302,12 +314,11 @@ construction.
 
 The following table illustrates construction of a link:
 
-    meta field    link field(s)                 -->  link element
-     prefix        id                           -->   source
-     target        id,target                    -->   target
-	 link          -                            -->   relation type
-	 message       id,label,description,target  -->   label
-	 description   id,label,description,target  -->   description
+    meta field    link field(s)         -->  link element
+     prefix        id                   -->   source
+     target        id,target            -->   target
+	 link          -                    -->   relation type
+	 message       id,qualifier,target  -->   qualifier
 
 # Serialization
 
@@ -318,7 +329,7 @@ lines by line breaks. The file consists of a set of lines with meta fields,
 followed by a set of lines with link fields. A BEACON text file MAY begin with
 an Unicode Byte Order Mark and it SHOULD end with a line break:
 
-     BEACONTEXT  =  [ BOM ] *metaline [ LINEBREAK ] links [ LINEBREAK ]
+     BEACONTEXT  =  [ BOM ] *metaline [ LINEBREAK ] LINKS [ LINEBREAK ]
 	
      BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 
@@ -330,36 +341,23 @@ names are case insensitive and SHOULD be given in uppercase letters.
 
      metaline       =  "#" metafield ":" metavalue LINEBREAK
 
-     metafield      =  "PREFIX" / "TARGET" / "LINK" / "MESSAGE"
-	                /  "DESCRIPTION" / "INSTITUTION" / "NAME" / "ABOUT"
+     metafield      =  "PREFIX" / "TARGET" / "LINK" / "QUALIFIER" 
+                    /  "MESSAGE" / "DESCRIPTION" / "INSTITUTION" 
+                    /  "NAME" / "REFERENCE"
                     /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
  
-     metavalue      =  LINESTRING
+     metavalue      =  BEACONLINE
 
 Each link is given on a link line with its id field, optionally follwed by
 additional fields:
 
-     links          =  link *( LINEBREAK link )
+     LINKS          =  LINK *( LINEBREAK LINK )
 
-     link           =  ID 
-	                /  ID VBAR XTARGET   ; only if TARGET looks like URI
-                    /  ID VBAR XLABEL    ; only if LABEL not like URI
-					/  ID VBAR LABEL [ VBAR DESCRIPTION ] VBAR [ TARGET ]
+     LINK           =  ID [ VBAR QUALIFIER [ VBAR TARGET ] ] 
 
-     VBAR           =  "|"                ; vertical bar
+     ID             =  BEACONVALUE
 
-     DESCRIPTION    =  LINESTRING
-
-     ID             =  *( CHAR - ( LINEBREAK / VBAR ) )
-
-     TARGET         =  *( CHAR - ( LINEBREAK / VBAR ) )
-
-     LABEL          =  *( CHAR - ( LINEBREAK / VBAR ) )
-
-     XTARGET        =  SCHEME ":" LINESTRING
-
-     XLABEL         =  LABEL - XTARGET
-
+     TARGET         =  BEACONVALUE
 
 ## BEACON XML format
 
@@ -375,8 +373,8 @@ file SHOULD be encoded in UTF-8 [](#RFC3629). The file MUST:
 The file MAY further:
 
   * Specify [meta fields](#meta-fields) as XML attributes to the `<beacon>` tag.
-  * Specify link fields `label`, `description`, and/or `target` as attributes to 
-    the `<link>` element.
+  * Specify link fields `target` and/or `about` as attributes to the `<link>` 
+    element.
 
 All attributes MUST be given in lowercase. An informal schema of BEACON XML is
 given in [](#relax-ng-schema-for-beacon-xml).
@@ -389,7 +387,7 @@ Additional XML attributes of `<link>` elements and `<link>` elements without
 
 Note that in contrast to BEACON text format, link fields MAY include line
 breaks, which are removed by whitespace normalization. Furthermore id field,
-label field and target field MAY include a vertical bar, which is encoded as
+qualifier field and target field MAY include a vertical bar, which is encoded as
 `%7C` during construction the link.
 
 
@@ -397,6 +395,5 @@ label field and target field MAY include a vertical bar, which is encoded as
 
 ...TODO... 
 
-(URLs MAY be used to inject code and label/description MAY be used to
-inject HTML?)
+(URLs MAY be used to inject code and qualifiers MAY be used to inject HTML?)
 
