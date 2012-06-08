@@ -1,23 +1,7 @@
 # Interpreting BEACON links
 
 The interpretation of links in a BEACON dump is not restricted to a specific
-format. The most common use cases are HTML links and RDF triples.
-
-## HTML links
-
-A BEACON link can be mapped to a HTML link (`<a>` element) as following:
-
-* link source corresponds to the website which a HTML link is included at,
-* link target corresponds to the `href` attribute,
-* link qualifier corresponds to the textual content,
-
-For instance the following link, given in BEACON text format:
-
-    http://example.com|example|http://example.org
-
-can be mapped to the following HTML link:
-
-    <a href="http://example.org">example</a>
+format. The most common use cases are RDF triples and links in HTML.
 
 ## RDF triples
 
@@ -28,12 +12,12 @@ triple with:
 * link type as RDF property,
 * link target as RDF object.
 
-As RDF is defined on URI references or IRIs, link source and link target URI
-must be transformed to an IRI by following the process defined in Section 3.2 
-of [](#RFC3987).
+As RDF is not defined on URIs but on URI references or IRIs, link source and
+link target URI MUST be transformed to an IRI by following the process defined
+in Section 3.2 of [](#RFC3987).
 
-In addition, the link qualifier MAY result in an additional triple with a
-literal value as RDF object. For instance the following link, in BEACON text:
+The link qualifier MAY result in an additional triple with a literal value as
+RDF object. For instance the following link, in BEACON text:
 
     #QUALIFIER: http://www.w3.org/2000/01/rdf-schema#label
     http://example.org|example|http://example.com
@@ -65,6 +49,42 @@ could be mapped to the following RDF triples in Turtle format:
 
 Another possible interpretation of link qualifier is additional information
 about the relationship, for instance when it was created (reification).
+
+The following meta fields can be mapped to RDF triples about the BEACON dump:
+
+name
+  : `http://purl.org/dc/terms/title`
+description
+  : `http://purl.org/dc/terms/description`
+institution
+  : ...
+contact
+  : ...
+reference
+  : ...
+feed
+  : ...
+timestamp
+  : `http://purl.org/dc/terms/modified`
+update
+  : .. 
+
+## HTML links
+
+A BEACON link can be mapped to a HTML link (`<a>` element) as following:
+
+* link source corresponds to the website which a HTML link is included at,
+* link target corresponds to the `href` attribute,
+* link qualifier corresponds to the textual content,
+
+For instance the following link, given in BEACON text format:
+
+    http://example.com|example|http://example.org
+
+can be mapped to the following HTML link:
+
+    <a href="http://example.org">example</a>
+
 
 # RELAX NG Schema for BEACON XML
 

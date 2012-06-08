@@ -152,8 +152,8 @@ registry  [](#RFC5988) or an URI. Some examples of relation types:
 
 In a [serialized BEACON dump](#serialization) the relation type is specified by
 the link [meta field](#meta-fields). The other elements of a link are
-constructed from [link fields](#link-fields) and meta fields given in a
-serialization. 
+constructed from [link fields](#link-fields-and-construction) and meta fields
+given in a serialization. 
 
 A qualifier is an optional Unciode that can be used to further describe the
 link or parts of it. Its value is the empty string by default.
@@ -165,16 +165,42 @@ but guidelines are given in [](#interpreting-beacon-links).
 
 # Meta fields
 
-A BEACON dump SHOULD be annotated with a set of meta fields. Each meta field is
-identified by its name, build of lowercase letters `a-z`. In [BEACON text
+A BEACON dump SHOULD contain a set of meta fields, each field identified by its
+name. Meta field names are build of lowercase letters `a-z`. In [BEACON text
 format](#beacon-text-format), meta field names are case insensitive and SHOULD
-be given in uppercase letters.
+be given in uppercase letters.  Valid meta fields are defined in the following.
+Additional meta fields, not defined in this specification SHOULD be ignored.
+All meta field values MUST be normalized Unicode strings
+[](#string-normalization). Missing meta fields and meta fields with the empty
+string as normalized field value MUST be set to their default value, which is
+the empty string unless noted otherwise.
 
-Valid meta fields are listed in the following. Additional meta fields, not
-defined in this specification SHOULD be ignored. All meta field values MUST be
-normalized Unicode strings [](#string-normalization). Missing meta fields
-and meta fields with the empty string as normalized field value MUST be set to
-their default value, which is the empty string unless noted otherwise.
+The set of meta fields can be grouped in two types of fields:
+
+* Fields used for link construction (prefix, target, link, message). These
+  fields are used for abbreviation only. Applications MUST ignore them
+  ignored after they have been used to construct a full BEACON dump from 
+  a serialized BEACON file. For instance the following BEACON text file:
+
+      #PREFIX: http://example.org/
+      #TARGET: http://example.com/
+      #MESSAGE: Hello {about}
+
+      foo|World!
+
+  is identical to the following:
+
+      #PREFIX: {+ID}
+      #TARGET: {+ID}
+      #MESSAGE: {about}
+
+      http://example.org/foo|Hello World!|http://example.com/foo
+      
+* Fields that describe the BEACON dump (name, description, institution,
+  contact, qualifier, reference, feed, timestamp, update).  The meaning
+  of some of these fields is defined by terms from the
+  Dublin Core Metadata Element Set [](#RFC5013).  A mapping of annotating
+  meta fields to RDF properties is given in [](#interpreting-beacon-links).
 
 ## prefix
 
@@ -198,6 +224,11 @@ The default relation type is `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 The optional qualifier field specifies the relation type of relations between
 link target and link qualifier.
 
+## message
+
+The message meta field is used as template for link qualifiers. The default
+value is `{about}`. (TODO: drop this because mixed with `description` anyway?)
+
 ## contact
 
 The contact field contains an email address or similar contact information to
@@ -206,11 +237,6 @@ address as specified in section 3.4 of [](#RFC5322), for instance:
 
      admin@example.com
 	 Barbara Beacon <b.beacon@example.org>
-
-## message
-
-The message meta field is used as template for link qualifiers. The default
-value is `{about}`. (TODO: drop this because mixed with `description` anyway?)
 
 ## institution
 
@@ -270,7 +296,7 @@ time they are accessed. The value `never` SHOULD be used to describe archived
 BEACON dumps. Please note that the value of this tag is considered a hint and
 not a command. 
 
-# Link fields
+# Link fields and construction
 
 Each link in a serialized BEACON dump is given in form of up to four fields:
 
@@ -367,7 +393,7 @@ file SHOULD be encoded in UTF-8 [](#RFC3629). The file MUST:
   * Begin with an opening `<beacon>` tag and end with a closing `</beacon>` tag.
   * Specify the default namespace `http://purl.org/net/example`.
   * Include an empty `<link/>` tag for each link.
-  * Include the [link id](#link-fields) as XML attribute
+  * Include the [link id](#link-fields-and-construction) as XML attribute
     `id` of each `<link/>` element.
 
 The file MAY further:
