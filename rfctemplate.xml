@@ -10,14 +10,12 @@
 
 <front>
 	<title abbrev="Beacon">BEACON link dump format</title>
-	<author initials="J." surname="Voß"
-			fullname="J. Voß">
+	<author initials="J." surname="Voß" fullname="Jakob Voß">
 		<organization>Verbundzentrale des GBV</organization>
 		<address>
 			<postal>
 				<street>Platz der Göttinger Sieben 1</street>
-				<street></street>
-				<city>Göttingen</city> <region></region>
+				<city>Göttingen</city>
 				<code>37073</code>
 				<country>DE</country>
 			</postal>
@@ -25,7 +23,31 @@
 			<email>voss@gbv.de</email>
 		</address>
 	</author>
-	<date month="May" year="2012"/>
+	<author initials="M." surname="Voß" fullname="Mathias Schindler">
+		<organization>Wikimedia Deutschland e.V.</organization>
+		<address>
+			<postal>
+				<street>Obentrautstr. 72</street>
+				<city>Berlin</city>
+				<code>10963</code>
+				<country>DE</country>
+			</postal>
+			<email>mathias.schindler@wikimedia.de</email>
+		</address>
+	</author>
+	<author initials="T." surname="Berger" fullname="Thomas Berger">
+		<organization>Gymel.com</organization>
+		<address>
+			<postal>
+				<street>Im Dahl 35</street>
+				<city>Bonn</city>
+				<code>53117</code>
+				<country>DE</country>
+			</postal>
+			<email>ThB@gymel.com</email>
+		</address>
+	</author>
+	<date month="June" year="2012"/>
 	<!--area>...</area>
 	<keyword>...</keyword>
 	<keyword>...</keyword>
