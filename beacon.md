@@ -24,6 +24,8 @@ construct both, source and target of a link, for instance:
 
 A BEACON link dump can be serialized in a condense [BEACON text
 format](#beacon-text-format) and in [BEACON XML format](#beacon-xml-format).
+The link dump can further be serialized in RDF, if the relation type of its
+links is an URI.
 
 ## Notational Conventions
 
@@ -56,6 +58,7 @@ breaks and vertical bars in the following rules:
      LINEBREAK   =  *( CR / LF ) ; at least linefeed or carriage return
 
      VBAR        =  "|"          ; vertical bar
+
 
 ## String normalization 
 
@@ -175,12 +178,30 @@ All meta field values MUST be normalized Unicode strings
 string as normalized field value MUST be set to their default value, which is
 the empty string unless noted otherwise.
 
-The set of meta fields can be grouped in two types of fields:
+## Fields for link construction
 
-**Fields used for link construction** (prefix, target, link, message). These
-fields are used for abbreviation only. Applications MUST ignore them ignored
-after they have been used to construct a full BEACON dump from a serialized
-BEACON file. For instance the following BEACON text file:
+The meta fields `prefix`, `target`, `link`, and `message` are only used to
+abbreviate link elements in BEACON serializations.  Applications MUST ignore
+these fields after they have been used to construct a full BEACON dump from a
+serialized BEACON file. For instance the following BEACON text serialization
+contains a single link:
+
+     #PREFIX: http://example.org/
+     #TARGET: http://example.com/
+     #MESSAGE: Hello World!
+
+     foo
+
+The same link could be serialized as following: 
+
+     #PREFIX: {+ID}
+     #TARGET: {+ID}
+     #MESSAGE: {about}
+
+     http://example.org/foo|Hello World!|http://example.com/foo
+
+The meta fields in this example could also be omitted because they are all set
+to their default values. Another possible serialization would be:
 
      #PREFIX: http://example.org/
      #TARGET: http://example.com/
@@ -188,49 +209,65 @@ BEACON file. For instance the following BEACON text file:
 
      foo|World!
 
-is identical to the following (the meta fields in this example could also be
-omitted because they are all set to their default values):
-
-     #PREFIX: {+ID}
-     #TARGET: {+ID}
-     #MESSAGE: {about}
-
-     http://example.org/foo|Hello World!|http://example.com/foo
-      
-**Fields that describe the BEACON dump** (name, description, institution,
-contact, qualifier, reference, feed, timestamp, update).  The meaning of some
-of these fields is defined by terms from the Dublin Core Metadata Element Set
-[](#RFC5013) and the DCMI Metadata Terms [](#DCTERMS). A mapping of annotating
-meta fields to RDF properties is given in [](#interpreting-beacon-links).
-
-## prefix
+### prefix
 
 The prefix field specifies an URI pattern that is used to construct link
 sources.  If no prefix meta field was specified, the default value `{+ID}` is
 used.  The name `prefix` was choosen to keep backwards compatibility with
 existing BEACON dumps.
 
-## target
+### target
 
 The target field specifies an URI pattern to construct link targets.  If no
 target meta field was specified, the default value `{+ID}` is used.
 
-## link
+### link
 
 The link field specifies the relation type for all links in a BEACON dump.
 The default relation type is `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 
-## qualifier
-
-The optional qualifier field specifies the relation type of relations between
-link target and link qualifier.
-
-## message
+### message
 
 The message meta field is used as template for link qualifiers. The default
-value is `{about}`. (TODO: drop this because mixed with `description` anyway?)
+value is `{about}`. Note that all link qualifiers are equal, if the field value
+does not contain the sequence `{about}`.
 
-## contact
+## Annotating meta fields
+
+The meta field `name`, `description`, `institution`, `contact`, `qualifier`,
+`reference`, `feed`, `timestamp`, and `update` describe a BEACON dump.  The
+meaning of these fields is defined by RDF properties from the DCMI Metadata
+Terms [](#DCTERMS) and other vocabularies.  A mapping of annotating meta fields
+to RDF properties is given in [](#interpreting-beacon-links).
+
+### name
+
+The name meta field contains a name or title of the BEACON dump and/or of
+all of its targets. For instance if all links point to resources in a database,
+the name meta field contains the name of the database.
+
+The RDF property of this field is `http://purl.org/dc/terms/title` from
+the DCMI Metadata Terms.
+
+### description
+
+The description meta field contains a human readable description of the BEACON
+dump.
+
+The RDF property of this field is `http://purl.org/dc/terms/description` from
+the DCMI Metadata Terms.
+
+### institution
+
+The institution meta field contains the organization or individual of an
+institution or publisher responsible for the link targets and/or responsible
+for the BEACON dump.  The field value SHOULD be an URI, but it can also be a
+literal name.
+
+The RDF property of this field is `http://purl.org/dc/terms/publisher` or
+`http://purl.org/dc/terms/creator` (???) from the DCMI Metadata Terms.
+
+### contact
 
 The contact field contains an email address or similar contact information to
 reach the maintainer of the BEACON dump.  The contact SHOULD be a mailbox
@@ -239,34 +276,28 @@ address as specified in section 3.4 of [](#RFC5322), for instance:
      admin@example.com
 	 Barbara Beacon <b.beacon@example.org>
 
-## institution
+The field value is mapped to the RDF propery `foaf:mbox` and to the RDF
+property `rdfs:label`, depending on the format. Both values are not directly
+related to the BEACON dump but to its creator/publisher (???).
 
-The institution meta field contains the name of an institution or publisher
-responsible for the link targets and/or responsible for the BEACON dump.
-
-## name
-
-The name meta field contains a name or title of the BEACON dump and/or of
-all of its targets. For instance if all links point to resources in a database,
-the name meta field contains the name of the database.
-
-## description
-
-The description meta field contains a human readable description of the BEACON
-dump _(TODO: drop or merge with about meta field?)_
-
-## reference
+### reference
 
 The reference field contains an URL of a website with additional information
 about this BEACON link dump.
 
-## feed
+The RDF property of this field is `http://xmlns.com/foaf/0.1/homepage` from 
+the FOAF vocabulary.
+
+### feed
 
 The feed field contains an URL, where to download the BEACON dump from. In
 addition to standard URL schemes, alternative established URI forms for
 retrieval, such as magnet URIs MAY be allowed.
 
-## timestamp
+The RDF property of this field is `http://rdfs.org/ns/void#dataDump` from the
+VoID vocabulary.
+
+### timestamp
 
 The timestamp field contains the date of last modification of the BEACON dump.
 This date MUST conform to the `full-date` or to the `date-time` production rule
@@ -278,7 +309,10 @@ absence of a numeric time zone offset. Some examples of valid timestamp values:
      2012-05-30T15:17:36+02:00
      2012-05-30T13:17:36Z
 
-## update
+The RDF property of this field is `http://purl.org/dc/terms/modified` from the
+DCMI Metadata Terms.
+
+### update
 
 The update field specifies how frequently the BEACON dump is likely to change.
 The field corresponds to the `<changefreq>` element in [Sitemaps XML
@@ -296,6 +330,15 @@ The value `always` SHOULD be used to describe BEACON dumps that change each
 time they are accessed. The value `never` SHOULD be used to describe archived
 BEACON dumps. Please note that the value of this tag is considered a hint and
 not a command. 
+
+The RDF property of this field is 
+`http://web.resource.org/rss/1.0/modules/syndication/updatePeriod` from
+the RSS 1.0 Syndication Module [](#RSSSYND).
+
+### qualifier
+
+The optional qualifier field specifies the relation type of relations between
+link target and link qualifier.
 
 # Link fields and construction
 
@@ -325,15 +368,11 @@ Constructed link sources and link targets MUST be a syntactically valid URIs. A
 client MUST ignore links with invalid URIs and it SHOULD give a warning.
 
 The **link qualifier** is constructed from the qualifier field and the [message
-meta field](#message) as following. The message field value
-is used as string pattern in which the following character sequences are
-replaced literally:
-
-* `{id}` is replaced by the id field,
-* `{about}` is replaced by the qualifier field, 
-   (`{hits}` was supported first for backwards compatibility),
-* `{target}` is replaced by the target field,
-* `{bracket}` is replaced by the left curly bracket character `{` (`%x7D`).
+meta field](#message) as following. The message field value is used as string
+pattern in which the character sequences `{about}` is literally replace by the
+qualifier field. A warning SHOULD be given if the message meta field does not
+contain this sequence and the qualifier field is not the empty string, because
+the qualifier field is ignored in this case.
 
 Additional encoding MUST NOT be applied to field values during this process.
 The resulting string MUST be [normalized](#string-normalization) after

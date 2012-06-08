@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<reference anchor='TURTLE'>
+	<front>
+		<title abbrev='Turtle'>Turtle - Terse RDF Triple Language</title>
+		<author initials="D." surname="Beckett" fullname="David Beckett"/>
+		<author initials="T." surname="Berners-Lee" fullname="Tim Berners-Lee"/>
+		<date year='2011' month='Mar'/>
+	</front>
+	<format type='HTML' target="http://www.w3.org/TeamSubmission/turtle/"/>
+</reference>

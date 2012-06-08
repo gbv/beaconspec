@@ -5,7 +5,7 @@ format. The most common use cases are RDF triples and links in HTML.
 
 ## RDF triples
 
-If link type is an URI, each link in a BEACON dump SHOULD be mapped to an RDF
+If link type is an URI, each link in a BEACON dump can be mapped to an RDF
 triple with: 
 
 * link source as RDF subject,
@@ -22,7 +22,7 @@ RDF object. For instance the following link, in BEACON text:
     #QUALIFIER: http://www.w3.org/2000/01/rdf-schema#label
     http://example.org|example|http://example.com
 
-could be mapped to the following RDF triples in Turtle format:
+could be mapped to the following RDF triples in Turtle format [](#TURTLE):
 
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 	
@@ -50,16 +50,8 @@ could be mapped to the following RDF triples in Turtle format:
 Another possible interpretation of link qualifier is additional information
 about the relationship, for instance when it was created (reification).
 
-The following meta fields can be mapped to RDF triples about the BEACON dump:
-
-* `name` is mapped to `http://purl.org/dc/terms/title`.
-* `description` is mapped to `http://purl.org/dc/terms/description`.
-* `institution` is mapped to ...?
-* `contact` is mapped to ...?
-* `reference` is mapped to ...?
-* `feed` is mapped to ...?
-* `timestamp` is mapped to `http://purl.org/dc/terms/modified`.
-* `update` is mapped to ...?
+See [](#annotating-meta-fields) for mappings of meta fields to RDF triples
+about the BEACON dump.
 
 In addition, the `prefix` and `target` fields MAY be mapped to
 `http://rdfs.org/ns/void#uriRegexPattern` and/or

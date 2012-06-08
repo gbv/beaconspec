@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<reference anchor='RSSSYND'>
+	<front>
+		<title abbrev='RSS Syndication Module'>RDF Site Summary 1.0 Modules: Syndication</title>
+		<author surname="RSS-DEV Working Group"/>
+		<date year='2000' month='Dec'/>
+	</front>
+	<format type='HTML' target="http://web.resource.org/rss/1.0/modules/syndication/"/>
+</reference>

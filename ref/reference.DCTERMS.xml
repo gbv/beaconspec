@@ -2,7 +2,7 @@
 <reference anchor='DCTERMS'>
 	<front>
 		<title abbrev='DCTERMS'>DCMI Metadata Terms</title>
-		<author>DCMI Usage Board</author>
+		<author surname="DCMI Usage Board"/>
 		<date year='2010' month='Oct'/>
 	</front>
 	<format type='HTML' target="http://dublincore.org/documents/dcmi-terms/"/>
