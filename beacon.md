@@ -177,30 +177,31 @@ the empty string unless noted otherwise.
 
 The set of meta fields can be grouped in two types of fields:
 
-* Fields used for link construction (prefix, target, link, message). These
-  fields are used for abbreviation only. Applications MUST ignore them
-  ignored after they have been used to construct a full BEACON dump from 
-  a serialized BEACON file. For instance the following BEACON text file:
+**Fields used for link construction** (prefix, target, link, message). These
+fields are used for abbreviation only. Applications MUST ignore them ignored
+after they have been used to construct a full BEACON dump from a serialized
+BEACON file. For instance the following BEACON text file:
 
-      #PREFIX: http://example.org/
-      #TARGET: http://example.com/
-      #MESSAGE: Hello {about}
+     #PREFIX: http://example.org/
+     #TARGET: http://example.com/
+     #MESSAGE: Hello {about}
 
-      foo|World!
+     foo|World!
 
-  is identical to the following:
+is identical to the following (the meta fields in this example could also be
+omitted because they are all set to their default values):
 
-      #PREFIX: {+ID}
-      #TARGET: {+ID}
-      #MESSAGE: {about}
+     #PREFIX: {+ID}
+     #TARGET: {+ID}
+     #MESSAGE: {about}
 
-      http://example.org/foo|Hello World!|http://example.com/foo
+     http://example.org/foo|Hello World!|http://example.com/foo
       
-* Fields that describe the BEACON dump (name, description, institution,
-  contact, qualifier, reference, feed, timestamp, update).  The meaning
-  of some of these fields is defined by terms from the
-  Dublin Core Metadata Element Set [](#RFC5013).  A mapping of annotating
-  meta fields to RDF properties is given in [](#interpreting-beacon-links).
+**Fields that describe the BEACON dump** (name, description, institution,
+contact, qualifier, reference, feed, timestamp, update).  The meaning of some
+of these fields is defined by terms from the Dublin Core Metadata Element Set
+[](#RFC5013) and the DCMI Metadata Terms [](#DCTERMS). A mapping of annotating
+meta fields to RDF properties is given in [](#interpreting-beacon-links).
 
 ## prefix
 

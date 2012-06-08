@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<reference anchor='DCTERMS'>
+	<front>
+		<title abbrev='DCTERMS'>DCMI Metadata Terms</title>
+		<author>DCMI Usage Board</author>
+		<date year='2010' month='Oct'/>
+	</front>
+	<format type='HTML' target="http://dublincore.org/documents/dcmi-terms/"/>
+</reference>
