@@ -147,7 +147,7 @@ registry  [](#RFC5988) or an URI. Some examples of relation types:
 	 describedby
 	 replies
      http://www.w3.org/2002/07/owl#sameAs
-	 http://xmlns.com/foaf/0.1/primaryTopicOf
+	 http://xmlns.com/foaf/0.1/isPrimaryTopicOf
 	 http://purl.org/spar/cito/cites
 
 In a [serialized BEACON dump](#serialization) the relation type is specified by

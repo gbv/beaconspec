@@ -82,6 +82,12 @@ can be mapped to the following HTML link:
 
      <a href="http://example.org">example</a>
 
+The qualifier, however, may be the empty string. The meta field `name` may be
+used alternatively as textual content. The relation type may also be used to
+automatically create an appropriate link label, such as "same entity" 
+for relation type `http://www.w3.org/2002/07/owl#sameAs` or "more information
+about this" for relation type `http://xmlns.com/foaf/0.1/isPrimaryTopicOf`.
+
 
 # RELAX NG Schema for BEACON XML
 
