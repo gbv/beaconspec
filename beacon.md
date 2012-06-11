@@ -344,7 +344,7 @@ link target and link qualifier.
 
 Each link in a serialized BEACON dump is given in form of up to four fields:
 
-* id field,
+* source field,
 * optional qualifier field,
 * optional target field.
 
@@ -355,14 +355,14 @@ optional fields MUST be set to the empty string.  The full link is then
 constructed as following:
 
 The **link source** is constructed from the [prefix meta field](#prefix) URI
-pattern by inserting the id field as identifier value, as defined in
+pattern by inserting the source field as identifier value, as defined in
 [](#uri-patterns).
 
 The **link target** is constructed from the [target meta field](#target) URI
 pattern by inserting as identifier value, as defined in [](#uri-patterns):
 
 * the target field, if the target field is not the empty string,
-* the id field, otherwise.
+* the source field, otherwise.
 
 Constructed link sources and link targets MUST be a syntactically valid URIs. A
 client MUST ignore links with invalid URIs and it SHOULD give a warning.
@@ -380,11 +380,11 @@ construction.
 
 The following table illustrates construction of a link:
 
-    meta field    link field(s)         -->  link element
-     prefix        id                   -->   source
-     target        id,target            -->   target
-	 link          -                    -->   relation type
-	 message       id,qualifier,target  -->   qualifier
+    meta field    link field(s)   -->  link element
+     prefix        source         -->   source
+     target        source,target  -->   target
+	 message       qualifier      -->   qualifier
+	 link          -              -->   relation type
 
 # Serialization
 
@@ -395,7 +395,7 @@ lines by line breaks. The file consists of a set of lines with meta fields,
 followed by a set of lines with link fields. A BEACON text file MAY begin with
 an Unicode Byte Order Mark and it SHOULD end with a line break:
 
-     BEACONTEXT  =  [ BOM ] *metaline [ LINEBREAK ] LINKS [ LINEBREAK ]
+     BEACONTEXT  =  [ BOM ] *METALINE [ LINEBREAK ] [ LINKS ]
 	
      BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 
@@ -405,23 +405,23 @@ of meta lines and the order of link lines is irrelevant.
 A meta line specifies a [meta field](#meta-fields) and its value. Meta field
 names are case insensitive and SHOULD be given in uppercase letters.
 
-     metaline       =  "#" metafield ":" metavalue LINEBREAK
+     METALINE       =  "#" METAFIELD ":" METAVALUE LINEBREAK
 
-     metafield      =  "PREFIX" / "TARGET" / "LINK" / "QUALIFIER" 
-                    /  "MESSAGE" / "DESCRIPTION" / "INSTITUTION" 
-                    /  "NAME" / "REFERENCE"
+     METAFIELD      =  "PREFIX" / "TARGET" / "LINK" / "MESSAGE" 
+                    /  "NAME" / "DESCRIPTION" / "INSTITUTION" 
+                    /  "QUALIFIER" / "REFERENCE"
                     /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
  
-     metavalue      =  BEACONLINE
+     METAVALUE      =  BEACONLINE
 
-Each link is given on a link line with its id field, optionally follwed by
+Each link is given on a link line with its source field, optionally follwed by
 additional fields:
 
-     LINKS          =  LINK *( LINEBREAK LINK )
+     LINKS          =  LINK *( LINEBREAK LINK ) [ LINEBREAK ]
 
-     LINK           =  ID [ VBAR QUALIFIER [ VBAR TARGET ] ] 
+     LINK           =  SOURCE [ VBAR QUALIFIER [ VBAR TARGET ] ] 
 
-     ID             =  BEACONVALUE
+     SOURCE         =  BEACONVALUE
 
      TARGET         =  BEACONVALUE
 
@@ -433,7 +433,7 @@ file SHOULD be encoded in UTF-8 [](#RFC3629). The file MUST:
   * Begin with an opening `<beacon>` tag and end with a closing `</beacon>` tag.
   * Specify the default namespace `http://purl.org/net/example`.
   * Include an empty `<link/>` tag for each link.
-  * Include the [link id](#link-fields-and-construction) as XML attribute
+  * Include the [source field](#link-fields-and-construction) as XML attribute
     `id` of each `<link/>` element.
 
 The file MAY further:

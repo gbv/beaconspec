@@ -93,19 +93,17 @@ only.
 	  attribute prefix      { text }.
 	  attribute target      { text },
 	  attribute link        { xsd:anyURI },
-	  attribute qualifier   { xsd:anyURI },
-
 	  attribute message     { text },
+	  attribute name        { text },
 	  attribute description { text },
 	  attribute institution { text },
-	  attribute name        { text },
 	  attribute reference   { xsd:anyURI },
-
 	  attribute contact     { text },
 	  attribute feed        { xsd:anyURI },
 	  attribute timestamp   { text },
 	  attribute update { "always" | "hourly" | "daily" 
 	    | "weekly" | "monthly" | "yearly" | "never" },
+	  attribute qualifier   { xsd:anyURI },
 	  element link {
 	    attribute id        { text },
 		attribute target    { text }?,
@@ -117,6 +115,9 @@ only.
 A short example of a file in BEACON XML format is given below:
 
     <?xml version="1.0" encoding="UTF-8"?>
-    <beacon xmlns="http://purl.org/net/beacon">
-       ...TODO...
+    <beacon xmlns="http://purl.org/net/beacon" 
+            prefix="http://example.org/"
+            target="http://example.org/">
+       <link id="foo" target="bar" />
+       ...TODO: better example...
     </beacon>
