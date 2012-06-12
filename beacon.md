@@ -395,35 +395,39 @@ lines by line breaks. The file consists of a set of lines with meta fields,
 followed by a set of lines with link fields. A BEACON text file MAY begin with
 an Unicode Byte Order Mark and it SHOULD end with a line break:
 
-     BEACONTEXT  =  [ BOM ] *METALINE [ LINEBREAK ] [ LINKS ]
+     BEACONTEXT  =  [ BOM ] [ START ] *METALINE [ LINEBREAK ] [ LINKS ]
 	
      BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 
 An empty line SHOULD be used to separate meta lines and link lines. The order
 of meta lines and the order of link lines is irrelevant. 
 
+The BEACON text file SHOULD start with an additional, fixed meta field:
+
+     START       =  "#FORMAT: BEACON" LINEBREAK
+
 A meta line specifies a [meta field](#meta-fields) and its value. Meta field
 names are case insensitive and SHOULD be given in uppercase letters.
 
-     METALINE       =  "#" METAFIELD ":" METAVALUE LINEBREAK
+     METALINE    =  "#" METAFIELD ":" METAVALUE LINEBREAK
 
-     METAFIELD      =  "PREFIX" / "TARGET" / "LINK" / "MESSAGE" 
-                    /  "NAME" / "DESCRIPTION" / "INSTITUTION" 
-                    /  "QUALIFIER" / "REFERENCE"
-                    /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
+     METAFIELD   =  "PREFIX" / "TARGET" / "LINK" / "MESSAGE" 
+                 /  "NAME" / "DESCRIPTION" / "INSTITUTION" 
+                 /  "QUALIFIER" / "REFERENCE"
+                 /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
  
-     METAVALUE      =  BEACONLINE
+     METAVALUE   =  BEACONLINE
 
 Each link is given on a link line with its source field, optionally follwed by
 additional fields:
 
-     LINKS          =  LINK *( LINEBREAK LINK ) [ LINEBREAK ]
+     LINKS       =  LINK *( LINEBREAK LINK ) [ LINEBREAK ]
 
-     LINK           =  SOURCE [ VBAR QUALIFIER [ VBAR TARGET ] ] 
+     LINK        =  SOURCE [ VBAR QUALIFIER [ VBAR TARGET ] ] 
 
-     SOURCE         =  BEACONVALUE
+     SOURCE      =  BEACONVALUE
 
-     TARGET         =  BEACONVALUE
+     TARGET      =  BEACONVALUE
 
 ## BEACON XML format
 
