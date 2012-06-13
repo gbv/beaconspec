@@ -161,7 +161,7 @@ given in a serialization.
 A qualifier is an optional Unciode that can be used to further describe the
 link or parts of it. Its value is the empty string by default.
 
-     QUALIFIER      =  BEACONVALUE
+     QUALIFIER      =  *( CHAR - LINEBREAK )
 
 The meaning of a link and its elements is not defined by this specification,
 but guidelines are given in [](#interpreting-beacon-links).
