@@ -55,7 +55,7 @@ breaks and vertical bars in the following rules:
 
      BEACONVALUE =  *( CHAR - ( LINEBREAK / VBAR ) )
 
-     LINEBREAK   =  ?CR LF       ; linefeed with optional carriage returns
+     LINEBREAK   =  ?CR LF / CR
 
      VBAR        =  "|"          ; vertical bar
 
