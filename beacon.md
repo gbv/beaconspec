@@ -55,7 +55,7 @@ breaks and vertical bars in the following rules:
 
      BEACONVALUE =  *( CHAR - ( LINEBREAK / VBAR ) )
 
-     LINEBREAK   =  *( CR / LF ) ; at least linefeed or carriage return
+     LINEBREAK   =  *CR LF       ; linefeed with optional carriage returns
 
      VBAR        =  "|"          ; vertical bar
 
@@ -395,12 +395,12 @@ lines by line breaks. The file consists of a set of lines with meta fields,
 followed by a set of lines with link fields. A BEACON text file MAY begin with
 an Unicode Byte Order Mark and it SHOULD end with a line break:
 
-     BEACONTEXT  =  [ BOM ] [ START ] *METALINE [ LINEBREAK ] [ LINKS ]
+     BEACONTEXT  =  [ BOM ] [ START ] *METALINE *LINEBREAK [ LINKS ]
 	
      BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 
-An empty line SHOULD be used to separate meta lines and link lines. The order
-of meta lines and the order of link lines is irrelevant. 
+At least one empty line SHOULD be used to separate meta lines and link lines.
+The order public of meta lines and the order of link lines is irrelevant. 
 
 The BEACON text file SHOULD start with an additional, fixed meta field:
 
