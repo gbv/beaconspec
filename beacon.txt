@@ -4,10 +4,10 @@
 Network Working Group                                            J. Voss
 Internet-Draft                                   Verbundzentrale des GBV
 Intended status: Informational                              M. Schindler
-Expires: December 15, 2012                    Wikimedia Deutschland e.V.
+Expires: December 17, 2012                    Wikimedia Deutschland e.V.
                                                               Th. Berger
                                                                Gymel.com
-                                                           June 13, 2012
+                                                           June 15, 2012
 
 
                         BEACON link dump format
@@ -20,20 +20,26 @@ Abstract
 
 Status of this Memo
 
-   This Internet-Draft is submitted in full conformance with the
+   This Internet-Draft is submitted to IETF in full conformance with the
    provisions of BCP 78 and BCP 79.
 
    Internet-Drafts are working documents of the Internet Engineering
-   Task Force (IETF).  Note that other groups may also distribute
-   working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at http://datatracker.ietf.org/drafts/current/.
+   Task Force (IETF), its areas, and its working groups.  Note that
+   other groups may also distribute working documents as Internet-
+   Drafts.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 15, 2012.
+   The list of current Internet-Drafts can be accessed at
+   http://www.ietf.org/ietf/1id-abstracts.txt.
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   http://www.ietf.org/shadow.html.
+
+   This Internet-Draft will expire on December 17, 2012.
 
 Copyright Notice
 
@@ -43,18 +49,20 @@ Copyright Notice
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
    (http://trustee.ietf.org/license-info) in effect on the date of
+
+
+
+Voss, et al.            Expires December 17, 2012               [Page 1]
+
+Internet-Draft                   Beacon                        June 2012
+
+
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
-
-
-
-Voss, et al.            Expires December 15, 2012               [Page 1]
-
-Internet-Draft                   Beacon                        June 2012
+   described in the BSD License.
 
 
 Table of Contents
@@ -68,24 +76,24 @@ Table of Contents
    3.  Meta fields  . . . . . . . . . . . . . . . . . . . . . . . . .  6
      3.1.  Fields for link construction . . . . . . . . . . . . . . .  7
        3.1.1.  prefix . . . . . . . . . . . . . . . . . . . . . . . .  7
-       3.1.2.  target . . . . . . . . . . . . . . . . . . . . . . . .  7
+       3.1.2.  target . . . . . . . . . . . . . . . . . . . . . . . .  8
        3.1.3.  link . . . . . . . . . . . . . . . . . . . . . . . . .  8
        3.1.4.  message  . . . . . . . . . . . . . . . . . . . . . . .  8
      3.2.  Annotating meta fields . . . . . . . . . . . . . . . . . .  8
        3.2.1.  name . . . . . . . . . . . . . . . . . . . . . . . . .  8
        3.2.2.  description  . . . . . . . . . . . . . . . . . . . . .  8
-       3.2.3.  institution  . . . . . . . . . . . . . . . . . . . . .  8
+       3.2.3.  institution  . . . . . . . . . . . . . . . . . . . . .  9
        3.2.4.  contact  . . . . . . . . . . . . . . . . . . . . . . .  9
        3.2.5.  reference  . . . . . . . . . . . . . . . . . . . . . .  9
        3.2.6.  feed . . . . . . . . . . . . . . . . . . . . . . . . .  9
        3.2.7.  timestamp  . . . . . . . . . . . . . . . . . . . . . .  9
        3.2.8.  update . . . . . . . . . . . . . . . . . . . . . . . . 10
        3.2.9.  qualifier  . . . . . . . . . . . . . . . . . . . . . . 10
-   4.  Link fields and construction . . . . . . . . . . . . . . . . . 10
+   4.  Link fields and construction . . . . . . . . . . . . . . . . . 11
    5.  Serialization  . . . . . . . . . . . . . . . . . . . . . . . . 12
      5.1.  BEACON text format . . . . . . . . . . . . . . . . . . . . 12
      5.2.  BEACON XML format  . . . . . . . . . . . . . . . . . . . . 13
-   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 13
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 14
    7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 14
      7.1.  Normative References . . . . . . . . . . . . . . . . . . . 14
      7.2.  Informative References . . . . . . . . . . . . . . . . . . 14
@@ -100,15 +108,7 @@ Table of Contents
 
 
 
-
-
-
-
-
-
-
-
-Voss, et al.            Expires December 15, 2012               [Page 2]
+Voss, et al.            Expires December 17, 2012               [Page 2]
 
 Internet-Draft                   Beacon                        June 2012
 
@@ -120,10 +120,10 @@ Internet-Draft                   Beacon                        June 2012
    BEACON is a data interchange format for large numbers of uniform
    links.  A BEACON link dump consists of:
 
-   -  a set of links (Section 2), each consisting of four elements
+   o  a set of links (Section 2), each consisting of four elements
       (Section 2),
 
-   -  a set of meta fields (Section 3).
+   o  a set of meta fields (Section 3).
 
    All links typically share a common URI pattern for source and for
    target, respectively.  For instance a BEACON dump could consist of
@@ -164,7 +164,7 @@ Internet-Draft                   Beacon                        June 2012
 
 
 
-Voss, et al.            Expires December 15, 2012               [Page 3]
+Voss, et al.            Expires December 17, 2012               [Page 3]
 
 Internet-Draft                   Beacon                        June 2012
 
@@ -174,13 +174,13 @@ Internet-Draft                   Beacon                        June 2012
    In addition, the operator "-" is used to express exceptions to forbid
    line breaks and vertical bars in the following rules:
 
-   BEACONLINE  =  *( CHAR - LINEBREAK )
+    BEACONLINE  =  *( CHAR - LINEBREAK )
 
-   BEACONVALUE =  *( CHAR - ( LINEBREAK / VBAR ) )
+    BEACONVALUE =  *( CHAR - ( LINEBREAK / VBAR ) )
 
-   LINEBREAK   =  ?CR LF       ; linefeed with optional carriage returns
+    LINEBREAK   =  LF | CR | CR LF
 
-   VBAR        =  "|"          ; vertical bar
+    VBAR        =  %x7C          ; vertical bar ("|")
 
 1.3.  String normalization
 
@@ -220,7 +220,7 @@ Internet-Draft                   Beacon                        June 2012
 
 
 
-Voss, et al.            Expires December 15, 2012               [Page 4]
+Voss, et al.            Expires December 17, 2012               [Page 4]
 
 Internet-Draft                   Beacon                        June 2012
 
@@ -276,18 +276,18 @@ Internet-Draft                   Beacon                        June 2012
 
 
 
-Voss, et al.            Expires December 15, 2012               [Page 5]
+Voss, et al.            Expires December 17, 2012               [Page 5]
 
 Internet-Draft                   Beacon                        June 2012
 
 
-   -  a source URI,
+   o  a source URI,
 
-   -  a target URI,
+   o  a target URI,
 
-   -  a relation type,
+   o  a relation type,
 
-   -  a qualifier.
+   o  a qualifier.
 
    A BEACON link dump is an annotated set of links with identical
    relation type.  A relation type is either a registered link type from
@@ -332,7 +332,7 @@ Internet-Draft                   Beacon                        June 2012
 
 
 
-Voss, et al.            Expires December 15, 2012               [Page 6]
+Voss, et al.            Expires December 17, 2012               [Page 6]
 
 Internet-Draft                   Beacon                        June 2012
 
@@ -352,23 +352,32 @@ Internet-Draft                   Beacon                        June 2012
 
     foo
 
-   The same link could be serialized as following:
+   The same link could be serialized as following, without any meta
+   fields:
+
+    http://example.org/foo|Hello World!|http://example.com/foo
+
+   The default meta fields values of this examples could also be
+   specified as:
 
     #PREFIX: {+ID}
     #TARGET: {+ID}
     #MESSAGE: {about}
 
-    http://example.org/foo|Hello World!|http://example.com/foo
-
-   The meta fields in this example could also be omitted because they
-   are all set to their default values.  Another possible serialization
-   would be:
+   Another possible serialization would be:
 
     #PREFIX: http://example.org/
     #TARGET: http://example.com/
     #MESSAGE: Hello {about}
 
     foo|World!
+
+   The link line in this example is equal to:
+
+    foo|World!|foo
+
+   Applications SHOULD ignore equal links in one Beacon dump and it is
+   RECOMMENDED to indicate duplicated links with a warning.
 
 3.1.1.  prefix
 
@@ -377,21 +386,18 @@ Internet-Draft                   Beacon                        June 2012
    value "{+ID}" is used.  The name "prefix" was choosen to keep
    backwards compatibility with existing BEACON dumps.
 
+
+
+Voss, et al.            Expires December 17, 2012               [Page 7]
+
+Internet-Draft                   Beacon                        June 2012
+
+
 3.1.2.  target
 
    The target field specifies an URI pattern to construct link targets.
    If no target meta field was specified, the default value "{+ID}" is
    used.
-
-
-
-
-
-
-Voss, et al.            Expires December 15, 2012               [Page 7]
-
-Internet-Draft                   Beacon                        June 2012
-
 
 3.1.3.  link
 
@@ -432,6 +438,17 @@ Internet-Draft                   Beacon                        June 2012
    The RDF property of this field is
    "http://purl.org/dc/terms/description" from the DCMI Metadata Terms.
 
+
+
+
+
+
+
+Voss, et al.            Expires December 17, 2012               [Page 8]
+
+Internet-Draft                   Beacon                        June 2012
+
+
 3.2.3.  institution
 
    The institution meta field contains the organization or individual of
@@ -441,14 +458,6 @@ Internet-Draft                   Beacon                        June 2012
 
    The RDF property of this field is
    "http://purl.org/dc/terms/publisher" or
-
-
-
-Voss, et al.            Expires December 15, 2012               [Page 8]
-
-Internet-Draft                   Beacon                        June 2012
-
-
    "http://purl.org/dc/terms/creator" (???) from the DCMI Metadata
    Terms.
 
@@ -488,6 +497,14 @@ Internet-Draft                   Beacon                        June 2012
 
    The timestamp field contains the date of last modification of the
    BEACON dump.  This date MUST conform to the "full-date" or to the
+
+
+
+Voss, et al.            Expires December 17, 2012               [Page 9]
+
+Internet-Draft                   Beacon                        June 2012
+
+
    "date-time" production rule in [RFC3339].  In addition, an uppercase
    "T" character MUST be used to separate date and time, and an
    uppercase "Z" character MUST be present in the absence of a numeric
@@ -496,14 +513,6 @@ Internet-Draft                   Beacon                        June 2012
     2012-05-30
     2012-05-30T15:17:36+02:00
     2012-05-30T13:17:36Z
-
-
-
-
-Voss, et al.            Expires December 15, 2012               [Page 9]
-
-Internet-Draft                   Beacon                        June 2012
-
 
    The RDF property of this field is "http://purl.org/dc/terms/modified"
    from the DCMI Metadata Terms.
@@ -514,19 +523,19 @@ Internet-Draft                   Beacon                        June 2012
    to change.  The field corresponds to the "<changefreq>" element in
    Sitemaps XML format [Sitemaps].  Valid values are:
 
-   -  "always"
+   o  "always"
 
-   -  "hourly"
+   o  "hourly"
 
-   -  "daily"
+   o  "daily"
 
-   -  "weekly"
+   o  "weekly"
 
-   -  "monthly"
+   o  "monthly"
 
-   -  "yearly"
+   o  "yearly"
 
-   -  "never"
+   o  "never"
 
    The value "always" SHOULD be used to describe BEACON dumps that
    change each time they are accessed.  The value "never" SHOULD be used
@@ -543,25 +552,25 @@ Internet-Draft                   Beacon                        June 2012
    between link target and link qualifier.
 
 
+
+
+
+
+Voss, et al.            Expires December 17, 2012              [Page 10]
+
+Internet-Draft                   Beacon                        June 2012
+
+
 4.  Link fields and construction
 
    Each link in a serialized BEACON dump is given in form of up to four
    fields:
 
-   -  source field,
+   o  source field,
 
-   -  optional qualifier field,
+   o  optional qualifier field,
 
-
-
-
-
-Voss, et al.            Expires December 15, 2012              [Page 10]
-
-Internet-Draft                   Beacon                        June 2012
-
-
-   -  optional target field.
+   o  optional target field.
 
    From these fields, combined with the BEACON dump's meta fields
    (Section 3), the full link (Section 2) is constructed.  All field
@@ -577,9 +586,9 @@ Internet-Draft                   Beacon                        June 2012
    (Section 3.1.2) URI pattern by inserting as identifier value, as
    defined in Section 1.4:
 
-   -  the target field, if the target field is not the empty string,
+   o  the target field, if the target field is not the empty string,
 
-   -  the source field, otherwise.
+   o  the source field, otherwise.
 
    Constructed link sources and link targets MUST be a syntactically
    valid URIs.  A client MUST ignore links with invalid URIs and it
@@ -599,22 +608,20 @@ Internet-Draft                   Beacon                        June 2012
 
    The following table illustrates construction of a link:
 
+
+
+
+
+Voss, et al.            Expires December 17, 2012              [Page 11]
+
+Internet-Draft                   Beacon                        June 2012
+
+
    meta field    link field(s)   -->  link element
     prefix        source         -->   source
     target        source,target  -->   target
     message       qualifier      -->   qualifier
     link          -              -->   relation type
-
-
-
-
-
-
-
-
-Voss, et al.            Expires December 15, 2012              [Page 11]
-
-Internet-Draft                   Beacon                        June 2012
 
 
 5.  Serialization
@@ -658,6 +665,14 @@ Internet-Draft                   Beacon                        June 2012
    Each link is given on a link line with its source field, optionally
    follwed by additional fields:
 
+
+
+
+Voss, et al.            Expires December 17, 2012              [Page 12]
+
+Internet-Draft                   Beacon                        June 2012
+
+
     LINKS       =  LINK *( LINEBREAK LINK ) [ LINEBREAK ]
 
     LINK        =  SOURCE [ VBAR QUALIFIER [ VBAR TARGET ] ]
@@ -666,35 +681,28 @@ Internet-Draft                   Beacon                        June 2012
 
     TARGET      =  BEACONVALUE
 
-
-
-Voss, et al.            Expires December 15, 2012              [Page 12]
-
-Internet-Draft                   Beacon                        June 2012
-
-
 5.2.  BEACON XML format
 
    A BEACON XML file is a valid XML file conforming to the following
    schema.  The file SHOULD be encoded in UTF-8 [RFC3629].  The file
    MUST:
 
-   -  Begin with an opening "<beacon>" tag and end with a closing
+   o  Begin with an opening "<beacon>" tag and end with a closing
       "</beacon>" tag.
 
-   -  Specify the default namespace "http://purl.org/net/example".
+   o  Specify the default namespace "http://purl.org/net/example".
 
-   -  Include an empty "<link/>" tag for each link.
+   o  Include an empty "<link/>" tag for each link.
 
-   -  Include the source field (Section 4) as XML attribute "id" of each
+   o  Include the source field (Section 4) as XML attribute "id" of each
       "<link/>" element.
 
    The file MAY further:
 
-   -  Specify meta fields (Section 3) as XML attributes to the
+   o  Specify meta fields (Section 3) as XML attributes to the
       "<beacon>" tag.
 
-   -  Specify link fields "target" and/or "about" as attributes to the
+   o  Specify link fields "target" and/or "about" as attributes to the
       "<link>" element.
 
    All attributes MUST be given in lowercase.  An informal schema of
@@ -712,6 +720,15 @@ Internet-Draft                   Beacon                        June 2012
    vertical bar, which is encoded as "%7C" during construction the link.
 
 
+
+
+
+
+Voss, et al.            Expires December 17, 2012              [Page 13]
+
+Internet-Draft                   Beacon                        June 2012
+
+
 6.  Security Considerations
 
    ...TODO...
@@ -721,13 +738,6 @@ Internet-Draft                   Beacon                        June 2012
 
 
 7.  References
-
-
-
-Voss, et al.            Expires December 15, 2012              [Page 13]
-
-Internet-Draft                   Beacon                        June 2012
-
 
 7.1.  Normative References
 
@@ -768,6 +778,13 @@ Internet-Draft                   Beacon                        June 2012
    [RELAX-NGC]
               Clark, J., "RELAX NG Compact Syntax", Nov 2002.
 
+
+
+Voss, et al.            Expires December 17, 2012              [Page 14]
+
+Internet-Draft                   Beacon                        June 2012
+
+
    [RFC5013]  Kunze, J. and T. Baker, "The Dublin Core Metadata Element
               Set", RFC 5013, August 2007.
 
@@ -777,14 +794,6 @@ Internet-Draft                   Beacon                        June 2012
    [SAX]      Bradner, D., "SAX 1.0: The Simple API for XML", May 1998.
 
    [Sitemaps]
-
-
-
-Voss, et al.            Expires December 15, 2012              [Page 14]
-
-Internet-Draft                   Beacon                        June 2012
-
-
               Google Inc., "Sitemaps XML format", February 2008.
 
    [TURTLE]   Beckett, D. and T. Berners-Lee, "Turtle - Terse RDF Triple
@@ -802,11 +811,11 @@ A.1.  RDF triples
    If link type is an URI, each link in a BEACON dump can be mapped to
    an RDF triple with:
 
-   -  link source as RDF subject,
+   o  link source as RDF subject,
 
-   -  link type as RDF property,
+   o  link type as RDF property,
 
-   -  link target as RDF object.
+   o  link target as RDF object.
 
    As RDF is not defined on URIs but on URI references or IRIs, link
    source and link target URI MUST be transformed to an IRI by following
@@ -822,6 +831,16 @@ A.1.  RDF triples
    could be mapped to the following RDF triples in Turtle format
    [TURTLE]:
 
+
+
+
+
+
+Voss, et al.            Expires December 17, 2012              [Page 15]
+
+Internet-Draft                   Beacon                        June 2012
+
+
    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
    <http://example.org> rdfs:seeAlso <http://example.com> .
@@ -829,17 +848,6 @@ A.1.  RDF triples
 
    A typical use case is to use qualifiers as "number of hits" at a
    target resource.  For instance:
-
-
-
-
-
-
-
-Voss, et al.            Expires December 15, 2012              [Page 15]
-
-Internet-Draft                   Beacon                        June 2012
-
 
    #PREFIX: http://example.org/
    #TARGET: http://example.com/
@@ -872,14 +880,22 @@ A.2.  HTML links
    A BEACON link can be mapped to a HTML link ("<a>" element) as
    following:
 
-   -  link source corresponds to the website which a HTML link is
+   o  link source corresponds to the website which a HTML link is
       included at,
 
-   -  link target corresponds to the "href" attribute,
+   o  link target corresponds to the "href" attribute,
 
-   -  link qualifier corresponds to the textual content,
+   o  link qualifier corresponds to the textual content,
 
    For instance the following link, given in BEACON text format:
+
+
+
+
+Voss, et al.            Expires December 17, 2012              [Page 16]
+
+Internet-Draft                   Beacon                        June 2012
+
 
     http://example.com|example|http://example.org
 
@@ -889,14 +905,6 @@ A.2.  HTML links
 
    The qualifier, however, may be the empty string.  The meta field
    "name" may be used alternatively as textual content.  The relation
-
-
-
-Voss, et al.            Expires December 15, 2012              [Page 16]
-
-Internet-Draft                   Beacon                        June 2012
-
-
    type may also be used to automatically create an appropriate link
    label, such as "same entity" for relation type
    "http://www.w3.org/2002/07/owl#sameAs" or "more information about
@@ -936,6 +944,15 @@ Appendix B.  RELAX NG Schema for BEACON XML
 
    A short example of a file in BEACON XML format is given below:
 
+
+
+
+
+Voss, et al.            Expires December 17, 2012              [Page 17]
+
+Internet-Draft                   Beacon                        June 2012
+
+
    <?xml version="1.0" encoding="UTF-8"?>
    <beacon xmlns="http://purl.org/net/beacon"
            prefix="http://example.org/"
@@ -943,14 +960,6 @@ Appendix B.  RELAX NG Schema for BEACON XML
       <link id="foo" target="bar" />
       ...TODO: better example...
    </beacon>
-
-
-
-
-
-Voss, et al.            Expires December 15, 2012              [Page 17]
-
-Internet-Draft                   Beacon                        June 2012
 
 
 Authors' Addresses
@@ -995,14 +1004,5 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-Voss, et al.            Expires December 15, 2012              [Page 18]
+Voss, et al.            Expires December 17, 2012              [Page 18]
 
