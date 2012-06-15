@@ -55,9 +55,9 @@ breaks and vertical bars in the following rules:
 
      BEACONVALUE =  *( CHAR - ( LINEBREAK / VBAR ) )
 
-     LINEBREAK   =  ?CR LF       ; linefeed with optional carriage returns
+     LINEBREAK   =  LF | CR | CR LF
 
-     VBAR        =  "|"          ; vertical bar
+     VBAR        =  %x7C          ; vertical bar ("|")
 
 
 ## String normalization 
@@ -192,22 +192,30 @@ contains a single link:
 
      foo
 
-The same link could be serialized as following: 
+The same link could be serialized as following, without any meta fields: 
+
+     http://example.org/foo|Hello World!|http://example.com/foo
+
+The default meta fields values of this examples could also be specified as:
 
      #PREFIX: {+ID}
      #TARGET: {+ID}
      #MESSAGE: {about}
 
-     http://example.org/foo|Hello World!|http://example.com/foo
-
-The meta fields in this example could also be omitted because they are all set
-to their default values. Another possible serialization would be:
+Another possible serialization would be:
 
      #PREFIX: http://example.org/
      #TARGET: http://example.com/
      #MESSAGE: Hello {about}
 
      foo|World!
+
+The link line in this example is equal to:
+
+     foo|World!|foo
+
+Applications SHOULD ignore equal links in one Beacon dump and it is RECOMMENDED
+to indicate duplicated links with a warning.
 
 ### prefix
 
