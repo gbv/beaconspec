@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<reference anchor='FOAF'>
+	<front>
+		<title abbrev='FOAF'>FOAF Vocabulary Specification</title>
+		<author initials="D." surname="Brickley" fullname="Dan Brickley"/>
+		<author initials="L." surname="Miller" fullname="Libby Miller"/>
+		<date year='2010' month='Aug'/>
+	</front>
+	<format type='HTML' target="http://xmlns.com/foaf/spec/"/>
+</reference>

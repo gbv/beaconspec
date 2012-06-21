@@ -76,6 +76,7 @@
         <?rfc include="ref/reference.DCTERMS.xml"?>
     </references>
     <references title="Informative References">
+        <?rfc include="ref/reference.FOAF.xml"?>
         <?rfc include="ref/reference.RFC.5013.xml"?>
         <?rfc include="ref/reference.sitemaps.xml"?>
         <?rfc include="ref/reference.SAX.xml"?>

@@ -22,10 +22,8 @@ RDF object. For instance the following link, in BEACON text:
     #QUALIFIER: http://www.w3.org/2000/01/rdf-schema#label
     http://example.org|example|http://example.com
 
-could be mapped to the following RDF triples in Turtle format [](#TURTLE):
+could be mapped to the following RDF triples:
 
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-	
 	<http://example.org> rdfs:seeAlso <http://example.com> .
     <http://example.com> rdfs:label "example" .
 
@@ -39,13 +37,10 @@ resource. For instance:
 
     abc|12
 
-could be mapped to the following RDF triples in Turtle format:
-
-	@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-    @prefix dct:  <http://purl.org/dc/terms/extent> .
+could be mapped to the following RDF triples:
 
     <http://example.org/abc> foaf:primaryTopic <http://example.com/abc> .
-    <http://example.com/abc> dct:extent "12" .
+    <http://example.com/abc> dcterms:extent "12" .
 
 Another possible interpretation of link qualifier is additional information
 about the relationship, for instance when it was created (reification).
@@ -99,6 +94,7 @@ only.
 	  attribute institution { text },
 	  attribute reference   { xsd:anyURI },
 	  attribute contact     { text },
+	  attribute creator     { text },
 	  attribute feed        { xsd:anyURI },
 	  attribute timestamp   { text },
 	  attribute update { "always" | "hourly" | "daily" 

@@ -55,9 +55,9 @@ breaks and vertical bars in the following rules:
 
      BEACONVALUE =  *( CHAR - ( LINEBREAK / VBAR ) )
 
-     LINEBREAK   =  ?CR LF / CR
+     LINEBREAK   =  LF | CR LF | CR
 
-     VBAR        =  "|"          ; vertical bar
+     VBAR        =  %x7C          ; vertical bar ("|")
 
 
 ## String normalization 
@@ -132,6 +132,17 @@ following the process defined in Section 3.2 of [](#RFC3987).
       M%C3%BCller       {ID}        M%25C3%25BCller
       M%C3%BCller       {+ID}       M%C3%BCller
 
+## Mappings to RDF
+
+RDF snippets in this document are given in Turtle syntax [](#TURTLE) with the
+following namespace prefixes:
+
+	@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix dcterms:  <http://purl.org/dc/terms/extent> .
+
+The base URI `<>` is used in examples to denote the URI of a Beacon dump.
+
 # Links
 
 A link in BEACON is a typed connection between two resources that are
@@ -192,22 +203,30 @@ contains a single link:
 
      foo
 
-The same link could be serialized as following: 
+The same link could be serialized as following, without any meta fields: 
+
+     http://example.org/foo|Hello World!|http://example.com/foo
+
+The default meta fields values of this examples could also be specified as:
 
      #PREFIX: {+ID}
      #TARGET: {+ID}
      #MESSAGE: {about}
 
-     http://example.org/foo|Hello World!|http://example.com/foo
-
-The meta fields in this example could also be omitted because they are all set
-to their default values. Another possible serialization would be:
+Another possible serialization would be:
 
      #PREFIX: http://example.org/
      #TARGET: http://example.com/
      #MESSAGE: Hello {about}
 
      foo|World!
+
+The link line in this example is equal to:
+
+     foo|World!|foo
+
+Applications SHOULD ignore equal links in one Beacon dump and it is RECOMMENDED
+to indicate duplicated links with a warning.
 
 ### prefix
 
@@ -234,11 +253,11 @@ does not contain the sequence `{about}`.
 
 ## Annotating meta fields
 
-The meta field `name`, `description`, `institution`, `contact`, `qualifier`,
-`reference`, `feed`, `timestamp`, and `update` describe a BEACON dump.  The
-meaning of these fields is defined by RDF properties from the DCMI Metadata
-Terms [](#DCTERMS) and other vocabularies.  A mapping of annotating meta fields
-to RDF properties is given in [](#interpreting-beacon-links).
+The meta fields `name`, `description`, `institution`, `creator`, `contact`,
+`qualifier`, `reference`, `feed`, `timestamp`, and `update` describe a BEACON
+dump.  The meaning of these fields is defined by RDF properties from the DCMI
+Metadata Terms [](#DCTERMS) and other vocabularies.  A mapping of annotating
+meta fields to RDF properties is given in [](#interpreting-beacon-links).
 
 ### name
 
@@ -257,28 +276,62 @@ dump.
 The RDF property of this field is `http://purl.org/dc/terms/description` from
 the DCMI Metadata Terms.
 
+### creator
+
+The creator meta field contains the URI or the name of the person,
+organization, or a service primarily responsible for making the BEACON dump.
+This field corresponds to the `creator` from the DCMI Metadata Terms. The
+creator is an instace of the `Agent` class from the FOAF vocabulary.
+
+The following examples of meta field values:
+
+    Bea Beacon
+
+    http://example.org/people/bea
+
+can be mapped to:
+
+    <> dcterms:creator "Bea Beacon" .
+    <> dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+    
+	<> dcterms:creator <http://example.org/people/bea> .
+	<http://example.org/people/bea> a foaf:Agent .
+
+
+This field SHOULD NOT contain a simple URL unless this URL is also used as URI.
+
+### contact
+
+The contact meta field contains an email address or similar contact information
+to reach the creator of the BEACON dump.  The contact MUST be a mailbox address
+as specified in section 3.4 of [](#RFC5322), for instance:
+
+     admin@example.com
+	
+	 Bea Beacon <bea@example.org>
+
+The contact meta field corresponds to the `mbox` property and the `name`
+property from the FOAF vocabulary [@FOAF]. The domain of the the contact meta
+field is the Beacon dump. The sample field values can be mapped to:
+
+     <> dcterms:creator [
+	     foaf:mbox <mailto:admin@example.com>
+     ] .
+
+     <> dcterms:creator [
+	     foaf:name "Bea Beacon" ;
+	     foaf:mbox <mailto:bea@example.org>
+     ] .
+
 ### institution
 
 The institution meta field contains the organization or individual of an
-institution or publisher responsible for the link targets and/or responsible
-for the BEACON dump.  The field value SHOULD be an URI, but it can also be a
-literal name.
+institution or publisher responsible for the target database.  The field value
+can be an URI or a literal name. The 
 
 The RDF property of this field is `http://purl.org/dc/terms/publisher` or
 `http://purl.org/dc/terms/creator` (???) from the DCMI Metadata Terms.
 
-### contact
-
-The contact field contains an email address or similar contact information to
-reach the maintainer of the BEACON dump.  The contact SHOULD be a mailbox
-address as specified in section 3.4 of [](#RFC5322), for instance:
-
-     admin@example.com
-	 Barbara Beacon <b.beacon@example.org>
-
-The field value is mapped to the RDF propery `foaf:mbox` and to the RDF
-property `rdfs:label`, depending on the format. Both values are not directly
-related to the BEACON dump but to its creator/publisher (???).
 
 ### reference
 
