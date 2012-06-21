@@ -144,10 +144,10 @@
 <tr><td class="header">Network Working Group</td><td class="header">J. Voß</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Verbundzentrale des GBV</td></tr>
 <tr><td class="header">Intended status: Informational</td><td class="header">M. Schindler</td></tr>
-<tr><td class="header">Expires: December 15, 2012</td><td class="header">Wikimedia Deutschland e.V.</td></tr>
+<tr><td class="header">Expires: December 23, 2012</td><td class="header">Wikimedia Deutschland e.V.</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Th. Berger</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Gymel.com</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">June 13, 2012</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">June 21, 2012</td></tr>
 </table></td></tr></table>
 <h1><br />BEACON link dump format<br />draft-voss-beacon-00</h1>
 
@@ -171,7 +171,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on December 15, 2012.</p>
+This Internet-Draft will expire on December 23, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -200,6 +200,8 @@ Notational Conventions<br />
 String normalization<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#uri-patterns">1.4.</a>&nbsp;
 URI patterns<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#mappings-to-rdf">1.5.</a>&nbsp;
+Mappings to RDF<br />
 <a href="#links">2.</a>&nbsp;
 Links<br />
 <a href="#meta-fields">3.</a>&nbsp;
@@ -220,19 +222,21 @@ Annotating meta fields<br />
 name<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">3.2.2.</a>&nbsp;
 description<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#institution">3.2.3.</a>&nbsp;
-institution<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#creator">3.2.3.</a>&nbsp;
+creator<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#contact">3.2.4.</a>&nbsp;
 contact<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#reference">3.2.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#institution">3.2.5.</a>&nbsp;
+institution<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#reference">3.2.6.</a>&nbsp;
 reference<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed">3.2.6.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed">3.2.7.</a>&nbsp;
 feed<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#timestamp">3.2.7.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#timestamp">3.2.8.</a>&nbsp;
 timestamp<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update">3.2.8.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update">3.2.9.</a>&nbsp;
 update<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#qualifier">3.2.9.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#qualifier">3.2.10.</a>&nbsp;
 qualifier<br />
 <a href="#link-fields-and-construction">4.</a>&nbsp;
 Link fields and construction<br />
@@ -364,9 +368,9 @@ Notational Conventions</h3>
 
  BEACONVALUE =  *( CHAR - ( LINEBREAK / VBAR ) )
 
- LINEBREAK   =  ?CR LF       ; linefeed with optional carriage returns
+ LINEBREAK   =  LF | CR LF | CR
 
- VBAR        =  "|"          ; vertical bar
+ VBAR        =  %x7C          ; vertical bar ("|")
 </pre></div>
 <a name="string-normalization"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -469,6 +473,26 @@ URI patterns</h3>
   M%C3%BCller       {ID}        M%25C3%25BCller
   M%C3%BCller       {+ID}       M%C3%BCller
 </pre></div>
+<a name="mappings-to-rdf"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.5"></a><h3>1.5.&nbsp;
+Mappings to RDF</h3>
+
+<p>
+      RDF snippets in this document are given in Turtle syntax
+      <a class='info' href='#TURTLE'>[TURTLE]<span> (</span><span class='info'>Beckett, D. and T. Berners-Lee, &ldquo;Turtle - Terse RDF Triple Language,&rdquo; Mar&nbsp;2011.</span><span>)</span></a> with the following namespace
+      prefixes:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix dcterms:  &lt;http://purl.org/dc/terms/extent&gt; .
+</pre></div>
+<p>
+      The base URI <tt>&lt;&gt;</tt> is used in examples to
+      denote the URI of a Beacon dump.
+    
+</p>
 <a name="links"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
@@ -537,7 +561,7 @@ Links</h3>
     default.
   
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- QUALIFIER      =  BEACONVALUE
+ QUALIFIER      =  *( CHAR - LINEBREAK )
 </pre></div>
 <p>
     The meaning of a link and its elements is not defined by this
@@ -587,19 +611,23 @@ Fields for link construction</h3>
  foo
 </pre></div>
 <p>
-      The same link could be serialized as following:
+      The same link could be serialized as following, without any meta
+      fields:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ http://example.org/foo|Hello World!|http://example.com/foo
+</pre></div>
+<p>
+      The default meta fields values of this examples could also be
+      specified as:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  #PREFIX: {+ID}
  #TARGET: {+ID}
  #MESSAGE: {about}
-
- http://example.org/foo|Hello World!|http://example.com/foo
 </pre></div>
 <p>
-      The meta fields in this example could also be omitted because they
-      are all set to their default values. Another possible
-      serialization would be:
+      Another possible serialization would be:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  #PREFIX: http://example.org/
@@ -608,6 +636,17 @@ Fields for link construction</h3>
 
  foo|World!
 </pre></div>
+<p>
+      The link line in this example is equal to:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ foo|World!|foo
+</pre></div>
+<p>
+      Applications SHOULD ignore equal links in one Beacon dump and it
+      is RECOMMENDED to indicate duplicated links with a warning.
+    
+</p>
 <a name="prefix"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.1.1"></a><h3>3.1.1.&nbsp;
@@ -661,15 +700,15 @@ message</h3>
 Annotating meta fields</h3>
 
 <p>
-      The meta field <tt>name</tt>,
+      The meta fields <tt>name</tt>,
       <tt>description</tt>, <tt>institution</tt>,
-      <tt>contact</tt>, <tt>qualifier</tt>,
-      <tt>reference</tt>, <tt>feed</tt>,
-      <tt>timestamp</tt>, and <tt>update</tt>
-      describe a BEACON dump. The meaning of these fields is defined by
-      RDF properties from the DCMI Metadata Terms
-      <a class='info' href='#DCTERMS'>[DCTERMS]<span> (</span><span class='info'>DCMI Usage Board, &ldquo;DCMI Metadata Terms,&rdquo; Oct&nbsp;2010.</span><span>)</span></a> and other vocabularies. A mapping
-      of annotating meta fields to RDF properties is given in
+      <tt>creator</tt>, <tt>contact</tt>,
+      <tt>qualifier</tt>, <tt>reference</tt>,
+      <tt>feed</tt>, <tt>timestamp</tt>, and
+      <tt>update</tt> describe a BEACON dump. The meaning of
+      these fields is defined by RDF properties from the DCMI Metadata
+      Terms <a class='info' href='#DCTERMS'>[DCTERMS]<span> (</span><span class='info'>DCMI Usage Board, &ldquo;DCMI Metadata Terms,&rdquo; Oct&nbsp;2010.</span><span>)</span></a> and other vocabularies. A
+      mapping of annotating meta fields to RDF properties is given in
       <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
     
 </p>
@@ -707,16 +746,86 @@ description</h3>
         DCMI Metadata Terms.
       
 </p>
-<a name="institution"></a><br /><hr />
+<a name="creator"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.2.3"></a><h3>3.2.3.&nbsp;
+creator</h3>
+
+<p>
+        The creator meta field contains the URI or the name of the
+        person, organization, or a service primarily responsible for
+        making the BEACON dump. This field corresponds to the
+        <tt>creator</tt> from the DCMI Metadata Terms. The
+        creator is an instace of the <tt>Agent</tt> class from
+        the FOAF vocabulary.
+      
+</p>
+<p>
+        The following examples of meta field values:
+      
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+Bea Beacon
+
+http://example.org/people/bea
+</pre></div>
+<p>
+        can be mapped to:
+      
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+&lt;&gt; dcterms:creator "Bea Beacon" .
+&lt;&gt; dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+
+&lt;&gt; dcterms:creator &lt;http://example.org/people/bea&gt; .
+&lt;http://example.org/people/bea&gt; a foaf:Agent .
+</pre></div>
+<p>
+        This field SHOULD NOT contain a simple URL unless this URL is
+        also used as URI.
+      
+</p>
+<a name="contact"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.2.4"></a><h3>3.2.4.&nbsp;
+contact</h3>
+
+<p>
+        The contact meta field contains an email address or similar
+        contact information to reach the creator of the BEACON dump. The
+        contact MUST be a mailbox address as specified in section 3.4 of
+        <a class='info' href='#RFC5322'>[RFC5322]<span> (</span><span class='info'>Resnick, P., Ed., &ldquo;Internet Message Format,&rdquo; October&nbsp;2008.</span><span>)</span></a>, for instance:
+      
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ admin@example.com
+
+ Bea Beacon &lt;bea@example.org&gt;
+</pre></div>
+<p>
+        The contact meta field corresponds to the
+        <tt>mbox</tt> property and the <tt>name</tt>
+        property from the FOAF vocabulary [@FOAF]. The domain of the the
+        contact meta field is the Beacon dump. The sample field values
+        can be mapped to:
+      
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ &lt;&gt; dcterms:creator [
+     foaf:mbox &lt;mailto:admin@example.com&gt;
+ ] .
+
+ &lt;&gt; dcterms:creator [
+     foaf:name "Bea Beacon" ;
+     foaf:mbox &lt;mailto:bea@example.org&gt;
+ ] .
+</pre></div>
+<a name="institution"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.2.5"></a><h3>3.2.5.&nbsp;
 institution</h3>
 
 <p>
         The institution meta field contains the organization or
         individual of an institution or publisher responsible for the
-        link targets and/or responsible for the BEACON dump. The field
-        value SHOULD be an URI, but it can also be a literal name.
+        target database. The field value can be an URI or a literal
+        name. The
       
 </p>
 <p>
@@ -726,32 +835,9 @@ institution</h3>
         the DCMI Metadata Terms.
       
 </p>
-<a name="contact"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.4"></a><h3>3.2.4.&nbsp;
-contact</h3>
-
-<p>
-        The contact field contains an email address or similar contact
-        information to reach the maintainer of the BEACON dump. The
-        contact SHOULD be a mailbox address as specified in section 3.4
-        of <a class='info' href='#RFC5322'>[RFC5322]<span> (</span><span class='info'>Resnick, P., Ed., &ldquo;Internet Message Format,&rdquo; October&nbsp;2008.</span><span>)</span></a>, for instance:
-      
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- admin@example.com
- Barbara Beacon &lt;b.beacon@example.org&gt;
-</pre></div>
-<p>
-        The field value is mapped to the RDF propery
-        <tt>foaf:mbox</tt> and to the RDF property
-        <tt>rdfs:label</tt>, depending on the format. Both
-        values are not directly related to the BEACON dump but to its
-        creator/publisher (???).
-      
-</p>
 <a name="reference"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.5"></a><h3>3.2.5.&nbsp;
+<a name="rfc.section.3.2.6"></a><h3>3.2.6.&nbsp;
 reference</h3>
 
 <p>
@@ -767,7 +853,7 @@ reference</h3>
 </p>
 <a name="feed"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.6"></a><h3>3.2.6.&nbsp;
+<a name="rfc.section.3.2.7"></a><h3>3.2.7.&nbsp;
 feed</h3>
 
 <p>
@@ -785,7 +871,7 @@ feed</h3>
 </p>
 <a name="timestamp"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.7"></a><h3>3.2.7.&nbsp;
+<a name="rfc.section.3.2.8"></a><h3>3.2.8.&nbsp;
 timestamp</h3>
 
 <p>
@@ -812,7 +898,7 @@ timestamp</h3>
 </p>
 <a name="update"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.8"></a><h3>3.2.8.&nbsp;
+<a name="rfc.section.3.2.9"></a><h3>3.2.9.&nbsp;
 update</h3>
 
 <p>
@@ -886,7 +972,7 @@ update</h3>
 </p>
 <a name="qualifier"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.9"></a><h3>3.2.9.&nbsp;
+<a name="rfc.section.3.2.10"></a><h3>3.2.10.&nbsp;
 qualifier</h3>
 
 <p>
@@ -1207,6 +1293,8 @@ References</h3>
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <h3>7.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="FOAF">[FOAF]</a></td>
+<td class="author-text">Brickley, D. and L. Miller, &ldquo;<a href="http://xmlns.com/foaf/spec/">FOAF Vocabulary Specification</a>,&rdquo; Aug&nbsp;2010.</td></tr>
 <tr><td class="author-text" valign="top"><a name="RELAX-NGC">[RELAX-NGC]</a></td>
 <td class="author-text">Clark, J., &ldquo;<a href="http://relaxng.org/compact.html">RELAX NG Compact Syntax</a>,&rdquo; Nov&nbsp;2002.</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC5013">[RFC5013]</a></td>
@@ -1281,12 +1369,9 @@ RDF triples</h3>
 http://example.org|example|http://example.com
 </pre></div>
 <p>
-      could be mapped to the following RDF triples in Turtle format
-      <a class='info' href='#TURTLE'>[TURTLE]<span> (</span><span class='info'>Beckett, D. and T. Berners-Lee, &ldquo;Turtle - Terse RDF Triple Language,&rdquo; Mar&nbsp;2011.</span><span>)</span></a>:
+      could be mapped to the following RDF triples:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-
 &lt;http://example.org&gt; rdfs:seeAlso &lt;http://example.com&gt; .
 &lt;http://example.com&gt; rdfs:label "example" .
 </pre></div>
@@ -1303,14 +1388,11 @@ http://example.org|example|http://example.com
 abc|12
 </pre></div>
 <p>
-      could be mapped to the following RDF triples in Turtle format:
+      could be mapped to the following RDF triples:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
-@prefix dct:  &lt;http://purl.org/dc/terms/extent&gt; .
-
 &lt;http://example.org/abc&gt; foaf:primaryTopic &lt;http://example.com/abc&gt; .
-&lt;http://example.com/abc&gt; dct:extent "12" .
+&lt;http://example.com/abc&gt; dcterms:extent "12" .
 </pre></div>
 <p>
       Another possible interpretation of link qualifier is additional
@@ -1412,6 +1494,7 @@ element beacon {
   attribute institution { text },
   attribute reference   { xsd:anyURI },
   attribute contact     { text },
+  attribute creator     { text },
   attribute feed        { xsd:anyURI },
   attribute timestamp   { text },
   attribute update { "always" | "hourly" | "daily"
