@@ -144,10 +144,10 @@
 <tr><td class="header">Network Working Group</td><td class="header">J. Voß</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Verbundzentrale des GBV</td></tr>
 <tr><td class="header">Intended status: Informational</td><td class="header">M. Schindler</td></tr>
-<tr><td class="header">Expires: December 23, 2012</td><td class="header">Wikimedia Deutschland e.V.</td></tr>
+<tr><td class="header">Expires: December 24, 2012</td><td class="header">Wikimedia Deutschland e.V.</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Th. Berger</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Gymel.com</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">June 21, 2012</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">June 22, 2012</td></tr>
 </table></td></tr></table>
 <h1><br />BEACON link dump format<br />draft-voss-beacon-00</h1>
 
@@ -171,7 +171,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on December 23, 2012.</p>
+This Internet-Draft will expire on December 24, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -200,8 +200,6 @@ Notational Conventions<br />
 String normalization<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#uri-patterns">1.4.</a>&nbsp;
 URI patterns<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#mappings-to-rdf">1.5.</a>&nbsp;
-Mappings to RDF<br />
 <a href="#links">2.</a>&nbsp;
 Links<br />
 <a href="#meta-fields">3.</a>&nbsp;
@@ -216,36 +214,38 @@ target<br />
 link<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#message">3.1.4.</a>&nbsp;
 message<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotating-meta-fields">3.2.</a>&nbsp;
-Annotating meta fields<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#fields-describing-the-target-database">3.2.</a>&nbsp;
+Fields describing the target database<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#name">3.2.1.</a>&nbsp;
 name<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">3.2.2.</a>&nbsp;
-description<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#creator">3.2.3.</a>&nbsp;
-creator<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#contact">3.2.4.</a>&nbsp;
-contact<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#institution">3.2.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#institution">3.2.2.</a>&nbsp;
 institution<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#reference">3.2.6.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#fields-describing-the-link-dump">3.3.</a>&nbsp;
+Fields describing the link dump<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#description">3.3.1.</a>&nbsp;
+description<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#creator">3.3.2.</a>&nbsp;
+creator<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#contact">3.3.3.</a>&nbsp;
+contact<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#reference">3.3.4.</a>&nbsp;
 reference<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed">3.2.7.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed">3.3.5.</a>&nbsp;
 feed<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#timestamp">3.2.8.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#timestamp">3.3.6.</a>&nbsp;
 timestamp<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update">3.2.9.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update">3.3.7.</a>&nbsp;
 update<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#qualifier">3.2.10.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#qualifier">3.3.8.</a>&nbsp;
 qualifier<br />
 <a href="#link-fields-and-construction">4.</a>&nbsp;
 Link fields and construction<br />
-<a href="#serialization">5.</a>&nbsp;
-Serialization<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-text-format">5.1.</a>&nbsp;
-BEACON text format<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-xml-format">5.2.</a>&nbsp;
-BEACON XML format<br />
+<a href="#beacon-files">5.</a>&nbsp;
+Beacon files<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-text-files">5.1.</a>&nbsp;
+Beacon text files<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-xml-files">5.2.</a>&nbsp;
+Beacon XML files<br />
 <a href="#security-considerations">6.</a>&nbsp;
 Security Considerations<br />
 <a href="#rfc.references1">7.</a>&nbsp;
@@ -254,13 +254,15 @@ References<br />
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">7.2.</a>&nbsp;
 Informative References<br />
-<a href="#interpreting-beacon-links">Appendix&nbsp;A.</a>&nbsp;
-Interpreting BEACON links<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rdf-triples">A.1.</a>&nbsp;
+<a href="#glossary">Appendix&nbsp;A.</a>&nbsp;
+Glossary<br />
+<a href="#interpreting-beacon-links">Appendix&nbsp;B.</a>&nbsp;
+Interpreting Beacon links<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rdf-triples">B.1.</a>&nbsp;
 RDF triples<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#html-links">A.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#html-links">B.2.</a>&nbsp;
 HTML links<br />
-<a href="#relax-ng-schema-for-beacon-xml">Appendix&nbsp;B.</a>&nbsp;
+<a href="#relax-ng-schema-for-beacon-xml">Appendix&nbsp;C.</a>&nbsp;
 RELAX NG Schema for BEACON XML<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Authors' Addresses<br />
@@ -278,8 +280,8 @@ Introduction</h3>
 Overview</h3>
 
 <p>
-      BEACON is a data interchange format for large numbers of uniform
-      links. A BEACON link dump consists of:
+      Beacon is a data interchange format for large numbers of uniform
+      links. A Beacon link dump consists of:
     
 </p>
 <p></p>
@@ -301,7 +303,7 @@ Overview</h3>
 
 <p>
       All links typically share a common URI pattern for source and for
-      target, respectively. For instance a BEACON dump could consist of
+      target, respectively. For instance a link dump could consist of
       links between two domains that use different local identifier
       systems:
     
@@ -316,11 +318,14 @@ http://example.org/{ID1} ---&gt; http://example.com/{ID2}
 http://example.org/{ID}  ---&gt; http://example.com/{ID}.html
 </pre></div>
 <p>
-      A BEACON link dump can be serialized in a condense
-      <a class='info' href='#beacon-text-format'>BEACON text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a> and
-      in <a class='info' href='#beacon-xml-format'>BEACON XML format<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a>. The
-      link dump can further be serialized in RDF, if the relation type
-      of its links is an URI.
+      A link dump can be serialized as Beacon file in form of a condense
+      <a class='info' href='#beacon-text-files'>Beacon text file<span> (</span><span class='info'>Beacon text files</span><span>)</span></a> and in
+      form of a <a class='info' href='#beacon-xml-files'>Beacon XML file<span> (</span><span class='info'>Beacon XML files</span><span>)</span></a>.
+    
+</p>
+<p>
+      A link dump can be mapped to an RDF graph if the relation type of
+      its links is an URI.
     
 </p>
 <a name="notational-conventions"></a><br /><hr />
@@ -352,13 +357,6 @@ Notational Conventions</h3>
  SP          =  %x20                ; space
 </pre></div>
 <p>
-      The <tt>SCHEME</tt> rule is copied from
-      <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>:
-    
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- SCHEME      =  ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
-</pre></div>
-<p>
       In addition, the operator <tt>-</tt> is used to express
       exceptions to forbid line breaks and vertical bars in the
       following rules:
@@ -372,6 +370,24 @@ Notational Conventions</h3>
 
  VBAR        =  %x7C          ; vertical bar ("|")
 </pre></div>
+<p>
+      Examples of RDF in this document are given in Turtle syntax
+      <a class='info' href='#TURTLE'>[TURTLE]<span> (</span><span class='info'>Beckett, D. and T. Berners-Lee, &ldquo;Turtle - Terse RDF Triple Language,&rdquo; Mar&nbsp;2011.</span><span>)</span></a> with the following namespace
+      prefixes:
+    
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ @prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+ @prefix dcterms: &lt;http://purl.org/dc/terms/extent&gt; .
+ @prefix foaf:    &lt;http://xmlns.com/foaf/0.1/&gt; .
+ @prefix void:    &lt;http://rdfs.org/ns/void#&gt; .
+</pre></div>
+<p>
+      The blank node <tt>:dump</tt> is used in examples to
+      denote the URI of the link dump and the blank node
+      <tt>:database</tt> is used to denote the URI of the
+      target database.
+    
+</p>
 <a name="string-normalization"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
@@ -387,9 +403,9 @@ String normalization</h3>
  WHITESPACE  =  1*( CR | LF | HTAB | SP )
 </pre></div>
 <p>
-      The set of allowed Unicode characters in BEACON is the set of
-      valid Unicode characters from UCS which can also be expressed in
-      XML 1.0, excluding some discouraged control characters:
+      The set of allowed Unicode characters in Beacon dumps is the set
+      of valid Unicode characters from UCS which can also be expressed
+      in XML 1.0, excluding some discouraged control characters:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  CHAR        =  WHITESPACE / %x21-7E / %xA0-D7FF / %xE000-FFFD
@@ -473,35 +489,15 @@ URI patterns</h3>
   M%C3%BCller       {ID}        M%25C3%25BCller
   M%C3%BCller       {+ID}       M%C3%BCller
 </pre></div>
-<a name="mappings-to-rdf"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.1.5"></a><h3>1.5.&nbsp;
-Mappings to RDF</h3>
-
-<p>
-      RDF snippets in this document are given in Turtle syntax
-      <a class='info' href='#TURTLE'>[TURTLE]<span> (</span><span class='info'>Beckett, D. and T. Berners-Lee, &ldquo;Turtle - Terse RDF Triple Language,&rdquo; Mar&nbsp;2011.</span><span>)</span></a> with the following namespace
-      prefixes:
-    
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
-@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix dcterms:  &lt;http://purl.org/dc/terms/extent&gt; .
-</pre></div>
-<p>
-      The base URI <tt>&lt;&gt;</tt> is used in examples to
-      denote the URI of a Beacon dump.
-    
-</p>
 <a name="links"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
 Links</h3>
 
 <p>
-    A link in BEACON is a typed connection between two resources that
-    are identified by URIs <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>. A link is
-    compromised of four elements:
+    A link in a Beacon dump is a typed connection between two resources
+    that are identified by URIs <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>. A link
+    is compromised of four elements:
   
 </p>
 <p></p>
@@ -533,10 +529,10 @@ Links</h3>
 </ul>
 
 <p>
-    A BEACON link dump is an annotated set of links with identical
-    relation type. A relation type is either a registered link type from
-    the IANA link relations registry <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> or
-    an URI. Some examples of relation types:
+    A link dump is an annotated set of links with identical relation
+    type. A relation type is either a registered link type from the IANA
+    link relations registry <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> or an URI.
+    Some examples of relation types:
   
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  alternate
@@ -547,10 +543,9 @@ Links</h3>
  http://purl.org/spar/cito/cites
 </pre></div>
 <p>
-    In a <a class='info' href='#serialization'>serialized BEACON dump<span> (</span><span class='info'>Serialization</span><span>)</span></a> the
-    relation type is specified by the link
-    <a class='info' href='#meta-fields'>meta field<span> (</span><span class='info'>Meta fields</span><span>)</span></a>. The other elements of
-    a link are constructed from
+    In a <a class='info' href='#beacon-files'>Beacon file<span> (</span><span class='info'>Beacon files</span><span>)</span></a> the relation
+    type is specified by the link <a class='info' href='#meta-fields'>meta
+    field<span> (</span><span class='info'>Meta fields</span><span>)</span></a>. The other elements of a link are constructed from
     <a class='info' href='#link-fields-and-construction'>link fields<span> (</span><span class='info'>Link fields and construction</span><span>)</span></a> and
     meta fields given in a serialization.
   
@@ -566,7 +561,7 @@ Links</h3>
 <p>
     The meaning of a link and its elements is not defined by this
     specification, but guidelines are given in
-    <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
+    <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;B<span> (</span><span class='info'>Interpreting Beacon links</span><span>)</span></a>.
   
 </p>
 <a name="meta-fields"></a><br /><hr />
@@ -575,10 +570,10 @@ Links</h3>
 Meta fields</h3>
 
 <p>
-    A BEACON dump SHOULD contain a set of meta fields, each field
+    A link dump SHOULD contain a set of meta fields, each field
     identified by its name. Meta field names are build of lowercase
     letters <tt>a-z</tt>. In
-    <a class='info' href='#beacon-text-format'>BEACON text format<span> (</span><span class='info'>BEACON text format</span><span>)</span></a>, meta
+    <a class='info' href='#beacon-text-files'>Beacon text files<span> (</span><span class='info'>Beacon text files</span><span>)</span></a>, meta
     field names are case insensitive and SHOULD be given in uppercase
     letters. Valid meta fields are defined in the following. Additional
     meta fields, not defined in this specification SHOULD be ignored.
@@ -597,11 +592,11 @@ Fields for link construction</h3>
 <p>
       The meta fields <tt>prefix</tt>,
       <tt>target</tt>, <tt>link</tt>, and
-      <tt>message</tt> are only used to abbreviate link
-      elements in BEACON serializations. Applications MUST ignore these
-      fields after they have been used to construct a full BEACON dump
-      from a serialized BEACON file. For instance the following BEACON
-      text serialization contains a single link:
+      <tt>message</tt> are not part of Beacon dumps but they
+      are used to abbreviate link elements in Beacon files. Applications
+      MUST ignore these fields after they have been used to construct a
+      full link dump from a serialized Beacon file. For instance the
+      following Beacon text file contains a single link:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  #PREFIX: http://example.org/
@@ -657,7 +652,7 @@ prefix</h3>
         construct link sources. If no prefix meta field was specified,
         the default value <tt>{+ID}</tt> is used. The name
         <tt>prefix</tt> was choosen to keep backwards
-        compatibility with existing BEACON dumps.
+        compatibility with existing link dumps.
       
 </p>
 <a name="target"></a><br /><hr />
@@ -678,7 +673,7 @@ link</h3>
 
 <p>
         The link field specifies the relation type for all links in a
-        BEACON dump. The default relation type is
+        link dump. The default relation type is
         <tt>http://www.w3.org/2000/01/rdf-schema#seeAlso</tt>.
       
 </p>
@@ -694,67 +689,70 @@ message</h3>
         the sequence <tt>{about}</tt>.
       
 </p>
-<a name="annotating-meta-fields"></a><br /><hr />
+<a name="fields-describing-the-target-database"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
-Annotating meta fields</h3>
+Fields describing the target database</h3>
 
-<p>
-      The meta fields <tt>name</tt>,
-      <tt>description</tt>, <tt>institution</tt>,
-      <tt>creator</tt>, <tt>contact</tt>,
-      <tt>qualifier</tt>, <tt>reference</tt>,
-      <tt>feed</tt>, <tt>timestamp</tt>, and
-      <tt>update</tt> describe a BEACON dump. The meaning of
-      these fields is defined by RDF properties from the DCMI Metadata
-      Terms <a class='info' href='#DCTERMS'>[DCTERMS]<span> (</span><span class='info'>DCMI Usage Board, &ldquo;DCMI Metadata Terms,&rdquo; Oct&nbsp;2010.</span><span>)</span></a> and other vocabularies. A
-      mapping of annotating meta fields to RDF properties is given in
-      <a class='info' href='#interpreting-beacon-links'>Appendix&nbsp;A<span> (</span><span class='info'>Interpreting BEACON links</span><span>)</span></a>.
-    
-</p>
 <a name="name"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.2.1"></a><h3>3.2.1.&nbsp;
 name</h3>
 
 <p>
-        The name meta field contains a name or title of the BEACON dump
-        and/or of all of its targets. For instance if all links point to
-        resources in a database, the name meta field contains the name
-        of the database.
+        The name meta field contains a name or title of target database.
+        This field corresponds to the <tt>title</tt> from the
+        DCMI Metadata Terms. For instance the name meta field value
+        "ACME documents" can be mapped to this RDF triple:
       
-</p>
-<p>
-        The RDF property of this field is
-        <tt>http://purl.org/dc/terms/title</tt> from the DCMI
-        Metadata Terms.
-      
-</p>
-<a name="description"></a><br /><hr />
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+:database dcterms:title "ACME documents" .
+</pre></div>
+<a name="institution"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.2.2"></a><h3>3.2.2.&nbsp;
+institution</h3>
+
+<p>
+        The institution meta field contains the name or URI of the
+        organization or of an individual responsible for making
+        available the target database. This field corresponds to the
+        <tt>publisher</tt> from the DCMI Metadata Terms. For
+        instance the institution meta field value "ACME" can
+        be mapped to this RDF triple:
+      
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+:database dcterms:publisher "ACME" .
+</pre></div>
+<a name="fields-describing-the-link-dump"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
+Fields describing the link dump</h3>
+
+<a name="description"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.3.1"></a><h3>3.3.1.&nbsp;
 description</h3>
 
 <p>
         The description meta field contains a human readable description
-        of the BEACON dump.
+        of the link dump. This field corresponds to the
+        <tt>description</tt> from the DCMI Metadata Terms. For
+        instance the description meta field value "Mapping from ids
+        to documents" can be mapped to this RDF triple:
       
-</p>
-<p>
-        The RDF property of this field is
-        <tt>http://purl.org/dc/terms/description</tt> from the
-        DCMI Metadata Terms.
-      
-</p>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+:dump dcterms:description "Mapping from ids to documents" .
+</pre></div>
 <a name="creator"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.3"></a><h3>3.2.3.&nbsp;
+<a name="rfc.section.3.3.2"></a><h3>3.3.2.&nbsp;
 creator</h3>
 
 <p>
         The creator meta field contains the URI or the name of the
         person, organization, or a service primarily responsible for
-        making the BEACON dump. This field corresponds to the
+        making the link dump. This field corresponds to the
         <tt>creator</tt> from the DCMI Metadata Terms. The
         creator is an instace of the <tt>Agent</tt> class from
         the FOAF vocabulary.
@@ -769,13 +767,13 @@ Bea Beacon
 http://example.org/people/bea
 </pre></div>
 <p>
-        can be mapped to:
+        can be mapped the this RDF triples, respectively:
       
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-&lt;&gt; dcterms:creator "Bea Beacon" .
-&lt;&gt; dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+:dump dcterms:creator "Bea Beacon" .
+:dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
 
-&lt;&gt; dcterms:creator &lt;http://example.org/people/bea&gt; .
+:dump dcterms:creator &lt;http://example.org/people/bea&gt; .
 &lt;http://example.org/people/bea&gt; a foaf:Agent .
 </pre></div>
 <p>
@@ -785,12 +783,12 @@ http://example.org/people/bea
 </p>
 <a name="contact"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.4"></a><h3>3.2.4.&nbsp;
+<a name="rfc.section.3.3.3"></a><h3>3.3.3.&nbsp;
 contact</h3>
 
 <p>
         The contact meta field contains an email address or similar
-        contact information to reach the creator of the BEACON dump. The
+        contact information to reach the creator of the link dump. The
         contact MUST be a mailbox address as specified in section 3.4 of
         <a class='info' href='#RFC5322'>[RFC5322]<span> (</span><span class='info'>Resnick, P., Ed., &ldquo;Internet Message Format,&rdquo; October&nbsp;2008.</span><span>)</span></a>, for instance:
       
@@ -807,42 +805,23 @@ contact</h3>
         can be mapped to:
       
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- &lt;&gt; dcterms:creator [
+ :dump dcterms:creator [
      foaf:mbox &lt;mailto:admin@example.com&gt;
  ] .
 
- &lt;&gt; dcterms:creator [
+ :dump dcterms:creator [
      foaf:name "Bea Beacon" ;
      foaf:mbox &lt;mailto:bea@example.org&gt;
  ] .
 </pre></div>
-<a name="institution"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.5"></a><h3>3.2.5.&nbsp;
-institution</h3>
-
-<p>
-        The institution meta field contains the organization or
-        individual of an institution or publisher responsible for the
-        target database. The field value can be an URI or a literal
-        name. The
-      
-</p>
-<p>
-        The RDF property of this field is
-        <tt>http://purl.org/dc/terms/publisher</tt> or
-        <tt>http://purl.org/dc/terms/creator</tt> (???) from
-        the DCMI Metadata Terms.
-      
-</p>
 <a name="reference"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.6"></a><h3>3.2.6.&nbsp;
+<a name="rfc.section.3.3.4"></a><h3>3.3.4.&nbsp;
 reference</h3>
 
 <p>
         The reference field contains an URL of a website with additional
-        information about this BEACON link dump.
+        information about this link dump.
       
 </p>
 <p>
@@ -851,39 +830,43 @@ reference</h3>
         FOAF vocabulary.
       
 </p>
+<p>
+        The status of this field is not stable yet.
+      
+</p>
 <a name="feed"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.7"></a><h3>3.2.7.&nbsp;
+<a name="rfc.section.3.3.5"></a><h3>3.3.5.&nbsp;
 feed</h3>
 
 <p>
-        The feed field contains an URL, where to download the BEACON
-        dump from. In addition to standard URL schemes, alternative
-        established URI forms for retrieval, such as magnet URIs MAY be
-        allowed.
+        The feed field contains an URL, where to download the link dump
+        from. This field corresponds to the <tt>dataDump</tt>
+        property from the VoID vocabulary. An example mapped to an RDF
+        triple:
       
-</p>
-<p>
-        The RDF property of this field is
-        <tt>http://rdfs.org/ns/void#dataDump</tt> from the
-        VoID vocabulary.
-      
-</p>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+:dump void:dataDump &lt;http://example.com/beacon.txt&gt; .
+</pre></div>
 <a name="timestamp"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.8"></a><h3>3.2.8.&nbsp;
+<a name="rfc.section.3.3.6"></a><h3>3.3.6.&nbsp;
 timestamp</h3>
 
 <p>
         The timestamp field contains the date of last modification of
-        the BEACON dump. This date MUST conform to the
+        the link dump. Note that this value MAY be different to the last
+        modification time of a Beacon file that serializes the link
+        dump. The timestamp value MUST conform to the
         <tt>full-date</tt> or to the
         <tt>date-time</tt> production rule in
         <a class='info' href='#RFC3339'>[RFC3339]<span> (</span><span class='info'>Klyne, G., Ed. and C. Newman, &ldquo;Date and Time on the Internet: Timestamps,&rdquo; July&nbsp;2002.</span><span>)</span></a>. In addition, an uppercase
         <tt>T</tt> character MUST be used to separate date and
         time, and an uppercase <tt>Z</tt> character MUST be
-        present in the absence of a numeric time zone offset. Some
-        examples of valid timestamp values:
+        present in the absence of a numeric time zone offset. This field
+        corresponds to the <tt>modified</tt> property from the
+        DCMI Metadata Terms. For instance the following valid timestamp
+        values:
       
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  2012-05-30
@@ -891,18 +874,20 @@ timestamp</h3>
  2012-05-30T13:17:36Z
 </pre></div>
 <p>
-        The RDF property of this field is
-        <tt>http://purl.org/dc/terms/modified</tt> from the
-        DCMI Metadata Terms.
+        can be mapped to the following RDF triples, respectively:
       
-</p>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ :dump dcterms:modified "2012-05-30"
+ :dump dcterms:modified "2012-05-30T15:17:36+02:00"
+ :dump dcterms:modified "2012-05-30T13:17:36Z"
+</pre></div>
 <a name="update"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.9"></a><h3>3.2.9.&nbsp;
+<a name="rfc.section.3.3.7"></a><h3>3.3.7.&nbsp;
 update</h3>
 
 <p>
-        The update field specifies how frequently the BEACON dump is
+        The update field specifies how frequently the link dump is
         likely to change. The field corresponds to the
         <tt>&lt;changefreq&gt;</tt> element in
         <a class='info' href='#Sitemaps'>Sitemaps XML format<span> (</span><span class='info'>Google Inc., &ldquo;Sitemaps XML format,&rdquo; February&nbsp;2008.</span><span>)</span></a> [Sitemaps]. Valid
@@ -957,10 +942,10 @@ update</h3>
 
 <p>
         The value <tt>always</tt> SHOULD be used to describe
-        BEACON dumps that change each time they are accessed. The value
+        link dumps that change each time they are accessed. The value
         <tt>never</tt> SHOULD be used to describe archived
-        BEACON dumps. Please note that the value of this tag is
-        considered a hint and not a command.
+        link dumps. Please note that the value of this tag is considered
+        a hint and not a command.
       
 </p>
 <p>
@@ -972,7 +957,7 @@ update</h3>
 </p>
 <a name="qualifier"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.2.10"></a><h3>3.2.10.&nbsp;
+<a name="rfc.section.3.3.8"></a><h3>3.3.8.&nbsp;
 qualifier</h3>
 
 <p>
@@ -986,7 +971,7 @@ qualifier</h3>
 Link fields and construction</h3>
 
 <p>
-    Each link in a serialized BEACON dump is given in form of up to four
+    Each link in a serialized link dump is given in form of up to four
     fields:
   
 </p>
@@ -1013,7 +998,7 @@ Link fields and construction</h3>
 </ul>
 
 <p>
-    From these fields, combined with the BEACON dump's
+    From these fields, combined with the link dump's
     <a class='info' href='#meta-fields'>meta fields<span> (</span><span class='info'>Meta fields</span><span>)</span></a>, the full
     <a class='info' href='#links'>link<span> (</span><span class='info'>Links</span><span>)</span></a> is constructed. All field values
     MUST be <a class='info' href='#string-normalization'>normalized<span> (</span><span class='info'>String normalization</span><span>)</span></a>
@@ -1085,21 +1070,21 @@ meta field    link field(s)   --&gt;  link element
  message       qualifier      --&gt;   qualifier
  link          -              --&gt;   relation type
 </pre></div>
-<a name="serialization"></a><br /><hr />
+<a name="beacon-files"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
-Serialization</h3>
+Beacon files</h3>
 
-<a name="beacon-text-format"></a><br /><hr />
+<a name="beacon-text-files"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
-BEACON text format</h3>
+Beacon text files</h3>
 
 <p>
-      A BEACON text file is an UTF-8 encoded Unicode file
+      A Beacon text file is an UTF-8 encoded Unicode file
       <a class='info' href='#RFC3629'>[RFC3629]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>, split into lines by line breaks.
       The file consists of a set of lines with meta fields, followed by
-      a set of lines with link fields. A BEACON text file MAY begin with
+      a set of lines with link fields. A Beacon text file MAY begin with
       an Unicode Byte Order Mark and it SHOULD end with a line break:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -1116,7 +1101,7 @@ BEACON text format</h3>
 EMPTY        =  *( *WHITESPACE LINEBREAK )
 </pre></div>
 <p>
-      The BEACON text file SHOULD start with an additional, fixed meta
+      The Beacon text file SHOULD start with an additional, fixed meta
       field:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -1150,13 +1135,13 @@ EMPTY        =  *( *WHITESPACE LINEBREAK )
 
  TARGET      =  BEACONVALUE
 </pre></div>
-<a name="beacon-xml-format"></a><br /><hr />
+<a name="beacon-xml-files"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
-BEACON XML format</h3>
+Beacon XML files</h3>
 
 <p>
-      A BEACON XML file is a valid XML file conforming to the following
+      A Beacon XML file is a valid XML file conforming to the following
       schema. The file SHOULD be encoded in UTF-8
       <a class='info' href='#RFC3629'>[RFC3629]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>. The file MUST:
     
@@ -1220,12 +1205,12 @@ BEACON XML format</h3>
 
 <p>
       All attributes MUST be given in lowercase. An informal schema of
-      BEACON XML is given in
-      <a class='info' href='#relax-ng-schema-for-beacon-xml'>Appendix&nbsp;B<span> (</span><span class='info'>RELAX NG Schema for BEACON XML</span><span>)</span></a>.
+      Beacon XML files is given in
+      <a class='info' href='#relax-ng-schema-for-beacon-xml'>Appendix&nbsp;C<span> (</span><span class='info'>RELAX NG Schema for BEACON XML</span><span>)</span></a>.
     
 </p>
 <p>
-      To process BEACON XML, a complete and stream-processing XML
+      To process Beacon XML files, a complete and stream-processing XML
       parser, for instance the Simple API for XML
       <a class='info' href='#SAX'>[SAX]<span> (</span><span class='info'>Bradner, D., &ldquo;SAX 1.0: The Simple API for XML,&rdquo; May&nbsp;1998.</span><span>)</span></a>, is RECOMMENDED, in favor of parsing
       with regular expressions or similar methods prone to errors.
@@ -1235,7 +1220,7 @@ BEACON XML format</h3>
     
 </p>
 <p>
-      Note that in contrast to BEACON text format, link fields MAY
+      Note that in contrast to Beacon text files, link fields MAY
       include line breaks, which are removed by whitespace
       normalization. Furthermore id field, qualifier field and target
       field MAY include a vertical bar, which is encoded as
@@ -1309,25 +1294,78 @@ References</h3>
 <td class="author-text">Beckett, D. and T. Berners-Lee, &ldquo;<a href="http://www.w3.org/TeamSubmission/turtle/">Turtle - Terse RDF Triple Language</a>,&rdquo; Mar&nbsp;2011.</td></tr>
 </table>
 
-<a name="interpreting-beacon-links"></a><br /><hr />
+<a name="glossary"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
-Interpreting BEACON links</h3>
+Glossary</h3>
+
+<p></p>
+<blockquote class="text"><dl>
+<dt>Beacon</dt>
+<dd>
+        
+          is a data interchange format as specified in this document.
+        
+      
+</dd>
+<dt>Beacon file</dt>
+<dd>
+        
+          is a link dump serialized as Beacon text file or as Beacon XML
+          file.
+        
+      
+</dd>
+<dt>Beacon text file</dt>
+<dd>
+        
+          is a Beacon file in text format as specified in this document.
+        
+      
+</dd>
+<dt>Beacon XML file</dt>
+<dd>
+        
+          is a Beacon file in XML format as specified in this document.
+        
+      
+</dd>
+<dt>link dump</dt>
+<dd>
+        
+          is a set of links and meta fields with common relation type
+          for all links.
+        
+      
+</dd>
+<dt>target database</dt>
+<dd>
+        
+          is the set (or superset) of all target URIs in a link dump.
+        
+      
+</dd>
+</dl></blockquote>
+
+<a name="interpreting-beacon-links"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
+Interpreting Beacon links</h3>
 
 <p>
-    The interpretation of links in a BEACON dump is not restricted to a
+    The interpretation of links in a link dump is not restricted to a
     specific format. The most common use cases are RDF triples and links
     in HTML.
   
 </p>
 <a name="rdf-triples"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.A.1"></a><h3>A.1.&nbsp;
+<a name="rfc.section.B.1"></a><h3>B.1.&nbsp;
 RDF triples</h3>
 
 <p>
-      If link type is an URI, each link in a BEACON dump can be mapped
-      to an RDF triple with:
+      If link type is an URI, each link in a link dump can be mapped to
+      an RDF triple with:
     
 </p>
 <p></p>
@@ -1361,8 +1399,8 @@ RDF triples</h3>
 </p>
 <p>
       The link qualifier MAY result in an additional triple with a
-      literal value as RDF object. For instance the following link, in
-      BEACON text:
+      literal value as RDF object. For instance the following link, in a
+      Beacon text file:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 #QUALIFIER: http://www.w3.org/2000/01/rdf-schema#label
@@ -1401,11 +1439,6 @@ abc|12
     
 </p>
 <p>
-      See <a class='info' href='#annotating-meta-fields'>Section&nbsp;3.2<span> (</span><span class='info'>Annotating meta fields</span><span>)</span></a> for mappings of
-      meta fields to RDF triples about the BEACON dump.
-    
-</p>
-<p>
       In addition, the <tt>prefix</tt> and
       <tt>target</tt> fields MAY be mapped to
       <tt>http://rdfs.org/ns/void#uriRegexPattern</tt> and/or
@@ -1415,11 +1448,11 @@ abc|12
 </p>
 <a name="html-links"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.A.2"></a><h3>A.2.&nbsp;
+<a name="rfc.section.B.2"></a><h3>B.2.&nbsp;
 HTML links</h3>
 
 <p>
-      A BEACON link can be mapped to a HTML link
+      A link in a Beacon dump can be mapped to a HTML link
       (<tt>&lt;a&gt;</tt> element) as following:
     
 </p>
@@ -1448,7 +1481,7 @@ HTML links</h3>
 </ul>
 
 <p>
-      For instance the following link, given in BEACON text format:
+      For instance the following link, given in a Beacon text file:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  http://example.com|example|http://example.org
@@ -1472,12 +1505,12 @@ HTML links</h3>
 </p>
 <a name="relax-ng-schema-for-beacon-xml"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
+<a name="rfc.section.C"></a><h3>Appendix C.&nbsp;
 RELAX NG Schema for BEACON XML</h3>
 
 <p>
-    Below is a schema of <a class='info' href='#beacon-xml-format'>BEACON
-    XML<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a> in RELAX NG Compact syntax
+    Below is a schema of <a class='info' href='#beacon-xml-files'>BEACON XML
+    files<span> (</span><span class='info'>Beacon XML files</span><span>)</span></a> in RELAX NG Compact syntax
     <a class='info' href='#RELAX-NGC'>[RELAX&#8209;NGC]<span> (</span><span class='info'>Clark, J., &ldquo;RELAX NG Compact Syntax,&rdquo; Nov&nbsp;2002.</span><span>)</span></a>. The schema is non-normative and
     given for reference only.
   
@@ -1509,13 +1542,14 @@ element beacon {
 }
 </pre></div>
 <p>
-    A short example of a file in BEACON XML format is given below:
+    A short example of a Beacon XML file is given below:
   
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;beacon xmlns="http://purl.org/net/beacon"
         prefix="http://example.org/"
-        target="http://example.org/"&gt;
+        target="http://example.org/"
+        name="ACME document"&gt;
    &lt;link id="foo" target="bar" /&gt;
    ...TODO: better example...
 &lt;/beacon&gt;
