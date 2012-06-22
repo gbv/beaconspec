@@ -1,11 +1,26 @@
-# Interpreting BEACON links
+# Glossary
 
-The interpretation of links in a BEACON dump is not restricted to a specific
+Beacon
+  : is a data interchange format as specified in this document.
+Beacon file
+  : is a link dump serialized as Beacon text file or as Beacon XML file.
+Beacon text file
+  : is a Beacon file in text format as specified in this document. 
+Beacon XML file
+  : is a Beacon file in XML format as specified in this document. 
+link dump
+  : is a set of links and meta fields with common relation type for all links.
+target database
+  : is the set (or superset) of all target URIs in a link dump.
+
+# Interpreting Beacon links
+
+The interpretation of links in a link dump is not restricted to a specific
 format. The most common use cases are RDF triples and links in HTML.
 
 ## RDF triples
 
-If link type is an URI, each link in a BEACON dump can be mapped to an RDF
+If link type is an URI, each link in a link dump can be mapped to an RDF
 triple with: 
 
 * link source as RDF subject,
@@ -17,7 +32,7 @@ link target URI MUST be transformed to an IRI by following the process defined
 in Section 3.2 of [](#RFC3987).
 
 The link qualifier MAY result in an additional triple with a literal value as
-RDF object. For instance the following link, in BEACON text:
+RDF object. For instance the following link, in a Beacon text file:
 
     #QUALIFIER: http://www.w3.org/2000/01/rdf-schema#label
     http://example.org|example|http://example.com
@@ -45,9 +60,6 @@ could be mapped to the following RDF triples:
 Another possible interpretation of link qualifier is additional information
 about the relationship, for instance when it was created (reification).
 
-See [](#annotating-meta-fields) for mappings of meta fields to RDF triples
-about the BEACON dump.
-
 In addition, the `prefix` and `target` fields MAY be mapped to
 `http://rdfs.org/ns/void#uriRegexPattern` and/or
 `http://rdfs.org/ns/void#uriSpace` from the VoID vocabulary.
@@ -55,13 +67,14 @@ In addition, the `prefix` and `target` fields MAY be mapped to
 
 ## HTML links
 
-A BEACON link can be mapped to a HTML link (`<a>` element) as following:
+A link in a Beacon dump can be mapped to a HTML link (`<a>` element) as
+following:
 
 * link source corresponds to the website which a HTML link is included at,
 * link target corresponds to the `href` attribute,
 * link qualifier corresponds to the textual content,
 
-For instance the following link, given in BEACON text format:
+For instance the following link, given in a Beacon text file:
 
      http://example.com|example|http://example.org
 
@@ -78,7 +91,7 @@ about this" for relation type `http://xmlns.com/foaf/0.1/isPrimaryTopicOf`.
 
 # RELAX NG Schema for BEACON XML
 
-Below is a schema of [BEACON XML](#beacon-xml-format) in RELAX NG Compact
+Below is a schema of [BEACON XML files](#beacon-xml-files) in RELAX NG Compact
 syntax [](#RELAX-NGC). The schema is non-normative and given for reference
 only.
 
@@ -108,12 +121,13 @@ only.
 	  }*
 	}
 
-A short example of a file in BEACON XML format is given below:
+A short example of a Beacon XML file is given below:
 
     <?xml version="1.0" encoding="UTF-8"?>
     <beacon xmlns="http://purl.org/net/beacon" 
             prefix="http://example.org/"
-            target="http://example.org/">
+            target="http://example.org/"
+			name="ACME document">
        <link id="foo" target="bar" />
        ...TODO: better example...
     </beacon>

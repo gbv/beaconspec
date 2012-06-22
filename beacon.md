@@ -5,14 +5,14 @@
 
 ## Overview
 
-BEACON is a data interchange format for large numbers of uniform links.  A
-BEACON link dump consists of:
+Beacon is a data interchange format for large numbers of uniform links.  A
+Beacon link dump consists of:
 
 * a set of [links](#links), each consisting of four elements ([](#links)),
 * a set of [meta fields](#meta-fields).
 
 All links typically share a common URI pattern for source and for target,
-respectively. For instance a BEACON dump could consist of links between two
+respectively. For instance a link dump could consist of links between two
 domains that use different local identifier systems:
 
     http://example.org/{ID1} ---> http://example.com/{ID2}
@@ -22,9 +22,11 @@ construct both, source and target of a link, for instance:
 
     http://example.org/{ID}  ---> http://example.com/{ID}.html
 
-A BEACON link dump can be serialized in a condense [BEACON text
-format](#beacon-text-format) and in [BEACON XML format](#beacon-xml-format).
-The link dump can further be serialized in RDF, if the relation type of its
+A link dump can be serialized as Beacon file in form of a condense [Beacon text
+file](#beacon-text-files) and in form of a [Beacon XML
+file](#beacon-xml-files).
+
+A link dump can be mapped to an RDF graph if the relation type of its
 links is an URI.
 
 ## Notational Conventions
@@ -44,10 +46,6 @@ The formal grammar rules in this document are to be interpreted as described in
      CR          =  %x0D                ; carriage return
      SP          =  %x20                ; space
 
-The `SCHEME` rule is copied from [](#RFC3986):
-
-     SCHEME      =  ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
-
 In addition, the operator `-` is used to express exceptions to forbid line
 breaks and vertical bars in the following rules: 
 
@@ -59,6 +57,17 @@ breaks and vertical bars in the following rules:
 
      VBAR        =  %x7C          ; vertical bar ("|")
 
+Examples of RDF in this document are given in Turtle syntax [](#TURTLE) with
+the following namespace prefixes:
+
+     @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+     @prefix dcterms: <http://purl.org/dc/terms/extent> .
+	 @prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+     @prefix void:    <http://rdfs.org/ns/void#> .
+
+The blank node `:dump` is used in examples to denote the URI of the link dump
+and the blank node `:database` is used to denote the URI of the target
+database.
 
 ## String normalization 
 
@@ -68,9 +77,9 @@ sequences by a single space (`SP`).
 
      WHITESPACE  =  1*( CR | LF | HTAB | SP )
 
-The set of allowed Unicode characters in BEACON is the set of valid Unicode
-characters from UCS which can also be expressed in XML 1.0, excluding some
-discouraged control characters:
+The set of allowed Unicode characters in Beacon dumps is the set of valid
+Unicode characters from UCS which can also be expressed in XML 1.0, excluding
+some discouraged control characters:
 
 	 CHAR        =  WHITESPACE / %x21-7E / %xA0-D7FF / %xE000-FFFD
 	             /  %x10000-1FFFD / %x20000-2FFFD / %x30000-3FFFD
@@ -132,20 +141,9 @@ following the process defined in Section 3.2 of [](#RFC3987).
       M%C3%BCller       {ID}        M%25C3%25BCller
       M%C3%BCller       {+ID}       M%C3%BCller
 
-## Mappings to RDF
-
-RDF snippets in this document are given in Turtle syntax [](#TURTLE) with the
-following namespace prefixes:
-
-	@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix dcterms:  <http://purl.org/dc/terms/extent> .
-
-The base URI `<>` is used in examples to denote the URI of a Beacon dump.
-
 # Links
 
-A link in BEACON is a typed connection between two resources that are
+A link in a Beacon dump is a typed connection between two resources that are
 identified by URIs [](#RFC3986). A link is compromised of four elements:
 
 * a source URI,
@@ -153,7 +151,7 @@ identified by URIs [](#RFC3986). A link is compromised of four elements:
 * a relation type, 
 * a qualifier.
 
-A BEACON link dump is an annotated set of links with identical relation type.
+A link dump is an annotated set of links with identical relation type.
 A relation type is either a registered link type from the IANA link relations
 registry  [](#RFC5988) or an URI. Some examples of relation types:
 
@@ -164,10 +162,10 @@ registry  [](#RFC5988) or an URI. Some examples of relation types:
 	 http://xmlns.com/foaf/0.1/isPrimaryTopicOf
 	 http://purl.org/spar/cito/cites
 
-In a [serialized BEACON dump](#serialization) the relation type is specified by
-the link [meta field](#meta-fields). The other elements of a link are
-constructed from [link fields](#link-fields-and-construction) and meta fields
-given in a serialization. 
+In a [Beacon file](#beacon-files) the relation type is specified by the link
+[meta field](#meta-fields). The other elements of a link are constructed from
+[link fields](#link-fields-and-construction) and meta fields given in a
+serialization. 
 
 A qualifier is an optional Unciode that can be used to further describe the
 link or parts of it. Its value is the empty string by default.
@@ -179,9 +177,9 @@ but guidelines are given in [](#interpreting-beacon-links).
 
 # Meta fields
 
-A BEACON dump SHOULD contain a set of meta fields, each field identified by its
-name. Meta field names are build of lowercase letters `a-z`. In [BEACON text
-format](#beacon-text-format), meta field names are case insensitive and SHOULD
+A link dump SHOULD contain a set of meta fields, each field identified by its
+name. Meta field names are build of lowercase letters `a-z`. In [Beacon text
+files](#beacon-text-files), meta field names are case insensitive and SHOULD
 be given in uppercase letters.  Valid meta fields are defined in the following.
 Additional meta fields, not defined in this specification SHOULD be ignored.
 All meta field values MUST be normalized Unicode strings
@@ -191,11 +189,11 @@ the empty string unless noted otherwise.
 
 ## Fields for link construction
 
-The meta fields `prefix`, `target`, `link`, and `message` are only used to
-abbreviate link elements in BEACON serializations.  Applications MUST ignore
-these fields after they have been used to construct a full BEACON dump from a
-serialized BEACON file. For instance the following BEACON text serialization
-contains a single link:
+The meta fields `prefix`, `target`, `link`, and `message` are not part of
+Beacon dumps but they are used to abbreviate link elements in Beacon files.
+Applications MUST ignore these fields after they have been used to construct a
+full link dump from a serialized Beacon file. For instance the following Beacon
+text file contains a single link:
 
      #PREFIX: http://example.org/
      #TARGET: http://example.com/
@@ -233,7 +231,7 @@ to indicate duplicated links with a warning.
 The prefix field specifies an URI pattern that is used to construct link
 sources.  If no prefix meta field was specified, the default value `{+ID}` is
 used.  The name `prefix` was choosen to keep backwards compatibility with
-existing BEACON dumps.
+existing link dumps.
 
 ### target
 
@@ -242,7 +240,7 @@ target meta field was specified, the default value `{+ID}` is used.
 
 ### link
 
-The link field specifies the relation type for all links in a BEACON dump.
+The link field specifies the relation type for all links in a link dump.
 The default relation type is `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 
 ### message
@@ -251,35 +249,40 @@ The message meta field is used as template for link qualifiers. The default
 value is `{about}`. Note that all link qualifiers are equal, if the field value
 does not contain the sequence `{about}`.
 
-## Annotating meta fields
-
-The meta fields `name`, `description`, `institution`, `creator`, `contact`,
-`qualifier`, `reference`, `feed`, `timestamp`, and `update` describe a BEACON
-dump.  The meaning of these fields is defined by RDF properties from the DCMI
-Metadata Terms [](#DCTERMS) and other vocabularies.  A mapping of annotating
-meta fields to RDF properties is given in [](#interpreting-beacon-links).
+## Fields describing the target database
 
 ### name
 
-The name meta field contains a name or title of the BEACON dump and/or of
-all of its targets. For instance if all links point to resources in a database,
-the name meta field contains the name of the database.
+The name meta field contains a name or title of target database. This field
+corresponds to the `title` from the DCMI Metadata Terms. For instance the
+name meta field value "ACME documents" can be mapped to this RDF triple:
 
-The RDF property of this field is `http://purl.org/dc/terms/title` from
-the DCMI Metadata Terms.
+    :database dcterms:title "ACME documents" .
+
+### institution
+
+The institution meta field contains the name or URI of the organization or of
+an individual responsible for making available the target database. This field
+corresponds to the `publisher` from the DCMI Metadata Terms. For instance the
+institution meta field value "ACME" can be mapped to this RDF triple:
+
+    :database dcterms:publisher "ACME" .
+
+## Fields describing the link dump
 
 ### description
 
-The description meta field contains a human readable description of the BEACON
-dump.
+The description meta field contains a human readable description of the link
+dump. This field corresponds to the `description` from the DCMI Metadata Terms.
+For instance the description meta field value "Mapping from ids to documents"
+can be mapped to this RDF triple:
 
-The RDF property of this field is `http://purl.org/dc/terms/description` from
-the DCMI Metadata Terms.
+    :dump dcterms:description "Mapping from ids to documents" .
 
 ### creator
 
 The creator meta field contains the URI or the name of the person,
-organization, or a service primarily responsible for making the BEACON dump.
+organization, or a service primarily responsible for making the link dump.
 This field corresponds to the `creator` from the DCMI Metadata Terms. The
 creator is an instace of the `Agent` class from the FOAF vocabulary.
 
@@ -289,21 +292,20 @@ The following examples of meta field values:
 
     http://example.org/people/bea
 
-can be mapped to:
+can be mapped the this RDF triples, respectively:
 
-    <> dcterms:creator "Bea Beacon" .
-    <> dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+    :dump dcterms:creator "Bea Beacon" .
+    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
     
-	<> dcterms:creator <http://example.org/people/bea> .
+	:dump dcterms:creator <http://example.org/people/bea> .
 	<http://example.org/people/bea> a foaf:Agent .
-
 
 This field SHOULD NOT contain a simple URL unless this URL is also used as URI.
 
 ### contact
 
 The contact meta field contains an email address or similar contact information
-to reach the creator of the BEACON dump.  The contact MUST be a mailbox address
+to reach the creator of the link dump.  The contact MUST be a mailbox address
 as specified in section 3.4 of [](#RFC5322), for instance:
 
      admin@example.com
@@ -314,60 +316,57 @@ The contact meta field corresponds to the `mbox` property and the `name`
 property from the FOAF vocabulary [@FOAF]. The domain of the the contact meta
 field is the Beacon dump. The sample field values can be mapped to:
 
-     <> dcterms:creator [
+     :dump dcterms:creator [
 	     foaf:mbox <mailto:admin@example.com>
      ] .
 
-     <> dcterms:creator [
+     :dump dcterms:creator [
 	     foaf:name "Bea Beacon" ;
 	     foaf:mbox <mailto:bea@example.org>
      ] .
 
-### institution
-
-The institution meta field contains the organization or individual of an
-institution or publisher responsible for the target database.  The field value
-can be an URI or a literal name. The 
-
-The RDF property of this field is `http://purl.org/dc/terms/publisher` or
-`http://purl.org/dc/terms/creator` (???) from the DCMI Metadata Terms.
-
-
 ### reference
 
 The reference field contains an URL of a website with additional information
-about this BEACON link dump.
+about this link dump.
 
 The RDF property of this field is `http://xmlns.com/foaf/0.1/homepage` from 
 the FOAF vocabulary.
 
+The status of this field is not stable yet.
+
 ### feed
 
-The feed field contains an URL, where to download the BEACON dump from. In
-addition to standard URL schemes, alternative established URI forms for
-retrieval, such as magnet URIs MAY be allowed.
+The feed field contains an URL, where to download the link dump from. This
+field corresponds to the `dataDump` property from the VoID vocabulary. An 
+example mapped to an RDF triple:
 
-The RDF property of this field is `http://rdfs.org/ns/void#dataDump` from the
-VoID vocabulary.
+    :dump void:dataDump <http://example.com/beacon.txt> .
 
 ### timestamp
 
-The timestamp field contains the date of last modification of the BEACON dump.
-This date MUST conform to the `full-date` or to the `date-time` production rule
-in [](#RFC3339). In addition, an uppercase `T` character MUST be used to
-separate date and time, and an uppercase `Z` character MUST be present in the
-absence of a numeric time zone offset. Some examples of valid timestamp values:
+The timestamp field contains the date of last modification of the link dump.
+Note that this value MAY be different to the last modification time of a Beacon
+file that serializes the link dump.  The timestamp value MUST conform to the
+`full-date` or to the `date-time` production rule in [](#RFC3339). In addition,
+an uppercase `T` character MUST be used to separate date and time, and an
+uppercase `Z` character MUST be present in the absence of a numeric time zone
+offset. This field corresponds to the `modified` property from the DCMI
+Metadata Terms. For instance the following valid timestamp values:
 
      2012-05-30
      2012-05-30T15:17:36+02:00
      2012-05-30T13:17:36Z
 
-The RDF property of this field is `http://purl.org/dc/terms/modified` from the
-DCMI Metadata Terms.
+can be mapped to the following RDF triples, respectively:
+
+     :dump dcterms:modified "2012-05-30"
+     :dump dcterms:modified "2012-05-30T15:17:36+02:00"
+     :dump dcterms:modified "2012-05-30T13:17:36Z"
 
 ### update
 
-The update field specifies how frequently the BEACON dump is likely to change.
+The update field specifies how frequently the link dump is likely to change.
 The field corresponds to the `<changefreq>` element in [Sitemaps XML
 format](#Sitemaps). Valid values are:
 
@@ -379,9 +378,9 @@ format](#Sitemaps). Valid values are:
 * `yearly`
 * `never` 
 
-The value `always` SHOULD be used to describe BEACON dumps that change each
+The value `always` SHOULD be used to describe link dumps that change each
 time they are accessed. The value `never` SHOULD be used to describe archived
-BEACON dumps. Please note that the value of this tag is considered a hint and
+link dumps. Please note that the value of this tag is considered a hint and
 not a command. 
 
 The RDF property of this field is 
@@ -395,13 +394,13 @@ link target and link qualifier.
 
 # Link fields and construction
 
-Each link in a serialized BEACON dump is given in form of up to four fields:
+Each link in a serialized link dump is given in form of up to four fields:
 
 * source field,
 * optional qualifier field,
 * optional target field.
 
-From these fields, combined with the BEACON dump's [meta fields](#meta-fields),
+From these fields, combined with the link dump's [meta fields](#meta-fields),
 the full [link](#links) is constructed. All field values MUST be
 [normalized](#string-normalization) before further processing. Missing
 optional fields MUST be set to the empty string.  The full link is then
@@ -439,13 +438,13 @@ The following table illustrates construction of a link:
 	 message       qualifier      -->   qualifier
 	 link          -              -->   relation type
 
-# Serialization
+# Beacon files
 
-## BEACON text format
+## Beacon text files
 
-A BEACON text file is an UTF-8 encoded Unicode file [](#RFC3629), split into
+A Beacon text file is an UTF-8 encoded Unicode file [](#RFC3629), split into
 lines by line breaks. The file consists of a set of lines with meta fields,
-followed by a set of lines with link fields. A BEACON text file MAY begin with
+followed by a set of lines with link fields. A Beacon text file MAY begin with
 an Unicode Byte Order Mark and it SHOULD end with a line break:
 
      BEACONTEXT  =  [ BOM ] [ START ] *METALINE *EMPTY [ LINKS ]
@@ -457,7 +456,7 @@ The order public of meta lines and the order of link lines is irrelevant.
 
 	EMPTY        =  *( *WHITESPACE LINEBREAK )
 
-The BEACON text file SHOULD start with an additional, fixed meta field:
+The Beacon text file SHOULD start with an additional, fixed meta field:
 
      START       =  "#FORMAT: BEACON" LINEBREAK
 
@@ -484,9 +483,9 @@ additional fields:
 
      TARGET      =  BEACONVALUE
 
-## BEACON XML format
+## Beacon XML files
 
-A BEACON XML file is a valid XML file conforming to the following schema. The
+A Beacon XML file is a valid XML file conforming to the following schema. The
 file SHOULD be encoded in UTF-8 [](#RFC3629). The file MUST:
 
   * Begin with an opening `<beacon>` tag and end with a closing `</beacon>` tag.
@@ -501,20 +500,19 @@ The file MAY further:
   * Specify link fields `target` and/or `about` as attributes to the `<link>` 
     element.
 
-All attributes MUST be given in lowercase. An informal schema of BEACON XML is
-given in [](#relax-ng-schema-for-beacon-xml).
+All attributes MUST be given in lowercase. An informal schema of Beacon XML
+files is given in [](#relax-ng-schema-for-beacon-xml).
 
-To process BEACON XML, a complete and stream-processing XML parser, for
-instance the Simple API for XML [](#SAX), is RECOMMENDED, in favor of
-parsing with regular expressions or similar methods prone to errors.
-Additional XML attributes of `<link>` elements and `<link>` elements without
-`id` attribute SHOULD be ignored.
+To process Beacon XML files, a complete and stream-processing XML parser, for
+instance the Simple API for XML [](#SAX), is RECOMMENDED, in favor of parsing
+with regular expressions or similar methods prone to errors.  Additional XML
+attributes of `<link>` elements and `<link>` elements without `id` attribute
+SHOULD be ignored.
 
-Note that in contrast to BEACON text format, link fields MAY include line
+Note that in contrast to Beacon text files, link fields MAY include line
 breaks, which are removed by whitespace normalization. Furthermore id field,
-qualifier field and target field MAY include a vertical bar, which is encoded as
-`%7C` during construction the link.
-
+qualifier field and target field MAY include a vertical bar, which is encoded
+as `%7C` during construction the link.
 
 # Security Considerations
 
