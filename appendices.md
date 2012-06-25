@@ -3,38 +3,34 @@
 Beacon
   : is a data interchange format as specified in this document.
 Beacon file
-  : is a link dump serialized as Beacon text file or as Beacon XML file.
-Beacon text file
-  : is a Beacon file in text format as specified in this document. 
-Beacon XML file
-  : is a Beacon file in XML format as specified in this document. 
+  : is a link dump serialized in Beacon text format or Beacon XML format.
+Beacon text format
+  : is a condense format to serialize link dumps as specified in this document. 
+Beacon XML format
+  : is an XML format to serialize link dumps as specified in this document. 
+link
+  : is a triple of source URI, target URI, and annotation.
 link dump
   : is a set of links and meta fields with common relation type for all links.
+link field
+  : ...
 target database
   : is the set (or superset) of all target URIs in a link dump.
+relation type
+  : ...
 
+<!--
 # Interpreting Beacon links
 
 The interpretation of links in a link dump is not restricted to a specific
 format. The most common use cases are RDF triples and links in HTML.
 
-## RDF triples
+## Examples
 
-If link type is an URI, each link in a link dump can be mapped to an RDF
-triple with: 
+For instance the following link, in a Beacon text file:
 
-* link source as RDF subject,
-* link type as RDF property,
-* link target as RDF object.
+    #ANNOTATION: http://www.w3.org/2000/01/rdf-schema#label
 
-As RDF is not defined on URIs but on URI references or IRIs, link source and
-link target URI MUST be transformed to an IRI by following the process defined
-in Section 3.2 of [](#RFC3987).
-
-The link qualifier MAY result in an additional triple with a literal value as
-RDF object. For instance the following link, in a Beacon text file:
-
-    #QUALIFIER: http://www.w3.org/2000/01/rdf-schema#label
     http://example.org|example|http://example.com
 
 could be mapped to the following RDF triples:
@@ -42,37 +38,16 @@ could be mapped to the following RDF triples:
 	<http://example.org> rdfs:seeAlso <http://example.com> .
     <http://example.com> rdfs:label "example" .
 
-A typical use case is to use qualifiers as "number of hits" at a target
-resource. For instance:
+-->
 
-    #PREFIX: http://example.org/
-    #TARGET: http://example.com/ 
-	#LINK: http://xmlns.com/foaf/0.1/primaryTopic
-    #QUALIFIER: http://purl.org/dc/terms/extent
-
-    abc|12
-
-could be mapped to the following RDF triples:
-
-    <http://example.org/abc> foaf:primaryTopic <http://example.com/abc> .
-    <http://example.com/abc> dcterms:extent "12" .
-
-Another possible interpretation of link qualifier is additional information
-about the relationship, for instance when it was created (reification).
-
-In addition, the `prefix` and `target` fields MAY be mapped to
-`http://rdfs.org/ns/void#uriRegexPattern` and/or
-`http://rdfs.org/ns/void#uriSpace` from the VoID vocabulary.
-
-
-## HTML links
+# HTML links
 
 A link in a Beacon dump can be mapped to a HTML link (`<a>` element) as
 following:
 
 * link source corresponds to the website which a HTML link is included at,
 * link target corresponds to the `href` attribute,
-* link qualifier corresponds to the textual content,
+* link annotation corresponds to the textual content,
 
 For instance the following link, given in a Beacon text file:
 
@@ -82,16 +57,16 @@ can be mapped to the following HTML link:
 
      <a href="http://example.org">example</a>
 
-The qualifier, however, may be the empty string. The meta field `name` may be
+The annotation, however, may be the empty string. The meta field `name` may be
 used alternatively as textual content. The relation type may also be used to
 automatically create an appropriate link label, such as "same entity" 
 for relation type `http://www.w3.org/2002/07/owl#sameAs` or "more information
-about this" for relation type `http://xmlns.com/foaf/0.1/isPrimaryTopicOf`.
+about this" for relation type `foaf:isPrimaryTopicOf`.
 
 
-# RELAX NG Schema for BEACON XML
+# RELAX NG Schema for Beacon XML
 
-Below is a schema of [BEACON XML files](#beacon-xml-files) in RELAX NG Compact
+Below is a schema of [Beacon XML format](#beacon-xml-format) in RELAX NG Compact
 syntax [](#RELAX-NGC). The schema is non-normative and given for reference
 only.
 
@@ -112,7 +87,9 @@ only.
 	  attribute timestamp   { text },
 	  attribute update { "always" | "hourly" | "daily" 
 	    | "weekly" | "monthly" | "yearly" | "never" },
-	  attribute qualifier   { xsd:anyURI },
+	  attribute qlink       { xsd:anyURI },
+	  attribute sourceisa   { xsd:anyURI },
+	  attribute targetisa   { xsd:anyURI },
 	  element link {
 	    attribute id        { text },
 		attribute target    { text }?,

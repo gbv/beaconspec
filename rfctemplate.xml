@@ -9,7 +9,7 @@
 <?rfc text-list-symbols="-"?>
 
 <front>
-	<title abbrev="Beacon">BEACON link dump format</title>
+	<title abbrev="Beacon">Beacon link dump format</title>
 	<author initials="J." surname="Voß" fullname="Jakob Voß">
 		<organization>Verbundzentrale des GBV</organization>
 		<address>
@@ -54,7 +54,7 @@
 	<keyword>...</keyword>
 	<keyword>...</keyword-->
 	<abstract>
-		<t>This document specifies BEACON, a data interchange 
+		<t>This document specifies Beacon, a data interchange 
 			format for large numbers of uniform links.</t>
 	</abstract>
 </front>
@@ -83,7 +83,9 @@
         <?rfc include="ref/reference.Turtle.xml"?>
         <?rfc include="ref/reference.RELAX-NGC.xml"?>
         <?rfc include="ref/reference.RSSSYND.xml"?>
-		<!-- RDF, HTML -->
+        <?rfc include="ref/reference.RDF.xml"?>
+        <?rfc include="ref/reference.VOID.xml"?>
+		<!-- HTML -->
 	</references>
 	<?rfc include="appendices.xml"?>
 </back>

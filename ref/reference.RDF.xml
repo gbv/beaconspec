@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<reference anchor='RDF'>
+	<front>
+		<title abbrev='RDF'>RDF Semantics</title>
+		<author initials="P." surname="Hayes" fullname="Patrick Hayes"/>
+		<date year='2004' month='Feb'/>
+	</front>
+	<format type='HTML' target="http://www.w3.org/TR/2004/REC-rdf-mt-20040210/"/>
+</reference>
