@@ -96,7 +96,7 @@ Table of Contents
    6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 17
    7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 17
      7.1.  Normative References . . . . . . . . . . . . . . . . . . . 17
-     7.2.  Informative References . . . . . . . . . . . . . . . . . . 17
+     7.2.  Informative References . . . . . . . . . . . . . . . . . . 18
    Appendix A.  Glossary  . . . . . . . . . . . . . . . . . . . . . . 18
    Appendix B.  RELAX NG Schema for Beacon XML  . . . . . . . . . . . 19
    Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 20
@@ -899,10 +899,16 @@ Internet-Draft                   Beacon                        June 2012
 
 6.  Security Considerations
 
-   ...TODO...
-
-   (URLs MAY be used to inject code and annotations MAY be used to
-   inject HTML?)
+   Programs should be prepared for malformed and malicious content when
+   parsing Beacon files, when constructing links from link fields, and
+   when mapping links to RDF or HTML.  Possible attacks of parsing
+   contain broken UTF-8 and buffer overflows.  Link construction can
+   result in unexpectedly long strings and character sequences that may
+   be harmless when analyzed as parts.  Most notably, Beacon data may
+   store strings containing HTML and JavaScript code to be used for
+   cross-site scripting attacks on the site displaying Beacon links.
+   Applications should therefore escape or filter accordingly all
+   content with established libraries, such as Apache Escape Utils.
 
 
 7.  References
@@ -939,12 +945,6 @@ Internet-Draft                   Beacon                        June 2012
               and D. Orchard, "URI Template", RFC 6570, March 2012.
 
    [Unicode]  The Unicode Consortium, "The Unicode Standard, Version
-              6.1", April 2012.
-
-7.2.  Informative References
-
-   [FOAF]     Brickley, D. and L. Miller, "FOAF Vocabulary
-              Specification", Aug 2010.
 
 
 
@@ -952,6 +952,13 @@ Voss, et al.            Expires December 3, 2012               [Page 17]
 
 Internet-Draft                   Beacon                        June 2012
 
+
+              6.1", April 2012.
+
+7.2.  Informative References
+
+   [FOAF]     Brickley, D. and L. Miller, "FOAF Vocabulary
+              Specification", Aug 2010.
 
    [RDF]      Hayes, P., "RDF Semantics", Feb 2004.
 
@@ -991,14 +998,7 @@ Appendix A.  Glossary
 
    link  is a triple of source URI, target URI, and annotation.
 
-   link dump  is a set of links and meta fields with common relation
-      type for all links.
 
-   link field  is a Unicode string in a Beacon files used to construct a
-      link
-
-   target database  is the set (or superset) of all target URIs in a
-      link dump.
 
 
 
@@ -1008,6 +1008,15 @@ Voss, et al.            Expires December 3, 2012               [Page 18]
 
 Internet-Draft                   Beacon                        June 2012
 
+
+   link dump  is a set of links and meta fields with common relation
+      type for all links.
+
+   link field  is a Unicode string in a Beacon files used to construct a
+      link
+
+   target database  is the set (or superset) of all target URIs in a
+      link dump.
 
    relation type  a common releation between targets and sources in a
       link dump.
@@ -1049,6 +1058,13 @@ Appendix B.  RELAX NG Schema for Beacon XML
 
    A short example of a Beacon XML file is given below:
 
+
+
+Voss, et al.            Expires December 3, 2012               [Page 19]
+
+Internet-Draft                   Beacon                        June 2012
+
+
    <?xml version="1.0" encoding="UTF-8"?>
    <beacon xmlns="http://purl.org/net/beacon"
            prefix="http://example.org/"
@@ -1057,14 +1073,6 @@ Appendix B.  RELAX NG Schema for Beacon XML
       <link source="foo" target="bar" />
       <link source="foo" />
       <link source="doz" annotation="baz" />
-
-
-
-Voss, et al.            Expires December 3, 2012               [Page 19]
-
-Internet-Draft                   Beacon                        June 2012
-
-
    </beacon>
 
 
@@ -1097,14 +1105,6 @@ Authors' Addresses
    Germany
 
    Email: ThB@gymel.com
-
-
-
-
-
-
-
-
 
 
 
