@@ -66,7 +66,11 @@ from the RDF and RDFS vocabularies [](#RDF), from the DCMI Metadata Terms
 
 The blank node `:dump` is used in RDF examples to denote the URI of the link
 dump and the blank node `:database` is used to denote the URI of the target
-database.
+database. The following triples are always given when mapping a link dump to
+RDF:
+
+     :dump a void:Linkset .
+	 :database a void:Database .
 
 ## String normalization 
 
@@ -409,13 +413,11 @@ sample field values can be mapped to:
 	     foaf:mbox <mailto:bea@example.org>
      ] .
 
-### reference
+### homepage
 
-The reference field contains an URL of a website with additional information
-about this link dump.
-
-The RDF property of this field is `foaf:homepage`.  The status of this field is
-not stable yet (it may be dropped).
+The homepage field contains an URL of a website with additional information
+about this link dump. This field is mapped to the RDF property `foaf:homepage`.
+Note that this field does not specify the homepage of the target database.
 
 ### feed
 
@@ -504,7 +506,7 @@ names are case insensitive and SHOULD be given in uppercase letters.
 
      METAFIELD   =  "PREFIX" / "TARGET" / "LINK" / "MESSAGE" 
                  /  "NAME" / "DESCRIPTION" / "INSTITUTION" 
-                 /  "ANNOTATION" / "REFERENCE"
+                 /  "ANNOTATION" / "HOMEPAGE"
                  /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
  
      METAVALUE   =  BEACONLINE

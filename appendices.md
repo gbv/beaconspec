@@ -13,7 +13,7 @@ link
 link dump
   : is a set of links and meta fields with common relation type for all links.
 link field
-  : ...
+  : is a Unicode string in a Beacon files used to construct a link
 target database
   : is the set (or superset) of all target URIs in a link dump.
 relation type
@@ -78,22 +78,22 @@ only.
 	  attribute link        { xsd:anyURI },
 	  attribute message     { text },
 	  attribute name        { text },
-	  attribute description { text },
 	  attribute institution { text },
-	  attribute reference   { xsd:anyURI },
-	  attribute contact     { text },
+	  attribute description { text },
 	  attribute creator     { text },
+	  attribute contact     { text },
+	  attribute homepage    { xsd:anyURI },
 	  attribute feed        { xsd:anyURI },
 	  attribute timestamp   { text },
 	  attribute update { "always" | "hourly" | "daily" 
 	    | "weekly" | "monthly" | "yearly" | "never" },
-	  attribute qlink       { xsd:anyURI },
-	  attribute sourceisa   { xsd:anyURI },
-	  attribute targetisa   { xsd:anyURI },
+	  attribute annotation  { xsd:anyURI },
+	  attribute sourcetype  { xsd:anyURI },
+	  attribute targettype  { xsd:anyURI },
 	  element link {
-	    attribute id        { text },
-		attribute target    { text }?,
-		attribute about     { text }?,
+	    attribute source     { text },
+		attribute target     { text }?,
+		attribute annotation { text }?,
 	    empty
 	  }*
 	}
