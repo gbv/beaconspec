@@ -14,6 +14,8 @@ REVSHRT=$(shell git log -1 --format="%h" ${MARKDOWN})
 
 REVHTML=${NAME}-${REVSHRT}.html
 
+all: html txt
+
 html: ${HTML}
 xml: ${XML}
 txt: ${TXT}

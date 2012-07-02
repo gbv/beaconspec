@@ -3,9 +3,9 @@
 	<front>
 		<title abbrev='VoID'>Vocabulary of Interlinked Datasets (VoID)</title>
 		<author initials="R." surname="Cyganiak" fullname="Richard Cyganiak"/>
-		<author initials="J.", surname="Zhao" fullname="Jun Zhao"/>
-		<author initials="K.", surname="Alexander" fullname="Keith Alexander"/>
-		<author initials="M.", surname="Hausenblas" fullname="Michael Hausenblas"/>
+		<author initials="J." surname="Zhao" fullname="Jun Zhao"/>
+		<author initials="K." surname="Alexander" fullname="Keith Alexander"/>
+		<author initials="M." surname="Hausenblas" fullname="Michael Hausenblas"/>
 		<date year='2011' month='Mar'/>
 	</front>
 	<format type='HTML' target="http://vocab.deri.ie/void/"/>
