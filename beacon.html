@@ -345,8 +345,8 @@ Notational Conventions</h3>
       described in <a class='info' href='#RFC5234'>[RFC5234]<span> (</span><span class='info'>Crocker, D. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; January&nbsp;2008.</span><span>)</span></a>, including the ABNF
       core rules <tt>HTAB</tt>, <tt>LF</tt>,
       <tt>CR</tt>, and <tt>SP</tt>. In addition, the
-      operator <tt>-</tt> is used to exclude line breaks and
-      vertical bars in the following rules:
+      minus operator (<tt>-</tt>) is used to exclude line
+      breaks and vertical bars in the following rules:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  BEACONLINE  =  *CHAR - ( *CHAR LINEBREAK *CHAR )
@@ -595,10 +595,11 @@ Link fields</h3>
       The following table illustrates construction of a link:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-meta field  +  link field    --&gt;  link element
- prefix     +   source       --&gt;   source
- target     +   target       --&gt;   target
- message    +   annotation   --&gt;   annotation
+ meta field  +  link field  --&gt;  link element
+----------------------------------------------
+ prefix      |  source       |   source
+ target      |  target       |   target
+ message     |  annotation   |   annotation
 </pre></div>
 <a name="relation-types"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
