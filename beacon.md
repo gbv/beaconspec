@@ -33,8 +33,8 @@ interpreted as described in [](#RFC2119).
 
 The formal grammar rules in this document are to be interpreted as described in
 [](#RFC5234), including the ABNF core rules `HTAB`, `LF`, `CR`, and `SP`. In
-addition, the operator `-` is used to exclude line breaks and vertical bars in
-the following rules:
+addition, the minus operator (`-`) is used to exclude line breaks and vertical
+bars in the following rules:
 
      BEACONLINE  =  *CHAR - ( *CHAR LINEBREAK *CHAR )
 
@@ -181,10 +181,11 @@ case.
 
 The following table illustrates construction of a link:
 
-    meta field  +  link field    -->  link element
-     prefix     +   source       -->   source
-     target     +   target       -->   target
-	 message    +   annotation   -->   annotation
+     meta field  +  link field  -->  link element
+	----------------------------------------------
+     prefix      |  source       |   source
+     target      |  target       |   target
+	 message     |  annotation   |   annotation
 
 ## Relation types
 
