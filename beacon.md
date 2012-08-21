@@ -436,16 +436,6 @@ The annotation field specifies the RDF property between link target and link
 annotation. The default value is `rdf:value` having no specific meaning
 [](#RDF).
 
-### sourcetype
-
-The sourcetype field specifies the type of entities identified by source URIs.
-The field value MUST be an URI.
-
-### targettype
-
-The sourcetype field specifies the type of entities identified by target URIs.
-The field value MUST be an URI.
-
 # Beacon files
 
 ## Beacon text format
@@ -567,27 +557,6 @@ is mapped to the following RDF triples:
 
      <http://example.org/abc> foaf:primaryTopic <http://example.com/xy> .
      <http://example.com/xy> dcterms:extent "12" .
-
-If the sourcetype and/or targettype meta field is specified, another triple
-can be created for each link with:
-
-* source URI (or target URI respectively) as subject IRI
-* the predicate `rdf:type`
-* sourcetype (or targettype respectively) as object URI
-
-For instance the following link dump:
-
-     #RELATION:   http://xmlns.com/foaf/0.1/isPrimaryTopicOf
-     #SOURCETYPE: http://xmlns.com/foaf/0.1/Person 
-	 #TARGETTYPE: http://xmlns.com/foaf/0.1/Document 
-     
-     http://example.org/foo||http://example.com/bar
-
-can be mapped to three RDF triples:
-
-     <http://example.org/foo> a foaf:Person ;
-         foaf:isPrimaryTopicOf <http://example.com/bar> .
-     <http://example.com/bar> a foaf:Document .
 
 ## Mapping to HTML
 

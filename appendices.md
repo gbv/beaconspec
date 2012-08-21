@@ -46,8 +46,6 @@ only.
 	    | "weekly" | "monthly" | "yearly" | "never" },
 	  attribute relation    { xsd:anyURI },
 	  attribute annotation  { xsd:anyURI },
-	  attribute sourcetype  { xsd:anyURI },
-	  attribute targettype  { xsd:anyURI },
 	  element link {
 	    attribute source     { text },
 		attribute target     { text }?,
