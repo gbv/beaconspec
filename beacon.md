@@ -149,8 +149,8 @@ rule `BEACONVALUE`.
 
 Links from a Beacon link dump can be mapped to HTML links
 ([](#mapping-to-html)) and to RDF triples RDF triples ([](#mapping-to-rdf)).
-The meaning of links can be indicated with meta fields for relation type
-([](#relation-types)) and annotation.
+The meaning of links can be indicated with meta fields for **relation type**
+([](#relation-types)) and annotation type.
 
 ## Link construction
 
