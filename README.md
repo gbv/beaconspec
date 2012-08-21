@@ -8,6 +8,13 @@ There is a serialization as raw Unicode and a serialization in XML.
 BEACON primarily used to collect mappings between authority files
 and information resources in libraries and related organizations.
 
+# Illustration
+
+Beacon defines a link dump as set of links from a source database to a target
+database. Several parts can be described by meta fields (in uppercase):
+
+![](beaconspec-diagram.png)
+
 # How to modify this specification
 
 The specification of BEACON link dump format is being prepared in this public
