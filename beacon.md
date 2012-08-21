@@ -6,18 +6,17 @@
 Beacon is a data interchange format for large numbers of uniform links.  A
 Beacon **link dump** consists of:
 
-* a set of links, each a triple of ([](#links))
-    * **source URI**
-    * **target URI**
-    * **annotation**
+* a set of links, each a triple of source URI, target URI, and annotation 
+  ([](#links))
 * a set of meta fields ([](#meta-fields)).
 
 The set that all source URIs in a link dump originate from is called the
-*source database* and the set that all target URIs originate from is called the
-*target database*. Source URIs and target URIs respectively often share commen
-URI pattern ([](#uri-patterns)).  These patterns are used to abbreviate URIs in
-serializations of link dumps. Link dumps can be serialized as **Beacon files**
-in a condense line-oriented format and in an XML format ([](#beacon-files)).
+**source database** and the set that all target URIs originate from is called
+the **target database**. Source URIs and target URIs respectively often share
+common URI pattern ([](#uri-patterns)).  These patterns are used to abbreviate
+URIs in serializations of link dumps. Link dumps can be serialized as **Beacon
+files** in a condense line-oriented format and in an XML format
+([](#beacon-files)).
 
 An important use-case of Beacon is the creation of HTML links as described in
 section [](#mapping-to-html). A link dump can also be mapped to an RDF graph
@@ -138,9 +137,9 @@ following the process defined in Section 3.2 of [](#RFC3987).
 A link in a link dump is a directed connection between two resources that are
 identified by URIs [](#RFC3986). A link is compromised of three elements:
 
-* a source URI,
-* a target URI,
-* an annotation.
+* a **source URI**,
+* a **target URI**,
+* an **annotation**.
 
 Source URI and target URI define where a link is pointing from and to
 respectively. The annotation is an optional whitespace-normalized Unicode
@@ -148,44 +147,85 @@ string that can be used to further describe the link or parts of it. A missing
 annotation is equal to the empty string. Annotations MUST match the grammar
 rule `BEACONVALUE`.
 
-Link elements are given in abbreviated form as link fields when serialized in a
-Beacon file ([](#link-fields)). With a relation type ([](#relation-types))
-links can be mapped to RDF triples ([](#mapping-to-rdf)) and to HTML links
-([](#mapping-to-html)).
+Links from a Beacon link dump can be mapped to HTML links
+([](#mapping-to-html)) and to RDF triples RDF triples ([](#mapping-to-rdf)).
+The meaning of links can be indicated with meta fields for relation type
+([](#relation-types)) and annotation.
 
-## Link fields
+## Link construction
 
-Each link in a serialized link dump is constructed from a "source field", a
-"target field", and an "annotation field", combined with a set of meta fields
-([](#link-construction)). The source field is mandatory. The annotation field
-is set to the empty string if missing. The target field is set to the source
-field if missing. All field values MUST be whitespace-normalized before further
+Link elements are given in abbreviated form of **link tokens** when serialized
+in a Beacon file. Each link is constructed from a three tokens, combined with a
+set of meta fields:
+
+* the source token is mandatory
+* the annotation token is optional with the empty string as default value
+* the target token is optional with the value of the source token as default
+  value
+
+All tokens MUST be whitespace-normalized before further
 processing.  The full link is then constructed as following:
 
 * The link source is constructed from the `prefix` meta field URI pattern by 
-  inserting the source field as identifier value, as defined in 
-  [](#uri-patterns).
+  inserting the source token, as defined in [](#uri-patterns).
 * The link target is constructed from the `target` meta field URI pattern by 
-  inserting the target field as identifier value, as defined in 
-  [](#uri-patterns).
+  inserting the target token, as as defined in [](#uri-patterns).
 * The link annotation is constructed from the `message` meta field by literally 
   replacing every occurrence of the character sequence `{annotation}` by the 
-  annotation field.  The resulting string MUST be whitespace-normalized after
+  annotation token.  The resulting string MUST be whitespace-normalized after
   construction additional encoding MUST NOT be applied.
 
 Constructed link sources and link targets MUST be syntactically valid URIs.
 Applications MUST ignore links with invalid URIs and SHOULD give a warning.
-Note that annotation fields are ignored if the `message` meta field does not
+Note that annotation tokens are ignored if the `message` meta field does not
 contain the sequence `{annotation}`. Applications SHOULD give a warning in this
 case.
 
 The following table illustrates construction of a link:
 
-     meta field  +  link field  -->  link element
+     meta field  +  link token  -->  link element
 	----------------------------------------------
-     prefix      |  source       |   source
-     target      |  target       |   target
+     prefix      |  source       |   source URI
+     target      |  target       |   target URI
 	 message     |  annotation   |   annotation
+
+Applications SHOULD ignore the meta fields `prefix`, `target`, and `message`
+after they have been used to construct a full link dump with mapping to RDF
+from a serialized Beacon file. In particular, applications MUST NOT
+differentiate between equal links constructed from different abbreviations.
+Equal links in one Beacon file SHOULD be ignored and it is RECOMMENDED to
+indicate duplicated links with a warning.
+
+For instance the following Beacon text file contains a single link:
+
+     #PREFIX: http://example.org/
+     #TARGET: http://example.com/
+     #MESSAGE: Hello World!
+
+     foo
+
+The same link could also be serialized without any meta fields: 
+
+     http://example.org/foo|Hello World!|http://example.com/foo
+
+The default meta fields values could also be specified as:
+
+     #PREFIX: {+ID}
+     #TARGET: {+ID}
+     #MESSAGE: {annotation}
+
+Another possible serialization is:
+
+     #PREFIX: http://example.org/
+     #TARGET: http://example.com/
+     #MESSAGE: Hello {annotation}
+
+     foo|World!
+
+The link line in this example is equal to:
+
+     foo|World!|foo
+
 
 ## Relation types
 
@@ -205,25 +245,22 @@ Some examples of relation types:
 # Meta fields
 
 A link dump SHOULD contain a set of meta fields, each identified by its name
-build of lowercase letters `a-z`. Relevant meta fields for link construction
-([](#link-construction)), description of the target database
-([](#target-database)), description of the link dump ([](#link-dump)), and
-interpretation of links ([](#interpretation)) are defined in the following.
-Additional meta fields, not defined in this specification, SHOULD be ignored.
-All meta field values MUST be whitespace-normalized
+build of lowercase letters `a-z`.  Relevant meta fields for description of the
+source and target databases ([](#source-and-target-databases)), the link dump
+([](#link-dump)), and links ([](#link-description)) are defined in the
+following.  Additional meta fields, not defined in this specification, SHOULD
+be ignored.  All meta field values MUST be whitespace-normalized
 ([](#string-normalization)).  Missing meta field values and empty strings MUST
 be set to the field’s default value, which is the empty string unless noted
 otherwise. 
 
-## Source database
+## Source and target databases
 
 ### source
 
 The source database can be identified by the source meta field, which MUST be
 an URI if given. If two link dumps share the same source, it is possible to
 create a joint link dump with links from both.
-
-## Target database
 
 ### name
 
@@ -356,45 +393,7 @@ not a command.
 
 The RDF property of this field is `rssynd:updatePeriod`.
 
-## Link construction
-
-The meta fields `prefix`, `target`, and `message` are used to abbreviate links
-in form of link fields in a Beacon file, as described in [](#link-fields).
-Applications SHOULD ignore these fields after they have been used to construct
-a full link dump with mapping to RDF from a serialized Beacon file. In
-particular, applications MUST NOT differentiate between equal links constructed
-from different abbreviations.  Equal links in one Beacon file SHOULD be ignored
-and it is RECOMMENDED to indicate duplicated links with a warning.
-
-For instance the following Beacon text file contains a single link:
-
-     #PREFIX: http://example.org/
-     #TARGET: http://example.com/
-     #MESSAGE: Hello World!
-
-     foo
-
-The same link could also be serialized without any meta fields: 
-
-     http://example.org/foo|Hello World!|http://example.com/foo
-
-The default meta fields values could also be specified as:
-
-     #PREFIX: {+ID}
-     #TARGET: {+ID}
-     #MESSAGE: {annotation}
-
-Another possible serialization is:
-
-     #PREFIX: http://example.org/
-     #TARGET: http://example.com/
-     #MESSAGE: Hello {annotation}
-
-     foo|World!
-
-The link line in this example is equal to:
-
-     foo|World!|foo
+## Link description
 
 ### prefix
 
@@ -416,14 +415,8 @@ Applications MAY map the target field to the RDF property `void:uriSpace` or
 
 ### message
 
-The message meta field is used as template for link annotations. The default
-value is `{annotation}`.
-
-
-## Interpretation
-
-The following meta fields SHOULD be used to indicate the actual meaning of
-links in a link dump.
+The message field is used as template for link annotations. The default value
+is `{annotation}`.
 
 ### relation
 
@@ -442,7 +435,7 @@ annotation. The default value is `rdf:value` having no specific meaning
 
 A Beacon text file is an UTF-8 encoded Unicode file [](#RFC3629), split into
 lines by line breaks. The file consists of a set of lines with meta fields,
-followed by a set of lines with link fields. A Beacon text file MAY begin with
+followed by a set of lines with link tokens. A Beacon text file MAY begin with
 an Unicode Byte Order Mark and it SHOULD end with a line break:
 
      BEACONTEXT  =  [ BOM ] [ START ] *METALINE *EMPTY [ LINKS ]
@@ -470,8 +463,8 @@ names are case insensitive and SHOULD be given in uppercase letters.
  
      METAVALUE   =  BEACONLINE
 
-Each link is given on a link line with its source field, optionally follwed by
-additional fields:
+Each link is given on a link line with its source token, optionally follwed by
+annotation token and target token:
 
      LINKS       =  LINK *( LINEBREAK LINK ) [ LINEBREAK ]
 
@@ -491,14 +484,13 @@ file SHOULD be encoded in UTF-8 [](#RFC3629). The file MUST:
   * Begin with an opening `<beacon>` tag and end with a closing `</beacon>` tag.
   * Specify the default namespace `http://purl.org/net/example`.
   * Include an empty `<link/>` tag for each link.
-  * Include the [source field](#link-fields) as XML attribute
-    `source` of each `<link/>` element.
+  * Include the source token as XML attribute `source` of each `<link/>` element.
 
 The file MAY further:
 
   * Specify [meta fields](#meta-fields) as XML attributes to the `<beacon>` tag.
-  * Specify link fields `target` and/or `about` as attributes to the `<link>` 
-    element.
+  * Specify link tokens `target` and/or `annotation` as attributes to the 
+    `<link>` element.
 
 All attributes MUST be given in lowercase. An informal schema of Beacon XML
 files is given in [](#relax-ng-schema-for-beacon-xml).
@@ -509,9 +501,9 @@ with regular expressions or similar methods prone to errors.  Additional XML
 attributes of `<link>` elements and `<link>` elements without `source`
 attribute SHOULD be ignored.
 
-Note that in contrast to Beacon text files, link fields MAY include line
+Note that in contrast to Beacon text files, link tokens MAY include line
 breaks, which are removed by whitespace normalization. Furthermore id field,
-annotation field and target field MAY include a vertical bar, which is encoded
+annotation field and target token MAY include a vertical bar, which is encoded
 as `%7C` during construction the link.
 
 # Mappings
@@ -600,7 +592,7 @@ be used as link label.
 # Security Considerations
 
 Programs should be prepared for malformed and malicious content when parsing
-Beacon files, when constructing links from link fields, and when mapping links
+Beacon files, when constructing links from link tokens, and when mapping links
 to RDF or HTML. Possible attacks of parsing contain broken UTF-8 and buffer
 overflows. Link construction can result in unexpectedly long strings and
 character sequences that may be harmless when analyzed as parts. Most notably,

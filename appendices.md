@@ -12,7 +12,7 @@ link
   : is a triple of source URI, target URI, and annotation.
 link dump
   : is a set of links and meta fields with common relation type for all links.
-link field
+link token
   : is a Unicode string in a Beacon files used to construct a link.
 source database
   : is the set (or superset) of all source URIs in a link dump.
