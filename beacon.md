@@ -468,13 +468,30 @@ annotation token and target token:
 
      LINKS       =  LINK *( LINEBREAK LINK ) [ LINEBREAK ]
 
-     LINK        =  SOURCE [ VBAR ANNOTATION [ VBAR TARGET ] ] 
+     LINK        =  SOURCE [ VBAR OTOKENS ]
+
+     OTOKENS     =  ANNOTATION / TARGET / ANNOTATION VBAR TARGET
 
      SOURCE      =  BEACONVALUE
 
      TARGET      =  BEACONVALUE
 
      ANNOTATION  =  BEACONVALUE
+
+The ambiguous `OTOKENS` rule is resolved as following:
+
+* if it includes `VBAR`, both annotation token and target token are given
+* if it includes no `VBAR`
+    * if its normalized value begins with "http:" or "https:", and the target
+      meta field has its default value `{+ID}`, and the message meta field 
+      has its default value `{annotation}`, then the value is used
+      as target token
+    * the value is used as annotation token otherwise
+
+This way one can use two forms to encode links to HTTP URIs:
+
+    foo|http://example.org/foobar
+    foo||http://example.org/foobar
 
 ## Beacon XML format
 
