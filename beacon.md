@@ -4,21 +4,20 @@
 # Introduction
 
 Beacon is a data interchange format for large numbers of uniform links.  A
-Beacon link dump consists of:
+Beacon **link dump** consists of:
 
-* a set of links, each a triple of source URI, target URI, and 
-  annotation ([](#links)),
+* a set of links, each a triple of ([](#links))
+    * **source URI**
+    * **target URI**
+    * **annotation**
 * a set of meta fields ([](#meta-fields)).
 
-All links in a link dump typically share a common URI pattern for sources and a
-common URI pattern for targets ([](#uri-patterns)).  This patterns are used to
-abbreviate URIs in serializations of link dumps as Beacon files
-([](#beacon-files)).  A Beacon file is either given in line-oriented, condense
-Beacon text format ([](#beacon-text-format)) or in Beacon XML format
-([](#beacon-xml-format)). 
-
-The set or a superset of all target URIs in a link dump is called its target
-database ([](#target-database)).  
+The set that all source URIs in a link dump originate from is called the
+*source database* and the set that all target URIs originate from is called the
+*target database*. Source URIs and target URIs respectively often share commen
+URI pattern ([](#uri-patterns)).  These patterns are used to abbreviate URIs in
+serializations of link dumps. Link dumps can be serialized as **Beacon files**
+in a condense line-oriented format and in an XML format ([](#beacon-files)).
 
 An important use-case of Beacon is the creation of HTML links as described in
 section [](#mapping-to-html). A link dump can also be mapped to an RDF graph
@@ -59,11 +58,12 @@ from the RDF and RDFS vocabularies [](#RDF), from the DCMI Metadata Terms
 	         <http://web.resource.org/rss/1.0/modules/syndication/> .
 
 The blank node `:dump` is used to denote the URI of the link dump and the blank
-node `:database` is used to denote the URI of the target database. The
+node `:target` is used to denote the URI of the target database. The
 following triples are always assumed in mappings of link dumps to RDF:
 
      :dump a void:Linkset .
-	 :database a void:Database .
+	 :source a void:Database .
+     :target a void:Linkset .
 
 ## String normalization 
 
@@ -215,68 +215,13 @@ All meta field values MUST be whitespace-normalized
 be set to the field’s default value, which is the empty string unless noted
 otherwise. 
 
-## Link construction
+## Source database
 
-The meta fields `prefix`, `target`, and `message` are used to abbreviate links
-in form of link fields in a Beacon file, as described in [](#link-fields).
-Applications SHOULD ignore these fields after they have been used to construct
-a full link dump with mapping to RDF from a serialized Beacon file. In
-particular, applications MUST NOT differentiate between equal links constructed
-from different abbreviations.  Equal links in one Beacon file SHOULD be ignored
-and it is RECOMMENDED to indicate duplicated links with a warning.
+### source
 
-For instance the following Beacon text file contains a single link:
-
-     #PREFIX: http://example.org/
-     #TARGET: http://example.com/
-     #MESSAGE: Hello World!
-
-     foo
-
-The same link could also be serialized without any meta fields: 
-
-     http://example.org/foo|Hello World!|http://example.com/foo
-
-The default meta fields values could also be specified as:
-
-     #PREFIX: {+ID}
-     #TARGET: {+ID}
-     #MESSAGE: {annotation}
-
-Another possible serialization is:
-
-     #PREFIX: http://example.org/
-     #TARGET: http://example.com/
-     #MESSAGE: Hello {annotation}
-
-     foo|World!
-
-The link line in this example is equal to:
-
-     foo|World!|foo
-
-### prefix
-
-The prefix field specifies an URI pattern that is used to construct link
-sources.  If no prefix meta field was specified, the default value `{+ID}` is
-used.  The name `prefix` was choosen to keep backwards compatibility with
-existing Beacon files.
-
-Applications MAY map the prefix field to the RDF property `void:uriSpace` or
-`void:uriRegexPattern` with `:dump` as subject, when mapping to RDF.
-
-### target
-
-The target field specifies an URI pattern to construct link targets.  If no
-target meta field was specified, the default value `{+ID}` is used.
-
-Applications MAY map the target field to the RDF property `void:uriSpace` or
-`void:uriRegexPattern` with `:database` as subject, when mapping to RDF.
-
-### message
-
-The message meta field is used as template for link annotations. The default
-value is `{annotation}`.
+The source database can be identified by the source meta field, which MUST be
+an URI if given. If two link dumps share the same source, it is possible to
+create a joint link dump with links from both.
 
 ## Target database
 
@@ -286,7 +231,7 @@ The name meta field contains a name or title of target database. This field is
 mapped to the RDF property `dcterms:title`. For instance the name meta field
 value "ACME documents" can be mapped to this RDF triple:
 
-    :database dcterms:title "ACME documents" .
+    :target dcterms:title "ACME documents" .
 
 ### institution
 
@@ -295,7 +240,7 @@ an individual responsible for making available the target database. This field
 is maped to the RDF property `dcterms:publisher`. For instance the institution
 meta field value "ACME" can be mapped to this RDF triple:
 
-    :database dcterms:publisher "ACME" .
+    :target dcterms:publisher "ACME" .
 
 ## Link dump
 
@@ -410,6 +355,70 @@ link dumps. Please note that the value of this tag is considered a hint and
 not a command. 
 
 The RDF property of this field is `rssynd:updatePeriod`.
+
+## Link construction
+
+The meta fields `prefix`, `target`, and `message` are used to abbreviate links
+in form of link fields in a Beacon file, as described in [](#link-fields).
+Applications SHOULD ignore these fields after they have been used to construct
+a full link dump with mapping to RDF from a serialized Beacon file. In
+particular, applications MUST NOT differentiate between equal links constructed
+from different abbreviations.  Equal links in one Beacon file SHOULD be ignored
+and it is RECOMMENDED to indicate duplicated links with a warning.
+
+For instance the following Beacon text file contains a single link:
+
+     #PREFIX: http://example.org/
+     #TARGET: http://example.com/
+     #MESSAGE: Hello World!
+
+     foo
+
+The same link could also be serialized without any meta fields: 
+
+     http://example.org/foo|Hello World!|http://example.com/foo
+
+The default meta fields values could also be specified as:
+
+     #PREFIX: {+ID}
+     #TARGET: {+ID}
+     #MESSAGE: {annotation}
+
+Another possible serialization is:
+
+     #PREFIX: http://example.org/
+     #TARGET: http://example.com/
+     #MESSAGE: Hello {annotation}
+
+     foo|World!
+
+The link line in this example is equal to:
+
+     foo|World!|foo
+
+### prefix
+
+The prefix field specifies an URI pattern that is used to construct link
+sources.  If no prefix meta field was specified, the default value `{+ID}` is
+used.  The name `prefix` was choosen to keep backwards compatibility with
+existing Beacon files.
+
+Applications MAY map the prefix field to the RDF property `void:uriSpace` or
+`void:uriRegexPattern` with `:dump` as subject, when mapping to RDF.
+
+### target
+
+The target field specifies an URI pattern to construct link targets.  If no
+target meta field was specified, the default value `{+ID}` is used.
+
+Applications MAY map the target field to the RDF property `void:uriSpace` or
+`void:uriRegexPattern` with `:target` as subject, when mapping to RDF.
+
+### message
+
+The message meta field is used as template for link annotations. The default
+value is `{annotation}`.
+
 
 ## Interpretation
 
