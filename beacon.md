@@ -6,22 +6,17 @@
 Beacon is a data interchange format for large numbers of uniform links.  A
 Beacon **link dump** consists of:
 
-* a set of links, each a triple of source URI, target URI, and annotation 
-  ([](#links))
+* a set of links ([](#links)),
 * a set of meta fields ([](#meta-fields)).
 
-The set that all source URIs in a link dump originate from is called the
-**source database** and the set that all target URIs originate from is called
-the **target database**. Source URIs and target URIs respectively often share
-common URI pattern ([](#uri-patterns)).  These patterns are used to abbreviate
-URIs in serializations of link dumps. Link dumps can be serialized as **Beacon
-files** in a condense line-oriented format and in an XML format
-([](#beacon-files)).
+Each link consists of a source URI, a target URI, and an annotation. Common
+patterns in source URIs and target URIs respectively can be used to abbreviate
+links.  This specification defines:
 
-An important use-case of Beacon is the creation of HTML links as described in
-section [](#mapping-to-html). A link dump can also be mapped to an RDF graph
-([](#mapping-to-rdf)) so Beacon provides a RDF serialization format for a
-subset of RDF graphs with uniform links. 
+* two serializations of link dumps (**Beacon files**) in a condense 
+  line-oriented format and in an XML format ([](#beacon-files)),
+* two interpretations of link dumps as mapping to HTML and
+  mapping to RDF ([](#mappings)).
 
 ## Notational Conventions
 
@@ -42,27 +37,21 @@ bars in the following rules:
 
      VBAR        =  %x7C              ; vertical bar ("|")
 
-RDF is expressed in Turtle syntax in this document [](#TURTLE). The
-following namespace prefixes are used to refer to RDF properties and classes
-from the RDF and RDFS vocabularies [](#RDF), from the DCMI Metadata Terms
-[](#DCTERMS), from the FOAF vocabulary [](#FOAF), the VoID vocabulary
-[](#VOID), and the RSS 1.0 Syndication Module [](#RSSSYND):
+RDF in this document is expressed in Turtle syntax [](#TURTLE). The following
+namespace prefixes are used to refer to RDF properties and classes from the RDF
+and RDFS vocabularies [](#RDF), the DCMI Metadata Terms [](#DCTERMS), the FOAF
+vocabulary [](#FOAF), the VoID vocabulary [](#VOID), and the RSS 1.0
+Syndication Module [](#RSSSYND):
 
-     @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-     @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
-     @prefix dcterms: <http://purl.org/dc/terms/extent> .
-	 @prefix foaf:    <http://xmlns.com/foaf/0.1/> .
-     @prefix void:    <http://rdfs.org/ns/void#> .
-	 @prefix rssynd: 
-	         <http://web.resource.org/rss/1.0/modules/syndication/> .
+     rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+     rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+     dcterms: <http://purl.org/dc/terms/extent>
+	 foaf:    <http://xmlns.com/foaf/0.1/>
+     void:    <http://rdfs.org/ns/void#>
+	 rssynd:  <http://web.resource.org/rss/1.0/modules/syndication/>
 
-The blank node `:dump` is used to denote the URI of the link dump and the blank
-node `:target` is used to denote the URI of the target database. The
-following triples are always assumed in mappings of link dumps to RDF:
-
-     :dump a void:Linkset .
-	 :source a void:Database .
-     :target a void:Linkset .
+The blank node `:dump` denotes the URI of the link dump and the blank node
+`:target` denotes the URI of the target database.
 
 ## String normalization 
 
@@ -86,8 +75,8 @@ some discouraged control characters:
 
 Applications MAY allow additional characters or disallow additional characters
 by stripping them or by replacing them with the replacement character `U+FFFD`.
-Applications SHOULD further apply Unicode Normalization Form Canonical
-Composition (NFKC) to all strings.
+Applications SHOULD apply Unicode Normalization Form Canonical Composition
+(NFKC) to all strings.
 
 ## URI patterns
 
@@ -95,7 +84,7 @@ A URI pattern in this specification is an URI Template, as defined in
 [](#RFC6570), with all template expressions being either `{ID}` for simple
 string expansion or `{+ID}` for reserved expansion. If no template expression
 is given, the pattern MUST be processed as if the expression `{ID}` was
-appended. For instance the following URI patterns are equal:
+appended. Therefore the following URI patterns are equal:
 
      http://example.org/
 	 http://example.org/{ID}
@@ -145,41 +134,29 @@ Source URI and target URI define where a link is pointing from and to
 respectively. The annotation is an optional whitespace-normalized Unicode
 string that can be used to further describe the link or parts of it. A missing
 annotation is equal to the empty string. Annotations MUST match the grammar
-rule `BEACONVALUE`.
-
-Links from a Beacon link dump can be mapped to HTML links
-([](#mapping-to-html)) and to RDF triples RDF triples ([](#mapping-to-rdf)).
-The meaning of links can be indicated with meta fields for **relation type**
-([](#relation-types)) and annotation type.
+rule `BEACONVALUE`. The meaning of a link can be indicated by the
+**relation type** ([](#relation-types)) meta field.
 
 ## Link construction
 
 Link elements are given in abbreviated form of **link tokens** when serialized
-in a Beacon file. Each link is constructed from a three tokens, combined with a
-set of meta fields:
+in a Beacon file. Each link is constructed from:
 
-* the source token is mandatory
-* the annotation token is optional with the empty string as default value
-* the target token is optional with the value of the source token as default
-  value
+* a mandatory source token
+* an optional annotation token
+* an optional target token, which is set to the source token if missing
 
 All tokens MUST be whitespace-normalized before further
 processing.  The full link is then constructed as following:
 
-* The link source is constructed from the `prefix` meta field URI pattern by 
+* The source URI is constructed from the `prefix` meta field URI pattern by 
   inserting the source token, as defined in [](#uri-patterns).
-* The link target is constructed from the `target` meta field URI pattern by 
+* The target URI is constructed from the `target` meta field URI pattern by 
   inserting the target token, as as defined in [](#uri-patterns).
-* The link annotation is constructed from the `message` meta field by literally 
+* The annotation is constructed from the `message` meta field by literally 
   replacing every occurrence of the character sequence `{annotation}` by the 
   annotation token.  The resulting string MUST be whitespace-normalized after
   construction additional encoding MUST NOT be applied.
-
-Constructed link sources and link targets MUST be syntactically valid URIs.
-Applications MUST ignore links with invalid URIs and SHOULD give a warning.
-Note that annotation tokens are ignored if the `message` meta field does not
-contain the sequence `{annotation}`. Applications SHOULD give a warning in this
-case.
 
 The following table illustrates construction of a link:
 
@@ -189,14 +166,15 @@ The following table illustrates construction of a link:
      target      |  target       |   target URI
 	 message     |  annotation   |   annotation
 
-Applications SHOULD ignore the meta fields `prefix`, `target`, and `message`
-after they have been used to construct a full link dump with mapping to RDF
-from a serialized Beacon file. In particular, applications MUST NOT
-differentiate between equal links constructed from different abbreviations.
-Equal links in one Beacon file SHOULD be ignored and it is RECOMMENDED to
-indicate duplicated links with a warning.
+Constructed source URI and target URI MUST be syntactically valid.
+Applications MUST ignore links with invalid URIs and SHOULD give a warning.
+Note that annotation tokens are always ignored if the `message` meta field does
+not contain the sequence `{annotation}`. Applications SHOULD give a warning in
+this case.
 
-For instance the following Beacon text file contains a single link:
+Applications MUST NOT differentiate between equal links constructed from
+different abbreviations. For instance the following Beacon text file contains a
+single link:
 
      #PREFIX: http://example.org/
      #TARGET: http://example.com/
@@ -226,6 +204,8 @@ The link line in this example is equal to:
 
      foo|World!|foo
 
+Multiple occurrences of equal links in one Beacon file SHOULD be ignored.  It
+is RECOMMENDED to indicate duplicated links with a warning.
 
 ## Relation types
 
@@ -255,6 +235,10 @@ be set to the field’s default value, which is the empty string unless noted
 otherwise. 
 
 ## Source and target databases
+
+The set that all source URIs in a link dump originate from is called the
+**source database** and the set that all target URIs originate from is called
+the **target database**. 
 
 ### source
 
@@ -525,7 +509,18 @@ as `%7C` during construction the link.
 
 # Mappings
 
+An important use-case of Beacon is the creation of HTML links as described in
+section [](#mapping-to-html). A link dump can also be mapped to an RDF graph
+([](#mapping-to-rdf)) so Beacon provides a RDF serialization format for a
+subset of RDF graphs with uniform links. 
+
 ## Mapping to RDF
+
+The following triples are always assumed in mappings of link dumps to RDF:
+
+     :dump   a void:Linkset .
+	 :source a void:Database .
+     :target a void:Linkset .
 
 Each link can be mapped to at least one RDF triple with:
 

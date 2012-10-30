@@ -13,7 +13,7 @@ and information resources in libraries and related organizations.
 Beacon defines a link dump as set of links from a source database to a target
 database. Several parts can be described by meta fields (in uppercase):
 
-![](beaconspec-diagram.png)
+![][beaconspec-diagram.png]
 
 # How to modify this specification
 
