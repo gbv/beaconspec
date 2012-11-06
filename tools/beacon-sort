@@ -1,0 +1,32 @@
+#!/usr/bin/awk -f
+#
+# Sort link lines of Beacon text format
+#
+# USAGE EXAMPLES: 
+#
+#   awk -f beacon-sort YOUR_BEACON_FILE
+#   awk -f beacon-sort -vk=3 YOUR_BEACON_FILE
+#   cat YOU_BEACON_FILE | beacon-sort -vk=3
+#
+
+BEGIN { 
+    FS="|"
+    meta=1
+    sort="sort -t\\| -k" (k > 1 ? k : 1)
+}
+
+meta {
+    if($1 ~ /^(\xef\xbb\xbf)?[ \t]*#/) {
+        print
+        next
+    } else {
+        if (NR > 1) {
+            print ""
+        }
+        meta = 0
+    }
+}
+
+$1 !~ /^[ \t\n\r]*$/ { 
+    print | sort
+}

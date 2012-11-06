@@ -1,0 +1,15 @@
+#!/usr/bin/awk -f
+
+# Strip meta fields and empty lines from Beacon text format
+
+BEGIN { FS="|"; meta=1 }
+
+meta {
+    if($1 ~ /^(\xef\xbb\xbf)?[ \t]*#/) {
+        next
+    } else {
+        meta = 0
+    }
+}
+
+$1 !~ /^[ \t\n\r]*$/ { print }

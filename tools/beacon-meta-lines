@@ -1,0 +1,6 @@
+#!/usr/bin/awk -f
+
+# Print meta fields from Beacon text format
+
+/^(\xef\xbb\xbf)?[ \t]*#/ { print; next }
+{ exit }
