@@ -46,3 +46,7 @@ a nice HTML version by simply invoking `make`.
 Sources and recent changes can be found at <http://github.com/gbv/beaconspec>.
 A snapshots in HTML formats is at <http://gbv.github.com/beaconspec/beacon.html>.
 
+# Additional files
+
+This repository also includes Beacon icons (`img/`) and tools to process Beacon 
+(`tools/`).

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+for FILE in $*; do
+    TYPE=`file -b --mime-type $FILE`
+    if [ "$TYPE" = "application/x-gzip" ] || [ "$TYPE" = "application/zip" ]; then
+        zcat $FILE
+    elif [ "$TYPE" = "text/plain" ]; then
+        cat $FILE
+    else
+        echo "Unknown type $TYPE of $FILE" 1>&2
+    fi
+done
+
+
+
