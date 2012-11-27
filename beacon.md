@@ -234,6 +234,29 @@ be ignored.  All meta field values MUST be whitespace-normalized
 be set to the field’s default value, which is the empty string unless noted
 otherwise. 
 
+    +----------------+    +-----------------+     +-----------------+
+    | source dataset | ---| link dump       |---> | target dataset  |
+    |----------------|    |-----------------|     |-----------------|
+    |                | ---|                 |---> |                 |
+    |  * source      |    |  * description  |     |  * name         |
+    |                | ---|  * creator      |---> |  * institution  |
+    +----------------+    |  * contact      |     |                 |
+                          |  * update       |     +-----------------+
+                          |  * timestamp    |
+                          |  * feed         |
+                          |  * homepage     |
+                          |                 |
+                          +-----------------+
+                          |                 |
+						  |  * prefix       |
+						  |  * target       |
+						  |  * relation     |
+						  |  * message      |
+						  |  * annotation   |
+                          |                 |
+                          +-----------------+
+
+
 ## Source and target datasets
 
 The set that all source URIs in a link dump originate from is called the
@@ -244,7 +267,10 @@ the **target dataset**.
 
 The source dataset can be identified by the source meta field, which MUST be
 an URI if given. If two link dumps share the same source, it is possible to
-create a joint link dump with links from both.
+create a joint link dump with links from both. This field can be mapped to RDF
+as following:
+
+    :dump void:subjectsTarget ?source .
 
 ### name
 
@@ -258,7 +284,7 @@ value "ACME documents" can be mapped to this RDF triple:
 
 The institution meta field contains the name or URI of the organization or of
 an individual responsible for making available the target dataset. This field
-is maped to the RDF property `dcterms:publisher`. For instance the institution
+is mapped to the RDF property `dcterms:publisher`. For instance the institution
 meta field value "ACME" can be mapped to this RDF triple:
 
     :target dcterms:publisher "ACME" .
@@ -323,13 +349,16 @@ sample field values can be mapped to:
 ### homepage
 
 The homepage field contains an URL of a website with additional information
-about this link dump. This field is mapped to the RDF property `foaf:homepage`.
-Note that this field does not specify the homepage of the target dataset.
+about this link dump. This field corresponds to the RDF property
+`foaf:homepage` with `dump` as subject. Note that this field does not specify
+the homepage of the target dataset.
+
+    :dump foaf:homepage <http://example.org/about.html> .
 
 ### feed
 
 The feed field contains an URL, where to download the link dump from. This
-field corresponds to the `void:dataDump` RDF property. An 
+field corresponds to the RDF property `void:dataDump`. An 
 example mapped to an RDF triple:
 
     :dump void:dataDump <http://example.com/beacon.txt> .
@@ -387,7 +416,7 @@ used.  The name `prefix` was choosen to keep backwards compatibility with
 existing Beacon files.
 
 Applications MAY map the prefix field to the RDF property `void:uriSpace` or
-`void:uriRegexPattern` with `:dump` as subject, when mapping to RDF.
+`void:uriRegexPattern` with `:source` as subject, when mapping to RDF.
 
 ### target
 
@@ -406,11 +435,13 @@ is `{annotation}`.
 
 The relation field specifies the relation type for all links in a link dump.
 The field value MUST be an URI.  The default relation type is `rdfs:seeAlso`.
+This field is mapped to the RDF property `void:linkPredicate` with subject
+`:dump`.
 
 ### annotation
 
 The annotation field specifies the RDF property between link target and link
-annotation. The default value is `rdf:value` having no specific meaning
+annotation. The default value is `rdf:value` having no specific meaning 
 [](#RDF).
 
 # Beacon files
