@@ -4,14 +4,14 @@
 Network Working Group                                            J. Voss
 Internet-Draft                                   Verbundzentrale des GBV
 Intended status: Informational                              M. Schindler
-Expires: December 3, 2012                     Wikimedia Deutschland e.V.
+Expires: May 31, 2013                         Wikimedia Deutschland e.V.
                                                               Th. Berger
                                                                Gymel.com
-                                                               June 2012
+                                                       November 27, 2012
 
 
                         Beacon link dump format
-                          draft-voss-beacon-00
+                         draft-voss-beacon-001
 
 Abstract
 
@@ -33,7 +33,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 3, 2012.
+   This Internet-Draft will expire on May 31, 2013.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Voss, et al.            Expires December 3, 2012                [Page 1]
+Voss, et al.              Expires May 31, 2013                  [Page 1]
 
-Internet-Draft                   Beacon                        June 2012
+Internet-Draft                   Beacon                    November 2012
 
 
 Table of Contents
@@ -64,42 +64,40 @@ Table of Contents
      1.2.  String normalization . . . . . . . . . . . . . . . . . . .  4
      1.3.  URI patterns . . . . . . . . . . . . . . . . . . . . . . .  4
    2.  Links  . . . . . . . . . . . . . . . . . . . . . . . . . . . .  5
-     2.1.  Link fields  . . . . . . . . . . . . . . . . . . . . . . .  6
+     2.1.  Link construction  . . . . . . . . . . . . . . . . . . . .  6
      2.2.  Relation types . . . . . . . . . . . . . . . . . . . . . .  7
-   3.  Meta fields  . . . . . . . . . . . . . . . . . . . . . . . . .  7
-     3.1.  Link construction  . . . . . . . . . . . . . . . . . . . .  7
-       3.1.1.  prefix . . . . . . . . . . . . . . . . . . . . . . . .  8
-       3.1.2.  target . . . . . . . . . . . . . . . . . . . . . . . .  8
-       3.1.3.  message  . . . . . . . . . . . . . . . . . . . . . . .  9
-     3.2.  Target database  . . . . . . . . . . . . . . . . . . . . .  9
-       3.2.1.  name . . . . . . . . . . . . . . . . . . . . . . . . .  9
-       3.2.2.  institution  . . . . . . . . . . . . . . . . . . . . .  9
-     3.3.  Link dump  . . . . . . . . . . . . . . . . . . . . . . . .  9
-       3.3.1.  description  . . . . . . . . . . . . . . . . . . . . .  9
-       3.3.2.  creator  . . . . . . . . . . . . . . . . . . . . . . .  9
-       3.3.3.  contact  . . . . . . . . . . . . . . . . . . . . . . . 10
-       3.3.4.  homepage . . . . . . . . . . . . . . . . . . . . . . . 10
-       3.3.5.  feed . . . . . . . . . . . . . . . . . . . . . . . . . 10
-       3.3.6.  timestamp  . . . . . . . . . . . . . . . . . . . . . . 11
-       3.3.7.  update . . . . . . . . . . . . . . . . . . . . . . . . 11
-     3.4.  Interpretation . . . . . . . . . . . . . . . . . . . . . . 12
-       3.4.1.  relation . . . . . . . . . . . . . . . . . . . . . . . 12
-       3.4.2.  annotation . . . . . . . . . . . . . . . . . . . . . . 12
-       3.4.3.  sourcetype . . . . . . . . . . . . . . . . . . . . . . 12
-       3.4.4.  targettype . . . . . . . . . . . . . . . . . . . . . . 12
-   4.  Beacon files . . . . . . . . . . . . . . . . . . . . . . . . . 12
-     4.1.  Beacon text format . . . . . . . . . . . . . . . . . . . . 12
-     4.2.  Beacon XML format  . . . . . . . . . . . . . . . . . . . . 13
-   5.  Mappings . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
-     5.1.  Mapping to RDF . . . . . . . . . . . . . . . . . . . . . . 14
+   3.  Meta fields  . . . . . . . . . . . . . . . . . . . . . . . . .  8
+     3.1.  Source and target datasets . . . . . . . . . . . . . . . .  8
+       3.1.1.  source . . . . . . . . . . . . . . . . . . . . . . . .  9
+       3.1.2.  name . . . . . . . . . . . . . . . . . . . . . . . . .  9
+       3.1.3.  institution  . . . . . . . . . . . . . . . . . . . . .  9
+     3.2.  Link dump  . . . . . . . . . . . . . . . . . . . . . . . .  9
+       3.2.1.  description  . . . . . . . . . . . . . . . . . . . . .  9
+       3.2.2.  creator  . . . . . . . . . . . . . . . . . . . . . . .  9
+       3.2.3.  contact  . . . . . . . . . . . . . . . . . . . . . . . 10
+       3.2.4.  homepage . . . . . . . . . . . . . . . . . . . . . . . 10
+       3.2.5.  feed . . . . . . . . . . . . . . . . . . . . . . . . . 11
+       3.2.6.  timestamp  . . . . . . . . . . . . . . . . . . . . . . 11
+       3.2.7.  update . . . . . . . . . . . . . . . . . . . . . . . . 11
+     3.3.  Link description . . . . . . . . . . . . . . . . . . . . . 12
+       3.3.1.  prefix . . . . . . . . . . . . . . . . . . . . . . . . 12
+       3.3.2.  target . . . . . . . . . . . . . . . . . . . . . . . . 12
+       3.3.3.  message  . . . . . . . . . . . . . . . . . . . . . . . 12
+       3.3.4.  relation . . . . . . . . . . . . . . . . . . . . . . . 12
+       3.3.5.  annotation . . . . . . . . . . . . . . . . . . . . . . 13
+   4.  Beacon files . . . . . . . . . . . . . . . . . . . . . . . . . 13
+     4.1.  Beacon text format . . . . . . . . . . . . . . . . . . . . 13
+     4.2.  Beacon XML format  . . . . . . . . . . . . . . . . . . . . 14
+   5.  Mappings . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+     5.1.  Mapping to RDF . . . . . . . . . . . . . . . . . . . . . . 15
      5.2.  Mapping to HTML  . . . . . . . . . . . . . . . . . . . . . 16
    6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 17
-   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 17
-     7.1.  Normative References . . . . . . . . . . . . . . . . . . . 17
+   7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+     7.1.  Normative References . . . . . . . . . . . . . . . . . . . 18
      7.2.  Informative References . . . . . . . . . . . . . . . . . . 18
-   Appendix A.  Glossary  . . . . . . . . . . . . . . . . . . . . . . 18
-   Appendix B.  RELAX NG Schema for Beacon XML  . . . . . . . . . . . 19
-   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 20
+   Appendix A.  Glossary  . . . . . . . . . . . . . . . . . . . . . . 19
+   Appendix B.  RELAX NG Schema for Beacon XML  . . . . . . . . . . . 20
+   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 21
 
 
 
@@ -108,35 +106,31 @@ Table of Contents
 
 
 
-Voss, et al.            Expires December 3, 2012                [Page 2]
+
+
+Voss, et al.              Expires May 31, 2013                  [Page 2]
 
-Internet-Draft                   Beacon                        June 2012
+Internet-Draft                   Beacon                    November 2012
 
 
 1.  Introduction
 
    Beacon is a data interchange format for large numbers of uniform
-   links.  A Beacon link dump consists of:
+   links.  A Beacon *link dump* consists of:
 
-   -  a set of links, each a triple of source URI, target URI, and
-      annotation (Section 2),
+   -  a set of links (Section 2),
 
    -  a set of meta fields (Section 3).
 
-   All links in a link dump typically share a common URI pattern for
-   sources and a common URI pattern for targets (Section 1.3).  This
-   patterns are used to abbreviate URIs in serializations of link dumps
-   as Beacon files (Section 4).  A Beacon file is either given in line-
-   oriented, condense Beacon text format (Section 4.1) or in Beacon XML
-   format (Section 4.2).
+   Each link consists of a source URI, a target URI, and an annotation.
+   Common patterns in source URIs and target URIs respectively can be
+   used to abbreviate links.  This specification defines:
 
-   The set or a superset of all target URIs in a link dump is called its
-   target database (Section 3.2).
+   -  two serializations of link dumps (*Beacon files*) in a condense
+      line-oriented format and in an XML format (Section 4),
 
-   An important use-case of Beacon is the creation of HTML links as
-   described in section Section 5.2.  A link dump can also be mapped to
-   an RDF graph (Section 5.1) so Beacon provides a RDF serialization
-   format for a subset of RDF graphs with uniform links.
+   -  two interpretations of link dumps as mapping to HTML and mapping
+      to RDF (Section 5).
 
 1.1.  Notational Conventions
 
@@ -157,35 +151,33 @@ Internet-Draft                   Beacon                        June 2012
 
     VBAR        =  %x7C              ; vertical bar ("|")
 
-   RDF is expressed in Turtle syntax in this document [TURTLE].  The
+   RDF in this document is expressed in Turtle syntax [TURTLE].  The
    following namespace prefixes are used to refer to RDF properties and
-   classes from the RDF and RDFS vocabularies [RDF], from the DCMI
-   Metadata Terms [DCTERMS], from the FOAF vocabulary [FOAF], the VoID
+   classes from the RDF and RDFS vocabularies [RDF], the DCMI Metadata
+   Terms [DCTERMS], the FOAF vocabulary [FOAF], the VoID vocabulary
+   [VOID], and the RSS 1.0 Syndication Module [RSSSYND]:
 
 
 
-Voss, et al.            Expires December 3, 2012                [Page 3]
+
+
+
+
+
+Voss, et al.              Expires May 31, 2013                  [Page 3]
 
-Internet-Draft                   Beacon                        June 2012
+Internet-Draft                   Beacon                    November 2012
 
 
-   vocabulary [VOID], and the RSS 1.0 Syndication Module [RSSSYND]:
+    rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+    dcterms: <http://purl.org/dc/terms/extent>
+    foaf:    <http://xmlns.com/foaf/0.1/>
+    void:    <http://rdfs.org/ns/void#>
+    rssynd:  <http://web.resource.org/rss/1.0/modules/syndication/>
 
-    @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix dcterms: <http://purl.org/dc/terms/extent> .
-    @prefix foaf:    <http://xmlns.com/foaf/0.1/> .
-    @prefix void:    <http://rdfs.org/ns/void#> .
-    @prefix rssynd:
-            <http://web.resource.org/rss/1.0/modules/syndication/> .
-
-   The blank node ":dump" is used to denote the URI of the link dump and
-   the blank node ":database" is used to denote the URI of the target
-   database.  The following triples are always assumed in mappings of
-   link dumps to RDF:
-
-    :dump a void:Linkset .
-    :database a void:Database .
+   The blank node ":dump" denotes the URI of the link dump and the blank
+   node ":target" denotes the URI of the target dataset.
 
 1.2.  String normalization
 
@@ -209,31 +201,30 @@ Internet-Draft                   Beacon                        June 2012
 
    Applications MAY allow additional characters or disallow additional
    characters by stripping them or by replacing them with the
-   replacement character "U+FFFD".  Applications SHOULD further apply
-   Unicode Normalization Form Canonical Composition (NFKC) to all
-   strings.
+   replacement character "U+FFFD".  Applications SHOULD apply Unicode
+   Normalization Form Canonical Composition (NFKC) to all strings.
 
 1.3.  URI patterns
 
    A URI pattern in this specification is an URI Template, as defined in
    [RFC6570], with all template expressions being either "{ID}" for
-
-
-
-Voss, et al.            Expires December 3, 2012                [Page 4]
-
-Internet-Draft                   Beacon                        June 2012
-
-
    simple string expansion or "{+ID}" for reserved expansion.  If no
    template expression is given, the pattern MUST be processed as if the
-   expression "{ID}" was appended.  For instance the following URI
-   patterns are equal:
+   expression "{ID}" was appended.  Therefore the following URI patterns
+   are equal:
 
     http://example.org/
     http://example.org/{ID}
 
    A URI pattern is used to construct a URI by replacing all template
+
+
+
+Voss, et al.              Expires May 31, 2013                  [Page 4]
+
+Internet-Draft                   Beacon                    November 2012
+
+
    expressions with an identifier value.  All identifier characters in
    the "unreserved" range from [RFC3986], and characters in the
    "reserved" range or character sequences matching the "pct-encoded"
@@ -274,124 +265,81 @@ Internet-Draft                   Beacon                        June 2012
    that are identified by URIs [RFC3986].  A link is compromised of
    three elements:
 
+   -  a *source URI*,
 
+   -  a *target URI*,
 
-Voss, et al.            Expires December 3, 2012                [Page 5]
-
-Internet-Draft                   Beacon                        June 2012
-
-
-   -  a source URI,
-
-   -  a target URI,
-
-   -  an annotation.
+   -  an *annotation*.
 
    Source URI and target URI define where a link is pointing from and to
    respectively.  The annotation is an optional whitespace-normalized
+
+
+
+Voss, et al.              Expires May 31, 2013                  [Page 5]
+
+Internet-Draft                   Beacon                    November 2012
+
+
    Unicode string that can be used to further describe the link or parts
    of it.  A missing annotation is equal to the empty string.
-   Annotations MUST match the grammar rule "BEACONVALUE".
+   Annotations MUST match the grammar rule "BEACONVALUE".  The meaning
+   of a link can be indicated by the *relation type* (Section 2.2) meta
+   field.
 
-   Link elements are given in abbreviated form as link fields when
-   serialized in a Beacon file (Section 2.1).  With a relation type
-   (Section 2.2) links can be mapped to RDF triples (Section 5.1) and to
-   HTML links (Section 5.2).
+2.1.  Link construction
 
-2.1.  Link fields
+   Link elements are given in abbreviated form of *link tokens* when
+   serialized in a Beacon file.  Each link is constructed from:
 
-   Each link in a serialized link dump is constructed from a "source
-   field", a "target field", and an "annotation field", combined with a
-   set of meta fields (Section 3.1).  The source field is mandatory.
-   The annotation field is set to the empty string if missing.  The
-   target field is set to the source field if missing.  All field values
-   MUST be whitespace-normalized before further processing.  The full
-   link is then constructed as following:
+   -  a mandatory source token
 
-   -  The link source is constructed from the "prefix" meta field URI
-      pattern by inserting the source field as identifier value, as
-      defined in Section 1.3.
+   -  an optional annotation token
 
-   -  The link target is constructed from the "target" meta field URI
-      pattern by inserting the target field as identifier value, as
-      defined in Section 1.3.
+   -  an optional target token, which is set to the source token if
+      missing
 
-   -  The link annotation is constructed from the "message" meta field
-      by literally replacing every occurrence of the character sequence
-      "{annotation}" by the annotation field.  The resulting string MUST
+   All tokens MUST be whitespace-normalized before further processing.
+   The full link is then constructed as following:
+
+   -  The source URI is constructed from the "prefix" meta field URI
+      pattern by inserting the source token, as defined in Section 1.3.
+
+   -  The target URI is constructed from the "target" meta field URI
+      pattern by inserting the target token, as as defined in
+      Section 1.3.
+
+   -  The annotation is constructed from the "message" meta field by
+      literally replacing every occurrence of the character sequence
+      "{annotation}" by the annotation token.  The resulting string MUST
       be whitespace-normalized after construction additional encoding
       MUST NOT be applied.
 
-   Constructed link sources and link targets MUST be syntactically valid
-   URIs.  Applications MUST ignore links with invalid URIs and SHOULD
-   give a warning.  Note that annotation fields are ignored if the
+   The following table illustrates construction of a link:
+
+    meta field  +  link token  -->  link element
+   ----------------------------------------------
+    prefix      |  source       |   source URI
+    target      |  target       |   target URI
+    message     |  annotation   |   annotation
+
+   Constructed source URI and target URI MUST be syntactically valid.
+   Applications MUST ignore links with invalid URIs and SHOULD give a
+   warning.  Note that annotation tokens are always ignored if the
    "message" meta field does not contain the sequence "{annotation}".
    Applications SHOULD give a warning in this case.
 
-   The following table illustrates construction of a link:
 
 
 
-Voss, et al.            Expires December 3, 2012                [Page 6]
+Voss, et al.              Expires May 31, 2013                  [Page 6]
 
-Internet-Draft                   Beacon                        June 2012
+Internet-Draft                   Beacon                    November 2012
 
 
-    meta field  +  link field  -->  link element
-   ----------------------------------------------
-    prefix      |  source       |   source
-    target      |  target       |   target
-    message     |  annotation   |   annotation
-
-2.2.  Relation types
-
-   All links in a link dump share a common relation type.  A relation
-   type is either an URI or a registered link type from the IANA link
-   relations registry [RFC5988].  The relation type is specified by the
-   "relation" meta field in Beacon files (Section 3).
-
-   Some examples of relation types:
-
-    http://www.w3.org/2002/07/owl#sameAs
-    http://xmlns.com/foaf/0.1/isPrimaryTopicOf
-    http://purl.org/spar/cito/cites
-    describedby
-    replies
-
-
-3.  Meta fields
-
-   A link dump SHOULD contain a set of meta fields, each identified by
-   its name build of lowercase letters "a-z".  Relevant meta fields for
-   link construction (Section 3.1), description of the target database
-   (Section 3.2), description of the link dump (Section 3.3), and
-   interpretation of links (Section 3.4) are defined in the following.
-   Additional meta fields, not defined in this specification, SHOULD be
-   ignored.  All meta field values MUST be whitespace-normalized
-   (Section 1.2).  Missing meta field values and empty strings MUST be
-   set to the field's default value, which is the empty string unless
-   noted otherwise.
-
-3.1.  Link construction
-
-   The meta fields "prefix", "target", and "message" are used to
-   abbreviate links in form of link fields in a Beacon file, as
-   described in Section 2.1.  Applications SHOULD ignore these fields
-   after they have been used to construct a full link dump with mapping
-   to RDF from a serialized Beacon file.  In particular, applications
-   MUST NOT differentiate between equal links constructed from different
-   abbreviations.  Equal links in one Beacon file SHOULD be ignored and
-   it is RECOMMENDED to indicate duplicated links with a warning.
-
-   For instance the following Beacon text file contains a single link:
-
-
-
-
-Voss, et al.            Expires December 3, 2012                [Page 7]
-
-Internet-Draft                   Beacon                        June 2012
-
+   Applications MUST NOT differentiate between equal links constructed
+   from different abbreviations.  For instance the following Beacon text
+   file contains a single link:
 
     #PREFIX: http://example.org/
     #TARGET: http://example.com/
@@ -421,63 +369,117 @@ Internet-Draft                   Beacon                        June 2012
 
     foo|World!|foo
 
-3.1.1.  prefix
+   Multiple occurrences of equal links in one Beacon file SHOULD be
+   ignored.  It is RECOMMENDED to indicate duplicated links with a
+   warning.
 
-   The prefix field specifies an URI pattern that is used to construct
-   link sources.  If no prefix meta field was specified, the default
-   value "{+ID}" is used.  The name "prefix" was choosen to keep
-   backwards compatibility with existing Beacon files.
+2.2.  Relation types
 
-   Applications MAY map the prefix field to the RDF property
-   "void:uriSpace" or "void:uriRegexPattern" with ":dump" as subject,
-   when mapping to RDF.
+   All links in a link dump share a common relation type.  A relation
+   type is either an URI or a registered link type from the IANA link
+   relations registry [RFC5988].  The relation type is specified by the
+   "relation" meta field in Beacon files (Section 3).
 
-3.1.2.  target
-
-   The target field specifies an URI pattern to construct link targets.
-   If no target meta field was specified, the default value "{+ID}" is
-   used.
-
-   Applications MAY map the target field to the RDF property
-   "void:uriSpace" or "void:uriRegexPattern" with ":database" as
-   subject, when mapping to RDF.
+   Some examples of relation types:
 
 
 
-Voss, et al.            Expires December 3, 2012                [Page 8]
+
+
+
+
+Voss, et al.              Expires May 31, 2013                  [Page 7]
 
-Internet-Draft                   Beacon                        June 2012
+Internet-Draft                   Beacon                    November 2012
 
 
-3.1.3.  message
+    http://www.w3.org/2002/07/owl#sameAs
+    http://xmlns.com/foaf/0.1/isPrimaryTopicOf
+    http://purl.org/spar/cito/cites
+    describedby
+    replies
 
-   The message meta field is used as template for link annotations.  The
-   default value is "{annotation}".
 
-3.2.  Target database
+3.  Meta fields
 
-3.2.1.  name
+   A link dump SHOULD contain a set of meta fields, each identified by
+   its name build of lowercase letters "a-z".  Relevant meta fields for
+   description of the source and target datasets (Section 3.1), the link
+   dump (Section 3.2), and links (Section 3.3) are defined in the
+   following.  Additional meta fields, not defined in this
+   specification, SHOULD be ignored.  All meta field values MUST be
+   whitespace-normalized (Section 1.2).  Missing meta field values and
+   empty strings MUST be set to the field's default value, which is the
+   empty string unless noted otherwise.
 
-   The name meta field contains a name or title of target database.
-   This field is mapped to the RDF property "dcterms:title".  For
-   instance the name meta field value "ACME documents" can be mapped to
-   this RDF triple:
+   +----------------+    +-----------------+     +-----------------+
+   | source dataset | ---| link dump       |---> | target dataset  |
+   |----------------|    |-----------------|     |-----------------|
+   |                | ---|                 |---> |                 |
+   |  * source      |    |  * description  |     |  * name         |
+   |                | ---|  * creator      |---> |  * institution  |
+   +----------------+    |  * contact      |     |                 |
+                         |  * update       |     +-----------------+
+                         |  * timestamp    |
+                         |  * feed         |
+                         |  * homepage     |
+                         |                 |
+                         +-----------------+
+                         |                 |
+                         |  * prefix       |
+                         |  * target       |
+                         |  * relation     |
+                         |  * message      |
+                         |  * annotation   |
+                         |                 |
+                         +-----------------+
 
-   :database dcterms:title "ACME documents" .
+3.1.  Source and target datasets
 
-3.2.2.  institution
+   The set that all source URIs in a link dump originate from is called
+   the *source dataset* and the set that all target URIs originate from
+   is called the *target dataset*.
+
+
+
+
+
+Voss, et al.              Expires May 31, 2013                  [Page 8]
+
+Internet-Draft                   Beacon                    November 2012
+
+
+3.1.1.  source
+
+   The source dataset can be identified by the source meta field, which
+   MUST be an URI if given.  If two link dumps share the same source, it
+   is possible to create a joint link dump with links from both.  This
+   field can be mapped to RDF as following:
+
+   :dump void:subjectsTarget ?source .
+
+3.1.2.  name
+
+   The name meta field contains a name or title of target dataset.  This
+   field is mapped to the RDF property "dcterms:title".  For instance
+   the name meta field value "ACME documents" can be mapped to this RDF
+   triple:
+
+   :target dcterms:title "ACME documents" .
+
+3.1.3.  institution
 
    The institution meta field contains the name or URI of the
    organization or of an individual responsible for making available the
-   target database.  This field is maped to the RDF property
+   target dataset.  This field is mapped to the RDF property
    "dcterms:publisher".  For instance the institution meta field value
    "ACME" can be mapped to this RDF triple:
 
-   :database dcterms:publisher "ACME" .
+   :target dcterms:publisher "ACME" .
 
-3.3.  Link dump
+3.2.  Link dump
 
-3.3.1.  description
+3.2.1.  description
 
    The description meta field contains a human readable description of
    the link dump.  This field is mapped to the "dcterms:description" RDF
@@ -486,7 +488,7 @@ Internet-Draft                   Beacon                        June 2012
 
    :dump dcterms:description "Mapping from ids to documents" .
 
-3.3.2.  creator
+3.2.2.  creator
 
    The creator meta field contains the URI or the name of the person,
    organization, or a service primarily responsible for making the link
@@ -495,15 +497,15 @@ Internet-Draft                   Beacon                        June 2012
 
    For instance the following creator meta field values:
 
-   Bea Beacon
 
 
 
-
-Voss, et al.            Expires December 3, 2012                [Page 9]
+Voss, et al.              Expires May 31, 2013                  [Page 9]
 
-Internet-Draft                   Beacon                        June 2012
+Internet-Draft                   Beacon                    November 2012
 
+
+   Bea Beacon
 
    http://example.org/people/bea
 
@@ -518,7 +520,7 @@ Internet-Draft                   Beacon                        June 2012
    This field SHOULD NOT contain a simple URL unless this URL is also
    used as URI.
 
-3.3.3.  contact
+3.2.3.  contact
 
    The contact meta field contains an email address or similar contact
    information to reach the creator of the link dump.  The field value
@@ -542,30 +544,32 @@ Internet-Draft                   Beacon                        June 2012
         foaf:mbox <mailto:bea@example.org>
     ] .
 
-3.3.4.  homepage
+3.2.4.  homepage
 
    The homepage field contains an URL of a website with additional
-   information about this link dump.  This field is mapped to the RDF
-   property "foaf:homepage".  Note that this field does not specify the
-   homepage of the target database.
+   information about this link dump.  This field corresponds to the RDF
+   property "foaf:homepage" with "dump" as subject.  Note that this
+   field does not specify the homepage of the target dataset.
 
-3.3.5.  feed
+   :dump foaf:homepage <http://example.org/about.html> .
+
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 10]
+
+Internet-Draft                   Beacon                    November 2012
+
+
+3.2.5.  feed
 
    The feed field contains an URL, where to download the link dump from.
-   This field corresponds to the "void:dataDump" RDF property.  An
-
-
-
-Voss, et al.            Expires December 3, 2012               [Page 10]
-
-Internet-Draft                   Beacon                        June 2012
-
-
+   This field corresponds to the RDF property "void:dataDump".  An
    example mapped to an RDF triple:
 
    :dump void:dataDump <http://example.com/beacon.txt> .
 
-3.3.6.  timestamp
+3.2.6.  timestamp
 
    The timestamp field contains the date of last modification of the
    link dump.  Note that this value MAY be different to the last
@@ -589,7 +593,7 @@ Internet-Draft                   Beacon                        June 2012
     :dump dcterms:modified "2012-05-30T15:17:36+02:00"
     :dump dcterms:modified "2012-05-30T13:17:36Z"
 
-3.3.7.  update
+3.2.7.  update
 
    The update field specifies how frequently the link dump is likely to
    change.  The field corresponds to the "<changefreq>" element in
@@ -605,17 +609,17 @@ Internet-Draft                   Beacon                        June 2012
 
    -  "monthly"
 
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 11]
+
+Internet-Draft                   Beacon                    November 2012
+
+
    -  "yearly"
 
    -  "never"
-
-
-
-
-Voss, et al.            Expires December 3, 2012               [Page 11]
-
-Internet-Draft                   Beacon                        June 2012
-
 
    The value "always" SHOULD be used to describe link dumps that change
    each time they are accessed.  The value "never" SHOULD be used to
@@ -624,32 +628,56 @@ Internet-Draft                   Beacon                        June 2012
 
    The RDF property of this field is "rssynd:updatePeriod".
 
-3.4.  Interpretation
+3.3.  Link description
 
-   The following meta fields SHOULD be used to indicate the actual
-   meaning of links in a link dump.
+3.3.1.  prefix
 
-3.4.1.  relation
+   The prefix field specifies an URI pattern that is used to construct
+   link sources.  If no prefix meta field was specified, the default
+   value "{+ID}" is used.  The name "prefix" was choosen to keep
+   backwards compatibility with existing Beacon files.
+
+   Applications MAY map the prefix field to the RDF property
+   "void:uriSpace" or "void:uriRegexPattern" with ":source" as subject,
+   when mapping to RDF.
+
+3.3.2.  target
+
+   The target field specifies an URI pattern to construct link targets.
+   If no target meta field was specified, the default value "{+ID}" is
+   used.
+
+   Applications MAY map the target field to the RDF property
+   "void:uriSpace" or "void:uriRegexPattern" with ":target" as subject,
+   when mapping to RDF.
+
+3.3.3.  message
+
+   The message field is used as template for link annotations.  The
+   default value is "{annotation}".
+
+3.3.4.  relation
 
    The relation field specifies the relation type for all links in a
    link dump.  The field value MUST be an URI.  The default relation
-   type is "rdfs:seeAlso".
+   type is "rdfs:seeAlso".  This field is mapped to the RDF property
+   "void:linkPredicate" with subject ":dump".
 
-3.4.2.  annotation
+
+
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 12]
+
+Internet-Draft                   Beacon                    November 2012
+
+
+3.3.5.  annotation
 
    The annotation field specifies the RDF property between link target
    and link annotation.  The default value is "rdf:value" having no
    specific meaning [RDF].
-
-3.4.3.  sourcetype
-
-   The sourcetype field specifies the type of entities identified by
-   source URIs.  The field value MUST be an URI.
-
-3.4.4.  targettype
-
-   The sourcetype field specifies the type of entities identified by
-   target URIs.  The field value MUST be an URI.
 
 
 4.  Beacon files
@@ -658,20 +686,13 @@ Internet-Draft                   Beacon                        June 2012
 
    A Beacon text file is an UTF-8 encoded Unicode file [RFC3629], split
    into lines by line breaks.  The file consists of a set of lines with
-   meta fields, followed by a set of lines with link fields.  A Beacon
+   meta fields, followed by a set of lines with link tokens.  A Beacon
    text file MAY begin with an Unicode Byte Order Mark and it SHOULD end
    with a line break:
 
     BEACONTEXT  =  [ BOM ] [ START ] *METALINE *EMPTY [ LINKS ]
 
     BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
-
-
-
-Voss, et al.            Expires December 3, 2012               [Page 12]
-
-Internet-Draft                   Beacon                        June 2012
-
 
    At least one empty line SHOULD be used to separate meta lines and
    link lines.  The order public of meta lines and the order of link
@@ -697,18 +718,47 @@ Internet-Draft                   Beacon                        June 2012
 
     METAVALUE   =  BEACONLINE
 
-   Each link is given on a link line with its source field, optionally
-   follwed by additional fields:
+   Each link is given on a link line with its source token, optionally
+   follwed by annotation token and target token:
+
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 13]
+
+Internet-Draft                   Beacon                    November 2012
+
 
     LINKS       =  LINK *( LINEBREAK LINK ) [ LINEBREAK ]
 
-    LINK        =  SOURCE [ VBAR ANNOTATION [ VBAR TARGET ] ]
+    LINK        =  SOURCE [ VBAR OTOKENS ]
+
+    OTOKENS     =  ANNOTATION / TARGET / ANNOTATION VBAR TARGET
 
     SOURCE      =  BEACONVALUE
 
     TARGET      =  BEACONVALUE
 
     ANNOTATION  =  BEACONVALUE
+
+   The ambiguous "OTOKENS" rule is resolved as following:
+
+   -  if it includes "VBAR", both annotation token and target token are
+      given
+
+   -  if it includes no "VBAR"
+
+      -  if its normalized value begins with "http:" or "https:", and
+         the target meta field has its default value "{+ID}", and the
+         message meta field has its default value "{annotation}", then
+         the value is used as target token
+
+      -  the value is used as annotation token otherwise
+
+   This way one can use two forms to encode links to HTTP URIs:
+
+   foo|http://example.org/foobar
+   foo||http://example.org/foobar
 
 4.2.  Beacon XML format
 
@@ -721,26 +771,25 @@ Internet-Draft                   Beacon                        June 2012
 
    -  Specify the default namespace "http://purl.org/net/example".
 
-
-
-
-Voss, et al.            Expires December 3, 2012               [Page 13]
-
-Internet-Draft                   Beacon                        June 2012
-
-
    -  Include an empty "<link/>" tag for each link.
 
-   -  Include the source field (Section 2.1) as XML attribute "source"
-      of each "<link/>" element.
+   -  Include the source token as XML attribute "source" of each
+      "<link/>" element.
 
    The file MAY further:
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 14]
+
+Internet-Draft                   Beacon                    November 2012
+
 
    -  Specify meta fields (Section 3) as XML attributes to the
       "<beacon>" tag.
 
-   -  Specify link fields "target" and/or "about" as attributes to the
-      "<link>" element.
+   -  Specify link tokens "target" and/or "annotation" as attributes to
+      the "<link>" element.
 
    All attributes MUST be given in lowercase.  An informal schema of
    Beacon XML files is given in Appendix B.
@@ -751,15 +800,27 @@ Internet-Draft                   Beacon                        June 2012
    errors.  Additional XML attributes of "<link>" elements and "<link>"
    elements without "source" attribute SHOULD be ignored.
 
-   Note that in contrast to Beacon text files, link fields MAY include
+   Note that in contrast to Beacon text files, link tokens MAY include
    line breaks, which are removed by whitespace normalization.
-   Furthermore id field, annotation field and target field MAY include a
+   Furthermore id field, annotation field and target token MAY include a
    vertical bar, which is encoded as "%7C" during construction the link.
 
 
 5.  Mappings
 
+   An important use-case of Beacon is the creation of HTML links as
+   described in section Section 5.2.  A link dump can also be mapped to
+   an RDF graph (Section 5.1) so Beacon provides a RDF serialization
+   format for a subset of RDF graphs with uniform links.
+
 5.1.  Mapping to RDF
+
+   The following triples are always assumed in mappings of link dumps to
+   RDF:
+
+    :dump   a void:Linkset .
+    :source a void:Dataset .
+    :target a void:Dataset .
 
    Each link can be mapped to at least one RDF triple with:
 
@@ -772,19 +833,19 @@ Internet-Draft                   Beacon                        June 2012
    As RDF is not defined on URIs but on URI references or IRIs, all URIs
    MUST be transformed to an IRI by following the process defined in
    Section 3.2 of [RFC3987].  Applications MAY reject mapping link dumps
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 15]
+
+Internet-Draft                   Beacon                    November 2012
+
+
    with relation type from the IANA link relations registry, in lack of
    official URIs.  Another valid solution is to extend the RDF model by
    using blank nodes as predicates.
 
    The annotation SHOULD result in an additional RDF triple, unless its
-
-
-
-Voss, et al.            Expires December 3, 2012               [Page 14]
-
-Internet-Draft                   Beacon                        June 2012
-
-
    value equals to the empty string.  The additional triple is mapped
    with:
 
@@ -801,8 +862,8 @@ Internet-Draft                   Beacon                        June 2012
    probability (reification).
 
    Typical use cases of annotations include specification of labels and
-   a "number of hits" at the target database.  For instance the
-   following Beacon file in Beacon text format (Section 4.1):
+   a "number of hits" at the target dataset.  For instance the following
+   Beacon file in Beacon text format (Section 4.1):
 
     #PREFIX: http://example.org/
     #TARGET: http://example.com/
@@ -816,37 +877,6 @@ Internet-Draft                   Beacon                        June 2012
     <http://example.org/abc> foaf:primaryTopic <http://example.com/xy> .
     <http://example.com/xy> dcterms:extent "12" .
 
-   If the sourcetype and/or targettype meta field is specified, another
-   triple can be created for each link with:
-
-   -  source URI (or target URI respectively) as subject IRI
-
-   -  the predicate "rdf:type"
-
-   -  sourcetype (or targettype respectively) as object URI
-
-   For instance the following link dump:
-
-    #RELATION:   http://xmlns.com/foaf/0.1/isPrimaryTopicOf
-    #SOURCETYPE: http://xmlns.com/foaf/0.1/Person
-    #TARGETTYPE: http://xmlns.com/foaf/0.1/Document
-
-    http://example.org/foo||http://example.com/bar
-
-
-
-
-Voss, et al.            Expires December 3, 2012               [Page 15]
-
-Internet-Draft                   Beacon                        June 2012
-
-
-   can be mapped to three RDF triples:
-
-    <http://example.org/foo> a foaf:Person ;
-        foaf:isPrimaryTopicOf <http://example.com/bar> .
-    <http://example.com/bar> a foaf:Document .
-
 5.2.  Mapping to HTML
 
    This document does not specify a single mapping of links in a Beacon
@@ -858,6 +888,14 @@ Internet-Draft                   Beacon                        June 2012
 
    -  link source corresponds to the website which a HTML link is
       included at,
+
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 16]
+
+Internet-Draft                   Beacon                    November 2012
+
 
    -  link target corresponds to the "href" attribute,
 
@@ -888,19 +926,13 @@ Internet-Draft                   Beacon                        June 2012
 
    because "foaf:isPrimaryTopicOf" translates to "more information
    about", "foaf:Person" translates to "this person", and the target
-   database's name can be used as link label.
-
-
-
-Voss, et al.            Expires December 3, 2012               [Page 16]
-
-Internet-Draft                   Beacon                        June 2012
+   dataset's name can be used as link label.
 
 
 6.  Security Considerations
 
    Programs should be prepared for malformed and malicious content when
-   parsing Beacon files, when constructing links from link fields, and
+   parsing Beacon files, when constructing links from link tokens, and
    when mapping links to RDF or HTML.  Possible attacks of parsing
    contain broken UTF-8 and buffer overflows.  Link construction can
    result in unexpectedly long strings and character sequences that may
@@ -912,6 +944,14 @@ Internet-Draft                   Beacon                        June 2012
 
 
 7.  References
+
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 17]
+
+Internet-Draft                   Beacon                    November 2012
+
 
 7.1.  Normative References
 
@@ -945,14 +985,6 @@ Internet-Draft                   Beacon                        June 2012
               and D. Orchard, "URI Template", RFC 6570, March 2012.
 
    [Unicode]  The Unicode Consortium, "The Unicode Standard, Version
-
-
-
-Voss, et al.            Expires December 3, 2012               [Page 17]
-
-Internet-Draft                   Beacon                        June 2012
-
-
               6.1", April 2012.
 
 7.2.  Informative References
@@ -969,6 +1001,14 @@ Internet-Draft                   Beacon                        June 2012
               Set", RFC 5013, August 2007.
 
    [RSSSYND]  RSS-DEV Working Group, "RDF Site Summary 1.0 Modules:
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 18]
+
+Internet-Draft                   Beacon                    November 2012
+
+
               Syndication", Dec 2000.
 
    [SAX]      Bradner, D., "SAX 1.0: The Simple API for XML", May 1998.
@@ -998,28 +1038,31 @@ Appendix A.  Glossary
 
    link  is a triple of source URI, target URI, and annotation.
 
-
-
-
-
-
-
-Voss, et al.            Expires December 3, 2012               [Page 18]
-
-Internet-Draft                   Beacon                        June 2012
-
-
    link dump  is a set of links and meta fields with common relation
       type for all links.
 
-   link field  is a Unicode string in a Beacon files used to construct a
-      link
+   link token  is a Unicode string in a Beacon files used to construct a
+      link.
+
+   source database  is the set (or superset) of all source URIs in a
+      link dump.
 
    target database  is the set (or superset) of all target URIs in a
       link dump.
 
    relation type  a common releation between targets and sources in a
       link dump.
+
+
+
+
+
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 19]
+
+Internet-Draft                   Beacon                    November 2012
 
 
 Appendix B.  RELAX NG Schema for Beacon XML
@@ -1034,6 +1077,7 @@ Appendix B.  RELAX NG Schema for Beacon XML
      attribute prefix      { text }.
      attribute target      { text },
      attribute message     { text },
+     attribute source      { xsd:anyURI },
      attribute name        { text },
      attribute institution { text },
      attribute description { text },
@@ -1046,8 +1090,6 @@ Appendix B.  RELAX NG Schema for Beacon XML
        | "weekly" | "monthly" | "yearly" | "never" },
      attribute relation    { xsd:anyURI },
      attribute annotation  { xsd:anyURI },
-     attribute sourcetype  { xsd:anyURI },
-     attribute targettype  { xsd:anyURI },
      element link {
        attribute source     { text },
        attribute target     { text }?,
@@ -1058,13 +1100,6 @@ Appendix B.  RELAX NG Schema for Beacon XML
 
    A short example of a Beacon XML file is given below:
 
-
-
-Voss, et al.            Expires December 3, 2012               [Page 19]
-
-Internet-Draft                   Beacon                        June 2012
-
-
    <?xml version="1.0" encoding="UTF-8"?>
    <beacon xmlns="http://purl.org/net/beacon"
            prefix="http://example.org/"
@@ -1074,6 +1109,16 @@ Internet-Draft                   Beacon                        June 2012
       <link source="foo" />
       <link source="doz" annotation="baz" />
    </beacon>
+
+
+
+
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 20]
+
+Internet-Draft                   Beacon                    November 2012
 
 
 Authors' Addresses
@@ -1116,5 +1161,16 @@ Authors' Addresses
 
 
 
-Voss, et al.            Expires December 3, 2012               [Page 20]
+
+
+
+
+
+
+
+
+
+
+
+Voss, et al.              Expires May 31, 2013                 [Page 21]
 
