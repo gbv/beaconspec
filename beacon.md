@@ -51,7 +51,7 @@ Syndication Module [](#RSSSYND):
 	 rssynd:  <http://web.resource.org/rss/1.0/modules/syndication/>
 
 The blank node `:dump` denotes the URI of the link dump and the blank node
-`:target` denotes the URI of the target database.
+`:target` denotes the URI of the target dataset.
 
 ## String normalization 
 
@@ -226,7 +226,7 @@ Some examples of relation types:
 
 A link dump SHOULD contain a set of meta fields, each identified by its name
 build of lowercase letters `a-z`.  Relevant meta fields for description of the
-source and target databases ([](#source-and-target-databases)), the link dump
+source and target datasets ([](#source-and-target-datasets)), the link dump
 ([](#link-dump)), and links ([](#link-description)) are defined in the
 following.  Additional meta fields, not defined in this specification, SHOULD
 be ignored.  All meta field values MUST be whitespace-normalized
@@ -234,21 +234,21 @@ be ignored.  All meta field values MUST be whitespace-normalized
 be set to the field’s default value, which is the empty string unless noted
 otherwise. 
 
-## Source and target databases
+## Source and target datasets
 
 The set that all source URIs in a link dump originate from is called the
-**source database** and the set that all target URIs originate from is called
-the **target database**. 
+**source dataset** and the set that all target URIs originate from is called
+the **target dataset**. 
 
 ### source
 
-The source database can be identified by the source meta field, which MUST be
+The source dataset can be identified by the source meta field, which MUST be
 an URI if given. If two link dumps share the same source, it is possible to
 create a joint link dump with links from both.
 
 ### name
 
-The name meta field contains a name or title of target database. This field is
+The name meta field contains a name or title of target dataset. This field is
 mapped to the RDF property `dcterms:title`. For instance the name meta field
 value "ACME documents" can be mapped to this RDF triple:
 
@@ -257,7 +257,7 @@ value "ACME documents" can be mapped to this RDF triple:
 ### institution
 
 The institution meta field contains the name or URI of the organization or of
-an individual responsible for making available the target database. This field
+an individual responsible for making available the target dataset. This field
 is maped to the RDF property `dcterms:publisher`. For instance the institution
 meta field value "ACME" can be mapped to this RDF triple:
 
@@ -324,7 +324,7 @@ sample field values can be mapped to:
 
 The homepage field contains an URL of a website with additional information
 about this link dump. This field is mapped to the RDF property `foaf:homepage`.
-Note that this field does not specify the homepage of the target database.
+Note that this field does not specify the homepage of the target dataset.
 
 ### feed
 
@@ -519,8 +519,8 @@ subset of RDF graphs with uniform links.
 The following triples are always assumed in mappings of link dumps to RDF:
 
      :dump   a void:Linkset .
-	 :source a void:Database .
-     :target a void:Linkset .
+	 :source a void:Dataset .
+     :target a void:Dataset .
 
 Each link can be mapped to at least one RDF triple with:
 
@@ -547,7 +547,7 @@ For instance an annotation could contain additional information about a link
 such as its provenience, date, or probability (reification).
 
 Typical use cases of annotations include specification of labels and a "number
-of hits" at the target database. For instance the following Beacon file in
+of hits" at the target dataset. For instance the following Beacon file in
 Beacon text format ([](#beacon-text-format)):
 
      #PREFIX: http://example.org/
@@ -598,7 +598,7 @@ can be used to create a link such as
 	 </span>  
 
 because `foaf:isPrimaryTopicOf` translates to "more information about",
-`foaf:Person` translates to "this person", and the target database’s name can
+`foaf:Person` translates to "this person", and the target dataset’s name can
 be used as link label.
 
 # Security Considerations
