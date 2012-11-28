@@ -9,7 +9,7 @@
 <?rfc text-list-symbols="-"?>
 
 <front>
-	<title abbrev="Beacon">Beacon link dump format</title>
+	<title abbrev="BEACON">BEACON link dump format</title>
 	<author initials="J." surname="Voß" fullname="Jakob Voß">
 		<organization>Verbundzentrale des GBV</organization>
 		<address>
@@ -54,8 +54,8 @@
 	<keyword>...</keyword>
 	<keyword>...</keyword-->
 	<abstract>
-		<t>This document specifies Beacon, a data interchange 
-			format for large numbers of uniform links.</t>
+		<t>This document specifies BEACON, a data interchange 
+		   format for large numbers of uniform links.</t>
 	</abstract>
 </front>
 <middle>

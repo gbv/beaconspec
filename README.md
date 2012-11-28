@@ -10,7 +10,7 @@ and information resources in libraries and related organizations.
 
 # Illustration
 
-Beacon defines a link dump as set of links from a source database to a target
+BEACON defines a link dump as set of links from a source database to a target
 database. Several parts can be described by meta fields (in uppercase):
 
 ![][beaconspec-diagram.png]
@@ -48,5 +48,5 @@ A snapshots in HTML formats is at <http://gbv.github.com/beaconspec/beacon.html>
 
 # Additional files
 
-This repository also includes Beacon icons (`img/`) and tools to process Beacon 
+This repository also includes BEACON icons (`img/`) and tools to process BEACON 
 (`tools/`).

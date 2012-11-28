@@ -1,10 +1,10 @@
-% Beacon link dump format
+% BEACON link dump format
 % Jakob Voß
 
 # Introduction
 
-Beacon is a data interchange format for large numbers of uniform links.  A
-Beacon **link dump** consists of:
+BEACON is a data interchange format for large numbers of uniform links.  A
+BEACON **link dump** consists of:
 
 * a set of links ([](#links)),
 * a set of meta fields ([](#meta-fields)).
@@ -13,7 +13,7 @@ Each link consists of a source URI, a target URI, and an annotation. Common
 patterns in source URIs and target URIs respectively can be used to abbreviate
 links.  This specification defines:
 
-* two serializations of link dumps (**Beacon files**) in a condense 
+* two serializations of link dumps (**BEACON files**) in a condense 
   line-oriented format and in an XML format ([](#beacon-files)),
 * two interpretations of link dumps as mapping to HTML and
   mapping to RDF ([](#mappings)).
@@ -61,7 +61,7 @@ sequences by a single space (`SP`).
 
      WHITESPACE  =  1*( CR | LF | HTAB | SP )
 
-The set of allowed Unicode characters in Beacon dumps is the set of valid
+The set of allowed Unicode characters in BEACON dumps is the set of valid
 Unicode characters from UCS which can also be expressed in XML 1.0, excluding
 some discouraged control characters:
 
@@ -140,7 +140,7 @@ rule `BEACONVALUE`. The meaning of a link can be indicated by the
 ## Link construction
 
 Link elements are given in abbreviated form of **link tokens** when serialized
-in a Beacon file. Each link is constructed from:
+in a BEACON file. Each link is constructed from:
 
 * a mandatory source token
 * an optional annotation token
@@ -173,7 +173,7 @@ not contain the sequence `{annotation}`. Applications SHOULD give a warning in
 this case.
 
 Applications MUST NOT differentiate between equal links constructed from
-different abbreviations. For instance the following Beacon text file contains a
+different abbreviations. For instance the following BEACON text file contains a
 single link:
 
      #PREFIX: http://example.org/
@@ -204,7 +204,7 @@ The link line in this example is equal to:
 
      foo|World!|foo
 
-Multiple occurrences of equal links in one Beacon file SHOULD be ignored.  It
+Multiple occurrences of equal links in one BEACON file SHOULD be ignored.  It
 is RECOMMENDED to indicate duplicated links with a warning.
 
 ## Relation types
@@ -212,7 +212,7 @@ is RECOMMENDED to indicate duplicated links with a warning.
 All links in a link dump share a common relation type. A relation type is
 either an URI or a registered link type from the IANA link relations registry
 [](#RFC5988).  The relation type is specified by the `relation` meta field in
-Beacon files ([](#meta-fields)).
+BEACON files ([](#meta-fields)).
 
 Some examples of relation types:
 
@@ -309,14 +309,14 @@ creator is an instace of the class `foaf:Agent`.
 
 For instance the following creator meta field values:
 
-    Bea Beacon
+    Bea BEACON
 
     http://example.org/people/bea
 
 can be mapped the the following RDF triples, respectively:
 
-    :dump dcterms:creator "Bea Beacon" .
-    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+    :dump dcterms:creator "Bea BEACON" .
+    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea BEACON" ] .
     
 	:dump dcterms:creator <http://example.org/people/bea> .
 	<http://example.org/people/bea> a foaf:Agent .
@@ -331,10 +331,10 @@ address as specified in section 3.4 of [](#RFC5322), for instance:
 
      admin@example.com
 	
-	 Bea Beacon <bea@example.org>
+	 Bea BEACON <bea@example.org>
 
 The contact meta field is mapped to the `foaf:mbox` and to the `foaf:name` RDF
-properties.  The domain of the the contact meta field is the Beacon dump. The
+properties.  The domain of the the contact meta field is the BEACON dump. The
 sample field values can be mapped to:
 
      :dump dcterms:creator [
@@ -342,7 +342,7 @@ sample field values can be mapped to:
      ] .
 
      :dump dcterms:creator [
-	     foaf:name "Bea Beacon" ;
+	     foaf:name "Bea BEACON" ;
 	     foaf:mbox <mailto:bea@example.org>
      ] .
 
@@ -366,7 +366,7 @@ example mapped to an RDF triple:
 ### timestamp
 
 The timestamp field contains the date of last modification of the link dump.
-Note that this value MAY be different to the last modification time of a Beacon
+Note that this value MAY be different to the last modification time of a BEACON
 file that serializes the link dump.  The timestamp value MUST conform to the
 `full-date` or to the `date-time` production rule in [](#RFC3339). In addition,
 an uppercase `T` character MUST be used to separate date and time, and an
@@ -413,7 +413,7 @@ The RDF property of this field is `rssynd:updatePeriod`.
 The prefix field specifies an URI pattern that is used to construct link
 sources.  If no prefix meta field was specified, the default value `{+ID}` is
 used.  The name `prefix` was choosen to keep backwards compatibility with
-existing Beacon files.
+existing BEACON files.
 
 Applications MAY map the prefix field to the RDF property `void:uriSpace` or
 `void:uriRegexPattern` with `:source` as subject, when mapping to RDF.
@@ -444,13 +444,13 @@ The annotation field specifies the RDF property between link target and link
 annotation. The default value is `rdf:value` having no specific meaning 
 [](#RDF).
 
-# Beacon files
+# BEACON files
 
-## Beacon text format
+## BEACON text format
 
-A Beacon text file is an UTF-8 encoded Unicode file [](#RFC3629), split into
+A BEACON text file is an UTF-8 encoded Unicode file [](#RFC3629), split into
 lines by line breaks. The file consists of a set of lines with meta fields,
-followed by a set of lines with link tokens. A Beacon text file MAY begin with
+followed by a set of lines with link tokens. A BEACON text file MAY begin with
 an Unicode Byte Order Mark and it SHOULD end with a line break:
 
      BEACONTEXT  =  [ BOM ] [ START ] *METALINE *EMPTY [ LINKS ]
@@ -462,7 +462,7 @@ The order public of meta lines and the order of link lines is irrelevant.
 
 	EMPTY        =  *( *WHITESPACE LINEBREAK )
 
-The Beacon text file SHOULD start with an additional, fixed meta field:
+The BEACON text file SHOULD start with an additional, fixed meta field:
 
      START       =  "#FORMAT:" +WHITESPACE "BEACON" LINEBREAK
 
@@ -508,9 +508,9 @@ This way one can use two forms to encode links to HTTP URIs:
     foo|http://example.org/foobar
     foo||http://example.org/foobar
 
-## Beacon XML format
+## BEACON XML format
 
-A Beacon XML file is a valid XML file conforming to the following schema. The
+A BEACON XML file is a valid XML file conforming to the following schema. The
 file SHOULD be encoded in UTF-8 [](#RFC3629). The file MUST:
 
   * Begin with an opening `<beacon>` tag and end with a closing `</beacon>` tag.
@@ -524,25 +524,25 @@ The file MAY further:
   * Specify link tokens `target` and/or `annotation` as attributes to the 
     `<link>` element.
 
-All attributes MUST be given in lowercase. An informal schema of Beacon XML
+All attributes MUST be given in lowercase. An informal schema of BEACON XML
 files is given in [](#relax-ng-schema-for-beacon-xml).
 
-To process Beacon XML files, a complete and stream-processing XML parser, for
+To process BEACON XML files, a complete and stream-processing XML parser, for
 instance the Simple API for XML [](#SAX), is RECOMMENDED, in favor of parsing
 with regular expressions or similar methods prone to errors.  Additional XML
 attributes of `<link>` elements and `<link>` elements without `source`
 attribute SHOULD be ignored.
 
-Note that in contrast to Beacon text files, link tokens MAY include line
+Note that in contrast to BEACON text files, link tokens MAY include line
 breaks, which are removed by whitespace normalization. Furthermore id field,
 annotation field and target token MAY include a vertical bar, which is encoded
 as `%7C` during construction the link.
 
 # Mappings
 
-An important use-case of Beacon is the creation of HTML links as described in
+An important use-case of BEACON is the creation of HTML links as described in
 section [](#mapping-to-html). A link dump can also be mapped to an RDF graph
-([](#mapping-to-rdf)) so Beacon provides a RDF serialization format for a
+([](#mapping-to-rdf)) so BEACON provides a RDF serialization format for a
 subset of RDF graphs with uniform links. 
 
 ## Mapping to RDF
@@ -578,8 +578,8 @@ For instance an annotation could contain additional information about a link
 such as its provenience, date, or probability (reification).
 
 Typical use cases of annotations include specification of labels and a "number
-of hits" at the target dataset. For instance the following Beacon file in
-Beacon text format ([](#beacon-text-format)):
+of hits" at the target dataset. For instance the following BEACON file in
+BEACON text format ([](#beacon-text-format)):
 
      #PREFIX: http://example.org/
      #TARGET: http://example.com/ 
@@ -595,17 +595,17 @@ is mapped to the following RDF triples:
 
 ## Mapping to HTML
 
-This document does not specify a single mapping of links in a Beacon link dump
+This document does not specify a single mapping of links in a BEACON link dump
 to links in a HTML document, so the following description is non-normative.
 
-A link in a Beacon dump can be mapped to a HTML link (`<a>` element) as
+A link in a BEACON dump can be mapped to a HTML link (`<a>` element) as
 following:
 
 * link source corresponds to the website which a HTML link is included at,
 * link target corresponds to the `href` attribute,
 * link annotation corresponds to the textual content,
 
-For instance the following link, given in a Beacon text file:
+For instance the following link, given in a BEACON text file:
 
      http://example.com|example|http://example.org
 
@@ -635,11 +635,11 @@ be used as link label.
 # Security Considerations
 
 Programs should be prepared for malformed and malicious content when parsing
-Beacon files, when constructing links from link tokens, and when mapping links
+BEACON files, when constructing links from link tokens, and when mapping links
 to RDF or HTML. Possible attacks of parsing contain broken UTF-8 and buffer
 overflows. Link construction can result in unexpectedly long strings and
 character sequences that may be harmless when analyzed as parts. Most notably,
-Beacon data may store strings containing HTML and JavaScript code to be used
-for cross-site scripting attacks on the site displaying Beacon links.
+BEACON data may store strings containing HTML and JavaScript code to be used
+for cross-site scripting attacks on the site displaying BEACON links.
 Applications should therefore escape or filter accordingly all content with
 established libraries, such as Apache Escape Utils.
