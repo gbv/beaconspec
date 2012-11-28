@@ -46,12 +46,12 @@ Syndication Module [](#RSSSYND):
      rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
      rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
      dcterms: <http://purl.org/dc/terms/extent>
-	 foaf:    <http://xmlns.com/foaf/0.1/>
+     foaf:    <http://xmlns.com/foaf/0.1/>
      void:    <http://rdfs.org/ns/void#>
-	 rssynd:  <http://web.resource.org/rss/1.0/modules/syndication/>
+     rssynd:  <http://web.resource.org/rss/1.0/modules/syndication/>
 
 The blank node `:dump` denotes the URI of the link dump and the blank node
-`:target` denotes the URI of the target dataset.
+`:targetset` denotes the URI of the target dataset.
 
 ## String normalization 
 
@@ -65,29 +65,24 @@ The set of allowed Unicode characters in BEACON dumps is the set of valid
 Unicode characters from UCS which can also be expressed in XML 1.0, excluding
 some discouraged control characters:
 
-	 CHAR        =  WHITESPACE / %x21-7E / %xA0-D7FF / %xE000-FFFD
-	             /  %x10000-1FFFD / %x20000-2FFFD / %x30000-3FFFD
-	             /  %x40000-4FFFD / %x50000-5FFFD / %x60000-6FFFD
-	             /  %x70000-7FFFD / %x80000-8FFFD / %x90000-9FFFD
-	             /  %xA0000-AFFFD / %xB0000-BFFFD / %xC0000-CFFFD
-	             /  %xD0000-DFFFD / %xE0000-EFFFD / %xF0000-FFFFD
-	             /  %x10000-10FFFD
+     CHAR        =  WHITESPACE / %x21-7E / %xA0-D7FF / %xE000-FFFD
+                 /  %x10000-1FFFD / %x20000-2FFFD / %x30000-3FFFD
+                 /  %x40000-4FFFD / %x50000-5FFFD / %x60000-6FFFD
+                 /  %x70000-7FFFD / %x80000-8FFFD / %x90000-9FFFD
+                 /  %xA0000-AFFFD / %xB0000-BFFFD / %xC0000-CFFFD
+                 /  %xD0000-DFFFD / %xE0000-EFFFD / %xF0000-FFFFD
+                 /  %x10000-10FFFD
 
-Applications MAY allow additional characters or disallow additional characters
-by stripping them or by replacing them with the replacement character `U+FFFD`.
-Applications SHOULD apply Unicode Normalization Form Canonical Composition
-(NFKC) to all strings.
+Applications SHOULD exclude disallowed characters by stripping them, by
+replacing them with the replacement character `U+FFFD`, or by refusing to
+process. Applications SHOULD also apply Unicode Normalization Form Canonical
+Composition (NFKC) to all strings.
 
 ## URI patterns
 
 A URI pattern in this specification is an URI Template, as defined in
 [](#RFC6570), with all template expressions being either `{ID}` for simple
-string expansion or `{+ID}` for reserved expansion. If no template expression
-is given, the pattern MUST be processed as if the expression `{ID}` was
-appended. Therefore the following URI patterns are equal:
-
-     http://example.org/
-	 http://example.org/{ID}
+string expansion or `{+ID}` for reserved expansion.
 
 A URI pattern is used to construct a URI by replacing all template expressions
 with an identifier value. All identifier characters in the `unreserved` range
@@ -113,11 +108,11 @@ following the process defined in Section 3.2 of [](#RFC3987).
      Example value    Expression   Copied as
 
       path/dir          {ID}        path%2Fdir
-	  path/dir          {+ID}       path/dir
-	  Hello World!      {ID}        Hello%20World%21
-	  Hello World!      {+ID}       Hello%20World!
-	  Hello%20World     {ID}        Hello%2520World
-	  Hello%20World     {+ID}       Hello%20World
+      path/dir          {+ID}       path/dir
+      Hello World!      {ID}        Hello%20World%21
+      Hello World!      {+ID}       Hello%20World!
+      Hello%20World     {ID}        Hello%2520World
+      Hello%20World     {+ID}       Hello%20World
       M%C3%BCller       {ID}        M%25C3%25BCller
       M%C3%BCller       {+ID}       M%C3%BCller
 
@@ -161,10 +156,10 @@ processing.  The full link is then constructed as following:
 The following table illustrates construction of a link:
 
      meta field  +  link token  -->  link element
-	----------------------------------------------
+    ----------------------------------------------
      prefix      |  source       |   source URI
      target      |  target       |   target URI
-	 message     |  annotation   |   annotation
+     message     |  annotation   |   annotation
 
 Constructed source URI and target URI MUST be syntactically valid.
 Applications MUST ignore links with invalid URIs and SHOULD give a warning.
@@ -217,10 +212,10 @@ BEACON files ([](#meta-fields)).
 Some examples of relation types:
 
      http://www.w3.org/2002/07/owl#sameAs
-	 http://xmlns.com/foaf/0.1/isPrimaryTopicOf
-	 http://purl.org/spar/cito/cites
-	 describedby
-	 replies
+     http://xmlns.com/foaf/0.1/isPrimaryTopicOf
+     http://purl.org/spar/cito/cites
+     describedby
+     replies
 
 # Meta fields
 
@@ -238,21 +233,21 @@ otherwise.
     | source dataset | ---| link dump       |---> | target dataset  |
     |----------------|    |-----------------|     |-----------------|
     |                | ---|                 |---> |                 |
-    |  * source      |    |  * description  |     |  * name         |
-    |                | ---|  * creator      |---> |  * institution  |
-    +----------------+    |  * contact      |     |                 |
-                          |  * update       |     +-----------------+
-                          |  * timestamp    |
+    |  * sourceset   |    |  * description  |     |  * targetset    |
+    |                | ---|  * creator      |---> |  * name         |
+    +----------------+    |  * contact      |     |  * institution  |
+                          |  * update       |     |                 |
+                          |  * timestamp    |     +-----------------+
                           |  * feed         |
                           |  * homepage     |
                           |                 |
                           +-----------------+
                           |                 |
-						  |  * prefix       |
-						  |  * target       |
-						  |  * relation     |
-						  |  * message      |
-						  |  * annotation   |
+                          |  * prefix       |
+                          |  * target       |
+                          |  * relation     |
+                          |  * message      |
+                          |  * annotation   |
                           |                 |
                           +-----------------+
 
@@ -263,14 +258,15 @@ The set that all source URIs in a link dump originate from is called the
 **source dataset** and the set that all target URIs originate from is called
 the **target dataset**. 
 
-### source
+### sourceset
 
-The source dataset can be identified by the source meta field, which MUST be
-an URI if given. If two link dumps share the same source, it is possible to
-create a joint link dump with links from both. This field can be mapped to RDF
-as following:
+The source dataset can be identified by the sourceset meta field, which MUST be
+an URI if given. This field replaces the blank node `:sourceset`.
 
-    :dump void:subjectsTarget ?source .
+### targetset
+
+The target dataset can be identified by the targetset meta field, which MUST be
+an URI if given. This field replaces the balnk node `:targetset`.
 
 ### name
 
@@ -278,7 +274,7 @@ The name meta field contains a name or title of target dataset. This field is
 mapped to the RDF property `dcterms:title`. For instance the name meta field
 value "ACME documents" can be mapped to this RDF triple:
 
-    :target dcterms:title "ACME documents" .
+    :targetset dcterms:title "ACME documents" .
 
 ### institution
 
@@ -287,7 +283,7 @@ an individual responsible for making available the target dataset. This field
 is mapped to the RDF property `dcterms:publisher`. For instance the institution
 meta field value "ACME" can be mapped to this RDF triple:
 
-    :target dcterms:publisher "ACME" .
+    :targetset dcterms:publisher "ACME" .
 
 ## Link dump
 
@@ -318,8 +314,8 @@ can be mapped the the following RDF triples, respectively:
     :dump dcterms:creator "Bea BEACON" .
     :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea BEACON" ] .
     
-	:dump dcterms:creator <http://example.org/people/bea> .
-	<http://example.org/people/bea> a foaf:Agent .
+    :dump dcterms:creator <http://example.org/people/bea> .
+    <http://example.org/people/bea> a foaf:Agent .
 
 This field SHOULD NOT contain a simple URL unless this URL is also used as URI.
 
@@ -330,20 +326,20 @@ to reach the creator of the link dump.  The field value SHOULD be a mailbox
 address as specified in section 3.4 of [](#RFC5322), for instance:
 
      admin@example.com
-	
-	 Bea BEACON <bea@example.org>
+    
+     Bea BEACON <bea@example.org>
 
 The contact meta field is mapped to the `foaf:mbox` and to the `foaf:name` RDF
 properties.  The domain of the the contact meta field is the BEACON dump. The
 sample field values can be mapped to:
 
      :dump dcterms:creator [
-	     foaf:mbox <mailto:admin@example.com>
+         foaf:mbox <mailto:admin@example.com>
      ] .
 
      :dump dcterms:creator [
-	     foaf:name "Bea BEACON" ;
-	     foaf:mbox <mailto:bea@example.org>
+         foaf:name "Bea BEACON" ;
+         foaf:mbox <mailto:bea@example.org>
      ] .
 
 ### homepage
@@ -410,21 +406,24 @@ The RDF property of this field is `rssynd:updatePeriod`.
 
 ### prefix
 
-The prefix field specifies an URI pattern that is used to construct link
-sources.  If no prefix meta field was specified, the default value `{+ID}` is
-used.  The name `prefix` was choosen to keep backwards compatibility with
+The prefix field specifies an URI patter to construct link sources. If no
+prefix field is specified, the default value `{+ID}` is used. If the prefix
+field contains no template expression, the expression `{ID}` is appended.
+
+The name `prefix` was choosen to keep backwards compatibility with
 existing BEACON files.
 
 Applications MAY map the prefix field to the RDF property `void:uriSpace` or
-`void:uriRegexPattern` with `:source` as subject, when mapping to RDF.
+`void:uriRegexPattern` with `:sourceset` as RDF subject.
 
 ### target
 
-The target field specifies an URI pattern to construct link targets.  If no
-target meta field was specified, the default value `{+ID}` is used.
+The target field specifies an URI patter to construct link targets. If no
+target field is specified, the default value `{+ID}` is used. If the target
+field contains no template expression, the expression `{ID}` is appended.
 
 Applications MAY map the target field to the RDF property `void:uriSpace` or
-`void:uriRegexPattern` with `:target` as subject, when mapping to RDF.
+`void:uriRegexPattern` with `:targetset` as RDF subject.
 
 ### message
 
@@ -454,13 +453,13 @@ followed by a set of lines with link tokens. A BEACON text file MAY begin with
 an Unicode Byte Order Mark and it SHOULD end with a line break:
 
      BEACONTEXT  =  [ BOM ] [ START ] *METALINE *EMPTY [ LINKS ]
-	
+    
      BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 
 At least one empty line SHOULD be used to separate meta lines and link lines.
 The order public of meta lines and the order of link lines is irrelevant. 
 
-	EMPTY        =  *( *WHITESPACE LINEBREAK )
+    EMPTY        =  *( *WHITESPACE LINEBREAK )
 
 The BEACON text file SHOULD start with an additional, fixed meta field:
 
@@ -472,6 +471,7 @@ names are case insensitive and SHOULD be given in uppercase letters.
      METALINE    =  "#" METAFIELD ":" METAVALUE LINEBREAK
 
      METAFIELD   =  "PREFIX" / "TARGET" / "RELATION" / "MESSAGE" 
+                 /  "SOURCESET" / "TARGETSET"
                  /  "NAME" / "DESCRIPTION" / "INSTITUTION" 
                  /  "ANNOTATION" / "HOMEPAGE"
                  /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
@@ -549,9 +549,12 @@ subset of RDF graphs with uniform links.
 
 The following triples are always assumed in mappings of link dumps to RDF:
 
-     :dump   a void:Linkset .
-	 :source a void:Dataset .
-     :target a void:Dataset .
+     :sourceset a void:Dataset .
+     :targetset a void:Dataset .
+
+     :dump a void:Linkset ; 
+         void:subjectsTarget :sourceset ;
+         void:objectsTarget :targetset .
 
 Each link can be mapped to at least one RDF triple with:
 
@@ -583,7 +586,7 @@ BEACON text format ([](#beacon-text-format)):
 
      #PREFIX: http://example.org/
      #TARGET: http://example.com/ 
-	 #RELATION: http://xmlns.com/foaf/0.1/primaryTopic
+     #RELATION: http://xmlns.com/foaf/0.1/primaryTopic
      #ANNOTATION: http://purl.org/dc/terms/extent
 
      abc|12|xy
@@ -624,9 +627,9 @@ For instance the meta fields
 can be used to create a link such as
 
      <span>
-	   More information about this person
+       More information about this person
        <a href="http://example.com/foo">at ACME documents</a>.
-	 </span>  
+     </span>  
 
 because `foaf:isPrimaryTopicOf` translates to "more information about",
 `foaf:Person` translates to "this person", and the target dataset’s name can

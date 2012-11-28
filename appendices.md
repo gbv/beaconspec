@@ -29,30 +29,32 @@ only.
 
     default namespace = "http://purl.org/net/beacon"
 
-	element beacon {
-	  attribute prefix      { text }.
-	  attribute target      { text },
-	  attribute message     { text },
-	  attribute source      { xsd:anyURI },
+    element beacon {
+      attribute prefix      { text }.
+      attribute target      { text },
+      attribute message     { text },
+      attribute source      { xsd:anyURI },
       attribute name        { text },
-	  attribute institution { text },
-	  attribute description { text },
-	  attribute creator     { text },
-	  attribute contact     { text },
-	  attribute homepage    { xsd:anyURI },
-	  attribute feed        { xsd:anyURI },
-	  attribute timestamp   { text },
-	  attribute update { "always" | "hourly" | "daily" 
-	    | "weekly" | "monthly" | "yearly" | "never" },
-	  attribute relation    { xsd:anyURI },
-	  attribute annotation  { xsd:anyURI },
-	  element link {
-	    attribute source     { text },
-		attribute target     { text }?,
-		attribute annotation { text }?,
-	    empty
-	  }*
-	}
+      attribute institution { text },
+      attribute description { text },
+      attribute creator     { text },
+      attribute contact     { text },
+      attribute homepage    { xsd:anyURI },
+      attribute feed        { xsd:anyURI },
+      attribute timestamp   { text },
+      attribute update { "always" | "hourly" | "daily" 
+        | "weekly" | "monthly" | "yearly" | "never" },
+      attribute relation    { xsd:anyURI },
+      attribute annotation  { xsd:anyURI },
+      element link {
+        attribute source     { text },
+        attribute target     { text }?,
+        attribute annotation { text }?,
+        empty
+      }*
+    }
+
+# Example
 
 A short example of a BEACON XML file is given below:
 
@@ -60,9 +62,44 @@ A short example of a BEACON XML file is given below:
     <beacon xmlns="http://purl.org/net/beacon" 
             prefix="http://example.org/"
             target="http://example.com/"
-			name="ACME document">
-       <link source="foo" target="bar" />
-       <link source="foo" />
-       <link source="doz" annotation="baz" />
+            name="ACME document">
+       <link source="alice" target="foo" />
+       <link source="bob" />
+       <link source="ada" annotation="bar" />
     </beacon>
+
+The link dump could also be expressed in BEACON text format:
+
+    #PREFIX: http://example.org/
+    #TARGET: http://example.com/
+    #NAME:   ACME document
+
+    alice||foo
+    bob
+    ada|bar
+
+The link dump mapped to RDF:
+
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+    @prefix void: <http://rdfs.org/ns/void#> .
+
+    :sourceset a void:Dataset ;
+        void:uriSpace "http://example.org/" .
+
+    :targetset a void:Dataset ;
+	    void:uriSpace "http://example.com/" .
+
+    :dump a void:Linkset ;
+        void:subjectsTarget :sourceset ;
+        void:objectsTarget :targetset ;
+        void:linkPredicate rdfs:seeAlso .
+
+    <http://example.org/alice> 
+      rdfs:seeAlso <http://example.com/foo> . 
+    <http://example.org/bob> 
+      rdfs:seeAlso <http://example.com/bob> . 
+    <http://example.org/ada> 
+      rdfs:seeAlso <http://example.com/ada> . 
+    <http://example.com/ada> 
+      rdfs:value "bar" .
 
