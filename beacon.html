@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en"><head><title>Beacon link dump format</title>
+<html lang="en"><head><title>BEACON link dump format</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="Beacon link dump format">
+<meta name="description" content="BEACON link dump format">
 <meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
 <style type='text/css'><!--
         body {
@@ -144,17 +144,17 @@
 <tr><td class="header">Network Working Group</td><td class="header">J. Voß</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Verbundzentrale des GBV</td></tr>
 <tr><td class="header">Intended status: Informational</td><td class="header">M. Schindler</td></tr>
-<tr><td class="header">Expires: May 31, 2013</td><td class="header">Wikimedia Deutschland e.V.</td></tr>
+<tr><td class="header">Expires: June 1, 2013</td><td class="header">Wikimedia Deutschland e.V.</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Th. Berger</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Gymel.com</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">November 27, 2012</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">November 28, 2012</td></tr>
 </table></td></tr></table>
-<h1><br />Beacon link dump format<br />draft-voss-beacon-001</h1>
+<h1><br />BEACON link dump format<br />draft-voss-beacon-001</h1>
 
 <h3>Abstract</h3>
 
-<p>This document specifies Beacon, a data interchange 
-			format for large numbers of uniform links.
+<p>This document specifies BEACON, a data interchange 
+		   format for large numbers of uniform links.
 </p>
 <h3>Status of this Memo</h3>
 <p>
@@ -171,7 +171,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on May 31, 2013.</p>
+This Internet-Draft will expire on June 1, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -208,11 +208,13 @@ Relation types<br />
 Meta fields<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#source-and-target-datasets">3.1.</a>&nbsp;
 Source and target datasets<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#source">3.1.1.</a>&nbsp;
-source<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#name">3.1.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#sourceset">3.1.1.</a>&nbsp;
+sourceset<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#targetset">3.1.2.</a>&nbsp;
+targetset<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#name">3.1.3.</a>&nbsp;
 name<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#institution">3.1.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#institution">3.1.4.</a>&nbsp;
 institution<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-dump">3.2.</a>&nbsp;
 Link dump<br />
@@ -243,11 +245,11 @@ relation<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotation">3.3.5.</a>&nbsp;
 annotation<br />
 <a href="#beacon-files">4.</a>&nbsp;
-Beacon files<br />
+BEACON files<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-text-format">4.1.</a>&nbsp;
-Beacon text format<br />
+BEACON text format<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#beacon-xml-format">4.2.</a>&nbsp;
-Beacon XML format<br />
+BEACON XML format<br />
 <a href="#mappings">5.</a>&nbsp;
 Mappings<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#mapping-to-rdf">5.1.</a>&nbsp;
@@ -265,7 +267,9 @@ Informative References<br />
 <a href="#glossary">Appendix&nbsp;A.</a>&nbsp;
 Glossary<br />
 <a href="#relax-ng-schema-for-beacon-xml">Appendix&nbsp;B.</a>&nbsp;
-RELAX NG Schema for Beacon XML<br />
+RELAX NG Schema for BEACON XML<br />
+<a href="#example">Appendix&nbsp;C.</a>&nbsp;
+Example<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Authors' Addresses<br />
 </p>
@@ -277,8 +281,8 @@ Authors' Addresses<br />
 Introduction</h3>
 
 <p>
-    Beacon is a data interchange format for large numbers of uniform
-    links. A Beacon <strong>link dump</strong>
+    BEACON is a data interchange format for large numbers of uniform
+    links. A BEACON <strong>link dump</strong>
     consists of:
   
 </p>
@@ -308,9 +312,9 @@ Introduction</h3>
 <ul class="text">
 <li>
       
-        two serializations of link dumps (<strong>Beacon
+        two serializations of link dumps (<strong>BEACON
         files</strong>) in a condense line-oriented format and in an
-        XML format (<a class='info' href='#beacon-files'>Section&nbsp;4<span> (</span><span class='info'>Beacon files</span><span>)</span></a>),
+        XML format (<a class='info' href='#beacon-files'>Section&nbsp;4<span> (</span><span class='info'>BEACON files</span><span>)</span></a>),
       
     
 </li>
@@ -374,7 +378,7 @@ Notational Conventions</h3>
 </pre></div>
 <p>
       The blank node <tt>:dump</tt> denotes the URI of the
-      link dump and the blank node <tt>:target</tt> denotes
+      link dump and the blank node <tt>:targetset</tt> denotes
       the URI of the target dataset.
     
 </p>
@@ -393,7 +397,7 @@ String normalization</h3>
  WHITESPACE  =  1*( CR | LF | HTAB | SP )
 </pre></div>
 <p>
-      The set of allowed Unicode characters in Beacon dumps is the set
+      The set of allowed Unicode characters in BEACON dumps is the set
       of valid Unicode characters from UCS which can also be expressed
       in XML 1.0, excluding some discouraged control characters:
     
@@ -407,10 +411,10 @@ String normalization</h3>
              /  %x10000-10FFFD
 </pre></div>
 <p>
-      Applications MAY allow additional characters or disallow
-      additional characters by stripping them or by replacing them with
-      the replacement character <tt>U+FFFD</tt>. Applications
-      SHOULD apply Unicode Normalization Form Canonical Composition
+      Applications SHOULD exclude disallowed characters by stripping
+      them, by replacing them with the replacement character
+      <tt>U+FFFD</tt>, or by refusing to process. Applications
+      SHOULD also apply Unicode Normalization Form Canonical Composition
       (NFKC) to all strings.
     
 </p>
@@ -423,15 +427,9 @@ URI patterns</h3>
       A URI pattern in this specification is an URI Template, as defined
       in <a class='info' href='#RFC6570'>[RFC6570]<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a>, with all template expressions
       being either <tt>{ID}</tt> for simple string expansion
-      or <tt>{+ID}</tt> for reserved expansion. If no template
-      expression is given, the pattern MUST be processed as if the
-      expression <tt>{ID}</tt> was appended. Therefore the
-      following URI patterns are equal:
+      or <tt>{+ID}</tt> for reserved expansion.
     
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- http://example.org/
- http://example.org/{ID}
-</pre></div>
+</p>
 <p>
       A URI pattern is used to construct a URI by replacing all template
       expressions with an identifier value. All identifier characters in
@@ -526,7 +524,7 @@ Link construction</h3>
 <p>
       Link elements are given in abbreviated form of
       <strong>link tokens</strong> when serialized in
-      a Beacon file. Each link is constructed from:
+      a BEACON file. Each link is constructed from:
     
 </p>
 <p></p>
@@ -612,7 +610,7 @@ Link construction</h3>
 <p>
       Applications MUST NOT differentiate between equal links
       constructed from different abbreviations. For instance the
-      following Beacon text file contains a single link:
+      following BEACON text file contains a single link:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  #PREFIX: http://example.org/
@@ -652,7 +650,7 @@ Link construction</h3>
  foo|World!|foo
 </pre></div>
 <p>
-      Multiple occurrences of equal links in one Beacon file SHOULD be
+      Multiple occurrences of equal links in one BEACON file SHOULD be
       ignored. It is RECOMMENDED to indicate duplicated links with a
       warning.
     
@@ -667,7 +665,7 @@ Relation types</h3>
       type is either an URI or a registered link type from the IANA link
       relations registry <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>. The relation
       type is specified by the <tt>relation</tt> meta field in
-      Beacon files (<a class='info' href='#meta-fields'>Section&nbsp;3<span> (</span><span class='info'>Meta fields</span><span>)</span></a>).
+      BEACON files (<a class='info' href='#meta-fields'>Section&nbsp;3<span> (</span><span class='info'>Meta fields</span><span>)</span></a>).
     
 </p>
 <p>
@@ -704,11 +702,11 @@ Meta fields</h3>
 | source dataset | ---| link dump       |---&gt; | target dataset  |
 |----------------|    |-----------------|     |-----------------|
 |                | ---|                 |---&gt; |                 |
-|  * source      |    |  * description  |     |  * name         |
-|                | ---|  * creator      |---&gt; |  * institution  |
-+----------------+    |  * contact      |     |                 |
-                      |  * update       |     +-----------------+
-                      |  * timestamp    |
+|  * sourceset   |    |  * description  |     |  * targetset    |
+|                | ---|  * creator      |---&gt; |  * name         |
++----------------+    |  * contact      |     |  * institution  |
+                      |  * update       |     |                 |
+                      |  * timestamp    |     +-----------------+
                       |  * feed         |
                       |  * homepage     |
                       |                 |
@@ -734,23 +732,31 @@ Source and target datasets</h3>
       <strong>target dataset</strong>.
     
 </p>
-<a name="source"></a><br /><hr />
+<a name="sourceset"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.1.1"></a><h3>3.1.1.&nbsp;
-source</h3>
+sourceset</h3>
 
 <p>
-        The source dataset can be identified by the source meta field,
-        which MUST be an URI if given. If two link dumps share the same
-        source, it is possible to create a joint link dump with links
-        from both. This field can be mapped to RDF as following:
+        The source dataset can be identified by the sourceset meta
+        field, which MUST be an URI if given. This field replaces the
+        blank node <tt>:sourceset</tt>.
       
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-:dump void:subjectsTarget ?source .
-</pre></div>
-<a name="name"></a><br /><hr />
+</p>
+<a name="targetset"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.1.2"></a><h3>3.1.2.&nbsp;
+targetset</h3>
+
+<p>
+        The target dataset can be identified by the targetset meta
+        field, which MUST be an URI if given. This field replaces the
+        balnk node <tt>:targetset</tt>.
+      
+</p>
+<a name="name"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.1.3"></a><h3>3.1.3.&nbsp;
 name</h3>
 
 <p>
@@ -761,11 +767,11 @@ name</h3>
         triple:
       
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-:target dcterms:title "ACME documents" .
+:targetset dcterms:title "ACME documents" .
 </pre></div>
 <a name="institution"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3.1.3"></a><h3>3.1.3.&nbsp;
+<a name="rfc.section.3.1.4"></a><h3>3.1.4.&nbsp;
 institution</h3>
 
 <p>
@@ -777,7 +783,7 @@ institution</h3>
         this RDF triple:
       
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-:target dcterms:publisher "ACME" .
+:targetset dcterms:publisher "ACME" .
 </pre></div>
 <a name="link-dump"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -816,7 +822,7 @@ creator</h3>
         For instance the following creator meta field values:
       
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-Bea Beacon
+Bea BEACON
 
 http://example.org/people/bea
 </pre></div>
@@ -824,8 +830,8 @@ http://example.org/people/bea
         can be mapped the the following RDF triples, respectively:
       
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-:dump dcterms:creator "Bea Beacon" .
-:dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+:dump dcterms:creator "Bea BEACON" .
+:dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea BEACON" ] .
 
 :dump dcterms:creator &lt;http://example.org/people/bea&gt; .
 &lt;http://example.org/people/bea&gt; a foaf:Agent .
@@ -849,13 +855,13 @@ contact</h3>
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  admin@example.com
 
- Bea Beacon &lt;bea@example.org&gt;
+ Bea BEACON &lt;bea@example.org&gt;
 </pre></div>
 <p>
         The contact meta field is mapped to the
         <tt>foaf:mbox</tt> and to the
         <tt>foaf:name</tt> RDF properties. The domain of the
-        the contact meta field is the Beacon dump. The sample field
+        the contact meta field is the BEACON dump. The sample field
         values can be mapped to:
       
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -864,7 +870,7 @@ contact</h3>
  ] .
 
  :dump dcterms:creator [
-     foaf:name "Bea Beacon" ;
+     foaf:name "Bea BEACON" ;
      foaf:mbox &lt;mailto:bea@example.org&gt;
  ] .
 </pre></div>
@@ -905,7 +911,7 @@ timestamp</h3>
 <p>
         The timestamp field contains the date of last modification of
         the link dump. Note that this value MAY be different to the last
-        modification time of a Beacon file that serializes the link
+        modification time of a BEACON file that serializes the link
         dump. The timestamp value MUST conform to the
         <tt>full-date</tt> or to the
         <tt>date-time</tt> production rule in
@@ -1015,18 +1021,23 @@ Link description</h3>
 prefix</h3>
 
 <p>
-        The prefix field specifies an URI pattern that is used to
-        construct link sources. If no prefix meta field was specified,
-        the default value <tt>{+ID}</tt> is used. The name
-        <tt>prefix</tt> was choosen to keep backwards
-        compatibility with existing Beacon files.
+        The prefix field specifies an URI patter to construct link
+        sources. If no prefix field is specified, the default value
+        <tt>{+ID}</tt> is used. If the prefix field contains
+        no template expression, the expression <tt>{ID}</tt>
+        is appended.
+      
+</p>
+<p>
+        The name <tt>prefix</tt> was choosen to keep backwards
+        compatibility with existing BEACON files.
       
 </p>
 <p>
         Applications MAY map the prefix field to the RDF property
         <tt>void:uriSpace</tt> or
         <tt>void:uriRegexPattern</tt> with
-        <tt>:source</tt> as subject, when mapping to RDF.
+        <tt>:sourceset</tt> as RDF subject.
       
 </p>
 <a name="target"></a><br /><hr />
@@ -1035,16 +1046,18 @@ prefix</h3>
 target</h3>
 
 <p>
-        The target field specifies an URI pattern to construct link
-        targets. If no target meta field was specified, the default
-        value <tt>{+ID}</tt> is used.
+        The target field specifies an URI patter to construct link
+        targets. If no target field is specified, the default value
+        <tt>{+ID}</tt> is used. If the target field contains
+        no template expression, the expression <tt>{ID}</tt>
+        is appended.
       
 </p>
 <p>
         Applications MAY map the target field to the RDF property
         <tt>void:uriSpace</tt> or
         <tt>void:uriRegexPattern</tt> with
-        <tt>:target</tt> as subject, when mapping to RDF.
+        <tt>:targetset</tt> as RDF subject.
       
 </p>
 <a name="message"></a><br /><hr />
@@ -1085,18 +1098,18 @@ annotation</h3>
 <a name="beacon-files"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4"></a><h3>4.&nbsp;
-Beacon files</h3>
+BEACON files</h3>
 
 <a name="beacon-text-format"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
-Beacon text format</h3>
+BEACON text format</h3>
 
 <p>
-      A Beacon text file is an UTF-8 encoded Unicode file
+      A BEACON text file is an UTF-8 encoded Unicode file
       <a class='info' href='#RFC3629'>[RFC3629]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>, split into lines by line breaks.
       The file consists of a set of lines with meta fields, followed by
-      a set of lines with link tokens. A Beacon text file MAY begin with
+      a set of lines with link tokens. A BEACON text file MAY begin with
       an Unicode Byte Order Mark and it SHOULD end with a line break:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -1113,7 +1126,7 @@ Beacon text format</h3>
 EMPTY        =  *( *WHITESPACE LINEBREAK )
 </pre></div>
 <p>
-      The Beacon text file SHOULD start with an additional, fixed meta
+      The BEACON text file SHOULD start with an additional, fixed meta
       field:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -1128,6 +1141,7 @@ EMPTY        =  *( *WHITESPACE LINEBREAK )
  METALINE    =  "#" METAFIELD ":" METAVALUE LINEBREAK
 
  METAFIELD   =  "PREFIX" / "TARGET" / "RELATION" / "MESSAGE"
+             /  "SOURCESET" / "TARGETSET"
              /  "NAME" / "DESCRIPTION" / "INSTITUTION"
              /  "ANNOTATION" / "HOMEPAGE"
              /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
@@ -1203,10 +1217,10 @@ foo||http://example.org/foobar
 <a name="beacon-xml-format"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
-Beacon XML format</h3>
+BEACON XML format</h3>
 
 <p>
-      A Beacon XML file is a valid XML file conforming to the following
+      A BEACON XML file is a valid XML file conforming to the following
       schema. The file SHOULD be encoded in UTF-8
       <a class='info' href='#RFC3629'>[RFC3629]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>. The file MUST:
     
@@ -1269,12 +1283,12 @@ Beacon XML format</h3>
 
 <p>
       All attributes MUST be given in lowercase. An informal schema of
-      Beacon XML files is given in
-      <a class='info' href='#relax-ng-schema-for-beacon-xml'>Appendix&nbsp;B<span> (</span><span class='info'>RELAX NG Schema for Beacon XML</span><span>)</span></a>.
+      BEACON XML files is given in
+      <a class='info' href='#relax-ng-schema-for-beacon-xml'>Appendix&nbsp;B<span> (</span><span class='info'>RELAX NG Schema for BEACON XML</span><span>)</span></a>.
     
 </p>
 <p>
-      To process Beacon XML files, a complete and stream-processing XML
+      To process BEACON XML files, a complete and stream-processing XML
       parser, for instance the Simple API for XML
       <a class='info' href='#SAX'>[SAX]<span> (</span><span class='info'>Bradner, D., &ldquo;SAX 1.0: The Simple API for XML,&rdquo; May&nbsp;1998.</span><span>)</span></a>, is RECOMMENDED, in favor of parsing
       with regular expressions or similar methods prone to errors.
@@ -1284,7 +1298,7 @@ Beacon XML format</h3>
     
 </p>
 <p>
-      Note that in contrast to Beacon text files, link tokens MAY
+      Note that in contrast to BEACON text files, link tokens MAY
       include line breaks, which are removed by whitespace
       normalization. Furthermore id field, annotation field and target
       token MAY include a vertical bar, which is encoded as
@@ -1297,10 +1311,10 @@ Beacon XML format</h3>
 Mappings</h3>
 
 <p>
-    An important use-case of Beacon is the creation of HTML links as
+    An important use-case of BEACON is the creation of HTML links as
     described in section <a class='info' href='#mapping-to-html'>Section&nbsp;5.2<span> (</span><span class='info'>Mapping to HTML</span><span>)</span></a>. A link
     dump can also be mapped to an RDF graph
-    (<a class='info' href='#mapping-to-rdf'>Section&nbsp;5.1<span> (</span><span class='info'>Mapping to RDF</span><span>)</span></a>) so Beacon provides a RDF
+    (<a class='info' href='#mapping-to-rdf'>Section&nbsp;5.1<span> (</span><span class='info'>Mapping to RDF</span><span>)</span></a>) so BEACON provides a RDF
     serialization format for a subset of RDF graphs with uniform links.
   
 </p>
@@ -1314,9 +1328,12 @@ Mapping to RDF</h3>
       to RDF:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- :dump   a void:Linkset .
- :source a void:Dataset .
- :target a void:Dataset .
+ :sourceset a void:Dataset .
+ :targetset a void:Dataset .
+
+ :dump a void:Linkset ;
+     void:subjectsTarget :sourceset ;
+     void:objectsTarget :targetset .
 </pre></div>
 <p>
       Each link can be mapped to at least one RDF triple with:
@@ -1395,8 +1412,8 @@ Mapping to RDF</h3>
 <p>
       Typical use cases of annotations include specification of labels
       and a "number of hits" at the target dataset. For
-      instance the following Beacon file in Beacon text format
-      (<a class='info' href='#beacon-text-format'>Section&nbsp;4.1<span> (</span><span class='info'>Beacon text format</span><span>)</span></a>):
+      instance the following BEACON file in BEACON text format
+      (<a class='info' href='#beacon-text-format'>Section&nbsp;4.1<span> (</span><span class='info'>BEACON text format</span><span>)</span></a>):
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  #PREFIX: http://example.org/
@@ -1420,12 +1437,12 @@ Mapping to HTML</h3>
 
 <p>
       This document does not specify a single mapping of links in a
-      Beacon link dump to links in a HTML document, so the following
+      BEACON link dump to links in a HTML document, so the following
       description is non-normative.
     
 </p>
 <p>
-      A link in a Beacon dump can be mapped to a HTML link
+      A link in a BEACON dump can be mapped to a HTML link
       (<tt>&lt;a&gt;</tt> element) as following:
     
 </p>
@@ -1454,7 +1471,7 @@ Mapping to HTML</h3>
 </ul>
 
 <p>
-      For instance the following link, given in a Beacon text file:
+      For instance the following link, given in a BEACON text file:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  http://example.com|example|http://example.org
@@ -1498,13 +1515,13 @@ Security Considerations</h3>
 
 <p>
     Programs should be prepared for malformed and malicious content when
-    parsing Beacon files, when constructing links from link tokens, and
+    parsing BEACON files, when constructing links from link tokens, and
     when mapping links to RDF or HTML. Possible attacks of parsing
     contain broken UTF-8 and buffer overflows. Link construction can
     result in unexpectedly long strings and character sequences that may
-    be harmless when analyzed as parts. Most notably, Beacon data may
+    be harmless when analyzed as parts. Most notably, BEACON data may
     store strings containing HTML and JavaScript code to be used for
-    cross-site scripting attacks on the site displaying Beacon links.
+    cross-site scripting attacks on the site displaying BEACON links.
     Applications should therefore escape or filter accordingly all
     content with established libraries, such as Apache Escape Utils.
   
@@ -1573,22 +1590,22 @@ Glossary</h3>
 
 <p></p>
 <blockquote class="text"><dl>
-<dt>Beacon</dt>
+<dt>BEACON</dt>
 <dd>
         
           is a data interchange format as specified in this document.
         
       
 </dd>
-<dt>Beacon file</dt>
+<dt>BEACON file</dt>
 <dd>
         
-          is a link dump serialized in Beacon text format or Beacon XML
+          is a link dump serialized in BEACON text format or BEACON XML
           format.
         
       
 </dd>
-<dt>Beacon text format</dt>
+<dt>BEACON text format</dt>
 <dd>
         
           is a condense format to serialize link dumps as specified in
@@ -1596,7 +1613,7 @@ Glossary</h3>
         
       
 </dd>
-<dt>Beacon XML format</dt>
+<dt>BEACON XML format</dt>
 <dd>
         
           is an XML format to serialize link dumps as specified in this
@@ -1622,7 +1639,7 @@ Glossary</h3>
 <dt>link token</dt>
 <dd>
         
-          is a Unicode string in a Beacon files used to construct a
+          is a Unicode string in a BEACON files used to construct a
           link.
         
       
@@ -1653,11 +1670,11 @@ Glossary</h3>
 <a name="relax-ng-schema-for-beacon-xml"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
-RELAX NG Schema for Beacon XML</h3>
+RELAX NG Schema for BEACON XML</h3>
 
 <p>
-    Below is a schema of <a class='info' href='#beacon-xml-format'>Beacon XML
-    format<span> (</span><span class='info'>Beacon XML format</span><span>)</span></a> in RELAX NG Compact syntax
+    Below is a schema of <a class='info' href='#beacon-xml-format'>BEACON XML
+    format<span> (</span><span class='info'>BEACON XML format</span><span>)</span></a> in RELAX NG Compact syntax
     <a class='info' href='#RELAX-NGC'>[RELAX&#8209;NGC]<span> (</span><span class='info'>Clark, J., &ldquo;RELAX NG Compact Syntax,&rdquo; Nov&nbsp;2002.</span><span>)</span></a>. The schema is non-normative and
     given for reference only.
   
@@ -1689,8 +1706,13 @@ element beacon {
   }*
 }
 </pre></div>
+<a name="example"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.C"></a><h3>Appendix C.&nbsp;
+Example</h3>
+
 <p>
-    A short example of a Beacon XML file is given below:
+    A short example of a BEACON XML file is given below:
   
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -1698,10 +1720,49 @@ element beacon {
         prefix="http://example.org/"
         target="http://example.com/"
         name="ACME document"&gt;
-   &lt;link source="foo" target="bar" /&gt;
-   &lt;link source="foo" /&gt;
-   &lt;link source="doz" annotation="baz" /&gt;
+   &lt;link source="alice" target="foo" /&gt;
+   &lt;link source="bob" /&gt;
+   &lt;link source="ada" annotation="bar" /&gt;
 &lt;/beacon&gt;
+</pre></div>
+<p>
+    The link dump could also be expressed in BEACON text format:
+  
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+#PREFIX: http://example.org/
+#TARGET: http://example.com/
+#NAME:   ACME document
+
+alice||foo
+bob
+ada|bar
+</pre></div>
+<p>
+    The link dump mapped to RDF:
+  
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix void: &lt;http://rdfs.org/ns/void#&gt; .
+
+:sourceset a void:Dataset ;
+    void:uriSpace "http://example.org/" .
+
+:targetset a void:Dataset ;
+    void:uriSpace "http://example.com/" .
+
+:dump a void:Linkset ;
+    void:subjectsTarget :sourceset ;
+    void:objectsTarget :targetset ;
+    void:linkPredicate rdfs:seeAlso .
+
+&lt;http://example.org/alice&gt;
+  rdfs:seeAlso &lt;http://example.com/foo&gt; .
+&lt;http://example.org/bob&gt;
+  rdfs:seeAlso &lt;http://example.com/bob&gt; .
+&lt;http://example.org/ada&gt;
+  rdfs:seeAlso &lt;http://example.com/ada&gt; .
+&lt;http://example.com/ada&gt;
+  rdfs:value "bar" .
 </pre></div>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
