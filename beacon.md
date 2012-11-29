@@ -29,13 +29,13 @@ The formal grammar rules in this document are to be interpreted as described in
 addition, the minus operator (`-`) is used to exclude line breaks and vertical
 bars in the following rules:
 
-     BEACONLINE  =  *CHAR - ( *CHAR LINEBREAK *CHAR )
+     LINE       =  *CHAR - ( *CHAR LINEBREAK *CHAR )
 
-     BEACONVALUE =  *CHAR - ( *CHAR ( LINEBREAK / VBAR ) *CHAR )
+     TOKEN      =  *CHAR - ( *CHAR ( LINEBREAK / VBAR ) *CHAR )
 
-     LINEBREAK   =  LF | CR LF | CR   ; "\n", "\r\n", or "\r"
+     LINEBREAK  =  LF | CR LF | CR   ; "\n", "\r\n", or "\r"
 
-     VBAR        =  %x7C              ; vertical bar ("|")
+     VBAR       =  %x7C              ; vertical bar ("|")
 
 RDF in this document is expressed in Turtle syntax [](#TURTLE). The following
 namespace prefixes are used to refer to RDF properties and classes from the RDF
@@ -129,7 +129,7 @@ Source URI and target URI define where a link is pointing from and to
 respectively. The annotation is an optional whitespace-normalized Unicode
 string that can be used to further describe the link or parts of it. A missing
 annotation is equal to the empty string. Annotations MUST match the grammar
-rule `BEACONVALUE`. The meaning of a link can be indicated by the
+rule `TOKEN`. The meaning of a link can be indicated by the
 **relation type** ([](#relation-types)) meta field.
 
 ## Link construction
@@ -448,62 +448,64 @@ annotation. The default value is `rdf:value` having no specific meaning
 ## BEACON text format
 
 A BEACON text file is an UTF-8 encoded Unicode file [](#RFC3629), split into
-lines by line breaks. The file consists of a set of lines with meta fields,
-followed by a set of lines with link tokens. A BEACON text file MAY begin with
-an Unicode Byte Order Mark and it SHOULD end with a line break:
+lines by line breaks (rule `LINEBREAK`). The file consists of a set of lines
+with meta fields, followed by a set of lines with link tokens. A BEACON text
+file MAY begin with an Unicode Byte Order Mark and it SHOULD end with a line
+break:
 
-     BEACONTEXT  =  [ BOM ] [ START ] *METALINE *EMPTY [ LINKS ]
-    
+     BEACONTEXT  =  [ BOM ] [ START ]
+                    *METALINE
+                    *EMPTY
+                     LINKLINE *( LINEBREAK LINKLINE )
+                    [ LINEBREAK ]
+
      BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 
-At least one empty line SHOULD be used to separate meta lines and link lines.
-The order public of meta lines and the order of link lines is irrelevant. 
+The order of meta lines and of link lines, respectively, is irrelevant. At
+least one empty line SHOULD be used to separate meta lines and link lines.
+If no empty line is given, the first link line MUST NOT begin with `"#"`.
 
-    EMPTY        =  *( *WHITESPACE LINEBREAK )
+    EMPTY        =  *WHITESPACE LINEBREAK
 
-The BEACON text file SHOULD start with an additional, fixed meta field:
+The BEACON text file SHOULD start with a fixed meta field:
 
-     START       =  "#FORMAT:" +WHITESPACE "BEACON" LINEBREAK
+     START       =  "#FORMAT:" +WHITESPACE "BEACON" *WHITESPACE LINEBREAK
 
 A meta line specifies a [meta field](#meta-fields) and its value. Meta field
-names are case insensitive and SHOULD be given in uppercase letters.
+names MUST be given in uppercase letters. All meta lines with `METAFIELD` not
+one of the field names defined in this specification, SHOULD be ignored.
 
      METALINE    =  "#" METAFIELD ":" METAVALUE LINEBREAK
 
-     METAFIELD   =  "PREFIX" / "TARGET" / "RELATION" / "MESSAGE" 
-                 /  "SOURCESET" / "TARGETSET"
-                 /  "NAME" / "DESCRIPTION" / "INSTITUTION" 
-                 /  "ANNOTATION" / "HOMEPAGE"
-                 /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
- 
-     METAVALUE   =  BEACONLINE
+     METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
+
+     METAVALUE   =  LINE
 
 Each link is given on a link line with its source token, optionally follwed by
 annotation token and target token:
 
-     LINKS       =  LINK *( LINEBREAK LINK ) [ LINEBREAK ]
+     LINKLINE    =  SOURCE [ 
+	                  VBAR ANNOTATION /
+					  VBAR ANNOTATION VBAR TARGET /
+					  VBAR TARGET
+					]
 
-     LINK        =  SOURCE [ VBAR OTOKENS ]
+     SOURCE      =  TOKEN
 
-     OTOKENS     =  ANNOTATION / TARGET / ANNOTATION VBAR TARGET
+     TARGET      =  TOKEN
 
-     SOURCE      =  BEACONVALUE
+     ANNOTATION  =  TOKEN
 
-     TARGET      =  BEACONVALUE
+The ambiguity of rule `LINKLINE` with one occurrence of `VBAR` is resolved is
+following:
 
-     ANNOTATION  =  BEACONVALUE
+* If the target meta field has its default value `{+ID}`, and the message meta 
+  field has its default value `{annotation}`, and the normalized second token 
+  begins with "http:" or "https:", then the second token is used as target token.
+* The second token is used as annotation token otherwise.
 
-The ambiguous `OTOKENS` rule is resolved as following:
-
-* if it includes `VBAR`, both annotation token and target token are given
-* if it includes no `VBAR`
-    * if its normalized value begins with "http:" or "https:", and the target
-      meta field has its default value `{+ID}`, and the message meta field 
-      has its default value `{annotation}`, then the value is used
-      as target token
-    * the value is used as annotation token otherwise
-
-This way one can use two forms to encode links to HTTP URIs:
+This way one can use two forms to encode links to HTTP URIs (given target 
+meta field and message meta field with their default values):
 
     foo|http://example.org/foobar
     foo||http://example.org/foobar
@@ -534,9 +536,9 @@ attributes of `<link>` elements and `<link>` elements without `source`
 attribute SHOULD be ignored.
 
 Note that in contrast to BEACON text files, link tokens MAY include line
-breaks, which are removed by whitespace normalization. Furthermore id field,
-annotation field and target token MAY include a vertical bar, which is encoded
-as `%7C` during construction the link.
+breaks, which MUST BE removed by whitespace normalization. Furthermore id field,
+annotation field and target token MAY include a vertical bar, which MUST be replaced
+by the character sequence `%7C` before further processing.
 
 # Mappings
 
