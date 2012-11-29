@@ -23,6 +23,18 @@
 			<email>voss@gbv.de</email>
 		</address>
 	</author>
+	<author initials="Th." surname="Berger" fullname="Thomas Berger">
+		<organization>Gymel.com</organization>
+		<address>
+			<postal>
+				<street>Im Dahl 35</street>
+				<city>Bonn</city>
+				<code>53117</code>
+				<country>Germany</country>
+			</postal>
+			<email>ThB@gymel.com</email>
+		</address>
+	</author>
 	<author initials="M." surname="Schindler" fullname="Mathias Schindler">
 		<organization>Wikimedia Deutschland e.V.</organization>
 		<address>
@@ -34,18 +46,6 @@
 			</postal>
             <phone>+49(30)21915826-0</phone>
 			<email>mathias.schindler@wikimedia.de</email>
-		</address>
-	</author>
-	<author initials="Th." surname="Berger" fullname="Thomas Berger">
-		<organization>Gymel.com</organization>
-		<address>
-			<postal>
-				<street>Im Dahl 35</street>
-				<city>Bonn</city>
-				<code>53117</code>
-				<country>Germany</country>
-			</postal>
-			<email>ThB@gymel.com</email>
 		</address>
 	</author>
 	<date month="November" year="2012"/>

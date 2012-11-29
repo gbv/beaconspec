@@ -227,7 +227,7 @@ following.  Additional meta fields, not defined in this specification, SHOULD
 be ignored.  All meta field values MUST be whitespace-normalized
 ([](#string-normalization)).  Missing meta field values and empty strings MUST
 be set to the field’s default value, which is the empty string unless noted
-otherwise. 
+otherwise. The following diagram shows which meta fields belong to which dataset: 
 
     +----------------+    +-----------------+     +-----------------+
     | source dataset | ---| link dump       |---> | target dataset  |
@@ -266,7 +266,7 @@ an URI if given. This field replaces the blank node `:sourceset`.
 ### targetset
 
 The target dataset can be identified by the targetset meta field, which MUST be
-an URI if given. This field replaces the balnk node `:targetset`.
+an URI if given. This field replaces the blank node `:targetset`.
 
 ### name
 
@@ -305,15 +305,15 @@ creator is an instace of the class `foaf:Agent`.
 
 For instance the following creator meta field values:
 
-    Bea BEACON
+    "Bea Beacon"
 
-    http://example.org/people/bea
+    "http://example.org/people/bea"
 
 can be mapped the the following RDF triples, respectively:
 
-    :dump dcterms:creator "Bea BEACON" .
-    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea BEACON" ] .
-    
+    :dump dcterms:creator "Bea Beacon" .
+    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+
     :dump dcterms:creator <http://example.org/people/bea> .
     <http://example.org/people/bea> a foaf:Agent .
 
@@ -327,7 +327,7 @@ address as specified in section 3.4 of [](#RFC5322), for instance:
 
      admin@example.com
     
-     Bea BEACON <bea@example.org>
+     Bea Beacon <bea@example.org>
 
 The contact meta field is mapped to the `foaf:mbox` and to the `foaf:name` RDF
 properties.  The domain of the the contact meta field is the BEACON dump. The
@@ -338,7 +338,7 @@ sample field values can be mapped to:
      ] .
 
      :dump dcterms:creator [
-         foaf:name "Bea BEACON" ;
+         foaf:name "Bea Beacon" ;
          foaf:mbox <mailto:bea@example.org>
      ] .
 
