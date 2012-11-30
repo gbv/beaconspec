@@ -143,11 +143,11 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">J. Voß</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">Verbundzentrale des GBV</td></tr>
-<tr><td class="header">Intended status: Informational</td><td class="header">M. Schindler</td></tr>
-<tr><td class="header">Expires: June 1, 2013</td><td class="header">Wikimedia Deutschland e.V.</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">Th. Berger</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">Gymel.com</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">November 28, 2012</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">Th. Berger</td></tr>
+<tr><td class="header">Expires: June 3, 2013</td><td class="header">Gymel.com</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">M. Schindler</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">Wikimedia Deutschland e.V.</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">November 30, 2012</td></tr>
 </table></td></tr></table>
 <h1><br />BEACON link dump format<br />draft-voss-beacon-001</h1>
 
@@ -171,7 +171,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on June 1, 2013.</p>
+This Internet-Draft will expire on June 3, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -350,13 +350,13 @@ Notational Conventions</h3>
       breaks and vertical bars in the following rules:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- BEACONLINE  =  *CHAR - ( *CHAR LINEBREAK *CHAR )
+ LINE       =  *CHAR - ( *CHAR LINEBREAK *CHAR )
 
- BEACONVALUE =  *CHAR - ( *CHAR ( LINEBREAK / VBAR ) *CHAR )
+ TOKEN      =  *CHAR - ( *CHAR ( LINEBREAK / VBAR ) *CHAR )
 
- LINEBREAK   =  LF | CR LF | CR   ; "\n", "\r\n", or "\r"
+ LINEBREAK  =  LF | CR LF | CR   ; "\n", "\r\n", or "\r"
 
- VBAR        =  %x7C              ; vertical bar ("|")
+ VBAR       =  %x7C              ; vertical bar ("|")
 </pre></div>
 <p>
       RDF in this document is expressed in Turtle syntax
@@ -510,9 +510,9 @@ Links</h3>
     to respectively. The annotation is an optional whitespace-normalized
     Unicode string that can be used to further describe the link or
     parts of it. A missing annotation is equal to the empty string.
-    Annotations MUST match the grammar rule
-    <tt>BEACONVALUE</tt>. The meaning of a link can be
-    indicated by the <strong>relation type</strong>
+    Annotations MUST match the grammar rule <tt>TOKEN</tt>.
+    The meaning of a link can be indicated by the
+    <strong>relation type</strong>
     (<a class='info' href='#relation-types'>Section&nbsp;2.2<span> (</span><span class='info'>Relation types</span><span>)</span></a>) meta field.
   
 </p>
@@ -695,7 +695,8 @@ Meta fields</h3>
     whitespace-normalized
     (<a class='info' href='#string-normalization'>Section&nbsp;1.2<span> (</span><span class='info'>String normalization</span><span>)</span></a>). Missing meta field
     values and empty strings MUST be set to the field’s default value,
-    which is the empty string unless noted otherwise.
+    which is the empty string unless noted otherwise. The following
+    diagram shows which meta fields belong to which dataset:
   
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 +----------------+    +-----------------+     +-----------------+
@@ -751,7 +752,7 @@ targetset</h3>
 <p>
         The target dataset can be identified by the targetset meta
         field, which MUST be an URI if given. This field replaces the
-        balnk node <tt>:targetset</tt>.
+        blank node <tt>:targetset</tt>.
       
 </p>
 <a name="name"></a><br /><hr />
@@ -822,16 +823,16 @@ creator</h3>
         For instance the following creator meta field values:
       
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-Bea BEACON
+"Bea Beacon"
 
-http://example.org/people/bea
+"http://example.org/people/bea"
 </pre></div>
 <p>
         can be mapped the the following RDF triples, respectively:
       
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-:dump dcterms:creator "Bea BEACON" .
-:dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea BEACON" ] .
+:dump dcterms:creator "Bea Beacon" .
+:dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
 
 :dump dcterms:creator &lt;http://example.org/people/bea&gt; .
 &lt;http://example.org/people/bea&gt; a foaf:Agent .
@@ -855,7 +856,7 @@ contact</h3>
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  admin@example.com
 
- Bea BEACON &lt;bea@example.org&gt;
+ Bea Beacon &lt;bea@example.org&gt;
 </pre></div>
 <p>
         The contact meta field is mapped to the
@@ -870,7 +871,7 @@ contact</h3>
  ] .
 
  :dump dcterms:creator [
-     foaf:name "Bea BEACON" ;
+     foaf:name "Bea Beacon" ;
      foaf:mbox &lt;mailto:bea@example.org&gt;
  ] .
 </pre></div>
@@ -1107,108 +1108,97 @@ BEACON text format</h3>
 
 <p>
       A BEACON text file is an UTF-8 encoded Unicode file
-      <a class='info' href='#RFC3629'>[RFC3629]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>, split into lines by line breaks.
-      The file consists of a set of lines with meta fields, followed by
-      a set of lines with link tokens. A BEACON text file MAY begin with
-      an Unicode Byte Order Mark and it SHOULD end with a line break:
+      <a class='info' href='#RFC3629'>[RFC3629]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>, split into lines by line breaks
+      (rule <tt>LINEBREAK</tt>). The file consists of a set of
+      lines with meta fields, followed by a set of lines with link
+      tokens. A BEACON text file MAY begin with an Unicode Byte Order
+      Mark and it SHOULD end with a line break:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- BEACONTEXT  =  [ BOM ] [ START ] *METALINE *EMPTY [ LINKS ]
+ BEACONTEXT  =  [ BOM ] [ START ]
+                *METALINE
+                *EMPTY
+                 LINKLINE *( LINEBREAK LINKLINE )
+                [ LINEBREAK ]
 
  BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 </pre></div>
 <p>
-      At least one empty line SHOULD be used to separate meta lines and
-      link lines. The order public of meta lines and the order of link
-      lines is irrelevant.
+      The order of meta lines and of link lines, respectively, is
+      irrelevant. At least one empty line SHOULD be used to separate
+      meta lines and link lines. If no empty line is given, the first
+      link line MUST NOT begin with <tt>"#"</tt>.
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-EMPTY        =  *( *WHITESPACE LINEBREAK )
+EMPTY        =  *WHITESPACE LINEBREAK
 </pre></div>
 <p>
-      The BEACON text file SHOULD start with an additional, fixed meta
-      field:
+      The BEACON text file SHOULD start with a fixed meta field:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- START       =  "#FORMAT:" +WHITESPACE "BEACON" LINEBREAK
+ START       =  "#FORMAT:" +WHITESPACE "BEACON" *WHITESPACE LINEBREAK
 </pre></div>
 <p>
       A meta line specifies a <a class='info' href='#meta-fields'>meta
-      field<span> (</span><span class='info'>Meta fields</span><span>)</span></a> and its value. Meta field names are case insensitive
-      and SHOULD be given in uppercase letters.
+      field<span> (</span><span class='info'>Meta fields</span><span>)</span></a> and its value. Meta field names MUST be given in
+      uppercase letters. All meta lines with
+      <tt>METAFIELD</tt> not one of the field names defined in
+      this specification, SHOULD be ignored.
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
  METALINE    =  "#" METAFIELD ":" METAVALUE LINEBREAK
 
- METAFIELD   =  "PREFIX" / "TARGET" / "RELATION" / "MESSAGE"
-             /  "SOURCESET" / "TARGETSET"
-             /  "NAME" / "DESCRIPTION" / "INSTITUTION"
-             /  "ANNOTATION" / "HOMEPAGE"
-             /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
+ METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
 
- METAVALUE   =  BEACONLINE
+ METAVALUE   =  LINE
 </pre></div>
 <p>
       Each link is given on a link line with its source token,
       optionally follwed by annotation token and target token:
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
- LINKS       =  LINK *( LINEBREAK LINK ) [ LINEBREAK ]
+ LINKLINE    =  SOURCE [
+                  VBAR ANNOTATION /
+                  VBAR ANNOTATION VBAR TARGET /
+                  VBAR TARGET
+                ]
 
- LINK        =  SOURCE [ VBAR OTOKENS ]
+ SOURCE      =  TOKEN
 
- OTOKENS     =  ANNOTATION / TARGET / ANNOTATION VBAR TARGET
+ TARGET      =  TOKEN
 
- SOURCE      =  BEACONVALUE
-
- TARGET      =  BEACONVALUE
-
- ANNOTATION  =  BEACONVALUE
+ ANNOTATION  =  TOKEN
 </pre></div>
 <p>
-      The ambiguous <tt>OTOKENS</tt> rule is resolved as
-      following:
+      The ambiguity of rule <tt>LINKLINE</tt> with one
+      occurrence of <tt>VBAR</tt> is resolved is following:
     
 </p>
 <p></p>
 <ul class="text">
 <li>
         
-          if it includes <tt>VBAR</tt>, both annotation token
-          and target token are given
+          If the target meta field has its default value
+          <tt>{+ID}</tt>, and the message meta field has its
+          default value <tt>{annotation}</tt>, and the
+          normalized second token begins with "http:" or
+          "https:", then the second token is used as target
+          token.
         
       
 </li>
 <li>
         
-          if it includes no <tt>VBAR</tt>
+          The second token is used as annotation token otherwise.
         
-        
-<ul class="text">
-<li>
-            
-              if its normalized value begins with "http:" or
-              "https:", and the target meta field has its
-              default value <tt>{+ID}</tt>, and the message
-              meta field has its default value
-              <tt>{annotation}</tt>, then the value is used as
-              target token
-            
-          
-</li>
-<li>
-            
-              the value is used as annotation token otherwise
-            
-          
-</li>
-</ul>
       
 </li>
 </ul>
 
 <p>
-      This way one can use two forms to encode links to HTTP URIs:
+      This way one can use two forms to encode links to HTTP URIs (given
+      target meta field and message meta field with their default
+      values):
     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 foo|http://example.org/foobar
@@ -1299,10 +1289,11 @@ BEACON XML format</h3>
 </p>
 <p>
       Note that in contrast to BEACON text files, link tokens MAY
-      include line breaks, which are removed by whitespace
+      include line breaks, which MUST BE removed by whitespace
       normalization. Furthermore id field, annotation field and target
-      token MAY include a vertical bar, which is encoded as
-      <tt>%7C</tt> during construction the link.
+      token MAY include a vertical bar, which MUST be replaced by the
+      character sequence <tt>%7C</tt> before further
+      processing.
     
 </p>
 <a name="mappings"></a><br /><hr />
@@ -1784,6 +1775,19 @@ ada|bar
 <td class="author-text"><a href="mailto:voss@gbv.de">voss@gbv.de</a></td></tr>
 <tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Thomas Berger</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Gymel.com</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Im Dahl 35</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Bonn  53117</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Germany</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:ThB@gymel.com">ThB@gymel.com</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
 <td class="author-text">Mathias Schindler</td></tr>
 <tr><td class="author-text">&nbsp;</td>
 <td class="author-text">Wikimedia Deutschland e.V.</td></tr>
@@ -1797,18 +1801,5 @@ ada|bar
 <td class="author-text">+49(30)21915826-0</td></tr>
 <tr><td class="author" align="right">Email:&nbsp;</td>
 <td class="author-text"><a href="mailto:mathias.schindler@wikimedia.de">mathias.schindler@wikimedia.de</a></td></tr>
-<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">Thomas Berger</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">Gymel.com</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">Im Dahl 35</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">Bonn  53117</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">Germany</td></tr>
-<tr><td class="author" align="right">Email:&nbsp;</td>
-<td class="author-text"><a href="mailto:ThB@gymel.com">ThB@gymel.com</a></td></tr>
 </table>
 </body></html>

@@ -3,11 +3,11 @@
 
 Network Working Group                                            J. Voss
 Internet-Draft                                   Verbundzentrale des GBV
-Intended status: Informational                              M. Schindler
-Expires: June 1, 2013                         Wikimedia Deutschland e.V.
-                                                              Th. Berger
-                                                               Gymel.com
-                                                       November 28, 2012
+Intended status: Informational                                Th. Berger
+Expires: June 3, 2013                                          Gymel.com
+                                                            M. Schindler
+                                              Wikimedia Deutschland e.V.
+                                                       November 30, 2012
 
 
                         BEACON link dump format
@@ -33,7 +33,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 1, 2013.
+   This Internet-Draft will expire on June 3, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Voss, et al.              Expires June 1, 2013                  [Page 1]
+Voss, et al.              Expires June 3, 2013                  [Page 1]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -91,14 +91,14 @@ Table of Contents
      4.2.  BEACON XML format  . . . . . . . . . . . . . . . . . . . . 14
    5.  Mappings . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
      5.1.  Mapping to RDF . . . . . . . . . . . . . . . . . . . . . . 15
-     5.2.  Mapping to HTML  . . . . . . . . . . . . . . . . . . . . . 17
+     5.2.  Mapping to HTML  . . . . . . . . . . . . . . . . . . . . . 16
    6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 17
    7.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 18
      7.1.  Normative References . . . . . . . . . . . . . . . . . . . 18
-     7.2.  Informative References . . . . . . . . . . . . . . . . . . 19
+     7.2.  Informative References . . . . . . . . . . . . . . . . . . 18
    Appendix A.  Glossary  . . . . . . . . . . . . . . . . . . . . . . 19
    Appendix B.  RELAX NG Schema for BEACON XML  . . . . . . . . . . . 20
-   Appendix C.  Example . . . . . . . . . . . . . . . . . . . . . . . 21
+   Appendix C.  Example . . . . . . . . . . . . . . . . . . . . . . . 20
    Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 22
 
 
@@ -108,7 +108,7 @@ Table of Contents
 
 
 
-Voss, et al.              Expires June 1, 2013                  [Page 2]
+Voss, et al.              Expires June 3, 2013                  [Page 2]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -143,13 +143,13 @@ Internet-Draft                   BEACON                    November 2012
    "CR", and "SP".  In addition, the minus operator ("-") is used to
    exclude line breaks and vertical bars in the following rules:
 
-    BEACONLINE  =  *CHAR - ( *CHAR LINEBREAK *CHAR )
+    LINE       =  *CHAR - ( *CHAR LINEBREAK *CHAR )
 
-    BEACONVALUE =  *CHAR - ( *CHAR ( LINEBREAK / VBAR ) *CHAR )
+    TOKEN      =  *CHAR - ( *CHAR ( LINEBREAK / VBAR ) *CHAR )
 
-    LINEBREAK   =  LF | CR LF | CR   ; "\n", "\r\n", or "\r"
+    LINEBREAK  =  LF | CR LF | CR   ; "\n", "\r\n", or "\r"
 
-    VBAR        =  %x7C              ; vertical bar ("|")
+    VBAR       =  %x7C              ; vertical bar ("|")
 
    RDF in this document is expressed in Turtle syntax [TURTLE].  The
    following namespace prefixes are used to refer to RDF properties and
@@ -164,7 +164,7 @@ Internet-Draft                   BEACON                    November 2012
 
 
 
-Voss, et al.              Expires June 1, 2013                  [Page 3]
+Voss, et al.              Expires June 3, 2013                  [Page 3]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -220,7 +220,7 @@ Internet-Draft                   BEACON                    November 2012
 
 
 
-Voss, et al.              Expires June 1, 2013                  [Page 4]
+Voss, et al.              Expires June 3, 2013                  [Page 4]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -269,14 +269,14 @@ Internet-Draft                   BEACON                    November 2012
    respectively.  The annotation is an optional whitespace-normalized
    Unicode string that can be used to further describe the link or parts
    of it.  A missing annotation is equal to the empty string.
-   Annotations MUST match the grammar rule "BEACONVALUE".  The meaning
-   of a link can be indicated by the *relation type* (Section 2.2) meta
+   Annotations MUST match the grammar rule "TOKEN".  The meaning of a
+   link can be indicated by the *relation type* (Section 2.2) meta
    field.
 
 
 
 
-Voss, et al.              Expires June 1, 2013                  [Page 5]
+Voss, et al.              Expires June 3, 2013                  [Page 5]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -332,7 +332,7 @@ Internet-Draft                   BEACON                    November 2012
 
 
 
-Voss, et al.              Expires June 1, 2013                  [Page 6]
+Voss, et al.              Expires June 3, 2013                  [Page 6]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -388,7 +388,7 @@ Internet-Draft                   BEACON                    November 2012
 
 
 
-Voss, et al.              Expires June 1, 2013                  [Page 7]
+Voss, et al.              Expires June 3, 2013                  [Page 7]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -403,7 +403,8 @@ Internet-Draft                   BEACON                    November 2012
    specification, SHOULD be ignored.  All meta field values MUST be
    whitespace-normalized (Section 1.2).  Missing meta field values and
    empty strings MUST be set to the field's default value, which is the
-   empty string unless noted otherwise.
+   empty string unless noted otherwise.  The following diagram shows
+   which meta fields belong to which dataset:
 
    +----------------+    +-----------------+     +-----------------+
    | source dataset | ---| link dump       |---> | target dataset  |
@@ -443,8 +444,7 @@ Internet-Draft                   BEACON                    November 2012
 
 
 
-
-Voss, et al.              Expires June 1, 2013                  [Page 8]
+Voss, et al.              Expires June 3, 2013                  [Page 8]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -452,7 +452,7 @@ Internet-Draft                   BEACON                    November 2012
 3.1.2.  targetset
 
    The target dataset can be identified by the targetset meta field,
-   which MUST be an URI if given.  This field replaces the balnk node
+   which MUST be an URI if given.  This field replaces the blank node
    ":targetset".
 
 3.1.3.  name
@@ -494,21 +494,21 @@ Internet-Draft                   BEACON                    November 2012
 
    For instance the following creator meta field values:
 
-   Bea BEACON
+   "Bea Beacon"
 
-   http://example.org/people/bea
+   "http://example.org/people/bea"
 
 
 
-Voss, et al.              Expires June 1, 2013                  [Page 9]
+Voss, et al.              Expires June 3, 2013                  [Page 9]
 
 Internet-Draft                   BEACON                    November 2012
 
 
    can be mapped the the following RDF triples, respectively:
 
-   :dump dcterms:creator "Bea BEACON" .
-   :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea BEACON" ] .
+   :dump dcterms:creator "Bea Beacon" .
+   :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
 
    :dump dcterms:creator <http://example.org/people/bea> .
    <http://example.org/people/bea> a foaf:Agent .
@@ -525,7 +525,7 @@ Internet-Draft                   BEACON                    November 2012
 
     admin@example.com
 
-    Bea BEACON <bea@example.org>
+    Bea Beacon <bea@example.org>
 
    The contact meta field is mapped to the "foaf:mbox" and to the
    "foaf:name" RDF properties.  The domain of the the contact meta field
@@ -536,7 +536,7 @@ Internet-Draft                   BEACON                    November 2012
     ] .
 
     :dump dcterms:creator [
-        foaf:name "Bea BEACON" ;
+        foaf:name "Bea Beacon" ;
         foaf:mbox <mailto:bea@example.org>
     ] .
 
@@ -556,7 +556,7 @@ Internet-Draft                   BEACON                    November 2012
 
 
 
-Voss, et al.              Expires June 1, 2013                 [Page 10]
+Voss, et al.              Expires June 3, 2013                 [Page 10]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -612,7 +612,7 @@ Internet-Draft                   BEACON                    November 2012
 
 
 
-Voss, et al.              Expires June 1, 2013                 [Page 11]
+Voss, et al.              Expires June 3, 2013                 [Page 11]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -668,7 +668,7 @@ Internet-Draft                   BEACON                    November 2012
 
 
 
-Voss, et al.              Expires June 1, 2013                 [Page 12]
+Voss, et al.              Expires June 3, 2013                 [Page 12]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -687,44 +687,44 @@ Internet-Draft                   BEACON                    November 2012
 4.1.  BEACON text format
 
    A BEACON text file is an UTF-8 encoded Unicode file [RFC3629], split
-   into lines by line breaks.  The file consists of a set of lines with
-   meta fields, followed by a set of lines with link tokens.  A BEACON
-   text file MAY begin with an Unicode Byte Order Mark and it SHOULD end
-   with a line break:
+   into lines by line breaks (rule "LINEBREAK").  The file consists of a
+   set of lines with meta fields, followed by a set of lines with link
+   tokens.  A BEACON text file MAY begin with an Unicode Byte Order Mark
+   and it SHOULD end with a line break:
 
-    BEACONTEXT  =  [ BOM ] [ START ] *METALINE *EMPTY [ LINKS ]
+    BEACONTEXT  =  [ BOM ] [ START ]
+                   *METALINE
+                   *EMPTY
+                    LINKLINE *( LINEBREAK LINKLINE )
+                   [ LINEBREAK ]
 
     BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 
-   At least one empty line SHOULD be used to separate meta lines and
-   link lines.  The order public of meta lines and the order of link
-   lines is irrelevant.
+   The order of meta lines and of link lines, respectively, is
+   irrelevant.  At least one empty line SHOULD be used to separate meta
+   lines and link lines.  If no empty line is given, the first link line
+   MUST NOT begin with ""#"".
 
-   EMPTY        =  *( *WHITESPACE LINEBREAK )
+   EMPTY        =  *WHITESPACE LINEBREAK
 
-   The BEACON text file SHOULD start with an additional, fixed meta
-   field:
+   The BEACON text file SHOULD start with a fixed meta field:
 
-    START       =  "#FORMAT:" +WHITESPACE "BEACON" LINEBREAK
+    START       =  "#FORMAT:" +WHITESPACE "BEACON" *WHITESPACE LINEBREAK
 
    A meta line specifies a meta field (Section 3) and its value.  Meta
-   field names are case insensitive and SHOULD be given in uppercase
-   letters.
+   field names MUST be given in uppercase letters.  All meta lines with
+   "METAFIELD" not one of the field names defined in this specification,
+   SHOULD be ignored.
 
     METALINE    =  "#" METAFIELD ":" METAVALUE LINEBREAK
 
-    METAFIELD   =  "PREFIX" / "TARGET" / "RELATION" / "MESSAGE"
-                /  "SOURCESET" / "TARGETSET"
-                /  "NAME" / "DESCRIPTION" / "INSTITUTION"
-                /  "ANNOTATION" / "HOMEPAGE"
-                /  "CONTACT" / "FEED" / "TIMESTAMP" / "UPDATE"
+    METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
 
-    METAVALUE   =  BEACONLINE
+    METAVALUE   =  LINE
 
 
 
-
-Voss, et al.              Expires June 1, 2013                 [Page 13]
+Voss, et al.              Expires June 3, 2013                 [Page 13]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -732,33 +732,30 @@ Internet-Draft                   BEACON                    November 2012
    Each link is given on a link line with its source token, optionally
    follwed by annotation token and target token:
 
-    LINKS       =  LINK *( LINEBREAK LINK ) [ LINEBREAK ]
+    LINKLINE    =  SOURCE [
+                     VBAR ANNOTATION /
+                     VBAR ANNOTATION VBAR TARGET /
+                     VBAR TARGET
+                   ]
 
-    LINK        =  SOURCE [ VBAR OTOKENS ]
+    SOURCE      =  TOKEN
 
-    OTOKENS     =  ANNOTATION / TARGET / ANNOTATION VBAR TARGET
+    TARGET      =  TOKEN
 
-    SOURCE      =  BEACONVALUE
+    ANNOTATION  =  TOKEN
 
-    TARGET      =  BEACONVALUE
+   The ambiguity of rule "LINKLINE" with one occurrence of "VBAR" is
+   resolved is following:
 
-    ANNOTATION  =  BEACONVALUE
+   -  If the target meta field has its default value "{+ID}", and the
+      message meta field has its default value "{annotation}", and the
+      normalized second token begins with "http:" or "https:", then the
+      second token is used as target token.
 
-   The ambiguous "OTOKENS" rule is resolved as following:
+   -  The second token is used as annotation token otherwise.
 
-   -  if it includes "VBAR", both annotation token and target token are
-      given
-
-   -  if it includes no "VBAR"
-
-      -  if its normalized value begins with "http:" or "https:", and
-         the target meta field has its default value "{+ID}", and the
-         message meta field has its default value "{annotation}", then
-         the value is used as target token
-
-      -  the value is used as annotation token otherwise
-
-   This way one can use two forms to encode links to HTTP URIs:
+   This way one can use two forms to encode links to HTTP URIs (given
+   target meta field and message meta field with their default values):
 
    foo|http://example.org/foobar
    foo||http://example.org/foobar
@@ -776,19 +773,17 @@ Internet-Draft                   BEACON                    November 2012
 
    -  Include an empty "<link/>" tag for each link.
 
-
-
-
-
-Voss, et al.              Expires June 1, 2013                 [Page 14]
-
-Internet-Draft                   BEACON                    November 2012
-
-
    -  Include the source token as XML attribute "source" of each
       "<link/>" element.
 
    The file MAY further:
+
+
+
+Voss, et al.              Expires June 3, 2013                 [Page 14]
+
+Internet-Draft                   BEACON                    November 2012
+
 
    -  Specify meta fields (Section 3) as XML attributes to the
       "<beacon>" tag.
@@ -806,9 +801,10 @@ Internet-Draft                   BEACON                    November 2012
    elements without "source" attribute SHOULD be ignored.
 
    Note that in contrast to BEACON text files, link tokens MAY include
-   line breaks, which are removed by whitespace normalization.
+   line breaks, which MUST BE removed by whitespace normalization.
    Furthermore id field, annotation field and target token MAY include a
-   vertical bar, which is encoded as "%7C" during construction the link.
+   vertical bar, which MUST be replaced by the character sequence "%7C"
+   before further processing.
 
 
 5.  Mappings
@@ -832,18 +828,18 @@ Internet-Draft                   BEACON                    November 2012
 
    Each link can be mapped to at least one RDF triple with:
 
-
-
-
-
-Voss, et al.              Expires June 1, 2013                 [Page 15]
-
-Internet-Draft                   BEACON                    November 2012
-
-
    -  the source URI used as subject IRI,
 
    -  the relation type used as predicate,
+
+
+
+
+
+Voss, et al.              Expires June 3, 2013                 [Page 15]
+
+Internet-Draft                   BEACON                    November 2012
+
 
    -  the target URI used as object IRI.
 
@@ -886,17 +882,6 @@ Internet-Draft                   BEACON                    November 2012
     <http://example.org/abc> foaf:primaryTopic <http://example.com/xy> .
     <http://example.com/xy> dcterms:extent "12" .
 
-
-
-
-
-
-
-Voss, et al.              Expires June 1, 2013                 [Page 16]
-
-Internet-Draft                   BEACON                    November 2012
-
-
 5.2.  Mapping to HTML
 
    This document does not specify a single mapping of links in a BEACON
@@ -904,6 +889,14 @@ Internet-Draft                   BEACON                    November 2012
    is non-normative.
 
    A link in a BEACON dump can be mapped to a HTML link ("<a>" element)
+
+
+
+Voss, et al.              Expires June 3, 2013                 [Page 16]
+
+Internet-Draft                   BEACON                    November 2012
+
+
    as following:
 
    -  link source corresponds to the website which a HTML link is
@@ -945,14 +938,6 @@ Internet-Draft                   BEACON                    November 2012
 
    Programs should be prepared for malformed and malicious content when
    parsing BEACON files, when constructing links from link tokens, and
-
-
-
-Voss, et al.              Expires June 1, 2013                 [Page 17]
-
-Internet-Draft                   BEACON                    November 2012
-
-
    when mapping links to RDF or HTML.  Possible attacks of parsing
    contain broken UTF-8 and buffer overflows.  Link construction can
    result in unexpectedly long strings and character sequences that may
@@ -960,6 +945,14 @@ Internet-Draft                   BEACON                    November 2012
    store strings containing HTML and JavaScript code to be used for
    cross-site scripting attacks on the site displaying BEACON links.
    Applications should therefore escape or filter accordingly all
+
+
+
+Voss, et al.              Expires June 3, 2013                 [Page 17]
+
+Internet-Draft                   BEACON                    November 2012
+
+
    content with established libraries, such as Apache Escape Utils.
 
 
@@ -999,16 +992,6 @@ Internet-Draft                   BEACON                    November 2012
    [Unicode]  The Unicode Consortium, "The Unicode Standard, Version
               6.1", April 2012.
 
-
-
-
-
-
-Voss, et al.              Expires June 1, 2013                 [Page 18]
-
-Internet-Draft                   BEACON                    November 2012
-
-
 7.2.  Informative References
 
    [FOAF]     Brickley, D. and L. Miller, "FOAF Vocabulary
@@ -1018,6 +1001,13 @@ Internet-Draft                   BEACON                    November 2012
 
    [RELAX-NGC]
               Clark, J., "RELAX NG Compact Syntax", Nov 2002.
+
+
+
+Voss, et al.              Expires June 3, 2013                 [Page 18]
+
+Internet-Draft                   BEACON                    November 2012
+
 
    [RFC5013]  Kunze, J. and T. Baker, "The Dublin Core Metadata Element
               Set", RFC 5013, August 2007.
@@ -1055,16 +1045,6 @@ Appendix A.  Glossary
    link dump  is a set of links and meta fields with common relation
       type for all links.
 
-
-
-
-
-
-Voss, et al.              Expires June 1, 2013                 [Page 19]
-
-Internet-Draft                   BEACON                    November 2012
-
-
    link token  is a Unicode string in a BEACON files used to construct a
       link.
 
@@ -1073,6 +1053,17 @@ Internet-Draft                   BEACON                    November 2012
 
    target database  is the set (or superset) of all target URIs in a
       link dump.
+
+
+
+
+
+
+
+Voss, et al.              Expires June 3, 2013                 [Page 19]
+
+Internet-Draft                   BEACON                    November 2012
+
 
    relation type  a common releation between targets and sources in a
       link dump.
@@ -1112,18 +1103,23 @@ Appendix B.  RELAX NG Schema for BEACON XML
    }
 
 
-
-
-
-
-Voss, et al.              Expires June 1, 2013                 [Page 20]
-
-Internet-Draft                   BEACON                    November 2012
-
-
 Appendix C.  Example
 
    A short example of a BEACON XML file is given below:
+
+
+
+
+
+
+
+
+
+
+Voss, et al.              Expires June 3, 2013                 [Page 20]
+
+Internet-Draft                   BEACON                    November 2012
+
 
    <?xml version="1.0" encoding="UTF-8"?>
    <beacon xmlns="http://purl.org/net/beacon"
@@ -1172,7 +1168,11 @@ Appendix C.  Example
 
 
 
-Voss, et al.              Expires June 1, 2013                 [Page 21]
+
+
+
+
+Voss, et al.              Expires June 3, 2013                 [Page 21]
 
 Internet-Draft                   BEACON                    November 2012
 
@@ -1189,6 +1189,15 @@ Authors' Addresses
    Email: voss@gbv.de
 
 
+   Thomas Berger
+   Gymel.com
+   Im Dahl 35
+   Bonn  53117
+   Germany
+
+   Email: ThB@gymel.com
+
+
    Mathias Schindler
    Wikimedia Deutschland e.V.
    Obentrautstr. 72
@@ -1199,13 +1208,6 @@ Authors' Addresses
    Email: mathias.schindler@wikimedia.de
 
 
-   Thomas Berger
-   Gymel.com
-   Im Dahl 35
-   Bonn  53117
-   Germany
-
-   Email: ThB@gymel.com
 
 
 
@@ -1226,7 +1228,5 @@ Authors' Addresses
 
 
 
-
-
-Voss, et al.              Expires June 1, 2013                 [Page 22]
+Voss, et al.              Expires June 3, 2013                 [Page 22]
 
