@@ -1,3 +1,6 @@
 [submodule "pandoc2rfc"]
 	path = pandoc2rfc
 	url = git://github.com/miekg/pandoc2rfc.git
+[submodule "makespec"]
+	path = makespec
+	url = git@github.com:jakobib/makespec.git
