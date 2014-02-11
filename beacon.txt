@@ -404,8 +404,12 @@ Internet-Draft                   BEACON                     January 2014
 
    The name meta field contains a name or title of target dataset.  This
    field is mapped to the RDF property "dcterms:title".  For instance
-   the name meta field value "ACME documents" can be mapped to this RDF
-   triple:
+   the name meta field value "ACME documents", expressable in BEACON
+   text format as
+
+   #NAME: ACME documents
+
+   can be mapped to this RDF triple:
 
    :targetset dcterms:title "ACME documents" .
 
@@ -415,7 +419,11 @@ Internet-Draft                   BEACON                     January 2014
    organization or of an individual responsible for making available the
    target dataset.  This field is mapped to the RDF property
    "dcterms:publisher".  For instance the institution meta field value
-   "ACME" can be mapped to this RDF triple:
+   "ACME", expressable in BEACON text format as
+
+   #INSTITUTION: ACME
+
+   can be mapped to this RDF triple:
 
    :targetset dcterms:publisher "ACME" .
 
@@ -426,9 +434,21 @@ Internet-Draft                   BEACON                     January 2014
    The description meta field contains a human readable description of
    the link dump.  This field is mapped to the "dcterms:description" RDF
    property.  For instance the description meta field value "Mapping
-   from ids to documents" can be mapped to this RDF triple:
+   from ids to documents", expressible in BEACON text format as
+
+   #DESCRIPTION: Mapping from ids to documents
+
+   can be mapped to this RDF triple:
 
    :dump dcterms:description "Mapping from ids to documents" .
+
+
+
+
+Voss, et al.              Expires July 5, 2014                  [Page 8]
+
+Internet-Draft                   BEACON                     January 2014
+
 
 3.2.2.  creator
 
@@ -437,18 +457,11 @@ Internet-Draft                   BEACON                     January 2014
    dump.  This field is mapped to the "dcterms:creator" RDF property.
    The creator is an instace of the class "foaf:Agent".
 
-   For instance the following creator meta field values:
+   For instance the following creator meta field values, expressed in
+   BEACON text format:
 
-   "Bea Beacon"
-
-   "http://example.org/people/bea"
-
-
-
-Voss, et al.              Expires July 5, 2014                  [Page 8]
-
-Internet-Draft                   BEACON                     January 2014
-
+   #CREATOR: Bea Beacon
+   #CREATOR: http://example.org/people/bea
 
    can be mapped the the following RDF triples, respectively:
 
@@ -485,19 +498,6 @@ Internet-Draft                   BEACON                     January 2014
         foaf:mbox <mailto:bea@example.org>
     ] .
 
-3.2.4.  homepage
-
-   The homepage field contains an URL of a website with additional
-   information about this link dump.  This field corresponds to the RDF
-   property "foaf:homepage" with "dump" as subject.  Note that this
-   field does not specify the homepage of the target dataset.
-
-   :dump foaf:homepage <http://example.org/about.html> .
-
-
-
-
-
 
 
 
@@ -506,11 +506,29 @@ Voss, et al.              Expires July 5, 2014                  [Page 9]
 Internet-Draft                   BEACON                     January 2014
 
 
+3.2.4.  homepage
+
+   The homepage field contains an URL of a website with additional
+   information about this link dump.  This field corresponds to the RDF
+   property "foaf:homepage" with "dump" as subject.  Note that this
+   field does not specify the homepage of the target dataset.  For
+   instance this meta field expressed in BEACON text format
+
+   #HOMEPAGE http://example.org/about.html
+
+   can be mapped to this RDF triple:
+
+   :dump foaf:homepage <http://example.org/about.html> .
+
 3.2.5.  feed
 
    The feed field contains an URL, where to download the link dump from.
-   This field corresponds to the RDF property "void:dataDump".  An
-   example mapped to an RDF triple:
+   This field corresponds to the RDF property "void:dataDump".  For
+   instance this meta field, expressed in BEACON text format
+
+   #FEED: http://example.com/beacon.txt
+
+   can be mapped to this RDF triple:
 
    :dump void:dataDump <http://example.com/beacon.txt> .
 
@@ -525,13 +543,24 @@ Internet-Draft                   BEACON                     January 2014
    "Z" character MUST be present in the absence of a numeric time zone
    offset.  This field corresponds to the "dcterms:modified" property.
 
-   For instance the following valid timestamp values:
+   For instance the following valid timestamp values, expressed in
+   BEACON text format:
 
-    2012-05-30
-    2012-05-30T15:17:36+02:00
-    2012-05-30T13:17:36Z
+    #TIMESTAMP: 2012-05-30
+    #TIMESTAMP: 2012-05-30T15:17:36+02:00
+    #TIMESTAMP: 2012-05-30T13:17:36Z
 
    can be mapped to the following RDF triples, respectively:
+
+
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 10]
+
+Internet-Draft                   BEACON                     January 2014
+
 
     :dump dcterms:modified "2012-05-30"
     :dump dcterms:modified "2012-05-30T15:17:36+02:00"
@@ -554,13 +583,6 @@ Internet-Draft                   BEACON                     January 2014
    o  "monthly"
 
    o  "yearly"
-
-
-
-Voss, et al.              Expires July 5, 2014                 [Page 10]
-
-Internet-Draft                   BEACON                     January 2014
-
 
    o  "never"
 
@@ -587,6 +609,15 @@ Internet-Draft                   BEACON                     January 2014
    "void:uriSpace" or "void:uriRegexPattern" with ":sourceset" as RDF
    subject.
 
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 11]
+
+Internet-Draft                   BEACON                     January 2014
+
+
 3.3.2.  target
 
    The target field specifies an URI patter to construct link targets.
@@ -609,14 +640,6 @@ Internet-Draft                   BEACON                     January 2014
    link dump.  The field value MUST be an URI.  The default relation
    type is "rdfs:seeAlso".  This field is mapped to the RDF property
    "void:linkPredicate" with subject ":dump".
-
-
-
-
-Voss, et al.              Expires July 5, 2014                 [Page 11]
-
-Internet-Draft                   BEACON                     January 2014
-
 
 3.3.5.  annotation
 
@@ -641,6 +664,15 @@ Internet-Draft                   BEACON                     January 2014
                    [ LINEBREAK ]
 
     BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
+
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 12]
+
+Internet-Draft                   BEACON                     January 2014
+
 
    The order of meta lines and of link lines, respectively, is
    irrelevant.  At least one empty line SHOULD be used to separate meta
@@ -667,13 +699,6 @@ Internet-Draft                   BEACON                     January 2014
    Each link is given on a link line with its source token, optionally
    follwed by annotation token and target token:
 
-
-
-Voss, et al.              Expires July 5, 2014                 [Page 12]
-
-Internet-Draft                   BEACON                     January 2014
-
-
     LINKLINE    =  SOURCE [
                      VBAR ANNOTATION /
                      VBAR ANNOTATION VBAR TARGET /
@@ -695,6 +720,15 @@ Internet-Draft                   BEACON                     January 2014
       second token is used as target token.
 
    o  The second token is used as annotation token otherwise.
+
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 13]
+
+Internet-Draft                   BEACON                     January 2014
+
 
    This way one can use two forms to encode links to HTTP URIs (given
    target meta field and message meta field with their default values):
@@ -723,13 +757,6 @@ Internet-Draft                   BEACON                     January 2014
    o  Specify meta fields (Section 3) as XML attributes to the
       "<beacon>" tag.
 
-
-
-Voss, et al.              Expires July 5, 2014                 [Page 13]
-
-Internet-Draft                   BEACON                     January 2014
-
-
    o  Specify link tokens "target" and/or "annotation" as attributes to
       the "<link>" element.
 
@@ -747,6 +774,17 @@ Internet-Draft                   BEACON                     January 2014
    Furthermore id field, annotation field and target token MAY include a
    vertical bar, which MUST be replaced by the character sequence "%7C"
    before further processing.
+
+
+
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 14]
+
+Internet-Draft                   BEACON                     January 2014
+
 
 5.  Mappings
 
@@ -778,14 +816,6 @@ Internet-Draft                   BEACON                     January 2014
    As RDF is not defined on URIs but on URI references or IRIs, all URIs
    MUST be transformed to an IRI by following the process defined in
    Section 3.2 of [RFC3987].  Applications MAY reject mapping link dumps
-
-
-
-Voss, et al.              Expires July 5, 2014                 [Page 14]
-
-Internet-Draft                   BEACON                     January 2014
-
-
    with relation type from the IANA link relations registry, in lack of
    official URIs.  Another valid solution is to extend the RDF model by
    using blank nodes as predicates.
@@ -803,6 +833,15 @@ Internet-Draft                   BEACON                     January 2014
    Applications MAY ignore annotations and map annotations to different
    kinds of RDF triples if the "annotation" meta field is the default
    value "rdf:value".  For instance an annotation could contain
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 15]
+
+Internet-Draft                   BEACON                     January 2014
+
+
    additional information about a link such as its provenience, date, or
    probability (reification).
 
@@ -834,14 +873,6 @@ Internet-Draft                   BEACON                     January 2014
    o  link source corresponds to the website which a HTML link is
       included at,
 
-
-
-
-Voss, et al.              Expires July 5, 2014                 [Page 15]
-
-Internet-Draft                   BEACON                     January 2014
-
-
    o  link target corresponds to the "href" attribute,
 
    o  link annotation corresponds to the textual content,
@@ -857,6 +888,15 @@ Internet-Draft                   BEACON                     January 2014
    Note that the annotation field value may be the empty string.  In
    practice, additional meta fields SHOULD be used to construct
    appropriate HTML links.  For instance the meta fields
+
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 16]
+
+Internet-Draft                   BEACON                     January 2014
+
 
     #RELATION: http://xmlns.com/foaf/0.1/isPrimaryTopicOf
     #SOURCETYPE: http://xmlns.com/foaf/0.1/Person
@@ -886,18 +926,6 @@ Internet-Draft                   BEACON                     January 2014
    Applications should therefore escape or filter accordingly all
    content with established libraries, such as Apache Escape Utils.
 
-
-
-
-
-
-
-
-Voss, et al.              Expires July 5, 2014                 [Page 16]
-
-Internet-Draft                   BEACON                     January 2014
-
-
 7.  References
 
 7.1.  Normative References
@@ -917,6 +945,14 @@ Internet-Draft                   BEACON                     January 2014
 
    [RFC3987]  Duerst, M. and M. Suignard, "Internationalized Resource
               Identifiers (IRIs)", RFC 3987, January 2005.
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 17]
+
+Internet-Draft                   BEACON                     January 2014
+
 
    [RFC5234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
               Specifications: ABNF", STD 68, RFC 5234, January 2008.
@@ -947,13 +983,6 @@ Internet-Draft                   BEACON                     January 2014
 
    [SAX]      Bradner, D., "SAX 1.0: The Simple API for XML", May 1998.
 
-
-
-Voss, et al.              Expires July 5, 2014                 [Page 17]
-
-Internet-Draft                   BEACON                     January 2014
-
-
    [TURTLE]   Beckett, D. and T. Berners-Lee, "Turtle - Terse RDF Triple
               Language", Mar 2011.
 
@@ -971,6 +1000,15 @@ Internet-Draft                   BEACON                     January 2014
 Appendix A.  Glossary
 
    BEACON  is a data interchange format as specified in this document.
+
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 18]
+
+Internet-Draft                   BEACON                     January 2014
+
 
    BEACON file  is a link dump serialized in BEACON text format or
       BEACON XML format.
@@ -998,23 +1036,35 @@ Appendix A.  Glossary
    relation type  a common releation between targets and sources in a
       link dump.
 
-
-
-
-
-
-
-
-Voss, et al.              Expires July 5, 2014                 [Page 18]
-
-Internet-Draft                   BEACON                     January 2014
-
-
 Appendix B.  RELAX NG Schema for BEACON XML
 
    Below is a schema of BEACON XML format (Section 4.2) in RELAX NG
    Compact syntax [RELAX-NGC].  The schema is non-normative and given
    for reference only.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 19]
+
+Internet-Draft                   BEACON                     January 2014
+
 
    default namespace = "http://purl.org/net/beacon"
 
@@ -1061,7 +1111,13 @@ Appendix C.  Example
 
 
 
-Voss, et al.              Expires July 5, 2014                 [Page 19]
+
+
+
+
+
+
+Voss, et al.              Expires July 5, 2014                 [Page 20]
 
 Internet-Draft                   BEACON                     January 2014
 
@@ -1117,7 +1173,7 @@ Authors' Addresses
 
 
 
-Voss, et al.              Expires July 5, 2014                 [Page 20]
+Voss, et al.              Expires July 5, 2014                 [Page 21]
 
 Internet-Draft                   BEACON                     January 2014
 
@@ -1173,4 +1229,4 @@ Internet-Draft                   BEACON                     January 2014
 
 
 
-Voss, et al.              Expires July 5, 2014                 [Page 21]
+Voss, et al.              Expires July 5, 2014                 [Page 22]

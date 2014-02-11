@@ -672,28 +672,39 @@
 <h1 id="rfc.section.3.1.2"><a href="#rfc.section.3.1.2">3.1.2.</a> <a href="#targetset" id="targetset">targetset</a></h1>
 <p id="rfc.section.3.1.2.p.1">The target dataset can be identified by the targetset meta field, which MUST be an URI if given. This field replaces the blank node <samp>:targetset</samp>.  </p>
 <h1 id="rfc.section.3.1.3"><a href="#rfc.section.3.1.3">3.1.3.</a> <a href="#name" id="name">name</a></h1>
-<p id="rfc.section.3.1.3.p.1">The name meta field contains a name or title of target dataset.  This field is mapped to the RDF property <samp>dcterms:title</samp>. For instance the name meta field value "ACME documents" can be mapped to this RDF triple: </p>
+<p id="rfc.section.3.1.3.p.1">The name meta field contains a name or title of target dataset.  This field is mapped to the RDF property <samp>dcterms:title</samp>. For instance the name meta field value "ACME documents", expressable in BEACON text format as </p>
+<pre>
+#NAME: ACME documents
+</pre>
+<p id="rfc.section.3.1.3.p.2">can be mapped to this RDF triple: </p>
 <pre>
 :targetset dcterms:title "ACME documents" .
 </pre>
 <h1 id="rfc.section.3.1.4"><a href="#rfc.section.3.1.4">3.1.4.</a> <a href="#institution" id="institution">institution</a></h1>
-<p id="rfc.section.3.1.4.p.1">The institution meta field contains the name or URI of the organization or of an individual responsible for making available the target dataset. This field is mapped to the RDF property <samp>dcterms:publisher</samp>. For instance the institution meta field value "ACME" can be mapped to this RDF triple: </p>
+<p id="rfc.section.3.1.4.p.1">The institution meta field contains the name or URI of the organization or of an individual responsible for making available the target dataset. This field is mapped to the RDF property <samp>dcterms:publisher</samp>. For instance the institution meta field value "ACME", expressable in BEACON text format as </p>
+<pre>
+#INSTITUTION: ACME
+</pre>
+<p id="rfc.section.3.1.4.p.2">can be mapped to this RDF triple: </p>
 <pre>
 :targetset dcterms:publisher "ACME" .
 </pre>
 <h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#link-dump" id="link-dump">Link dump</a></h1>
 <h1 id="rfc.section.3.2.1"><a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#description" id="description">description</a></h1>
-<p id="rfc.section.3.2.1.p.1">The description meta field contains a human readable description of the link dump. This field is mapped to the <samp>dcterms:description</samp> RDF property. For instance the description meta field value "Mapping from ids to documents" can be mapped to this RDF triple: </p>
+<p id="rfc.section.3.2.1.p.1">The description meta field contains a human readable description of the link dump. This field is mapped to the <samp>dcterms:description</samp> RDF property. For instance the description meta field value "Mapping from ids to documents", expressible in BEACON text format as </p>
+<pre>
+#DESCRIPTION: Mapping from ids to documents
+</pre>
+<p id="rfc.section.3.2.1.p.2">can be mapped to this RDF triple: </p>
 <pre>
 :dump dcterms:description "Mapping from ids to documents" .
 </pre>
 <h1 id="rfc.section.3.2.2"><a href="#rfc.section.3.2.2">3.2.2.</a> <a href="#creator" id="creator">creator</a></h1>
 <p id="rfc.section.3.2.2.p.1">The creator meta field contains the URI or the name of the person, organization, or a service primarily responsible for making the link dump. This field is mapped to the <samp>dcterms:creator</samp> RDF property. The creator is an instace of the class <samp>foaf:Agent</samp>.  </p>
-<p id="rfc.section.3.2.2.p.2">For instance the following creator meta field values: </p>
+<p id="rfc.section.3.2.2.p.2">For instance the following creator meta field values, expressed in BEACON text format: </p>
 <pre>
-"Bea Beacon"
-
-"http://example.org/people/bea"
+#CREATOR: Bea Beacon
+#CREATOR: http://example.org/people/bea
 </pre>
 <p id="rfc.section.3.2.2.p.3">can be mapped the the following RDF triples, respectively: </p>
 <pre>
@@ -723,22 +734,30 @@
  ] .
 </pre>
 <h1 id="rfc.section.3.2.4"><a href="#rfc.section.3.2.4">3.2.4.</a> <a href="#homepage" id="homepage">homepage</a></h1>
-<p id="rfc.section.3.2.4.p.1">The homepage field contains an URL of a website with additional information about this link dump. This field corresponds to the RDF property <samp>foaf:homepage</samp> with <samp>dump</samp> as subject. Note that this field does not specify the homepage of the target dataset.  </p>
+<p id="rfc.section.3.2.4.p.1">The homepage field contains an URL of a website with additional information about this link dump. This field corresponds to the RDF property <samp>foaf:homepage</samp> with <samp>dump</samp> as subject. Note that this field does not specify the homepage of the target dataset. For instance this meta field expressed in BEACON text format </p>
+<pre>
+#HOMEPAGE http://example.org/about.html
+</pre>
+<p id="rfc.section.3.2.4.p.2">can be mapped to this RDF triple: </p>
 <pre>
 :dump foaf:homepage &lt;http://example.org/about.html&gt; .
 </pre>
 <h1 id="rfc.section.3.2.5"><a href="#rfc.section.3.2.5">3.2.5.</a> <a href="#feed" id="feed">feed</a></h1>
-<p id="rfc.section.3.2.5.p.1">The feed field contains an URL, where to download the link dump from. This field corresponds to the RDF property <samp>void:dataDump</samp>. An example mapped to an RDF triple: </p>
+<p id="rfc.section.3.2.5.p.1">The feed field contains an URL, where to download the link dump from. This field corresponds to the RDF property <samp>void:dataDump</samp>. For instance this meta field, expressed in BEACON text format </p>
+<pre>
+#FEED: http://example.com/beacon.txt
+</pre>
+<p id="rfc.section.3.2.5.p.2">can be mapped to this RDF triple: </p>
 <pre>
 :dump void:dataDump &lt;http://example.com/beacon.txt&gt; .
 </pre>
 <h1 id="rfc.section.3.2.6"><a href="#rfc.section.3.2.6">3.2.6.</a> <a href="#timestamp" id="timestamp">timestamp</a></h1>
 <p id="rfc.section.3.2.6.p.1">The timestamp field contains the date of last modification of the link dump. Note that this value MAY be different to the last modification time of a BEACON file that serializes the link dump. The timestamp value MUST conform to the <samp>full-date</samp> or to the <samp>date-time</samp> production rule in <a href="#RFC3339">[RFC3339]</a>. In addition, an uppercase <samp>T</samp> character MUST be used to separate date and time, and an uppercase <samp>Z</samp> character MUST be present in the absence of a numeric time zone offset. This field corresponds to the <samp>dcterms:modified</samp> property.  </p>
-<p id="rfc.section.3.2.6.p.2">For instance the following valid timestamp values: </p>
+<p id="rfc.section.3.2.6.p.2">For instance the following valid timestamp values, expressed in BEACON text format: </p>
 <pre>
- 2012-05-30
- 2012-05-30T15:17:36+02:00
- 2012-05-30T13:17:36Z
+ #TIMESTAMP: 2012-05-30
+ #TIMESTAMP: 2012-05-30T15:17:36+02:00
+ #TIMESTAMP: 2012-05-30T13:17:36Z
 </pre>
 <p id="rfc.section.3.2.6.p.3">can be mapped to the following RDF triples, respectively: </p>
 <pre>
