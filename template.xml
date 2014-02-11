@@ -1,0 +1,114 @@
+<?xml version="1.0" ?>
+<!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
+    <!ENTITY pandocMiddle PUBLIC '' 'beacon.xml'>
+    <!ENTITY pandocAppendices PUBLIC '' 'appendices.xml'>
+
+    <!ENTITY RFC2119 PUBLIC '' 'ref/reference.RFC.2119.xml'>
+    <!ENTITY RFC3339 PUBLIC '' 'ref/reference.RFC.3339.xml'>
+    <!ENTITY RFC3629 PUBLIC '' 'ref/reference.RFC.3629.xml'>
+    <!ENTITY RFC3986 PUBLIC '' 'ref/reference.RFC.3986.xml'>
+    <!ENTITY RFC3987 PUBLIC '' 'ref/reference.RFC.3987.xml'>
+    <!ENTITY RFC5234 PUBLIC '' 'ref/reference.RFC.5234.xml'>
+    <!ENTITY RFC5322 PUBLIC '' 'ref/reference.RFC.5322.xml'>
+    <!ENTITY RFC5988 PUBLIC '' 'ref/reference.RFC.5988.xml'>
+    <!ENTITY RFC6570 PUBLIC '' 'ref/reference.RFC.6570.xml'>
+    <!ENTITY Unicode PUBLIC '' 'ref/reference.Unicode.xml'>
+    <!ENTITY DCTERMS PUBLIC '' 'ref/reference.DCTERMS.xml'>
+    <!ENTITY FOAF PUBLIC '' 'ref/reference.FOAF.xml'>
+    <!ENTITY RFC5013 PUBLIC '' 'ref/reference.RFC.5013.xml'>
+    <!ENTITY sitemaps PUBLIC '' 'ref/reference.sitemaps.xml'>
+    <!ENTITY SAX PUBLIC '' 'ref/reference.SAX.xml'>
+    <!ENTITY Turtle PUBLIC '' 'ref/reference.Turtle.xml'>
+    <!ENTITY RELAX-NGC PUBLIC '' 'ref/reference.RELAX-NGC.xml'>
+    <!ENTITY RSSSYND PUBLIC '' 'ref/reference.RSSSYND.xml'>
+    <!ENTITY RDF PUBLIC '' 'ref/reference.RDF.xml'>
+    <!ENTITY VOID PUBLIC '' 'ref/reference.VOID.xml'>
+]>
+
+<rfc ipr="trust200902" category="info" docName="draft-voss-beacon-001">
+  <front>
+	<title abbrev="BEACON">BEACON link dump format</title>
+	<author initials="J." surname="Voß" fullname="Jakob Voß">
+		<organization>Verbundzentrale des GBV</organization>
+		<address>
+			<postal>
+				<street>Platz der Göttinger Sieben 1</street>
+				<city>Göttingen</city>
+				<code>37073</code>
+				<country>Germany</country>
+			</postal>
+			<phone>+49(551)39-10242</phone>
+			<email>voss@gbv.de</email>
+		</address>
+	</author>
+	<author initials="Th." surname="Berger" fullname="Thomas Berger">
+		<organization>Gymel.com</organization>
+		<address>
+			<postal>
+				<street>Im Dahl 35</street>
+				<city>Bonn</city>
+				<code>53117</code>
+				<country>Germany</country>
+			</postal>
+			<email>ThB@gymel.com</email>
+		</address>
+	</author>
+	<author initials="M." surname="Schindler" fullname="Mathias Schindler">
+		<organization>Wikimedia Deutschland e.V.</organization>
+		<address>
+			<postal>
+				<street>Obentrautstr. 72</street>
+				<city>Berlin</city>
+				<code>10963</code>
+				<country>Germany</country>
+			</postal>
+            <phone>+49(30)21915826-0</phone>
+			<email>mathias.schindler@wikimedia.de</email>
+		</address>
+    </author>
+
+    <date month="January" year="2014"/>
+
+	<!--area>...</area-->
+    <!--keyword>...</keyword>
+	<keyword>...</keyword>
+	<keyword>...</keyword-->
+    
+    <abstract>
+		<t>This document specifies BEACON, a data interchange 
+		   format for large numbers of uniform links.</t>
+	</abstract>
+</front>
+
+<middle>
+&pandocMiddle;
+</middle>
+
+<back>
+    <references title="Normative References">
+        &RFC2119;
+        &RFC3339;
+        &RFC3629;
+        &RFC3986;
+        &RFC3987;
+        &RFC5234;
+        &RFC5322;
+        &RFC5988;
+        &RFC6570;
+        &Unicode;
+        &DCTERMS;
+    </references>
+    <references title="Informative References">
+        &FOAF;
+        &RFC5013;
+        &sitemaps;
+        &SAX;
+        &Turtle;
+        &RELAX-NGC;
+        &RSSSYND;
+        &RDF;
+        &VOID;
+	</references>
+    &pandocAppendices;
+</back>
+</rfc>

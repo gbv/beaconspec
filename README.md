@@ -1,19 +1,25 @@
 This git repository contains a specification of **BEACON link dump format** to
 be prepared for publication as Request for Comment (RFC).
 
+General information about BEACON, its application and a preliminary
+specification can be found in the German Wikipedia at
+<http://de.wikipedia.org/wiki/Wikipedia:BEACON/Format>.
+
 # BEACON format
 
-BEACON is a simple format to serialize a number of uniform links.
-There is a serialization as raw Unicode and a serialization in XML.
-BEACON primarily used to collect mappings between authority files
-and information resources in libraries and related organizations.
+BEACON is a simple format to serialize a number of uniform links.  There is a
+serialization as raw Unicode and a serialization in XML.  BEACON was primarily
+used to collect mappings between authority files and information resources in
+libraries and related organizations.
 
 # Illustration
 
 BEACON defines a link dump as set of links from a source database to a target
 database. Several parts can be described by meta fields (in uppercase):
 
-![][beaconspec-diagram.png]
+![](beaconspec-diagram.png)
+
+The final set of meta fields is still to be discussed.
 
 # How to modify this specification
 
@@ -27,16 +33,16 @@ and TXT format you need:
 
 * [Pandoc](http://johnmacfarlane.net/pandoc/),
 * an XSLT transformator (`xsltproc`),
-* [xml2rfc](http://xml.resource.org/).
+* [xml2rfc](http://xml.resource.org/) version 2.
 
-To install at Ubuntu Linux, call:
+To install at Ubuntu Linux with Python, call:
 
-    sudo aptitude install pandoc xsltproc xml2rfc
+    sudo apt-get install pandoc xsltproc xml2rfc
+    sudo pip install xml2rfc
 
 To further install `pandoc2rfc` after cloning the repository you must call:
 
-    git submodule init
-    git submodule update
+    git submodule update --init
 
 You can then modify `beacon.md`, `appendices.md`, `rfctemplate.xml` and create
 a nice HTML version by simply invoking `make`.
