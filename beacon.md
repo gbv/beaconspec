@@ -274,7 +274,11 @@ an URI if given. This field replaces the blank node `:targetset`.
 
 The name meta field contains a name or title of target dataset. This field is
 mapped to the RDF property `dcterms:title`. For instance the name meta field
-value "ACME documents" can be mapped to this RDF triple:
+value "ACME documents", expressable in BEACON text format as
+
+    #NAME: ACME documents
+
+can be mapped to this RDF triple:
 
     :targetset dcterms:title "ACME documents" .
 
@@ -283,7 +287,11 @@ value "ACME documents" can be mapped to this RDF triple:
 The institution meta field contains the name or URI of the organization or of
 an individual responsible for making available the target dataset. This field
 is mapped to the RDF property `dcterms:publisher`. For instance the institution
-meta field value "ACME" can be mapped to this RDF triple:
+meta field value "ACME", expressable in BEACON text format as
+
+    #INSTITUTION: ACME
+
+can be mapped to this RDF triple:
 
     :targetset dcterms:publisher "ACME" .
 
@@ -293,8 +301,12 @@ meta field value "ACME" can be mapped to this RDF triple:
 
 The description meta field contains a human readable description of the link
 dump. This field is mapped to the `dcterms:description` RDF property.  For
-instance the description meta field value "Mapping from ids to documents" can
-be mapped to this RDF triple:
+instance the description meta field value "Mapping from ids to documents",
+expressible in BEACON text format as
+
+    #DESCRIPTION: Mapping from ids to documents
+
+can be mapped to this RDF triple:
 
     :dump dcterms:description "Mapping from ids to documents" .
 
@@ -305,11 +317,11 @@ organization, or a service primarily responsible for making the link dump.
 This field is mapped to the `dcterms:creator` RDF property. The
 creator is an instace of the class `foaf:Agent`.
 
-For instance the following creator meta field values:
+For instance the following creator meta field values, expressed in BEACON text
+format:
 
-    "Bea Beacon"
-
-    "http://example.org/people/bea"
+    #CREATOR: Bea Beacon
+    #CREATOR: http://example.org/people/bea
 
 can be mapped the the following RDF triples, respectively:
 
@@ -349,15 +361,24 @@ sample field values can be mapped to:
 The homepage field contains an URL of a website with additional information
 about this link dump. This field corresponds to the RDF property
 `foaf:homepage` with `dump` as subject. Note that this field does not specify
-the homepage of the target dataset.
+the homepage of the target dataset. For instance this meta field expressed in
+BEACON text format
+
+    #HOMEPAGE http://example.org/about.html
+
+can be mapped to this RDF triple:
 
     :dump foaf:homepage <http://example.org/about.html> .
 
 ### feed
 
 The feed field contains an URL, where to download the link dump from. This
-field corresponds to the RDF property `void:dataDump`. An 
-example mapped to an RDF triple:
+field corresponds to the RDF property `void:dataDump`. For instance this meta
+field, expressed in BEACON text format
+
+    #FEED: http://example.com/beacon.txt
+
+can be mapped to this RDF triple:
 
     :dump void:dataDump <http://example.com/beacon.txt> .
 
@@ -371,11 +392,12 @@ an uppercase `T` character MUST be used to separate date and time, and an
 uppercase `Z` character MUST be present in the absence of a numeric time zone
 offset. This field corresponds to the `dcterms:modified` property.  
 
-For instance the following valid timestamp values:
+For instance the following valid timestamp values, expressed in BEACON text
+format:
 
-     2012-05-30
-     2012-05-30T15:17:36+02:00
-     2012-05-30T13:17:36Z
+     #TIMESTAMP: 2012-05-30
+     #TIMESTAMP: 2012-05-30T15:17:36+02:00
+     #TIMESTAMP: 2012-05-30T13:17:36Z
 
 can be mapped to the following RDF triples, respectively:
 
