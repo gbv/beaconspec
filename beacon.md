@@ -18,6 +18,8 @@ links.  This specification defines:
 * two interpretations of link dumps as mapping to HTML and
   mapping to RDF ([](#mappings)).
 
+The current specification is managed at <https://github.com/gbv/beaconspec>.
+
 ## Notational Conventions
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
