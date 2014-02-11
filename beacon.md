@@ -14,11 +14,55 @@ patterns in source URIs and target URIs respectively can be used to abbreviate
 links.  This specification defines:
 
 * two serializations of link dumps (**BEACON files**) in a condense 
-  line-oriented format and in an XML format ([](#beacon-files)),
+  line-oriented text format and in an XML format ([](#beacon-files)),
 * two interpretations of link dumps as mapping to HTML and
   mapping to RDF ([](#mappings)).
 
 The current specification is managed at <https://github.com/gbv/beaconspec>.
+
+## Example
+
+To give an example, the "ACME" company wants to provide links from people to
+the documents that each person contributed to. A list of people is available
+from `http://example.com/people/` and a list of documents, titled "ACME
+documents", is available from `http://example.com/documents/`. This information
+can be expressed in BEACON text format as following:
+
+    #INSTITUTION: ACME
+    #SOURCESET:   http://example.com/people/
+    #TARGETSET:   http://example.com/documents/
+    #NAME:        ACME documents
+    #RELATION:    http://purl.org/dc/elements/1.1/contributor
+
+The simplest form of a BEACON text file contains full links separated by a
+vertical bar:
+
+    http://example.com/people/alice|http://example.com/documents/23.about
+    http://example.com/people/bob|http://example.com/documents/42.about
+
+The first element of a link is called source URI and the second is called
+target URI. If a target URI does not start with `http` or `https`, two vertical
+bars MUST be used:
+
+    http://example.com/people/alice||urn:isbn:0123456789
+
+As both source URIs for people and target URIs for documents follow a pattern,
+links can be abbreviated as following:
+
+    #PREFIX: http://example.com/people/
+    #TARGET: http://example.com/documents/{+ID}.about
+
+    alice||23
+    bob||42
+
+For each link a third element can be added as annotation. The meaning of this annotation is not
+rdf:value
+
+    #ANNOTATION: http://purl.org/dc/elements/1.1/date
+
+    alice||23
+    bob||42
+
 
 ## Notational Conventions
 
@@ -274,7 +318,7 @@ an URI if given. This field replaces the blank node `:targetset`.
 
 The name meta field contains a name or title of target dataset. This field is
 mapped to the RDF property `dcterms:title`. For instance the name meta field
-value "ACME documents", expressable in BEACON text format as
+value "ACME documents", expressible in BEACON text format as
 
     #NAME: ACME documents
 
@@ -287,7 +331,7 @@ can be mapped to this RDF triple:
 The institution meta field contains the name or URI of the organization or of
 an individual responsible for making available the target dataset. This field
 is mapped to the RDF property `dcterms:publisher`. For instance the institution
-meta field value "ACME", expressable in BEACON text format as
+meta field value "ACME", expressible in BEACON text format as
 
     #INSTITUTION: ACME
 
@@ -364,7 +408,7 @@ about this link dump. This field corresponds to the RDF property
 the homepage of the target dataset. For instance this meta field expressed in
 BEACON text format
 
-    #HOMEPAGE http://example.org/about.html
+    #HOMEPAGE: http://example.org/about.html
 
 can be mapped to this RDF triple:
 
@@ -424,7 +468,14 @@ time they are accessed. The value `never` SHOULD be used to describe archived
 link dumps. Please note that the value of this tag is considered a hint and
 not a command. 
 
-The RDF property of this field is `rssynd:updatePeriod`.
+The RDF property of this field is `rssynd:updatePeriod`. For instance the update
+field (given in BEACON text format)
+
+    #UPDATE: daily
+
+specifies a daily update, expressible in RDF as:
+
+    :dump rssynd:updatePeriod "daily" .
 
 ## Link description
 
@@ -457,15 +508,23 @@ is `{annotation}`.
 ### relation
 
 The relation field specifies the relation type for all links in a link dump.
-The field value MUST be an URI.  The default relation type is `rdfs:seeAlso`.
-This field is mapped to the RDF property `void:linkPredicate` with subject
-`:dump`.
+The field value MUST either be an URI or a registered link type from the IANA
+link relations registry. The default relation type is `rdfs:seeAlso`.  This
+field is mapped to the RDF property `void:linkPredicate` with subject `:dump`.
 
 ### annotation
 
-The annotation field specifies the RDF property between link target and link
-annotation. The default value is `rdf:value` having no specific meaning 
-[](#RDF).
+The annotation field specifies an RDF property for RDF triples between link
+target and link annotation. Without this field, the link annotation has no
+explicit meaning. To give an example, the following BEACON text file:
+
+    #ANNOTATION: http://purl.org/dc/elements/1.1/format
+
+    http://example.org/apples|sphere|http://example.org/oranges
+
+implies the following triple if mapped to RDF:
+
+   <http://example.org/oranges> dc:format "sphere" .
 
 # BEACON files
 
