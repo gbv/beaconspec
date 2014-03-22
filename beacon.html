@@ -377,11 +377,11 @@
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Example"/>
 <link href="#rfc.section.1.2" rel="Chapter" title="1.2 Notational Conventions"/>
-<link href="#rfc.section.1.3" rel="Chapter" title="1.3 String normalization"/>
-<link href="#rfc.section.1.4" rel="Chapter" title="1.4 URI patterns"/>
-<link href="#rfc.section.2" rel="Chapter" title="2 Links"/>
-<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Link construction"/>
-<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Relation types"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Basic concepts"/>
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Links"/>
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Allowed characters"/>
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Whitespace normalization"/>
+<link href="#rfc.section.2.4" rel="Chapter" title="2.4 URI patterns"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Meta fields"/>
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Source and target datasets"/>
 <link href="#rfc.section.3.1.1" rel="Chapter" title="3.1.1 sourceset"/>
@@ -402,9 +402,9 @@
 <link href="#rfc.section.3.3.3" rel="Chapter" title="3.3.3 message"/>
 <link href="#rfc.section.3.3.4" rel="Chapter" title="3.3.4 relation"/>
 <link href="#rfc.section.3.3.5" rel="Chapter" title="3.3.5 annotation"/>
-<link href="#rfc.section.4" rel="Chapter" title="4 BEACON files"/>
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 BEACON text format"/>
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 BEACON XML format"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 BEACON text format"/>
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Link construction"/>
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 MIME type"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 Mappings"/>
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Mapping to RDF"/>
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 Mapping to HTML"/>
@@ -413,7 +413,7 @@
 <link href="#rfc.references.1" rel="Chapter" title="7.1 Normative References"/>
 <link href="#rfc.references.2" rel="Chapter" title="7.2 Informative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Glossary"/>
-<link href="#rfc.appendix.B" rel="Chapter" title="B RELAX NG Schema for BEACON XML"/>
+<link href="#rfc.appendix.B" rel="Chapter" title="B BEACON XML format"/>
 <link href="#rfc.appendix.C" rel="Chapter" title="C Example"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
@@ -491,14 +491,14 @@
 <p/>
 
 <ul>
-  <li>a set of links (<a href="#links">Section 2</a>), </li>
+  <li>a set of links (<a href="#links">Section 2.1</a>), </li>
   <li>a set of meta fields (<a href="#meta-fields">Section 3</a>).  </li>
 </ul>
-<p id="rfc.section.1.p.3">Each link consists of a source URI, a target URI, and an annotation.  Common patterns in source URIs and target URIs respectively can be used to abbreviate links. This specification defines: </p>
+<p id="rfc.section.1.p.3">Each link consists of a source URI, a target URI, and an annotation.  Common patterns in source URIs and target URIs respectively can be used to abbreviate serializations of link dumps. This specification defines: </p>
 <p/>
 
 <ul>
-  <li>two serializations of link dumps (<strong>BEACON files</strong>) in a condense line-oriented text format and in an XML format (<a href="#beacon-files">Section 4</a>), </li>
+  <li>a serialization of link dumps (<strong>BEACON files</strong>) in a condense line-oriented text format (<a href="#beacon-text-format">Section 4</a>). A non-normative serialization based on XML is included in an appendix; </li>
   <li>two interpretations of link dumps as mapping to HTML and mapping to RDF (<a href="#mappings">Section 5</a>).  </li>
 </ul>
 <p id="rfc.section.1.p.5">The current specification is managed at <a href="https://github.com/gbv/beaconspec">https://github.com/gbv/beaconspec</a>.  </p>
@@ -557,12 +557,19 @@ bob||42
  rssynd:  &lt;http://web.resource.org/rss/1.0/modules/syndication/&gt;
 </pre>
 <p id="rfc.section.1.2.p.4">The blank node <samp>:dump</samp> denotes the URI of the link dump and the blank node <samp>:targetset</samp> denotes the URI of the target dataset.  </p>
-<h1 id="rfc.section.1.3"><a href="#rfc.section.1.3">1.3.</a> <a href="#string-normalization" id="string-normalization">String normalization</a></h1>
-<p id="rfc.section.1.3.p.1">A Unicode string is normalized according to this specification, by stripping leading and trailing whitespace and by replacing all <samp>WHITESPACE</samp> character sequences by a single space (<samp>SP</samp>).  </p>
-<pre>
- WHITESPACE  =  1*( CR | LF | HTAB | SP )
-</pre>
-<p id="rfc.section.1.3.p.2">The set of allowed Unicode characters in BEACON dumps is the set of valid Unicode characters from UCS which can also be expressed in XML 1.0, excluding some discouraged control characters: </p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#basic-concepts" id="basic-concepts">Basic concepts</a></h1>
+<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#links" id="links">Links</a></h1>
+<p id="rfc.section.2.1.p.1">A link in a link dump is a directed connection between two resources that are identified by URIs <a href="#RFC3986">[RFC3986]</a>. A link is compromised of three elements: </p>
+<p/>
+
+<ul>
+  <li>a <strong>source URI</strong>, </li>
+  <li>a <strong>target URI</strong>, </li>
+  <li>an <strong>annotation</strong>.  </li>
+</ul>
+<p id="rfc.section.2.1.p.3">Source URI and target URI define where a link is pointing from and to respectively. The annotation is an optional Unicode string, that can be used to further describe the link or parts of it.  Annotations MUST be whitespace-normalized (<a href="#whitespace-normalization">Section 2.3</a>) and MUST NOT contain a <samp>VBAR</samp> character. A missing annotation is equal to the empty string. The meaning of a link can be indicated by the <strong>relation type</strong> meta field (<a href="#relation">Section 3.3.4</a>).  </p>
+<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#allowed-characters" id="allowed-characters">Allowed characters</a></h1>
+<p id="rfc.section.2.2.p.1">The set of allowed Unicode characters in BEACON dumps is the set of valid Unicode characters from UCS which can also be expressed in XML 1.0, excluding some discouraged control characters: </p>
 <pre>
  CHAR        =  WHITESPACE / %x21-7E / %xA0-D7FF / %xE000-FFFD
              /  %x10000-1FFFD / %x20000-2FFFD / %x30000-3FFFD
@@ -572,10 +579,15 @@ bob||42
              /  %xD0000-DFFFD / %xE0000-EFFFD / %xF0000-FFFFD
              /  %x10000-10FFFD
 </pre>
-<p id="rfc.section.1.3.p.3">Applications SHOULD exclude disallowed characters by stripping them, by replacing them with the replacement character <samp>U+FFFD</samp>, or by refusing to process. Applications SHOULD also apply Unicode Normalization Form Canonical Composition (NFKC) to all strings.  </p>
-<h1 id="rfc.section.1.4"><a href="#rfc.section.1.4">1.4.</a> <a href="#uri-patterns" id="uri-patterns">URI patterns</a></h1>
-<p id="rfc.section.1.4.p.1">A URI pattern in this specification is an URI Template, as defined in <a href="#RFC6570">[RFC6570]</a>, with all template expressions being either <samp>{ID}</samp> for simple string expansion or <samp>{+ID}</samp> for reserved expansion.  </p>
-<p id="rfc.section.1.4.p.2">A URI pattern is used to construct a URI by replacing all template expressions with an identifier value. All identifier characters in the <samp>unreserved</samp> range from <a href="#RFC3986">[RFC3986]</a>, and characters in the <samp>reserved</samp> range or character sequences matching the <samp>pct-encoded</samp> rule for expressions being <samp>{+ID}</samp>, are copied literally. All other characters are copied to the URI as the sequence of pct-encoded triplets corresponding to that character&#8217;s encoding in UTF-8 <a href="#RFC3629">[RFC3629]</a>. The referenced character ranges are imported here from <a href="#RFC3986">[RFC3986]</a> for convenience: </p>
+<p id="rfc.section.2.2.p.2">Applications SHOULD exclude disallowed characters by stripping them, by replacing them with the replacement character <samp>U+FFFD</samp>, or by refusing to process. Applications SHOULD also apply Unicode Normalization Form Canonical Composition (NFKC) to all strings.  </p>
+<h1 id="rfc.section.2.3"><a href="#rfc.section.2.3">2.3.</a> <a href="#whitespace-normalization" id="whitespace-normalization">Whitespace normalization</a></h1>
+<p id="rfc.section.2.3.p.1">A Unicode string is whitespace-normalized according to this specification, by stripping leading and trailing whitespace and by replacing all <samp>WHITESPACE</samp> character sequences by a single space (<samp>SP</samp>).  </p>
+<pre>
+ WHITESPACE  =  1*( CR | LF | HTAB | SP )
+</pre>
+<h1 id="rfc.section.2.4"><a href="#rfc.section.2.4">2.4.</a> <a href="#uri-patterns" id="uri-patterns">URI patterns</a></h1>
+<p id="rfc.section.2.4.p.1">A URI pattern in this specification is an URI Template, as defined in <a href="#RFC6570">[RFC6570]</a>, with all template expressions being either <samp>{ID}</samp> for simple string expansion or <samp>{+ID}</samp> for reserved expansion.  </p>
+<p id="rfc.section.2.4.p.2">A URI pattern is used to construct a URI by replacing all template expressions with an identifier value. All identifier characters in the <samp>unreserved</samp> range from <a href="#RFC3986">[RFC3986]</a>, and characters in the <samp>reserved</samp> range or character sequences matching the <samp>pct-encoded</samp> rule for expressions being <samp>{+ID}</samp>, are copied literally. All other characters are copied to the URI as the sequence of pct-encoded triplets corresponding to that character&#8217;s encoding in UTF-8 <a href="#RFC3629">[RFC3629]</a>. The referenced character ranges are imported here from <a href="#RFC3986">[RFC3986]</a> for convenience: </p>
 <pre>
  pct-encoded    =  "%" HEXDIG HEXDIG
  unreserved     =  ALPHA / DIGIT / "-" / "." / "_" / "~"
@@ -584,7 +596,7 @@ bob||42
  sub-delims     =  "!" / "$" / "&amp;" / "'" / "(" / ")"
                 /  "*" / "+" / "," / ";" / "="
 </pre>
-<p id="rfc.section.1.4.p.3">A URI pattern is allowed to contain the broader set of characters allowed in Internationalized Resource Identifiers (IRI) <a href="#RFC3987">[RFC3987]</a>. The URI constructed from a URI pattern by template processing can be transformed to an IRI by following the process defined in Section 3.2 of <a href="#RFC3987">[RFC3987]</a>.  </p>
+<p id="rfc.section.2.4.p.3">A URI pattern is allowed to contain the broader set of characters allowed in Internationalized Resource Identifiers (IRI) <a href="#RFC3987">[RFC3987]</a>. The URI constructed from a URI pattern by template processing can be transformed to an IRI by following the process defined in Section 3.2 of <a href="#RFC3987">[RFC3987]</a>.  </p>
 <pre>
  Example value    Expression   Copied as
 
@@ -597,85 +609,8 @@ bob||42
   M%C3%BCller       {ID}        M%25C3%25BCller
   M%C3%BCller       {+ID}       M%C3%BCller
 </pre>
-<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#links" id="links">Links</a></h1>
-<p id="rfc.section.2.p.1">A link in a link dump is a directed connection between two resources that are identified by URIs <a href="#RFC3986">[RFC3986]</a>. A link is compromised of three elements: </p>
-<p/>
-
-<ul>
-  <li>a <strong>source URI</strong>, </li>
-  <li>a <strong>target URI</strong>, </li>
-  <li>an <strong>annotation</strong>.  </li>
-</ul>
-<p id="rfc.section.2.p.3">Source URI and target URI define where a link is pointing from and to respectively. The annotation is an optional whitespace-normalized Unicode string that can be used to further describe the link or parts of it. A missing annotation is equal to the empty string.  Annotations MUST match the grammar rule <samp>TOKEN</samp>.  The meaning of a link can be indicated by the <strong>relation type</strong> (<a href="#relation-types">Section 2.2</a>) meta field.  </p>
-<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#link-construction" id="link-construction">Link construction</a></h1>
-<p id="rfc.section.2.1.p.1">Link elements are given in abbreviated form of <strong>link tokens</strong> when serialized in a BEACON file. Each link is constructed from: </p>
-<p/>
-
-<ul>
-  <li>a mandatory source token </li>
-  <li>an optional annotation token </li>
-  <li>an optional target token, which is set to the source token if missing </li>
-</ul>
-<p id="rfc.section.2.1.p.3">All tokens MUST be whitespace-normalized before further processing. The full link is then constructed as following: </p>
-<p/>
-
-<ul>
-  <li>The source URI is constructed from the <samp>prefix</samp> meta field URI pattern by inserting the source token, as defined in <a href="#uri-patterns">Section 1.4</a>.  </li>
-  <li>The target URI is constructed from the <samp>target</samp> meta field URI pattern by inserting the target token, as as defined in <a href="#uri-patterns">Section 1.4</a>.  </li>
-  <li>The annotation is constructed from the <samp>message</samp> meta field by literally replacing every occurrence of the character sequence <samp>{annotation}</samp> by the annotation token. The resulting string MUST be whitespace-normalized after construction additional encoding MUST NOT be applied.  </li>
-</ul>
-<p id="rfc.section.2.1.p.5">The following table illustrates construction of a link: </p>
-<pre>
- meta field  +  link token  --&gt;  link element
-----------------------------------------------
- prefix      |  source       |   source URI
- target      |  target       |   target URI
- message     |  annotation   |   annotation
-</pre>
-<p id="rfc.section.2.1.p.6">Constructed source URI and target URI MUST be syntactically valid.  Applications MUST ignore links with invalid URIs and SHOULD give a warning. Note that annotation tokens are always ignored if the <samp>message</samp> meta field does not contain the sequence <samp>{annotation}</samp>. Applications SHOULD give a warning in this case.  </p>
-<p id="rfc.section.2.1.p.7">Applications MUST NOT differentiate between equal links constructed from different abbreviations. For instance the following BEACON text file contains a single link: </p>
-<pre>
- #PREFIX: http://example.org/
- #TARGET: http://example.com/
- #MESSAGE: Hello World!
-
- foo
-</pre>
-<p id="rfc.section.2.1.p.8">The same link could also be serialized without any meta fields: </p>
-<pre>
- http://example.org/foo|Hello World!|http://example.com/foo
-</pre>
-<p id="rfc.section.2.1.p.9">The default meta fields values could also be specified as: </p>
-<pre>
- #PREFIX: {+ID}
- #TARGET: {+ID}
- #MESSAGE: {annotation}
-</pre>
-<p id="rfc.section.2.1.p.10">Another possible serialization is: </p>
-<pre>
- #PREFIX: http://example.org/
- #TARGET: http://example.com/
- #MESSAGE: Hello {annotation}
-
- foo|World!
-</pre>
-<p id="rfc.section.2.1.p.11">The link line in this example is equal to: </p>
-<pre>
- foo|World!|foo
-</pre>
-<p id="rfc.section.2.1.p.12">Multiple occurrences of equal links in one BEACON file SHOULD be ignored. It is RECOMMENDED to indicate duplicated links with a warning.  </p>
-<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#relation-types" id="relation-types">Relation types</a></h1>
-<p id="rfc.section.2.2.p.1">All links in a link dump share a common relation type. A relation type is either an URI or a registered link type from the IANA link relations registry <a href="#RFC5988">[RFC5988]</a>. The relation type is specified by the <samp>relation</samp> meta field in BEACON files (<a href="#meta-fields">Section 3</a>).  </p>
-<p id="rfc.section.2.2.p.2">Some examples of relation types: </p>
-<pre>
- http://www.w3.org/2002/07/owl#sameAs
- http://xmlns.com/foaf/0.1/isPrimaryTopicOf
- http://purl.org/spar/cito/cites
- describedby
- replies
-</pre>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#meta-fields" id="meta-fields">Meta fields</a></h1>
-<p id="rfc.section.3.p.1">A link dump SHOULD contain a set of meta fields, each identified by its name build of lowercase letters <samp>a-z</samp>. Relevant meta fields for description of the source and target datasets (<a href="#source-and-target-datasets">Section 3.1</a>), the link dump (<a href="#link-dump">Section 3.2</a>), and links (<a href="#link-description">Section 3.3</a>) are defined in the following. Additional meta fields, not defined in this specification, SHOULD be ignored. All meta field values MUST be whitespace-normalized (<a href="#string-normalization">Section 1.3</a>). Missing meta field values and empty strings MUST be set to the field&#8217;s default value, which is the empty string unless noted otherwise. The following diagram shows which meta fields belong to which dataset: </p>
+<p id="rfc.section.3.p.1">A link dump SHOULD contain a set of meta fields, each identified by its name build of lowercase letters <samp>a-z</samp>. Relevant meta fields for description of the source and target datasets (<a href="#source-and-target-datasets">Section 3.1</a>), the link dump (<a href="#link-dump">Section 3.2</a>), and links (<a href="#link-description">Section 3.3</a>) are defined in the following. Additional meta fields, not defined in this specification, SHOULD be ignored. All meta field values MUST be whitespace-normalized. Missing meta field values and empty strings MUST be set to the field&#8217;s default value, which is the empty string unless noted otherwise. The following diagram shows which meta fields belong to which dataset: </p>
 <pre>
 +----------------+    +-----------------+     +-----------------+
 | source dataset | ---| link dump       |---&gt; | target dataset  |
@@ -832,7 +767,15 @@ bob||42
 <h1 id="rfc.section.3.3.3"><a href="#rfc.section.3.3.3">3.3.3.</a> <a href="#message" id="message">message</a></h1>
 <p id="rfc.section.3.3.3.p.1">The message field is used as template for link annotations. The default value is <samp>{annotation}</samp>.  </p>
 <h1 id="rfc.section.3.3.4"><a href="#rfc.section.3.3.4">3.3.4.</a> <a href="#relation" id="relation">relation</a></h1>
-<p id="rfc.section.3.3.4.p.1">The relation field specifies the relation type for all links in a link dump. The field value MUST either be an URI or a registered link type from the IANA link relations registry. The default relation type is <samp>rdfs:seeAlso</samp>. This field is mapped to the RDF property <samp>void:linkPredicate</samp> with subject <samp>:dump</samp>.  </p>
+<p id="rfc.section.3.3.4.p.1">All links in a link dump share a common relation type, specified by the relation field. A relation type MUST be either an URI or a registered link type from the IANA link relations registry <a href="#RFC5988">[RFC5988]</a>. The default relation type is <samp>rdfs:seeAlso</samp>. The relation field is mapped to the RDF property <samp>void:linkPredicate</samp> with subject <samp>:dump</samp>.  </p>
+<p id="rfc.section.3.3.4.p.2">Some examples of relation types: </p>
+<pre>
+ http://www.w3.org/2002/07/owl#sameAs
+ http://xmlns.com/foaf/0.1/isPrimaryTopicOf
+ http://purl.org/spar/cito/cites
+ describedby
+ replies
+</pre>
 <h1 id="rfc.section.3.3.5"><a href="#rfc.section.3.3.5">3.3.5.</a> <a href="#annotation" id="annotation">annotation</a></h1>
 <p id="rfc.section.3.3.5.p.1">The annotation field specifies an RDF property for RDF triples between link target and link annotation. Without this field, the link annotation has no explicit meaning. To give an example, the following BEACON text file: </p>
 <pre>
@@ -842,9 +785,8 @@ http://example.org/apples|sphere|http://example.org/oranges
 </pre>
 <p id="rfc.section.3.3.5.p.2">implies the following triple if mapped to RDF: </p>
 <p><a href="http://example.org/oranges">http://example.org/oranges</a> dc:format "sphere" .  </p>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#beacon-files" id="beacon-files">BEACON files</a></h1>
-<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#beacon-text-format" id="beacon-text-format">BEACON text format</a></h1>
-<p id="rfc.section.4.1.p.1">A BEACON text file is an UTF-8 encoded Unicode file <a href="#RFC3629">[RFC3629]</a>, split into lines by line breaks (rule <samp>LINEBREAK</samp>). The file consists of a set of lines with meta fields, followed by a set of lines with link tokens. A BEACON text file MAY begin with an Unicode Byte Order Mark and it SHOULD end with a line break: </p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#beacon-text-format" id="beacon-text-format">BEACON text format</a></h1>
+<p id="rfc.section.4.p.1">A BEACON file is an UTF-8 encoded Unicode file <a href="#RFC3629">[RFC3629]</a>, split into lines by line breaks (rule <samp>LINEBREAK</samp>). The file consists of a set of lines with meta fields, followed by a set of lines with link tokens.  A BEACON file MAY begin with an Unicode Byte Order Mark and it SHOULD end with a line break: </p>
 <pre>
  BEACONTEXT  =  [ BOM ] [ START ]
                 *METALINE
@@ -854,15 +796,15 @@ http://example.org/apples|sphere|http://example.org/oranges
 
  BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
 </pre>
-<p id="rfc.section.4.1.p.2">The order of meta lines and of link lines, respectively, is irrelevant. At least one empty line SHOULD be used to separate meta lines and link lines. If no empty line is given, the first link line MUST NOT begin with <samp>"#"</samp>.  </p>
+<p id="rfc.section.4.p.2">The order of meta lines and of link lines, respectively, is irrelevant. At least one empty line SHOULD be used to separate meta lines and link lines. If no empty line is given, the first link line MUST NOT begin with <samp>"#"</samp>.  </p>
 <pre>
 EMPTY        =  *WHITESPACE LINEBREAK
 </pre>
-<p id="rfc.section.4.1.p.3">The BEACON text file SHOULD start with a fixed meta field: </p>
+<p id="rfc.section.4.p.3">The BEACON text file SHOULD start with a fixed meta field: </p>
 <pre>
  START       =  "#FORMAT:" +WHITESPACE "BEACON" *WHITESPACE LINEBREAK
 </pre>
-<p id="rfc.section.4.1.p.4">A meta line specifies a <a href="#meta-fields">meta field</a> <cite title="NONE">[meta-fields]</cite> and its value. Meta field names MUST be given in uppercase letters. All meta lines with <samp>METAFIELD</samp> not one of the field names defined in this specification, SHOULD be ignored.  </p>
+<p id="rfc.section.4.p.4">A meta line specifies a <a href="#meta-fields">meta field</a> <cite title="NONE">[meta-fields]</cite> and its value. Meta field names MUST be given in uppercase letters. All meta lines with <samp>METAFIELD</samp> not one of the field names defined in this specification, SHOULD be ignored.  </p>
 <pre>
  METALINE    =  "#" METAFIELD ":" METAVALUE LINEBREAK
 
@@ -870,7 +812,7 @@ EMPTY        =  *WHITESPACE LINEBREAK
 
  METAVALUE   =  LINE
 </pre>
-<p id="rfc.section.4.1.p.5">Each link is given on a link line with its source token, optionally follwed by annotation token and target token: </p>
+<p id="rfc.section.4.p.5">Each link is given on a link line with its source token, optionally follwed by annotation token and target token: </p>
 <pre>
  LINKLINE    =  SOURCE [ 
                   VBAR ANNOTATION /
@@ -884,38 +826,77 @@ EMPTY        =  *WHITESPACE LINEBREAK
 
  ANNOTATION  =  TOKEN
 </pre>
-<p id="rfc.section.4.1.p.6">The ambiguity of rule <samp>LINKLINE</samp> with one occurrence of <samp>VBAR</samp> is resolved is following: </p>
+<p id="rfc.section.4.p.6">The ambiguity of rule <samp>LINKLINE</samp> with one occurrence of <samp>VBAR</samp> is resolved is following: </p>
 <p/>
 
 <ul>
-  <li>If the target meta field has its default value <samp>{+ID}</samp>, and the message meta field has its default value <samp>{annotation}</samp>, and the normalized second token begins with "http:" or "https:", then the second token is used as target token.  </li>
+  <li>If the target meta field has its default value <samp>{+ID}</samp>, and the message meta field has its default value <samp>{annotation}</samp>, and the whitespace-normalized second token begins with "http:" or "https:", then the second token is used as target token.  </li>
   <li>The second token is used as annotation token otherwise.  </li>
 </ul>
-<p id="rfc.section.4.1.p.8">This way one can use two forms to encode links to HTTP URIs (given target meta field and message meta field with their default values): </p>
+<p id="rfc.section.4.p.8">This way one can use two forms to encode links to HTTP URIs (given target meta field and message meta field with their default values): </p>
 <pre>
 foo|http://example.org/foobar
 foo||http://example.org/foobar
 </pre>
-<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#beacon-xml-format" id="beacon-xml-format">BEACON XML format</a></h1>
-<p id="rfc.section.4.2.p.1">A BEACON XML file is a valid XML file conforming to the following schema. The file SHOULD be encoded in UTF-8 <a href="#RFC3629">[RFC3629]</a>. The file MUST: </p>
+<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#link-construction" id="link-construction">Link construction</a></h1>
+<p id="rfc.section.4.1.p.1">Link elements are given in abbreviated form of <strong>link tokens</strong> when serialized in a BEACON file. Each link is constructed from: </p>
 <p/>
 
 <ul>
-  <li>Begin with an opening <samp>&lt;beacon&gt;</samp> tag and end with a closing <samp>&lt;/beacon&gt;</samp> tag.  </li>
-  <li>Specify the default namespace <samp>http://purl.org/net/example</samp>.  </li>
-  <li>Include an empty <samp>&lt;link/&gt;</samp> tag for each link.  </li>
-  <li>Include the source token as XML attribute <samp>source</samp> of each <samp>&lt;link/&gt;</samp> element.  </li>
+  <li>a mandatory source token </li>
+  <li>an optional annotation token </li>
+  <li>an optional target token, which is set to the source token if missing </li>
 </ul>
-<p id="rfc.section.4.2.p.3">The file MAY further: </p>
+<p id="rfc.section.4.1.p.3">All tokens MUST be whitespace-normalized before further processing. The full link is then constructed as following: </p>
 <p/>
 
 <ul>
-  <li>Specify <a href="#meta-fields">meta fields</a> <cite title="NONE">[meta-fields]</cite> as XML attributes to the <samp>&lt;beacon&gt;</samp> tag.  </li>
-  <li>Specify link tokens <samp>target</samp> and/or <samp>annotation</samp> as attributes to the <samp>&lt;link&gt;</samp> element.  </li>
+  <li>The source URI is constructed from the <samp>prefix</samp> meta field URI pattern by inserting the source token, as defined in <a href="#uri-patterns">Section 2.4</a>.  </li>
+  <li>The target URI is constructed from the <samp>target</samp> meta field URI pattern by inserting the target token, as as defined in <a href="#uri-patterns">Section 2.4</a>.  </li>
+  <li>The annotation is constructed from the <samp>message</samp> meta field by literally replacing every occurrence of the character sequence <samp>{annotation}</samp> by the annotation token. The resulting string MUST be whitespace-normalized after construction additional encoding MUST NOT be applied.  </li>
 </ul>
-<p id="rfc.section.4.2.p.5">All attributes MUST be given in lowercase. An informal schema of BEACON XML files is given in <a href="#relax-ng-schema-for-beacon-xml">Appendix B</a>.  </p>
-<p id="rfc.section.4.2.p.6">To process BEACON XML files, a complete and stream-processing XML parser, for instance the Simple API for XML <a href="#SAX">[SAX]</a>, is RECOMMENDED, in favor of parsing with regular expressions or similar methods prone to errors.  Additional XML attributes of <samp>&lt;link&gt;</samp> elements and <samp>&lt;link&gt;</samp> elements without <samp>source</samp> attribute SHOULD be ignored.  </p>
-<p id="rfc.section.4.2.p.7">Note that in contrast to BEACON text files, link tokens MAY include line breaks, which MUST BE removed by whitespace normalization. Furthermore id field, annotation field and target token MAY include a vertical bar, which MUST be replaced by the character sequence <samp>%7C</samp> before further processing.  </p>
+<p id="rfc.section.4.1.p.5">The following table illustrates construction of a link: </p>
+<pre>
+ meta field  +  link token  --&gt;  link element
+----------------------------------------------
+ prefix      |  source       |   source URI
+ target      |  target       |   target URI
+ message     |  annotation   |   annotation
+</pre>
+<p id="rfc.section.4.1.p.6">Constructed source URI and target URI MUST be syntactically valid.  Applications MUST ignore links with invalid URIs and SHOULD give a warning. Note that annotation tokens are always ignored if the <samp>message</samp> meta field does not contain the sequence <samp>{annotation}</samp>. Applications SHOULD give a warning in this case.  </p>
+<p id="rfc.section.4.1.p.7">Applications MUST NOT differentiate between equal links constructed from different abbreviations. For instance the following BEACON text file contains a single link: </p>
+<pre>
+ #PREFIX: http://example.org/
+ #TARGET: http://example.com/
+ #MESSAGE: Hello World!
+
+ foo
+</pre>
+<p id="rfc.section.4.1.p.8">The same link could also be serialized without any meta fields: </p>
+<pre>
+ http://example.org/foo|Hello World!|http://example.com/foo
+</pre>
+<p id="rfc.section.4.1.p.9">The default meta fields values could also be specified as: </p>
+<pre>
+ #PREFIX: {+ID}
+ #TARGET: {+ID}
+ #MESSAGE: {annotation}
+</pre>
+<p id="rfc.section.4.1.p.10">Another possible serialization is: </p>
+<pre>
+ #PREFIX: http://example.org/
+ #TARGET: http://example.com/
+ #MESSAGE: Hello {annotation}
+
+ foo|World!
+</pre>
+<p id="rfc.section.4.1.p.11">The link line in this example is equal to: </p>
+<pre>
+ foo|World!|foo
+</pre>
+<p id="rfc.section.4.1.p.12">Multiple occurrences of equal links in one BEACON file SHOULD be ignored. It is RECOMMENDED to indicate duplicated links with a warning.  </p>
+<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#mime-type" id="mime-type">MIME type</a></h1>
+<p id="rfc.section.4.2.p.1">The recommended MIME type of BEACON text files is "text/beacon". The file extension <samp>.txt</samp> SHOULD be used when storing BEACON text files.  </p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#mappings" id="mappings">Mappings</a></h1>
 <p id="rfc.section.5.p.1">An important use-case of BEACON is the creation of HTML links as described in section <a href="#mapping-to-html">Section 5.2</a>. A link dump can also be mapped to an RDF graph (<a href="#mapping-to-rdf">Section 5.1</a>) so BEACON provides a RDF serialization format for a subset of RDF graphs with uniform links.  </p>
 <h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#mapping-to-rdf" id="mapping-to-rdf">Mapping to RDF</a></h1>
@@ -946,7 +927,7 @@ foo||http://example.org/foobar
   <li>the annotation value used as literal object.  </li>
 </ul>
 <p id="rfc.section.5.1.p.7">Applications MAY ignore annotations and map annotations to different kinds of RDF triples if the <samp>annotation</samp> meta field is the default value <samp>rdf:value</samp>. For instance an annotation could contain additional information about a link such as its provenience, date, or probability (reification).  </p>
-<p id="rfc.section.5.1.p.8">Typical use cases of annotations include specification of labels and a "number of hits" at the target dataset. For instance the following BEACON file in BEACON text format (<a href="#beacon-text-format">Section 4.1</a>): </p>
+<p id="rfc.section.5.1.p.8">Typical use cases of annotations include specification of labels and a "number of hits" at the target dataset. For instance the following BEACON file in BEACON text format (<a href="#beacon-text-format">Section 4</a>): </p>
 <pre>
  #PREFIX: http://example.org/
  #TARGET: http://example.com/ 
@@ -1132,11 +1113,9 @@ foo||http://example.org/foobar
   <dt>BEACON</dt>
   <dd style="margin-left: 8">is a data interchange format as specified in this document.  </dd>
   <dt>BEACON file</dt>
-  <dd style="margin-left: 8">is a link dump serialized in BEACON text format or BEACON XML format.  </dd>
+  <dd style="margin-left: 8">is a link dump serialized in BEACON text format.  </dd>
   <dt>BEACON text format</dt>
   <dd style="margin-left: 8">is a condense format to serialize link dumps as specified in this document.  </dd>
-  <dt>BEACON XML format</dt>
-  <dd style="margin-left: 8">is an XML format to serialize link dumps as specified in this document.  </dd>
   <dt>link</dt>
   <dd style="margin-left: 8">is a triple of source URI, target URI, and annotation.  </dd>
   <dt>link dump</dt>
@@ -1150,8 +1129,27 @@ foo||http://example.org/foobar
   <dt>relation type</dt>
   <dd style="margin-left: 8">a common releation between targets and sources in a link dump.  </dd>
 </dl>
-<h1 id="rfc.appendix.B"><a href="#rfc.appendix.B">Appendix B.</a> <a href="#relax-ng-schema-for-beacon-xml" id="relax-ng-schema-for-beacon-xml">RELAX NG Schema for BEACON XML</a></h1>
-<p id="rfc.section.B.p.1">Below is a schema of <a href="#beacon-xml-format">BEACON XML format</a> <cite title="NONE">[beacon-xml-format]</cite> in RELAX NG Compact syntax <a href="#RELAX-NGC">[RELAX-NGC]</a>. The schema is non-normative and given for reference only.  </p>
+<h1 id="rfc.appendix.B"><a href="#rfc.appendix.B">Appendix B.</a> <a href="#beacon-xml-format" id="beacon-xml-format">BEACON XML format</a></h1>
+<p id="rfc.section.B.p.1">A BEACON XML file is a valid XML file conforming to the following schema. The file SHOULD be encoded in UTF-8 <a href="#RFC3629">[RFC3629]</a>. The file MUST: </p>
+<p/>
+
+<ul>
+  <li>Begin with an opening <samp>&lt;beacon&gt;</samp> tag and end with a closing <samp>&lt;/beacon&gt;</samp> tag.  </li>
+  <li>Specify the default namespace <samp>http://purl.org/net/example</samp>.  </li>
+  <li>Include an empty <samp>&lt;link/&gt;</samp> tag for each link.  </li>
+  <li>Include the source token as XML attribute <samp>source</samp> of each <samp>&lt;link/&gt;</samp> element.  </li>
+</ul>
+<p id="rfc.section.B.p.3">The file MAY further: </p>
+<p/>
+
+<ul>
+  <li>Specify <a href="#meta-fields">meta fields</a> <cite title="NONE">[meta-fields]</cite> as XML attributes to the <samp>&lt;beacon&gt;</samp> tag.  </li>
+  <li>Specify link tokens <samp>target</samp> and/or <samp>annotation</samp> as attributes to the <samp>&lt;link&gt;</samp> element.  </li>
+</ul>
+<p id="rfc.section.B.p.5">All attributes MUST be given in lowercase.  </p>
+<p id="rfc.section.B.p.6">To process BEACON XML files, a complete and stream-processing XML parser, for instance the Simple API for XML <a href="#SAX">[SAX]</a>, is RECOMMENDED, in favor of parsing with regular expressions or similar methods prone to errors.  Additional XML attributes of <samp>&lt;link&gt;</samp> elements and <samp>&lt;link&gt;</samp> elements without <samp>source</samp> attribute SHOULD be ignored.  </p>
+<p id="rfc.section.B.p.7">Note that in contrast to BEACON text files, link tokens MAY include line breaks, which MUST BE removed by whitespace normalization.  Furthermore id field, annotation field and target token MAY include a vertical bar, which MUST be replaced by the character sequence <samp>%7C</samp> before further processing.  </p>
+<p id="rfc.section.B.p.8">A schema of BEACON XML format in RELAX NG Compact syntax <a href="#RELAX-NGC">[RELAX-NGC]</a> can be given as following: </p>
 <pre>
 default namespace = "http://purl.org/net/beacon"
 
@@ -1310,11 +1308,11 @@ ada|bar
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
 <li>1.1.   <a href="#rfc.section.1.1">Example</a></li>
 <li>1.2.   <a href="#rfc.section.1.2">Notational Conventions</a></li>
-<li>1.3.   <a href="#rfc.section.1.3">String normalization</a></li>
-<li>1.4.   <a href="#rfc.section.1.4">URI patterns</a></li>
-<li>2.   <a href="#rfc.section.2">Links</a></li>
-<li>2.1.   <a href="#rfc.section.2.1">Link construction</a></li>
-<li>2.2.   <a href="#rfc.section.2.2">Relation types</a></li>
+<li>2.   <a href="#rfc.section.2">Basic concepts</a></li>
+<li>2.1.   <a href="#rfc.section.2.1">Links</a></li>
+<li>2.2.   <a href="#rfc.section.2.2">Allowed characters</a></li>
+<li>2.3.   <a href="#rfc.section.2.3">Whitespace normalization</a></li>
+<li>2.4.   <a href="#rfc.section.2.4">URI patterns</a></li>
 <li>3.   <a href="#rfc.section.3">Meta fields</a></li>
 <li>3.1.   <a href="#rfc.section.3.1">Source and target datasets</a></li>
 <li>3.1.1.   <a href="#rfc.section.3.1.1">sourceset</a></li>
@@ -1335,9 +1333,9 @@ ada|bar
 <li>3.3.3.   <a href="#rfc.section.3.3.3">message</a></li>
 <li>3.3.4.   <a href="#rfc.section.3.3.4">relation</a></li>
 <li>3.3.5.   <a href="#rfc.section.3.3.5">annotation</a></li>
-<li>4.   <a href="#rfc.section.4">BEACON files</a></li>
-<li>4.1.   <a href="#rfc.section.4.1">BEACON text format</a></li>
-<li>4.2.   <a href="#rfc.section.4.2">BEACON XML format</a></li>
+<li>4.   <a href="#rfc.section.4">BEACON text format</a></li>
+<li>4.1.   <a href="#rfc.section.4.1">Link construction</a></li>
+<li>4.2.   <a href="#rfc.section.4.2">MIME type</a></li>
 <li>5.   <a href="#rfc.section.5">Mappings</a></li>
 <li>5.1.   <a href="#rfc.section.5.1">Mapping to RDF</a></li>
 <li>5.2.   <a href="#rfc.section.5.2">Mapping to HTML</a></li>
@@ -1346,7 +1344,7 @@ ada|bar
 <li>7.1.   <a href="#rfc.references.1">Normative References</a></li>
 <li>7.2.   <a href="#rfc.references.2">Informative References</a></li>
 <li>Appendix A.   <a href="#rfc.appendix.A">Glossary</a></li>
-<li>Appendix B.   <a href="#rfc.appendix.B">RELAX NG Schema for BEACON XML</a></li>
+<li>Appendix B.   <a href="#rfc.appendix.B">BEACON XML format</a></li>
 <li>Appendix C.   <a href="#rfc.appendix.C">Example</a></li>
 <li><a href="#rfc.authors">Authors' Addresses</a></li>
 
