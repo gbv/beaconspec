@@ -4,10 +4,20 @@ REVHTML = beacon-$(REVSHRT).html
 all: html txt
 
 HTML = beacon.html
-TXT	 = beacon.txt
+TXT  = beacon.txt
 
 html: $(HTML)
 txt: $(TXT)
+
+.md.xml:
+	pandoc -t docbook -s $< | xsltproc --nonet pandoc2rfc/transform.xsl - > $@
+
+# requires the "new" python-xml2rfc
+
+$(TXT): beacon.xml appendices.xml template.xml
+	xml2rfc template.xml -f $@ --text
+$(HTML): beacon.xml appendices.xml template.xml
+	xml2rfc template.xml -f $@ --html
 
 revision: $(HTML)
 	cp $(HTML) $(REVHTML)
@@ -22,20 +32,10 @@ website: $(HTML) $(TXT)
 	git commit -m "added revision $(REVSHRT)"
 	git checkout master
 
-appendices.xml: appendices.md
-	pandoc -t docbook -s $< | xsltproc --nonet pandoc2rfc/transform.xsl - > $@
-
-beacon.txt: beacon.md appendices.xml
-	./pandoc2rfc/pandoc2rfc -x pandoc2rfc/transform.xsl -T $<
-	mv draft.txt $@
-
-beacon.html: beacon.md appendices.xml
-	./pandoc2rfc/pandoc2rfc -x pandoc2rfc/transform.xsl -H $<
-	mv draft.html $@
-
 clean:
-	rm -f $(HTML) $(TXT) appendices.xml beacon-*.html draft.xml
+	rm -f $(HTML) $(TXT) appendices.xml beacon.xml beacon-*.html
 
 new: clean all
 
+.SUFFIXES: .md .xml
 .PHONY: clean all new

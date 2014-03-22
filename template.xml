@@ -108,7 +108,7 @@
         &RSSSYND;
         &RDF;
         &VOID;
-	</references>
+    </references>
     &pandocAppendices;
 </back>
 </rfc>
