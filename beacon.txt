@@ -647,7 +647,7 @@ Internet-Draft                   BEACON                     January 2014
    tokens.  A BEACON file MAY begin with an Unicode Byte Order Mark and
    it SHOULD end with a line break:
 
-    BEACONTEXT  =  [ BOM ] [ START ]
+    BEACONTEXT  =  [ BOM ]
                    *METALINE
                    *EMPTY
                     LINKLINE *( LINEBREAK LINKLINE )
@@ -662,10 +662,10 @@ Internet-Draft                   BEACON                     January 2014
 
    EMPTY        =  *WHITESPACE LINEBREAK
 
-   The BEACON text file SHOULD start with a fixed meta field:
-
-    START       =  "#FORMAT:" +WHITESPACE "BEACON" *WHITESPACE LINEBREAK
-
+   A meta line specifies a meta field (Section 3) and its value.  Meta
+   field names MUST be given in uppercase letters.  All meta lines with
+   "METAFIELD" not one of the field names defined in this specification,
+   SHOULD be ignored.
 
 
 
@@ -674,16 +674,14 @@ Voss, et al.              Expires July 5, 2014                 [Page 12]
 Internet-Draft                   BEACON                     January 2014
 
 
-   A meta line specifies a meta field (Section 3) and its value.  Meta
-   field names MUST be given in uppercase letters.  All meta lines with
-   "METAFIELD" not one of the field names defined in this specification,
-   SHOULD be ignored.
-
     METALINE    =  "#" METAFIELD ":" METAVALUE LINEBREAK
 
     METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
 
     METAVALUE   =  LINE
+
+   A BEACON text file MAY start with the fixed meta field "format" set
+   to "BEACON" ("#FORMAT: BEACON").
 
    Each link is given on a link line with its source token, optionally
    follwed by annotation token and target token:
@@ -723,14 +721,14 @@ Internet-Draft                   BEACON                     January 2014
 
    o  a mandatory source token
 
+   o  an optional annotation token
+
 
 
 Voss, et al.              Expires July 5, 2014                 [Page 13]
 
 Internet-Draft                   BEACON                     January 2014
 
-
-   o  an optional annotation token
 
    o  an optional target token, which is set to the source token if
       missing
@@ -779,14 +777,14 @@ Internet-Draft                   BEACON                     January 2014
 
     http://example.org/foo|Hello World!|http://example.com/foo
 
+   The default meta fields values could also be specified as:
+
 
 
 Voss, et al.              Expires July 5, 2014                 [Page 14]
 
 Internet-Draft                   BEACON                     January 2014
 
-
-   The default meta fields values could also be specified as:
 
     #PREFIX: {+ID}
     #TARGET: {+ID}
@@ -834,6 +832,8 @@ Internet-Draft                   BEACON                     January 2014
 
    Each link can be mapped to at least one RDF triple with:
 
+   o  the source URI used as subject IRI,
+
 
 
 
@@ -841,8 +841,6 @@ Voss, et al.              Expires July 5, 2014                 [Page 15]
 
 Internet-Draft                   BEACON                     January 2014
 
-
-   o  the source URI used as subject IRI,
 
    o  the relation type used as predicate,
 
@@ -887,9 +885,11 @@ Internet-Draft                   BEACON                     January 2014
     <http://example.org/abc> foaf:primaryTopic <http://example.com/xy> .
     <http://example.com/xy> dcterms:extent "12" .
 
+5.2.  Mapping to HTML
 
-
-
+   This document does not specify a single mapping of links in a BEACON
+   link dump to links in a HTML document, so the following description
+   is non-normative.
 
 
 
@@ -897,12 +897,6 @@ Voss, et al.              Expires July 5, 2014                 [Page 16]
 
 Internet-Draft                   BEACON                     January 2014
 
-
-5.2.  Mapping to HTML
-
-   This document does not specify a single mapping of links in a BEACON
-   link dump to links in a HTML document, so the following description
-   is non-normative.
 
    A link in a BEACON dump can be mapped to a HTML link ("<a>" element)
    as following:
@@ -946,6 +940,12 @@ Internet-Draft                   BEACON                     January 2014
    Programs should be prepared for malformed and malicious content when
    parsing BEACON files, when constructing links from link tokens, and
    when mapping links to RDF or HTML.  Possible attacks of parsing
+   contain broken UTF-8 and buffer overflows.  Link construction can
+   result in unexpectedly long strings and character sequences that may
+   be harmless when analyzed as parts.  Most notably, BEACON data may
+   store strings containing HTML and JavaScript code to be used for
+   cross-site scripting attacks on the site displaying BEACON links.
+
 
 
 
@@ -954,11 +954,6 @@ Voss, et al.              Expires July 5, 2014                 [Page 17]
 Internet-Draft                   BEACON                     January 2014
 
 
-   contain broken UTF-8 and buffer overflows.  Link construction can
-   result in unexpectedly long strings and character sequences that may
-   be harmless when analyzed as parts.  Most notably, BEACON data may
-   store strings containing HTML and JavaScript code to be used for
-   cross-site scripting attacks on the site displaying BEACON links.
    Applications should therefore escape or filter accordingly all
    content with established libraries, such as Apache Escape Utils.
 
@@ -998,8 +993,13 @@ Internet-Draft                   BEACON                     January 2014
 
    [DCTERMS]  DCMI Usage Board, , "DCMI Metadata Terms", Oct 2010.
 
+7.2.  Informative References
 
+   [FOAF]     Brickley, D. and L. Miller, "FOAF Vocabulary
+              Specification", Aug 2010.
 
+   [RFC5013]  Kunze, J. and T. Baker, "The Dublin Core Metadata Element
+              Set", RFC 5013, August 2007.
 
 
 
@@ -1009,14 +1009,6 @@ Voss, et al.              Expires July 5, 2014                 [Page 18]
 
 Internet-Draft                   BEACON                     January 2014
 
-
-7.2.  Informative References
-
-   [FOAF]     Brickley, D. and L. Miller, "FOAF Vocabulary
-              Specification", Aug 2010.
-
-   [RFC5013]  Kunze, J. and T. Baker, "The Dublin Core Metadata Element
-              Set", RFC 5013, August 2007.
 
    [Sitemaps]
               Google Inc., , "Sitemaps XML format", February 2008.
@@ -1057,6 +1049,14 @@ Appendix A.  Glossary
    source database  is the set (or superset) of all source URIs in a
       link dump.
 
+   target database  is the set (or superset) of all target URIs in a
+      link dump.
+
+   relation type  a common releation between targets and sources in a
+      link dump.
+
+
+
 
 
 
@@ -1065,12 +1065,6 @@ Voss, et al.              Expires July 5, 2014                 [Page 19]
 
 Internet-Draft                   BEACON                     January 2014
 
-
-   target database  is the set (or superset) of all target URIs in a
-      link dump.
-
-   relation type  a common releation between targets and sources in a
-      link dump.
 
 Appendix B.  BEACON XML format
 
@@ -1112,6 +1106,12 @@ Appendix B.  BEACON XML format
 
    A schema of BEACON XML format in RELAX NG Compact syntax [RELAX-NGC]
    can be given as following:
+
+
+
+
+
+
 
 
 

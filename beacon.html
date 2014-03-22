@@ -788,7 +788,7 @@ http://example.org/apples|sphere|http://example.org/oranges
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#beacon-text-format" id="beacon-text-format">BEACON text format</a></h1>
 <p id="rfc.section.4.p.1">A BEACON file is an UTF-8 encoded Unicode file <a href="#RFC3629">[RFC3629]</a>, split into lines by line breaks (rule <samp>LINEBREAK</samp>). The file consists of a set of lines with meta fields, followed by a set of lines with link tokens.  A BEACON file MAY begin with an Unicode Byte Order Mark and it SHOULD end with a line break: </p>
 <pre>
- BEACONTEXT  =  [ BOM ] [ START ]
+ BEACONTEXT  =  [ BOM ]
                 *METALINE
                 *EMPTY
                  LINKLINE *( LINEBREAK LINKLINE )
@@ -800,11 +800,7 @@ http://example.org/apples|sphere|http://example.org/oranges
 <pre>
 EMPTY        =  *WHITESPACE LINEBREAK
 </pre>
-<p id="rfc.section.4.p.3">The BEACON text file SHOULD start with a fixed meta field: </p>
-<pre>
- START       =  "#FORMAT:" +WHITESPACE "BEACON" *WHITESPACE LINEBREAK
-</pre>
-<p id="rfc.section.4.p.4">A meta line specifies a <a href="#meta-fields">meta field</a> <cite title="NONE">[meta-fields]</cite> and its value. Meta field names MUST be given in uppercase letters. All meta lines with <samp>METAFIELD</samp> not one of the field names defined in this specification, SHOULD be ignored.  </p>
+<p id="rfc.section.4.p.3">A meta line specifies a <a href="#meta-fields">meta field</a> <cite title="NONE">[meta-fields]</cite> and its value. Meta field names MUST be given in uppercase letters. All meta lines with <samp>METAFIELD</samp> not one of the field names defined in this specification, SHOULD be ignored.  </p>
 <pre>
  METALINE    =  "#" METAFIELD ":" METAVALUE LINEBREAK
 
@@ -812,6 +808,7 @@ EMPTY        =  *WHITESPACE LINEBREAK
 
  METAVALUE   =  LINE
 </pre>
+<p id="rfc.section.4.p.4">A BEACON text file MAY start with the fixed meta field "format" set to "BEACON" (<samp>#FORMAT: BEACON</samp>).  </p>
 <p id="rfc.section.4.p.5">Each link is given on a link line with its source token, optionally follwed by annotation token and target token: </p>
 <pre>
  LINKLINE    =  SOURCE [ 
