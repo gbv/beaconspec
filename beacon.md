@@ -592,6 +592,10 @@ The link line in this example is equal to:
 Multiple occurrences of equal links in one BEACON file SHOULD be ignored.  It
 is RECOMMENDED to indicate duplicated links with a warning.
 
+## MIME type
+
+The recommended MIME type of BEACON text files is "text/beacon". The file
+extension `.txt` SHOULD be used when storing BEACON text files.
 
 
 # Mappings
