@@ -21,6 +21,36 @@ target database
 relation type
   : a common releation between targets and sources in a link dump.
 
+## BEACON XML format
+
+A BEACON XML file is a valid XML file conforming to the following schema. The
+file SHOULD be encoded in UTF-8 [](#RFC3629). The file MUST:
+
+  * Begin with an opening `<beacon>` tag and end with a closing `</beacon>` tag.
+  * Specify the default namespace `http://purl.org/net/example`.
+  * Include an empty `<link/>` tag for each link.
+  * Include the source token as XML attribute `source` of each `<link/>` element.
+
+The file MAY further:
+
+  * Specify [meta fields](#meta-fields) as XML attributes to the `<beacon>` tag.
+  * Specify link tokens `target` and/or `annotation` as attributes to the 
+    `<link>` element.
+
+All attributes MUST be given in lowercase. An informal schema of BEACON XML
+files is given in [](#relax-ng-schema-for-beacon-xml).
+
+To process BEACON XML files, a complete and stream-processing XML parser, for
+instance the Simple API for XML [](#SAX), is RECOMMENDED, in favor of parsing
+with regular expressions or similar methods prone to errors.  Additional XML
+attributes of `<link>` elements and `<link>` elements without `source`
+attribute SHOULD be ignored.
+
+Note that in contrast to BEACON text files, link tokens MAY include line
+breaks, which MUST BE removed by whitespace normalization. Furthermore id field,
+annotation field and target token MAY include a vertical bar, which MUST be replaced
+by the character sequence `%7C` before further processing.
+
 # RELAX NG Schema for BEACON XML
 
 Below is a schema of [BEACON XML format](#beacon-xml-format) in RELAX NG Compact
