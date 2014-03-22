@@ -465,7 +465,7 @@ by line breaks (rule `LINEBREAK`). The file consists of a set of lines with
 meta fields, followed by a set of lines with link tokens. A BEACON file MAY
 begin with an Unicode Byte Order Mark and it SHOULD end with a line break:
 
-     BEACONTEXT  =  [ BOM ] [ START ]
+     BEACONTEXT  =  [ BOM ]
                     *METALINE
                     *EMPTY
                      LINKLINE *( LINEBREAK LINKLINE )
@@ -479,10 +479,6 @@ If no empty line is given, the first link line MUST NOT begin with `"#"`.
 
     EMPTY        =  *WHITESPACE LINEBREAK
 
-The BEACON text file SHOULD start with a fixed meta field:
-
-     START       =  "#FORMAT:" +WHITESPACE "BEACON" *WHITESPACE LINEBREAK
-
 A meta line specifies a [meta field](#meta-fields) and its value. Meta field
 names MUST be given in uppercase letters. All meta lines with `METAFIELD` not
 one of the field names defined in this specification, SHOULD be ignored.
@@ -492,6 +488,9 @@ one of the field names defined in this specification, SHOULD be ignored.
      METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
 
      METAVALUE   =  LINE
+
+A BEACON text file MAY start with the fixed meta field "format" set to
+"BEACON" (`#FORMAT: BEACON`).
 
 Each link is given on a link line with its source token, optionally follwed by
 annotation token and target token:
