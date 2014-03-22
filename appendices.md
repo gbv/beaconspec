@@ -3,11 +3,9 @@
 BEACON
   : is a data interchange format as specified in this document.
 BEACON file
-  : is a link dump serialized in BEACON text format or BEACON XML format.
+  : is a link dump serialized in BEACON text format.
 BEACON text format
   : is a condense format to serialize link dumps as specified in this document. 
-BEACON XML format
-  : is an XML format to serialize link dumps as specified in this document. 
 link
   : is a triple of source URI, target URI, and annotation.
 link dump
@@ -21,7 +19,7 @@ target database
 relation type
   : a common releation between targets and sources in a link dump.
 
-## BEACON XML format
+# BEACON XML format
 
 A BEACON XML file is a valid XML file conforming to the following schema. The
 file SHOULD be encoded in UTF-8 [](#RFC3629). The file MUST:
@@ -37,8 +35,7 @@ The file MAY further:
   * Specify link tokens `target` and/or `annotation` as attributes to the 
     `<link>` element.
 
-All attributes MUST be given in lowercase. An informal schema of BEACON XML
-files is given in [](#relax-ng-schema-for-beacon-xml).
+All attributes MUST be given in lowercase. 
 
 To process BEACON XML files, a complete and stream-processing XML parser, for
 instance the Simple API for XML [](#SAX), is RECOMMENDED, in favor of parsing
@@ -51,11 +48,8 @@ breaks, which MUST BE removed by whitespace normalization. Furthermore id field,
 annotation field and target token MAY include a vertical bar, which MUST be replaced
 by the character sequence `%7C` before further processing.
 
-# RELAX NG Schema for BEACON XML
-
-Below is a schema of [BEACON XML format](#beacon-xml-format) in RELAX NG Compact
-syntax [](#RELAX-NGC). The schema is non-normative and given for reference
-only.
+A schema of BEACON XML format in RELAX NG Compact syntax [](#RELAX-NGC) can be
+given as following:
 
     default namespace = "http://purl.org/net/beacon"
 

@@ -12,7 +12,7 @@ txt: $(TXT)
 .md.xml:
 	pandoc -t docbook -s $< | xsltproc --nonet pandoc2rfc/transform.xsl - > $@
 
-# requires the "new" python-xml2rfc
+# requires the "new" python-xml2rfc (https://pypi.python.org/pypi/xml2rfc/)
 
 $(TXT): beacon.xml appendices.xml template.xml
 	xml2rfc template.xml -f $@ --text

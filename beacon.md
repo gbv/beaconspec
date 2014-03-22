@@ -13,8 +13,9 @@ Each link consists of a source URI, a target URI, and an annotation. Common
 patterns in source URIs and target URIs respectively can be used to abbreviate
 serializations of link dumps.  This specification defines:
 
-* a serializations of link dumps (**BEACON files**) in a condense 
-  line-oriented text format ([](#beacon-files)),
+* a serialization of link dumps (**BEACON files**) in a condense 
+  line-oriented text format ([](#beacon-text-format)). A non-normative
+  serialization based on XML is included in an appendix;
 * two interpretations of link dumps as mapping to HTML and
   mapping to RDF ([](#mappings)).
 
@@ -99,13 +100,28 @@ Syndication Module [](#RSSSYND):
 The blank node `:dump` denotes the URI of the link dump and the blank node
 `:targetset` denotes the URI of the target dataset.
 
-## String normalization 
 
-A Unicode string is normalized according to this specification, by stripping
-leading and trailing whitespace and by replacing all `WHITESPACE` character
-sequences by a single space (`SP`). 
+# Basic concepts
 
-     WHITESPACE  =  1*( CR | LF | HTAB | SP )
+## Links
+
+A link in a link dump is a directed connection between two resources that are
+identified by URIs [](#RFC3986). A link is compromised of three elements:
+
+* a **source URI**,
+* a **target URI**,
+* an **annotation**.
+
+Source URI and target URI define where a link is pointing from and to
+respectively. The annotation is an optional Unicode string, that can be used to
+further describe the link or parts of it. Annotations MUST be
+whitespace-normalized ([](#whitespace-normalization)) and MUST NOT contain a
+`VBAR` character. A missing annotation is equal to the empty string. The
+meaning of a link can be indicated by the **relation type** meta field
+([](#relation)).
+
+
+## Allowed characters
 
 The set of allowed Unicode characters in BEACON dumps is the set of valid
 Unicode characters from UCS which can also be expressed in XML 1.0, excluding
@@ -123,6 +139,14 @@ Applications SHOULD exclude disallowed characters by stripping them, by
 replacing them with the replacement character `U+FFFD`, or by refusing to
 process. Applications SHOULD also apply Unicode Normalization Form Canonical
 Composition (NFKC) to all strings.
+
+## Whitespace normalization 
+
+A Unicode string is whitespace-normalized according to this specification, by
+stripping leading and trailing whitespace and by replacing all `WHITESPACE`
+character sequences by a single space (`SP`). 
+
+     WHITESPACE  =  1*( CR | LF | HTAB | SP )
 
 ## URI patterns
 
@@ -162,107 +186,6 @@ following the process defined in Section 3.2 of [](#RFC3987).
       M%C3%BCller       {ID}        M%25C3%25BCller
       M%C3%BCller       {+ID}       M%C3%BCller
 
-# Links
-
-A link in a link dump is a directed connection between two resources that are
-identified by URIs [](#RFC3986). A link is compromised of three elements:
-
-* a **source URI**,
-* a **target URI**,
-* an **annotation**.
-
-Source URI and target URI define where a link is pointing from and to
-respectively. The annotation is an optional whitespace-normalized Unicode
-string that can be used to further describe the link or parts of it. A missing
-annotation is equal to the empty string. Annotations MUST match the grammar
-rule `TOKEN`. The meaning of a link can be indicated by the
-**relation type** ([](#relation-types)) meta field.
-
-## Link construction
-
-Link elements are given in abbreviated form of **link tokens** when serialized
-in a BEACON file. Each link is constructed from:
-
-* a mandatory source token
-* an optional annotation token
-* an optional target token, which is set to the source token if missing
-
-All tokens MUST be whitespace-normalized before further
-processing.  The full link is then constructed as following:
-
-* The source URI is constructed from the `prefix` meta field URI pattern by 
-  inserting the source token, as defined in [](#uri-patterns).
-* The target URI is constructed from the `target` meta field URI pattern by 
-  inserting the target token, as as defined in [](#uri-patterns).
-* The annotation is constructed from the `message` meta field by literally 
-  replacing every occurrence of the character sequence `{annotation}` by the 
-  annotation token.  The resulting string MUST be whitespace-normalized after
-  construction additional encoding MUST NOT be applied.
-
-The following table illustrates construction of a link:
-
-     meta field  +  link token  -->  link element
-    ----------------------------------------------
-     prefix      |  source       |   source URI
-     target      |  target       |   target URI
-     message     |  annotation   |   annotation
-
-Constructed source URI and target URI MUST be syntactically valid.
-Applications MUST ignore links with invalid URIs and SHOULD give a warning.
-Note that annotation tokens are always ignored if the `message` meta field does
-not contain the sequence `{annotation}`. Applications SHOULD give a warning in
-this case.
-
-Applications MUST NOT differentiate between equal links constructed from
-different abbreviations. For instance the following BEACON text file contains a
-single link:
-
-     #PREFIX: http://example.org/
-     #TARGET: http://example.com/
-     #MESSAGE: Hello World!
-
-     foo
-
-The same link could also be serialized without any meta fields: 
-
-     http://example.org/foo|Hello World!|http://example.com/foo
-
-The default meta fields values could also be specified as:
-
-     #PREFIX: {+ID}
-     #TARGET: {+ID}
-     #MESSAGE: {annotation}
-
-Another possible serialization is:
-
-     #PREFIX: http://example.org/
-     #TARGET: http://example.com/
-     #MESSAGE: Hello {annotation}
-
-     foo|World!
-
-The link line in this example is equal to:
-
-     foo|World!|foo
-
-Multiple occurrences of equal links in one BEACON file SHOULD be ignored.  It
-is RECOMMENDED to indicate duplicated links with a warning.
-
-## Relation types
-
-All links in a link dump share a common relation type. A relation type is
-either an URI or a registered link type from the IANA link relations registry
-[](#RFC5988).  The relation type is specified by the `relation` meta field in
-BEACON files ([](#meta-fields)).
-
-Some examples of relation types:
-
-     http://www.w3.org/2002/07/owl#sameAs
-     http://xmlns.com/foaf/0.1/isPrimaryTopicOf
-     http://purl.org/spar/cito/cites
-     describedby
-     replies
-
 # Meta fields
 
 A link dump SHOULD contain a set of meta fields, each identified by its name
@@ -270,10 +193,10 @@ build of lowercase letters `a-z`.  Relevant meta fields for description of the
 source and target datasets ([](#source-and-target-datasets)), the link dump
 ([](#link-dump)), and links ([](#link-description)) are defined in the
 following.  Additional meta fields, not defined in this specification, SHOULD
-be ignored.  All meta field values MUST be whitespace-normalized
-([](#string-normalization)).  Missing meta field values and empty strings MUST
-be set to the field’s default value, which is the empty string unless noted
-otherwise. The following diagram shows which meta fields belong to which dataset: 
+be ignored.  All meta field values MUST be whitespace-normalized. Missing meta
+field values and empty strings MUST be set to the field’s default value, which
+is the empty string unless noted otherwise. The following diagram shows which
+meta fields belong to which dataset: 
 
     +----------------+    +-----------------+     +-----------------+
     | source dataset | ---| link dump       |---> | target dataset  |
@@ -507,10 +430,19 @@ is `{annotation}`.
 
 ### relation
 
-The relation field specifies the relation type for all links in a link dump.
-The field value MUST either be an URI or a registered link type from the IANA
-link relations registry. The default relation type is `rdfs:seeAlso`.  This
-field is mapped to the RDF property `void:linkPredicate` with subject `:dump`.
+All links in a link dump share a common relation type, specified by the
+relation field. A relation type MUST be either an URI or a registered link type
+from the IANA link relations registry [](#RFC5988). The default relation type
+is `rdfs:seeAlso`.  The relation field is mapped to the RDF property
+`void:linkPredicate` with subject `:dump`.
+
+Some examples of relation types:
+
+     http://www.w3.org/2002/07/owl#sameAs
+     http://xmlns.com/foaf/0.1/isPrimaryTopicOf
+     http://purl.org/spar/cito/cites
+     describedby
+     replies
 
 ### annotation
 
@@ -526,15 +458,12 @@ implies the following triple if mapped to RDF:
 
    <http://example.org/oranges> dc:format "sphere" .
 
-# BEACON files
+# BEACON text format
 
-## BEACON text format
-
-A BEACON text file is an UTF-8 encoded Unicode file [](#RFC3629), split into
-lines by line breaks (rule `LINEBREAK`). The file consists of a set of lines
-with meta fields, followed by a set of lines with link tokens. A BEACON text
-file MAY begin with an Unicode Byte Order Mark and it SHOULD end with a line
-break:
+A BEACON file is an UTF-8 encoded Unicode file [](#RFC3629), split into lines
+by line breaks (rule `LINEBREAK`). The file consists of a set of lines with
+meta fields, followed by a set of lines with link tokens. A BEACON file MAY
+begin with an Unicode Byte Order Mark and it SHOULD end with a line break:
 
      BEACONTEXT  =  [ BOM ] [ START ]
                     *METALINE
@@ -583,8 +512,8 @@ The ambiguity of rule `LINKLINE` with one occurrence of `VBAR` is resolved is
 following:
 
 * If the target meta field has its default value `{+ID}`, and the message meta 
-  field has its default value `{annotation}`, and the normalized second token 
-  begins with "http:" or "https:", then the second token is used as target token.
+  field has its default value `{annotation}`, and the whitespace-normalized second 
+  token begins with "http:" or "https:", then the second token is used as target token.
 * The second token is used as annotation token otherwise.
 
 This way one can use two forms to encode links to HTTP URIs (given target 
@@ -592,6 +521,78 @@ meta field and message meta field with their default values):
 
     foo|http://example.org/foobar
     foo||http://example.org/foobar
+
+## Link construction
+
+Link elements are given in abbreviated form of **link tokens** when serialized
+in a BEACON file. Each link is constructed from:
+
+* a mandatory source token
+* an optional annotation token
+* an optional target token, which is set to the source token if missing
+
+All tokens MUST be whitespace-normalized before further
+processing.  The full link is then constructed as following:
+
+* The source URI is constructed from the `prefix` meta field URI pattern by 
+  inserting the source token, as defined in [](#uri-patterns).
+* The target URI is constructed from the `target` meta field URI pattern by 
+  inserting the target token, as as defined in [](#uri-patterns).
+* The annotation is constructed from the `message` meta field by literally 
+  replacing every occurrence of the character sequence `{annotation}` by the 
+  annotation token.  The resulting string MUST be whitespace-normalized after
+  construction additional encoding MUST NOT be applied.
+
+The following table illustrates construction of a link:
+
+     meta field  +  link token  -->  link element
+    ----------------------------------------------
+     prefix      |  source       |   source URI
+     target      |  target       |   target URI
+     message     |  annotation   |   annotation
+
+Constructed source URI and target URI MUST be syntactically valid.
+Applications MUST ignore links with invalid URIs and SHOULD give a warning.
+Note that annotation tokens are always ignored if the `message` meta field does
+not contain the sequence `{annotation}`. Applications SHOULD give a warning in
+this case.
+
+Applications MUST NOT differentiate between equal links constructed from
+different abbreviations. For instance the following BEACON text file contains a
+single link:
+
+     #PREFIX: http://example.org/
+     #TARGET: http://example.com/
+     #MESSAGE: Hello World!
+
+     foo
+
+The same link could also be serialized without any meta fields: 
+
+     http://example.org/foo|Hello World!|http://example.com/foo
+
+The default meta fields values could also be specified as:
+
+     #PREFIX: {+ID}
+     #TARGET: {+ID}
+     #MESSAGE: {annotation}
+
+Another possible serialization is:
+
+     #PREFIX: http://example.org/
+     #TARGET: http://example.com/
+     #MESSAGE: Hello {annotation}
+
+     foo|World!
+
+The link line in this example is equal to:
+
+     foo|World!|foo
+
+Multiple occurrences of equal links in one BEACON file SHOULD be ignored.  It
+is RECOMMENDED to indicate duplicated links with a warning.
+
+
 
 # Mappings
 
