@@ -142,15 +142,15 @@ Composition (NFKC) to all strings.
 
 ## Whitespace normalization 
 
-A Unicode string is whitespace-normalized according to this specification, by
-stripping leading and trailing whitespace and by replacing all `WHITESPACE`
+A Unicode string is **whitespace-normalized** according to this specification,
+by stripping leading and trailing whitespace and by replacing all `WHITESPACE`
 character sequences by a single space (`SP`). 
 
      WHITESPACE  =  1*( CR | LF | HTAB | SP )
 
 ## URI patterns
 
-A URI pattern in this specification is an URI Template, as defined in
+A **URI pattern** in this specification is an URI Template, as defined in
 [](#RFC6570), with all template expressions being either `{ID}` for simple
 string expansion or `{+ID}` for reserved expansion.
 
@@ -188,37 +188,38 @@ following the process defined in Section 3.2 of [](#RFC3987).
 
 # Meta fields
 
-A link dump SHOULD contain a set of meta fields, each identified by its name
-build of lowercase letters `a-z`.  Relevant meta fields for description of the
-source and target datasets ([](#source-and-target-datasets)), the link dump
+A link dump SHOULD contain a set of **meta fields**, each identified by its
+name build of lowercase letters `a-z`.  Relevant meta fields for description of
+the source and target datasets ([](#source-and-target-datasets)), the link dump
 ([](#link-dump)), and links ([](#link-description)) are defined in the
 following.  Additional meta fields, not defined in this specification, SHOULD
 be ignored.  All meta field values MUST be whitespace-normalized. Missing meta
 field values and empty strings MUST be set to the field’s default value, which
 is the empty string unless noted otherwise. The following diagram shows which
-meta fields belong to which dataset: 
+meta fields belong to which dataset. Repeatable fields are marked with a plus
+character (`+`): 
 
-    +----------------+    +-----------------+     +-----------------+
-    | source dataset | ---| link dump       |---> | target dataset  |
-    |----------------|    |-----------------|     |-----------------|
-    |                | ---|                 |---> |                 |
-    |  * sourceset   |    |  * description  |     |  * targetset    |
-    |                | ---|  * creator      |---> |  * name         |
-    +----------------+    |  * contact      |     |  * institution  |
-                          |  * update       |     |                 |
-                          |  * timestamp    |     +-----------------+
-                          |  * feed         |
-                          |  * homepage     |
-                          |                 |
-                          +-----------------+
-                          |                 |
-                          |  * prefix       |
-                          |  * target       |
-                          |  * relation     |
-                          |  * message      |
-                          |  * annotation   |
-                          |                 |
-                          +-----------------+
+    +----------------+    +------------------+     +-----------------+
+    | source dataset | ---| link dump        |---> | target dataset  |
+    |----------------|    |------------------|     |-----------------|
+    |                | ---|                  |---> |                 |
+    |  * sourceset   |    |  * description+  |     |  * targetset    |
+    |                | ---|  * creator+      |---> |  * name+        |
+    +----------------+    |  * contact+      |     |  * institution+ |
+                          |  * homepage+     |     |                 |
+                          |  * feed+         |     +-----------------+
+                          |  * timestamp+    |
+                          |  * update        |
+                          |                  |
+                          +------------------+
+                          |                  |
+                          |  * prefix        |
+                          |  * target        |
+                          |  * relation      |
+                          |  * message       |
+                          |  * annotation    |
+                          |                  |
+                          +------------------+
 
 
 ## Source and target datasets
@@ -261,6 +262,15 @@ meta field value "ACME", expressible in BEACON text format as
 can be mapped to this RDF triple:
 
     :targetset dcterms:publisher "ACME" .
+
+A institution meta field value starting with `http://` or `https://` is
+interpreted as URI instead of string. For instance
+
+    #INSTITUTION: http://example.org/acme/
+
+can be mapped to this RDF triple:
+
+    :targetset dcterms:publisher <http://example.org/acme/> .
 
 ## Link dump
 
@@ -479,7 +489,7 @@ If no empty line is given, the first link line MUST NOT begin with `"#"`.
 
     EMPTY        =  *WHITESPACE LINEBREAK
 
-A meta line specifies a [meta field](#meta-fields) and its value. Meta field
+A meta line specifies a meta field ([](#meta-fields)) and its value. Meta field
 names MUST be given in uppercase letters. All meta lines with `METAFIELD` not
 one of the field names defined in this specification, SHOULD be ignored.
 
@@ -490,7 +500,7 @@ one of the field names defined in this specification, SHOULD be ignored.
      METAVALUE   =  LINE
 
 A BEACON text file MAY start with the fixed meta field "format" set to
-"BEACON" (`#FORMAT: BEACON`).
+"BEACON" ("`#FORMAT: BEACON`").
 
 Each link is given on a link line with its source token, optionally follwed by
 annotation token and target token:

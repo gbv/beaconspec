@@ -80,19 +80,7 @@ given as following:
 
 # Example
 
-A short example of a BEACON XML file is given below:
-
-    <?xml version="1.0" encoding="UTF-8"?>
-    <beacon xmlns="http://purl.org/net/beacon" 
-            prefix="http://example.org/"
-            target="http://example.com/"
-            name="ACME document">
-       <link source="alice" target="foo" />
-       <link source="bob" />
-       <link source="ada" annotation="bar" />
-    </beacon>
-
-The link dump could also be expressed in BEACON text format:
+A short example of a link dump serialized in BEACON text format:
 
     #PREFIX: http://example.org/
     #TARGET: http://example.com/
@@ -102,7 +90,7 @@ The link dump could also be expressed in BEACON text format:
     bob
     ada|bar
 
-The link dump mapped to RDF:
+The link dump can be mapped to RDF as following:
 
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
     @prefix void: <http://rdfs.org/ns/void#> .
@@ -126,4 +114,17 @@ The link dump mapped to RDF:
       rdfs:seeAlso <http://example.com/ada> . 
     <http://example.com/ada> 
       rdfs:value "bar" .
+
+The same link dump serialized in BEACON XML format:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <beacon xmlns="http://purl.org/net/beacon" 
+            prefix="http://example.org/"
+            target="http://example.com/"
+            name="ACME document">
+       <link source="alice" target="foo" />
+       <link source="bob" />
+       <link source="ada" annotation="bar" />
+    </beacon>
+
 
