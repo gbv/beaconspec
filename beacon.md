@@ -490,11 +490,10 @@ If no empty line is given, the first link line MUST NOT begin with `"#"`.
 
     EMPTY        =  *WHITESPACE LINEBREAK
 
-A meta line specifies a meta field ([](#meta-fields)) and its value. Meta field
-names MUST be given in uppercase letters. All meta lines with `METAFIELD` not
-one of the field names defined in this specification, SHOULD be ignored.
+A meta line specifies a meta field ([](#meta-fields)) and its value, separated
+by colon and/or whitespace: 
 
-     METALINE    =  "#" METAFIELD ":" METAVALUE LINEBREAK
+     METALINE    =  "#" METAFIELD ( ":" / ( HTAB / SP ) ) METAVALUE LINEBREAK
 
      METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
 
