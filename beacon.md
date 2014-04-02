@@ -472,7 +472,7 @@ explicit meaning. To give an example, the following BEACON text file:
 
 implies the following triple if mapped to RDF:
 
-   <http://example.org/oranges> dc:format "sphere" .
+    <http://example.org/oranges> dc:format "sphere" .
 
 # BEACON text format
 
@@ -632,6 +632,12 @@ The following triples are always assumed in mappings of link dumps to RDF:
          void:subjectsTarget :sourceset ;
          void:objectsTarget :targetset .
 
+The mapping of meta fields that describe source dataset, target datasets, and
+link dumps is described above ([](#source-and-target-datasets),
+[](#link-dump)).
+
+### Mapping links
+
 Each link can be mapped to at least one RDF triple with:
 
 * the source URI used as subject IRI,
@@ -644,17 +650,19 @@ transformed to an IRI by following the process defined in Section 3.2 of
 from the IANA link relations registry, in lack of official URIs. Another
 valid solution is to extend the RDF model by using blank nodes as predicates.
 
-The annotation SHOULD result in an additional RDF triple, unless its
+### Mapping link annotations
+
+Each link annotation SHOULD result in an additional RDF triple, unless its
 value equals to the empty string. The additional triple is mapped with: 
 
 * the target URI used as subject IRI,
 * the `ANNOTATION` meta field used as predicate,
 * the annotation value used as literal object.
 
-Applications MAY ignore annotations and map annotations to different kinds of
-RDF triples if the `ANNOTATION` meta field is the default value `rdf:value`.
-For instance an annotation could contain additional information about a link
-such as its provenience, date, or probability (reification).
+Applications MAY use a predefined URI as ANNOTATION or process the link
+annotation by other means. For instance annotations could contain additional
+information about a link such as its provenience, date, or probability
+(reification).
 
 Typical use cases of annotations include specification of labels and a "number
 of hits" at the target dataset. For instance the following BEACON file in
