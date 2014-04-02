@@ -496,9 +496,11 @@ If no empty line is given, the first link line MUST NOT begin with `"#"`.
     EMPTY        =  *WHITESPACE LINEBREAK
 
 A meta line specifies a meta field ([](#meta-fields)) and its value, separated
-by colon and/or whitespace: 
+by colon and/or tabulator or space: 
 
-     METALINE    =  "#" METAFIELD ( ":" / ( HTAB / SP ) ) METAVALUE LINEBREAK
+     METALINE    =  "#" METAFIELD SEPARATOR METAVALUE LINEBREAK
+
+     SEPARATOR   =  ":" *( HTAB / SP ) / +( HTAB / SP )
 
      METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
 
