@@ -14,7 +14,7 @@ Common patterns in source URIs and target URIs respectively can be used to
 abbreviate serializations of link dumps.  This specification defines:
 
 * a serialization of link dumps (**BEACON files**) in a condense 
-  line-oriented text format ([](#beacon-text-format)). A non-normative
+  line-oriented text format ([](#beacon-format)). A non-normative
   serialization based on XML is included in an appendix;
 * two interpretations of link dumps as mapping to HTML and
   mapping to RDF ([](#mappings)).
@@ -23,7 +23,7 @@ The current specification is managed at <https://github.com/gbv/beaconspec>.
 
 ## Example
 
-The simplest form of a BEACON text file contains full URL links separated by a
+The simplest form of a BEACON file contains full URL links separated by a
 vertical bar:
 
     http://example.com/people/alice|http://example.com/documents/23.about
@@ -249,7 +249,7 @@ organization, or a service primarily responsible for making the link dump.
 This field is mapped to the `dcterms:creator` RDF property. The
 creator is an instace of the class `foaf:Agent`.
 
-For instance the following field values, expressed in BEACON text format:
+For instance the following field values, expressed in BEACON format:
 
     #CREATOR: Bea Beacon
     #CREATOR: http://example.org/people/bea
@@ -305,7 +305,7 @@ can be mapped to this RDF triple:
 
 The `FEED` meta field contains an URL, where to download the link dump from.
 This field corresponds to the RDF property `void:dataDump`. For instance this
-field, expressed in BEACON text format
+field, expressed in BEACON format
 
     #FEED: http://example.com/beacon.txt
 
@@ -323,8 +323,7 @@ an uppercase `T` character MUST be used to separate date and time, and an
 uppercase `Z` character MUST be present in the absence of a numeric time zone
 offset. This field corresponds to the `dcterms:modified` property.  
 
-For instance the following valid timestamp values, expressed in BEACON text
-format:
+For instance the following valid timestamp values, expressed in BEACON format:
 
      #TIMESTAMP: 2012-05-30
      #TIMESTAMP: 2012-05-30T15:17:36+02:00
@@ -356,7 +355,7 @@ link dumps. Please note that the value of this tag is considered a hint and not
 a command. 
 
 The RDF property of this field is `rssynd:updatePeriod`. For instance this
-field, given in BEACON text format:
+field, given in BEACON format:
 
     #UPDATE: daily
 
@@ -414,7 +413,7 @@ Some examples of relation types:
 
 The `ANNOTATION` field specifies an RDF property for RDF triples between link
 target and link annotation. Without this field, the link annotation has no
-explicit meaning. To give an example, the following BEACON text file:
+explicit meaning. To give an example, the following BEACON file:
 
     #ANNOTATION: http://purl.org/dc/elements/1.1/format
 
@@ -445,7 +444,7 @@ be an URI if given. This field replaces the blank node `:targetset`.
 
 The `NAME` meta field contains a name or title of target dataset. This field is
 mapped to the RDF property `dcterms:title`. For instance the field value "ACME
-documents", expressible in BEACON text format as
+documents", expressible in BEACON format as
 
     #NAME: ACME documents
 
@@ -458,7 +457,7 @@ can be mapped to this RDF triple:
 The `INSTITUTION` meta field contains the name or URI of the organization or of
 an individual responsible for making available the target dataset. This field
 is mapped to the RDF property `dcterms:publisher`. For instance the field value
-"ACME", expressible in BEACON text format as
+"ACME", expressible in BEACON format as
 
     #INSTITUTION: ACME
 
@@ -476,7 +475,7 @@ can be mapped to this RDF triple:
     :targetset dcterms:publisher <http://example.org/acme/> .
 
 
-# BEACON text format
+# BEACON format
 
 A BEACON file is an UTF-8 encoded Unicode file [](#RFC3629), split into lines
 by line breaks (rule `LINEBREAK`). The file consists of a set of lines with
@@ -508,7 +507,7 @@ by colon and/or tabulator or space:
 
      METAVALUE   =  LINE
 
-A BEACON text file SHOULD start with the fixed meta field `FORMAT` set to
+A BEACON file SHOULD start with the fixed meta field `FORMAT` set to
 "BEACON" ("`#FORMAT: BEACON`").
 
 Each link is given on a link line with its source token, optionally follwed by
@@ -576,7 +575,7 @@ not contain the sequence `{annotation}`. Applications SHOULD give a warning in
 this case.
 
 Applications MUST NOT differentiate between equal links constructed from
-different abbreviations. For instance the following BEACON text file contains a
+different abbreviations. For instance the following BEACON file contains a
 single link:
 
      #PREFIX: http://example.org/
@@ -612,8 +611,8 @@ is RECOMMENDED to indicate duplicated links with a warning.
 
 ## MIME type
 
-The recommended MIME type of BEACON text files is "text/beacon". The file
-extension `.txt` SHOULD be used when storing BEACON text files.
+The recommended MIME type of BEACON files is "text/beacon". The file
+extension `.txt` SHOULD be used when storing BEACON files.
 
 
 # Mappings
@@ -667,8 +666,8 @@ information about a link such as its provenience, date, or probability
 (reification).
 
 Typical use cases of annotations include specification of labels and a "number
-of hits" at the target dataset. For instance the following BEACON file in
-BEACON text format ([](#beacon-text-format)):
+of hits" at the target dataset. For instance the following file in
+BEACON format ([](#beacon-format)):
 
      #PREFIX: http://example.org/
      #TARGET: http://example.com/ 
@@ -694,7 +693,7 @@ following:
 * link target corresponds to the `href` attribute,
 * link annotation corresponds to the textual content,
 
-For instance the following link, given in a BEACON text file:
+For instance the following link, given in a BEACON file:
 
      http://example.com|example|http://example.org
 
