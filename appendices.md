@@ -1,17 +1,23 @@
 # Glossary
 
+annotation
+  : additional description of a link given as Unicode string.
 BEACON
   : is a data interchange format as specified in this document.
 BEACON file
-  : is a link dump serialized in BEACON text format.
-BEACON text format
+  : is a link dump serialized in BEACON format.
+BEACON format
   : is a condense format to serialize link dumps as specified in this document. 
 link
-  : is a triple of source URI, target URI, and annotation.
+  : is a triple of source URI, target URI, and annotation. The latter is the empty string, if missing.
 link dump
   : is a set of links and meta fields with common relation type for all links.
 link token
   : is a Unicode string in a BEACON files used to construct a link.
+source URI
+  : identifier where a link points from.
+target URI
+  : identifier where a link points to.
 source database
   : is the set (or superset) of all source URIs in a link dump.
 target database
