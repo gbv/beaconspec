@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
     <!ENTITY pandocMiddle PUBLIC '' 'beacon.xml'>
+    <!ENTITY beaconMappings PUBLIC '' 'mappings.xml'>
+    <!ENTITY beaconSecurity PUBLIC '' 'security.xml'>
     <!ENTITY pandocAppendices PUBLIC '' 'appendices.xml'>
 
     <!ENTITY RFC2119 PUBLIC '' 'ref/reference.RFC.2119.xml'>
@@ -82,6 +84,8 @@
 
 <middle>
 &pandocMiddle;
+&beaconMappings;
+&beaconSecurity;
 </middle>
 
 <back>

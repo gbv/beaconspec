@@ -14,9 +14,9 @@ txt: $(TXT)
 
 # requires the "new" python-xml2rfc (https://pypi.python.org/pypi/xml2rfc/)
 
-$(TXT): beacon.xml appendices.xml template.xml
+$(TXT): beacon.xml appendices.xml mappings.xml security.xml template.xml
 	xml2rfc template.xml -f $@ --text
-$(HTML): beacon.xml appendices.xml template.xml
+$(HTML): beacon.xml appendices.xml mappings.xml security.xml template.xml
 	xml2rfc template.xml -f $@ --html
 
 revision: $(HTML)
@@ -33,7 +33,7 @@ website: $(HTML) $(TXT)
 	git checkout master
 
 clean:
-	rm -f $(HTML) $(TXT) appendices.xml beacon.xml beacon-*.html
+	rm -f $(HTML) $(TXT) appendices.xml beacon.xml beacon-*.html new.*
 
 new: clean all
 

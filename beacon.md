@@ -89,22 +89,7 @@ bars from the rules LINE and TOKEN:
 
      VBAR       =  %x7C              ; vertical bar ("|")
 
-RDF in this document is expressed in Turtle syntax [](#TURTLE). The following
-namespace prefixes are used to refer to RDF properties and classes from the RDF
-and RDFS vocabularies [](#RDF), the DCMI Metadata Terms [](#DCTERMS), the FOAF
-vocabulary [](#FOAF), the VoID vocabulary [](#VOID), and the RSS 1.0
-Syndication Module [](#RSSSYND):
-
-     rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-     rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
-     dcterms: <http://purl.org/dc/terms/extent>
-     foaf:    <http://xmlns.com/foaf/0.1/>
-     void:    <http://rdfs.org/ns/void#>
-     rssynd:  <http://web.resource.org/rss/1.0/modules/syndication/>
-
-The blank node `:dump` denotes the URI of the link dump and the blank node
-`:targetset` denotes the URI of the target dataset.
-
+Samples of RDF in this document are expressed in Turtle syntax [](#TURTLE). 
 
 # Basic concepts
 
@@ -194,124 +179,113 @@ following the process defined in Section 3.2 of [](#RFC3987).
 # Meta fields
 
 A link dump SHOULD contain a set of **meta fields**, each identified by its
-name build of uppercase letters `A-Z`.  Relevant meta fields for description of
-the source and target datasets ([](#source-and-target-datasets)), the link dump
-([](#link-dump)), and links ([](#link-description)) are defined in the
-following.  Additional meta fields, not defined in this specification, SHOULD
-be ignored.  All meta field values MUST be whitespace-normalized. Missing meta
-field values and empty strings MUST be set to the field’s default value, which
-is the empty string unless noted otherwise. The following diagram shows which
-meta fields belong to which dataset. Repeatable fields are marked with a plus
-character (`+`): 
+name build of uppercase letters `A-Z`.  Relevant meta fields for link
+construction ([](#link-construction-meta-fields)), for description of the link
+dump ([](#link-dump-meta-fields)), and for description of source dataset and
+target dataset ([](#dataset-meta-fields)) are defined in the following.
+Additional meta fields, not defined in this specification, SHOULD be ignored.
+All meta field values MUST be whitespace-normalized. Missing meta field values
+and empty strings MUST be set to the field’s default value, which is the empty
+string unless noted otherwise. The following diagram shows which meta fields
+belong to which dataset. Repeatable fields are marked with a plus character
+(`+`): 
 
-                          +------------------+
-                          | link dump        |
-                          |                  |
-                          |  * DESCRIPTION+  |
-                          |  * CREATOR+      |
-                          |  * CONTACT+      |
-                          |  * HOMEPAGE+     |
-                          |  * FEED+         |
-                          |  * TIMESTAMP+    |
-                          |  * UPDATE        |
-                          |                  |
-                          |------------------|
-                          | link description |
-                          |                  |     +-----------------+
-    +----------------+    |  * PREFIX        |     | target dataset  |
-    | source dataset | ---|  * TARGET        |---> |                 |
-    |                |    |  * RELATION      |     |  * TARGETSET    |
-    |                | ---|  * MESSAGE       |---> |  * NAME+        |
-    |  * SOURCESET   |    |  * ANNOTATION    |     |  * INSTITUTION+ |
-    |                | ---|                  |---> |                 |
-    +----------------+    +------------------+     +-----------------+
+                        +-----------------------+
+                        | link dump             |
+                        |                       |
+                        |  * DESCRIPTION+       |
+                        |  * CREATOR+           |
+                        |  * CONTACT+           |
+                        |  * HOMEPAGE+          |
+                        |  * FEED+              |
+                        |  * TIMESTAMP+         |
+                        |  * UPDATE             |
+                        |                       |
+                        | +-------------------+ |
+                        | | link construction | |
+                        | |                   | |   +-----------------+
+    +----------------+  | |  * PREFIX         | |   | target dataset  |
+    | source dataset | ---|  * TARGET         |---> |                 |
+    |                |  | |  * RELATION       | |   |  * TARGETSET    |
+    |                | ---|  * MESSAGE        |---> |  * NAME+        |
+    |  * SOURCESET   |  | |  * ANNOTATION     | |   |  * INSTITUTION+ |
+    |                | ---|                   |---> |                 |
+    +----------------+  | +-------------------+ |   +-----------------+
+                        +-----------------------+
+
+Examples of meta fields are included in [](#mapping-to-rdf).
+
+## Link construction meta fields
+
+Link construction meta fields define how to construct links from link tokens
+([](#link-construction)). See [](#mapping-link-construction-meta-fields-to-rdf)
+for examples.
+
+### PREFIX
+
+The `PREFIX` meta field specifies an URI patter to construct link sources. If
+this field is not specified or set to the empty string, the default value
+`{+ID}` is used. If the field value contains no template expression, the
+expression `{ID}` is appended. The name `PREFIX` was choosen to keep backwards
+compatibility with existing BEACON files.
+
+### TARGET
+
+The `TARGET` meta field specifies an URI patter to construct link targets. If
+this field is not specified or set to the empty string, the default value
+`{+ID}` is used. If the field value field contains no template expression, the
+expression `{ID}` is appended.
+
+### MESSAGE
+
+The `MESSAGE` meta field is used as template for link annotations. The default
+value is `{annotation}`.
+
+### RELATION
+
+All links in a link dump share a common relation type, specified by the
+`RELATION` meta field. The default relation type is `rdfs:seeAlso`, but
+application not interested in mapping to RDF can ignore this meta field. A
+relation type MUST be either an URI or a registered link type from the IANA
+link relations registry [](#RFC5988).
+
+### ANNOTATION
+
+The `ANNOTATION` field can be used to specify a specific the meaning of link
+annotations in a link dump. The field value MUST be an URI.
 
 
-## Link dump
+## Link dump meta fields
+
+Link dump meta fields describe the link dump as whole. See
+[](#mapping-link-dump-meta-fields-to-rdf) for examples.
 
 ### DESCRIPTION
 
 The `DESCRIPTION` meta field contains a human readable description of the link
-dump. This field is mapped to the `dcterms:description` RDF property.  For
-instance the field value "Mapping from ids to documents", expressible in BEACON
-text format as
-
-    #DESCRIPTION: Mapping from ids to documents
-
-can be mapped to this RDF triple:
-
-    :dump dcterms:description "Mapping from ids to documents" .
+dump.
 
 ### CREATOR
 
 The `CREATOR` meta field contains the URI or the name of the person,
-organization, or a service primarily responsible for making the link dump.
-This field is mapped to the `dcterms:creator` RDF property. The
-creator is an instace of the class `foaf:Agent`.
-
-For instance the following field values, expressed in BEACON format:
-
-    #CREATOR: Bea Beacon
-    #CREATOR: http://example.org/people/bea
-
-can be mapped the the following RDF triples, respectively:
-
-    :dump dcterms:creator "Bea Beacon" .
-    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
-
-    :dump dcterms:creator <http://example.org/people/bea> .
-    <http://example.org/people/bea> a foaf:Agent .
-
-This field SHOULD NOT contain a simple URL unless this URL is also used as URI.
+organization, or a service primarily responsible for making the link dump. The
+field SHOULD NOT contain a simple URL, unless this URL is also used as URI.
 
 ### CONTACT
 
 The `CONTACT` meta field contains an email address or similar contact
 information to reach the creator of the link dump.  The field value SHOULD be a
-mailbox address as specified in section 3.4 of [](#RFC5322), for instance:
-
-     admin@example.com
-    
-     Bea Beacon <bea@example.org>
-
-The `CONTACT` meta field is mapped to the `foaf:mbox` and to the `foaf:name`
-RDF properties.  The domain of the the field is the BEACON dump. The sample
-field values can be mapped to:
-
-     :dump dcterms:creator [
-         foaf:mbox <mailto:admin@example.com>
-     ] .
-
-     :dump dcterms:creator [
-         foaf:name "Bea Beacon" ;
-         foaf:mbox <mailto:bea@example.org>
-     ] .
+mailbox address as specified in section 3.4 of [](#RFC5322).
 
 ### HOMEPAGE
 
 The `HOMEPAGE` meta field contains an URL of a website with additional
-information about this link dump. This field corresponds to the RDF property
-`foaf:homepage` with `dump` as subject. Note that this field does not specify
-the homepage of the target dataset. For instance this field expressed in BEACON
-text format
-
-    #HOMEPAGE: http://example.org/about.html
-
-can be mapped to this RDF triple:
-
-    :dump foaf:homepage <http://example.org/about.html> .
+information about this link dump. Note that this field does not specify
+the homepage of the target dataset.
 
 ### FEED
 
 The `FEED` meta field contains an URL, where to download the link dump from.
-This field corresponds to the RDF property `void:dataDump`. For instance this
-field, expressed in BEACON format
-
-    #FEED: http://example.com/beacon.txt
-
-can be mapped to this RDF triple:
-
-    :dump void:dataDump <http://example.com/beacon.txt> .
 
 ### TIMESTAMP
 
@@ -321,19 +295,7 @@ file that serializes the link dump.  The timestamp value MUST conform to the
 `full-date` or to the `date-time` production rule in [](#RFC3339). In addition,
 an uppercase `T` character MUST be used to separate date and time, and an
 uppercase `Z` character MUST be present in the absence of a numeric time zone
-offset. This field corresponds to the `dcterms:modified` property.  
-
-For instance the following valid timestamp values, expressed in BEACON format:
-
-     #TIMESTAMP: 2012-05-30
-     #TIMESTAMP: 2012-05-30T15:17:36+02:00
-     #TIMESTAMP: 2012-05-30T13:17:36Z
-
-can be mapped to the following RDF triples, respectively:
-
-     :dump dcterms:modified "2012-05-30"
-     :dump dcterms:modified "2012-05-30T15:17:36+02:00"
-     :dump dcterms:modified "2012-05-30T13:17:36Z"
+offset.
 
 ### UPDATE
 
@@ -354,126 +316,32 @@ time they are accessed. The value "`never`" SHOULD be used to describe archived
 link dumps. Please note that the value of this tag is considered a hint and not
 a command. 
 
-The RDF property of this field is `rssynd:updatePeriod`. For instance this
-field, given in BEACON format:
-
-    #UPDATE: daily
-
-specifies a daily update, expressible in RDF as:
-
-    :dump rssynd:updatePeriod "daily" .
-
-## Link description
-
-### PREFIX
-
-The `PREFIX` meta field specifies an URI patter to construct link sources. If
-this field is not specified or set to the empty string, the default value
-`{+ID}` is used. If the field value contains no template expression, the
-expression `{ID}` is appended.
-
-The name `PREFIX` was choosen to keep backwards compatibility with existing
-BEACON files.
-
-Applications MAY map this field to the RDF property `void:uriSpace` or
-`void:uriRegexPattern` with `:sourceset` as RDF subject.
-
-### TARGET
-
-The `TARGET` meta field specifies an URI patter to construct link targets. If
-this field is not specified or set to the empty string, the default value
-`{+ID}` is used. If the field value field contains no template expression, the
-expression `{ID}` is appended.
-
-Applications MAY map this field to the RDF property `void:uriSpace` or
-`void:uriRegexPattern` with `:targetset` as RDF subject.
-
-### MESSAGE
-
-The `MESSAGE` meta field is used as template for link annotations. The default
-value is `{annotation}`.
-
-### RELATION
-
-All links in a link dump share a common relation type, specified by the
-`RELATION` meta field. A relation type MUST be either an URI or a registered
-link type from the IANA link relations registry [](#RFC5988). The default
-relation type is `rdfs:seeAlso`.  This field is mapped to the RDF property
-`void:linkPredicate` with subject `:dump`.
-
-Some examples of relation types:
-
-     http://www.w3.org/2002/07/owl#sameAs
-     http://xmlns.com/foaf/0.1/isPrimaryTopicOf
-     http://purl.org/spar/cito/cites
-     describedby
-     replies
-
-### ANNOTATION
-
-The `ANNOTATION` field specifies an RDF property for RDF triples between link
-target and link annotation. Without this field, the link annotation has no
-explicit meaning. To give an example, the following BEACON file:
-
-    #ANNOTATION: http://purl.org/dc/elements/1.1/format
-
-    http://example.org/apples|sphere|http://example.org/oranges
-
-implies the following triple if mapped to RDF:
-
-    <http://example.org/oranges> dc:format "sphere" .
-
-
-## Source and target datasets
+## Dataset meta fields
 
 The set that all source URIs in a link dump originate from is called the
 **source dataset** and the set that all target URIs originate from is called
-the **target dataset**. 
+the **target dataset**. Dataset meta fields contain properties of the source
+dataset or target dataset, respectively.  See
+[](#mapping-dataset-meta-fields-to-rdf) for examples of this meta fields.
 
 ### SOURCESET
 
 The source dataset can be identified by the `SOURCESET` meta field, which MUST
-be an URI if given. This field replaces the blank node `:sourceset`.
+be an URI if given. 
 
 ### TARGETSET
 
 The target dataset can be identified by the `TARGETSET` meta field, which MUST
-be an URI if given. This field replaces the blank node `:targetset`.
+be an URI if given.
 
 ### NAME
 
-The `NAME` meta field contains a name or title of target dataset. This field is
-mapped to the RDF property `dcterms:title`. For instance the field value "ACME
-documents", expressible in BEACON format as
-
-    #NAME: ACME documents
-
-can be mapped to this RDF triple:
-
-    :targetset dcterms:title "ACME documents" .
+The `NAME` meta field contains a name or title of the target dataset.
 
 ### INSTITUTION
 
-The `INSTITUTION` meta field contains the name or URI of the organization or of
-an individual responsible for making available the target dataset. This field
-is mapped to the RDF property `dcterms:publisher`. For instance the field value
-"ACME", expressible in BEACON format as
-
-    #INSTITUTION: ACME
-
-can be mapped to this RDF triple:
-
-    :targetset dcterms:publisher "ACME" .
-
-A field value starting with `http://` or `https://` is interpreted as URI
-instead of string. For instance
-
-    #INSTITUTION: http://example.org/acme/
-
-can be mapped to this RDF triple:
-
-    :targetset dcterms:publisher <http://example.org/acme/> .
-
+The `INSTITUTION` meta field contains the name or HTTP URI of the organization
+or of an individual responsible for making available the target dataset. 
 
 # BEACON format
 
@@ -541,15 +409,18 @@ meta field and message meta field with their default values):
 
 ## Link construction
 
-Link elements are given in abbreviated form of **link tokens** when serialized
-in a BEACON file. Each link is constructed from:
+Link elements in BEACON format are given in abbreviated form of **link
+tokens**. Each link is constructed from:
 
 * a mandatory source token
 * an optional annotation token
 * an optional target token, which is set to the source token if missing
 
 All tokens MUST be whitespace-normalized before further
-processing.  The full link is then constructed as following:
+processing.  
+
+Construction rules are based on the value of link construction meta fields
+([](#link-construction-meta-fields)). A link is constructed as following:
 
 * The source URI is constructed from the `PREFIX` meta field URI pattern by 
   inserting the source token, as defined in [](#uri-patterns).
@@ -614,120 +485,3 @@ is RECOMMENDED to indicate duplicated links with a warning.
 The recommended MIME type of BEACON files is "text/beacon". The file
 extension `.txt` SHOULD be used when storing BEACON files.
 
-
-# Mappings
-
-An important use-case of BEACON is the creation of HTML links as described in
-section [](#mapping-to-html). A link dump can also be mapped to an RDF graph
-([](#mapping-to-rdf)) so BEACON provides a RDF serialization format for a
-subset of RDF graphs with uniform links. 
-
-## Mapping to RDF
-
-The following triples are always assumed in mappings of link dumps to RDF:
-
-     :sourceset a void:Dataset .
-     :targetset a void:Dataset .
-
-     :dump a void:Linkset ; 
-         void:subjectsTarget :sourceset ;
-         void:objectsTarget :targetset .
-
-The mapping of meta fields that describe source dataset, target datasets, and
-link dumps is described above ([](#source-and-target-datasets),
-[](#link-dump)).
-
-### Mapping links
-
-Each link can be mapped to at least one RDF triple with:
-
-* the source URI used as subject IRI,
-* the relation type used as predicate,
-* the target URI used as object IRI.
-
-As RDF is not defined on URIs but on URI references or IRIs, all URIs MUST be
-transformed to an IRI by following the process defined in Section 3.2 of
-[](#RFC3987). Applications MAY reject mapping link dumps with relation type
-from the IANA link relations registry, in lack of official URIs. Another
-valid solution is to extend the RDF model by using blank nodes as predicates.
-
-### Mapping link annotations
-
-Each link annotation SHOULD result in an additional RDF triple, unless its
-value equals to the empty string. The additional triple is mapped with: 
-
-* the target URI used as subject IRI,
-* the `ANNOTATION` meta field used as predicate,
-* the annotation value used as literal object.
-
-Applications MAY use a predefined URI as ANNOTATION or process the link
-annotation by other means. For instance annotations could contain additional
-information about a link such as its provenience, date, or probability
-(reification).
-
-Typical use cases of annotations include specification of labels and a "number
-of hits" at the target dataset. For instance the following file in
-BEACON format ([](#beacon-format)):
-
-     #PREFIX: http://example.org/
-     #TARGET: http://example.com/ 
-     #RELATION: http://xmlns.com/foaf/0.1/primaryTopic
-     #ANNOTATION: http://purl.org/dc/terms/extent
-
-     abc|12|xy
-
-is mapped to the following RDF triples:
-
-     <http://example.org/abc> foaf:primaryTopic <http://example.com/xy> .
-     <http://example.com/xy> dcterms:extent "12" .
-
-## Mapping to HTML
-
-This document does not specify a single mapping of links in a BEACON link dump
-to links in a HTML document, so the following description is non-normative.
-
-A link in a BEACON dump can be mapped to a HTML link (`<a>` element) as
-following:
-
-* link source corresponds to the website which a HTML link is included at,
-* link target corresponds to the `href` attribute,
-* link annotation corresponds to the textual content,
-
-For instance the following link, given in a BEACON file:
-
-     http://example.com|example|http://example.org
-
-can be mapped to the following HTML link:
-
-     <a href="http://example.org">example</a>
-
-Note that the annotation field value may be the empty string. In practice,
-additional meta fields SHOULD be used to construct appropriate HTML links.
-For instance the meta fields
-
-     #RELATION: http://xmlns.com/foaf/0.1/isPrimaryTopicOf
-     #SOURCETYPE: http://xmlns.com/foaf/0.1/Person 
-     #NAME: ACME documents
-
-can be used to create a link such as
-
-     <span>
-       More information about this person
-       <a href="http://example.com/foo">at ACME documents</a>.
-     </span>  
-
-because `foaf:isPrimaryTopicOf` translates to "more information about",
-`foaf:Person` translates to "this person", and the target dataset’s name can
-be used as link label.
-
-# Security Considerations
-
-Programs should be prepared for malformed and malicious content when parsing
-BEACON files, when constructing links from link tokens, and when mapping links
-to RDF or HTML. Possible attacks of parsing contain broken UTF-8 and buffer
-overflows. Link construction can result in unexpectedly long strings and
-character sequences that may be harmless when analyzed as parts. Most notably,
-BEACON data may store strings containing HTML and JavaScript code to be used
-for cross-site scripting attacks on the site displaying BEACON links.
-Applications should therefore escape or filter accordingly all content with
-established libraries, such as Apache Escape Utils.
