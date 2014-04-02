@@ -383,30 +383,32 @@
 <link href="#rfc.section.2.3" rel="Chapter" title="2.3 Whitespace normalization"/>
 <link href="#rfc.section.2.4" rel="Chapter" title="2.4 URI patterns"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Meta fields"/>
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Source and target datasets"/>
-<link href="#rfc.section.3.1.1" rel="Chapter" title="3.1.1 SOURCESET"/>
-<link href="#rfc.section.3.1.2" rel="Chapter" title="3.1.2 TARGETSET"/>
-<link href="#rfc.section.3.1.3" rel="Chapter" title="3.1.3 NAME"/>
-<link href="#rfc.section.3.1.4" rel="Chapter" title="3.1.4 INSTITUTION"/>
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Link dump"/>
-<link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 DESCRIPTION"/>
-<link href="#rfc.section.3.2.2" rel="Chapter" title="3.2.2 CREATOR"/>
-<link href="#rfc.section.3.2.3" rel="Chapter" title="3.2.3 CONTACT"/>
-<link href="#rfc.section.3.2.4" rel="Chapter" title="3.2.4 HOMEPAGE"/>
-<link href="#rfc.section.3.2.5" rel="Chapter" title="3.2.5 FEED"/>
-<link href="#rfc.section.3.2.6" rel="Chapter" title="3.2.6 TIMESTAMP"/>
-<link href="#rfc.section.3.2.7" rel="Chapter" title="3.2.7 UPDATE"/>
-<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Link description"/>
-<link href="#rfc.section.3.3.1" rel="Chapter" title="3.3.1 PREFIX"/>
-<link href="#rfc.section.3.3.2" rel="Chapter" title="3.3.2 TARGET"/>
-<link href="#rfc.section.3.3.3" rel="Chapter" title="3.3.3 MESSAGE"/>
-<link href="#rfc.section.3.3.4" rel="Chapter" title="3.3.4 RELATION"/>
-<link href="#rfc.section.3.3.5" rel="Chapter" title="3.3.5 ANNOTATION"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Link dump"/>
+<link href="#rfc.section.3.1.1" rel="Chapter" title="3.1.1 DESCRIPTION"/>
+<link href="#rfc.section.3.1.2" rel="Chapter" title="3.1.2 CREATOR"/>
+<link href="#rfc.section.3.1.3" rel="Chapter" title="3.1.3 CONTACT"/>
+<link href="#rfc.section.3.1.4" rel="Chapter" title="3.1.4 HOMEPAGE"/>
+<link href="#rfc.section.3.1.5" rel="Chapter" title="3.1.5 FEED"/>
+<link href="#rfc.section.3.1.6" rel="Chapter" title="3.1.6 TIMESTAMP"/>
+<link href="#rfc.section.3.1.7" rel="Chapter" title="3.1.7 UPDATE"/>
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Link description"/>
+<link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 PREFIX"/>
+<link href="#rfc.section.3.2.2" rel="Chapter" title="3.2.2 TARGET"/>
+<link href="#rfc.section.3.2.3" rel="Chapter" title="3.2.3 MESSAGE"/>
+<link href="#rfc.section.3.2.4" rel="Chapter" title="3.2.4 RELATION"/>
+<link href="#rfc.section.3.2.5" rel="Chapter" title="3.2.5 ANNOTATION"/>
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Source and target datasets"/>
+<link href="#rfc.section.3.3.1" rel="Chapter" title="3.3.1 SOURCESET"/>
+<link href="#rfc.section.3.3.2" rel="Chapter" title="3.3.2 TARGETSET"/>
+<link href="#rfc.section.3.3.3" rel="Chapter" title="3.3.3 NAME"/>
+<link href="#rfc.section.3.3.4" rel="Chapter" title="3.3.4 INSTITUTION"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 BEACON text format"/>
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Link construction"/>
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 MIME type"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 Mappings"/>
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Mapping to RDF"/>
+<link href="#rfc.section.5.1.1" rel="Chapter" title="5.1.1 Mapping links"/>
+<link href="#rfc.section.5.1.2" rel="Chapter" title="5.1.2 Mapping link annotations"/>
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 Mapping to HTML"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations"/>
 <link href="#rfc.references" rel="Chapter" title="7 References"/>
@@ -423,7 +425,7 @@
 
   <meta name="dct.creator" content="Vo&#223;, J., Berger, Th., and M. Schindler" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-voss-beacon-001" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-3" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-4-2" />
   <meta name="dct.abstract" content="This document specifies BEACON, a data interchange format for large numbers of uniform links." />
   <meta name="description" content="This document specifies BEACON, a data interchange format for large numbers of uniform links." />
 
@@ -447,7 +449,7 @@
   <td class="right">Th. Berger</td>
 </tr>
 <tr>
-  <td class="left">Expires: September 2, 2014</td>
+  <td class="left">Expires: October 4, 2014</td>
   <td class="right">Gymel.com</td>
 </tr>
 <tr>
@@ -460,7 +462,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">March 2014</td>
+  <td class="right">April 2, 2014</td>
 </tr>
 
     	
@@ -480,7 +482,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 2, 2014.</p>
+<p>This Internet-Draft will expire on October 4, 2014.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -491,10 +493,10 @@
 <p/>
 
 <ul>
-  <li>a set of links (<a href="#links">Section 2.1</a>), </li>
-  <li>a set of meta fields (<a href="#meta-fields">Section 3</a>).  </li>
+  <li>a set of <strong>links</strong> (<a href="#links">Section 2.1</a>), </li>
+  <li>a set of <strong>meta fields</strong> (<a href="#meta-fields">Section 3</a>).  </li>
 </ul>
-<p id="rfc.section.1.p.3">Each link consists of a source URI, a target URI, and an annotation.  Common patterns in source URIs and target URIs respectively can be used to abbreviate serializations of link dumps. This specification defines: </p>
+<p id="rfc.section.1.p.3">Each link consists of a source URI, a target URI, and an optional annotation. Common patterns in source URIs and target URIs respectively can be used to abbreviate serializations of link dumps.  This specification defines: </p>
 <p/>
 
 <ul>
@@ -503,24 +505,24 @@
 </ul>
 <p id="rfc.section.1.p.5">The current specification is managed at <a href="https://github.com/gbv/beaconspec">https://github.com/gbv/beaconspec</a>.  </p>
 <h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> <a href="#example" id="example">Example</a></h1>
-<p id="rfc.section.1.1.p.1">To give an example, the "ACME" company wants to provide links from people to the documents that each person contributed to. A list of people is available from <samp>http://example.com/people/</samp> and a list of documents, titled "ACME documents", is available from <samp>http://example.com/documents/</samp>. This information can be expressed in BEACON text format as following: </p>
-<pre>
-#INSTITUTION: ACME
-#SOURCESET:   http://example.com/people/
-#TARGETSET:   http://example.com/documents/
-#NAME:        ACME documents
-#RELATION:    http://purl.org/dc/elements/1.1/contributor
-</pre>
-<p id="rfc.section.1.1.p.2">The simplest form of a BEACON text file contains full links separated by a vertical bar: </p>
+<p id="rfc.section.1.1.p.1">The simplest form of a BEACON text file contains full URL links separated by a vertical bar: </p>
 <pre>
 http://example.com/people/alice|http://example.com/documents/23.about
 http://example.com/people/bob|http://example.com/documents/42.about
 </pre>
-<p id="rfc.section.1.1.p.3">The first element of a link is called source URI and the second is called target URI. If a target URI does not start with <samp>http</samp> or <samp>https</samp>, two vertical bars MUST be used: </p>
+<p id="rfc.section.1.1.p.2">The first element of a link is called source URI and the second is called target URI. If a target URI does not start with <samp>http</samp> or <samp>https</samp>, two vertical bars MUST be used: </p>
 <pre>
 http://example.com/people/alice||urn:isbn:0123456789
 </pre>
-<p id="rfc.section.1.1.p.4">As both source URIs for people and target URIs for documents follow a pattern, links can be abbreviated as following: </p>
+<p id="rfc.section.1.1.p.3">To give an extended example, the "ACME" company wants to provide links from people to documents that each person contributed to (a "contributor" relationship in terms of Dublin Core). A list of all people is available from <samp>http://example.com/people/</samp> and a list of all documents, titled "ACME documents", is available from <samp>http://example.com/documents/</samp>. This information can be expressed in a serialized link dump with BEACON meta fields as following: </p>
+<pre>
+#INSTITUTION: ACME
+#RELATION:    http://purl.org/dc/elements/1.1/contributor
+#SOURCESET:   http://example.com/people/
+#TARGETSET:   http://example.com/documents/
+#NAME:        ACME documents
+</pre>
+<p id="rfc.section.1.1.p.4">If both source URIs for people and target URIs for documents follow a pattern, links can be abbreviated with the meta fields <samp>PREFIX</samp> and <samp>TARGET</samp> as following: </p>
 <pre>
 #PREFIX: http://example.com/people/
 #TARGET: http://example.com/documents/{+ID}.about
@@ -528,12 +530,13 @@ http://example.com/people/alice||urn:isbn:0123456789
 alice||23
 bob||42
 </pre>
-<p id="rfc.section.1.1.p.5">For each link a third element can be added as annotation. The meaning of this annotation is not rdf:value </p>
+<p id="rfc.section.1.1.p.5">From this form the same links can be constructed as given at the beginning of this example.  </p>
+<p id="rfc.section.1.1.p.6">The example can be extended by addition of a third element for each link. For instance the annotation could be used to specifcy the date of each document: </p>
 <pre>
 #ANNOTATION: http://purl.org/dc/elements/1.1/date
 
-alice||23
-bob||42
+alice|2014-03-12|23
+bob|2013-10-21|42
 </pre>
 <h1 id="rfc.section.1.2"><a href="#rfc.section.1.2">1.2.</a> <a href="#notational-conventions" id="notational-conventions">Notational Conventions</a></h1>
 <p id="rfc.section.1.2.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119">[RFC2119]</a>.  </p>
@@ -567,7 +570,7 @@ bob||42
   <li>a <strong>target URI</strong>, </li>
   <li>an <strong>annotation</strong>.  </li>
 </ul>
-<p id="rfc.section.2.1.p.3">Source URI and target URI define where a link is pointing from and to respectively. The annotation is an optional Unicode string, that can be used to further describe the link or parts of it.  Annotations MUST be whitespace-normalized (<a href="#whitespace-normalization">Section 2.3</a>) and MUST NOT contain a <samp>VBAR</samp> character. A missing annotation is equal to the empty string. The meaning of a link can be indicated by the <strong>RELATION</strong> meta field (<a href="#relation">Section 3.3.4</a>).  </p>
+<p id="rfc.section.2.1.p.3">Source URI and target URI define where a link is pointing from and to respectively. The annotation is an optional Unicode string, that can be used to further describe the link or parts of it.  Annotations MUST be whitespace-normalized (<a href="#whitespace-normalization">Section 2.3</a>) and MUST NOT contain a <samp>VBAR</samp> character. A missing annotation is equal to the empty string. The meaning of a link can be indicated by the <strong>RELATION</strong> meta field (<a href="#relation">Section 3.2.4</a>).  </p>
 <h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#allowed-characters" id="allowed-characters">Allowed characters</a></h1>
 <p id="rfc.section.2.2.p.1">The set of allowed Unicode characters in BEACON dumps is the set of valid Unicode characters from UCS which can also be expressed in XML 1.0, excluding some discouraged control characters: </p>
 <pre>
@@ -610,80 +613,48 @@ bob||42
   M%C3%BCller       {+ID}       M%C3%BCller
 </pre>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#meta-fields" id="meta-fields">Meta fields</a></h1>
-<p id="rfc.section.3.p.1">A link dump SHOULD contain a set of <strong>meta fields</strong>, each identified by its name build of uppercase letters <samp>A-Z</samp>. Relevant meta fields for description of the source and target datasets (<a href="#source-and-target-datasets">Section 3.1</a>), the link dump (<a href="#link-dump">Section 3.2</a>), and links (<a href="#link-description">Section 3.3</a>) are defined in the following. Additional meta fields, not defined in this specification, SHOULD be ignored. All meta field values MUST be whitespace-normalized. Missing meta field values and empty strings MUST be set to the field&#8217;s default value, which is the empty string unless noted otherwise. The following diagram shows which meta fields belong to which dataset. Repeatable fields are marked with a plus character (<samp>+</samp>): </p>
+<p id="rfc.section.3.p.1">A link dump SHOULD contain a set of <strong>meta fields</strong>, each identified by its name build of uppercase letters <samp>A-Z</samp>. Relevant meta fields for description of the source and target datasets (<a href="#source-and-target-datasets">Section 3.3</a>), the link dump (<a href="#link-dump">Section 3.1</a>), and links (<a href="#link-description">Section 3.2</a>) are defined in the following. Additional meta fields, not defined in this specification, SHOULD be ignored. All meta field values MUST be whitespace-normalized. Missing meta field values and empty strings MUST be set to the field&#8217;s default value, which is the empty string unless noted otherwise. The following diagram shows which meta fields belong to which dataset. Repeatable fields are marked with a plus character (<samp>+</samp>): </p>
 <pre>
-+----------------+    +------------------+     +-----------------+
-| source dataset | ---| link dump        |---&gt; | target dataset  |
-|----------------|    |------------------|     |-----------------|
-|                | ---|                  |---&gt; |                 |
-|  * SOURCESET   |    |  * DESCRIPTION+  |     |  * TARGETSET    |
-|                | ---|  * CREATOR+      |---&gt; |  * NAME+        |
-+----------------+    |  * CONTACT+      |     |  * INSTITUTION+ |
-                      |  * HOMEPAGE+     |     |                 |
-                      |  * FEED+         |     +-----------------+
+                      +------------------+
+                      | link dump        |
+                      |                  |
+                      |  * DESCRIPTION+  |
+                      |  * CREATOR+      |
+                      |  * CONTACT+      |
+                      |  * HOMEPAGE+     |
+                      |  * FEED+         |
                       |  * TIMESTAMP+    |
                       |  * UPDATE        |
                       |                  |
-                      +------------------+
-                      |                  |
-                      |  * PREFIX        |
-                      |  * TARGET        |
-                      |  * RELATION      |
-                      |  * MESSAGE       |
-                      |  * ANNOTATION    |
-                      |                  |
-                      +------------------+
+                      |------------------|
+                      | link description |
+                      |                  |     +-----------------+
++----------------+    |  * PREFIX        |     | target dataset  |
+| source dataset | ---|  * TARGET        |---&gt; |                 |
+|                |    |  * RELATION      |     |  * TARGETSET    |
+|                | ---|  * MESSAGE       |---&gt; |  * NAME+        |
+|  * SOURCESET   |    |  * ANNOTATION    |     |  * INSTITUTION+ |
+|                | ---|                  |---&gt; |                 |
++----------------+    +------------------+     +-----------------+
 </pre>
-<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#source-and-target-datasets" id="source-and-target-datasets">Source and target datasets</a></h1>
-<p id="rfc.section.3.1.p.1">The set that all source URIs in a link dump originate from is called the <strong>source dataset</strong> and the set that all target URIs originate from is called the <strong>target dataset</strong>.  </p>
-<h1 id="rfc.section.3.1.1"><a href="#rfc.section.3.1.1">3.1.1.</a> <a href="#sourceset" id="sourceset">SOURCESET</a></h1>
-<p id="rfc.section.3.1.1.p.1">The source dataset can be identified by the <samp>SOURCESET</samp> meta field, which MUST be an URI if given. This field replaces the blank node <samp>:sourceset</samp>.  </p>
-<h1 id="rfc.section.3.1.2"><a href="#rfc.section.3.1.2">3.1.2.</a> <a href="#targetset" id="targetset">TARGETSET</a></h1>
-<p id="rfc.section.3.1.2.p.1">The target dataset can be identified by the <samp>TARGETSET</samp> meta field, which MUST be an URI if given. This field replaces the blank node <samp>:targetset</samp>.  </p>
-<h1 id="rfc.section.3.1.3"><a href="#rfc.section.3.1.3">3.1.3.</a> <a href="#name" id="name">NAME</a></h1>
-<p id="rfc.section.3.1.3.p.1">The <samp>NAME</samp> meta field contains a name or title of target dataset. This field is mapped to the RDF property <samp>dcterms:title</samp>. For instance the field value "ACME documents", expressible in BEACON text format as </p>
-<pre>
-#NAME: ACME documents
-</pre>
-<p id="rfc.section.3.1.3.p.2">can be mapped to this RDF triple: </p>
-<pre>
-:targetset dcterms:title "ACME documents" .
-</pre>
-<h1 id="rfc.section.3.1.4"><a href="#rfc.section.3.1.4">3.1.4.</a> <a href="#institution" id="institution">INSTITUTION</a></h1>
-<p id="rfc.section.3.1.4.p.1">The <samp>INSTITUTION</samp> meta field contains the name or URI of the organization or of an individual responsible for making available the target dataset. This field is mapped to the RDF property <samp>dcterms:publisher</samp>. For instance the field value "ACME", expressible in BEACON text format as </p>
-<pre>
-#INSTITUTION: ACME
-</pre>
-<p id="rfc.section.3.1.4.p.2">can be mapped to this RDF triple: </p>
-<pre>
-:targetset dcterms:publisher "ACME" .
-</pre>
-<p id="rfc.section.3.1.4.p.3">A field value starting with <samp>http://</samp> or <samp>https://</samp> is interpreted as URI instead of string. For instance </p>
-<pre>
-#INSTITUTION: http://example.org/acme/
-</pre>
-<p id="rfc.section.3.1.4.p.4">can be mapped to this RDF triple: </p>
-<pre>
-:targetset dcterms:publisher &lt;http://example.org/acme/&gt; .
-</pre>
-<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#link-dump" id="link-dump">Link dump</a></h1>
-<h1 id="rfc.section.3.2.1"><a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#description" id="description">DESCRIPTION</a></h1>
-<p id="rfc.section.3.2.1.p.1">The <samp>DESCRIPTION</samp> meta field contains a human readable description of the link dump. This field is mapped to the <samp>dcterms:description</samp> RDF property. For instance the field value "Mapping from ids to documents", expressible in BEACON text format as </p>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#link-dump" id="link-dump">Link dump</a></h1>
+<h1 id="rfc.section.3.1.1"><a href="#rfc.section.3.1.1">3.1.1.</a> <a href="#description" id="description">DESCRIPTION</a></h1>
+<p id="rfc.section.3.1.1.p.1">The <samp>DESCRIPTION</samp> meta field contains a human readable description of the link dump. This field is mapped to the <samp>dcterms:description</samp> RDF property. For instance the field value "Mapping from ids to documents", expressible in BEACON text format as </p>
 <pre>
 #DESCRIPTION: Mapping from ids to documents
 </pre>
-<p id="rfc.section.3.2.1.p.2">can be mapped to this RDF triple: </p>
+<p id="rfc.section.3.1.1.p.2">can be mapped to this RDF triple: </p>
 <pre>
 :dump dcterms:description "Mapping from ids to documents" .
 </pre>
-<h1 id="rfc.section.3.2.2"><a href="#rfc.section.3.2.2">3.2.2.</a> <a href="#creator" id="creator">CREATOR</a></h1>
-<p id="rfc.section.3.2.2.p.1">The <samp>CREATOR</samp> meta field contains the URI or the name of the person, organization, or a service primarily responsible for making the link dump. This field is mapped to the <samp>dcterms:creator</samp> RDF property. The creator is an instace of the class <samp>foaf:Agent</samp>.  </p>
-<p id="rfc.section.3.2.2.p.2">For instance the following field values, expressed in BEACON text format: </p>
+<h1 id="rfc.section.3.1.2"><a href="#rfc.section.3.1.2">3.1.2.</a> <a href="#creator" id="creator">CREATOR</a></h1>
+<p id="rfc.section.3.1.2.p.1">The <samp>CREATOR</samp> meta field contains the URI or the name of the person, organization, or a service primarily responsible for making the link dump. This field is mapped to the <samp>dcterms:creator</samp> RDF property. The creator is an instace of the class <samp>foaf:Agent</samp>.  </p>
+<p id="rfc.section.3.1.2.p.2">For instance the following field values, expressed in BEACON text format: </p>
 <pre>
 #CREATOR: Bea Beacon
 #CREATOR: http://example.org/people/bea
 </pre>
-<p id="rfc.section.3.2.2.p.3">can be mapped the the following RDF triples, respectively: </p>
+<p id="rfc.section.3.1.2.p.3">can be mapped the the following RDF triples, respectively: </p>
 <pre>
 :dump dcterms:creator "Bea Beacon" .
 :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
@@ -691,15 +662,15 @@ bob||42
 :dump dcterms:creator &lt;http://example.org/people/bea&gt; .
 &lt;http://example.org/people/bea&gt; a foaf:Agent .
 </pre>
-<p id="rfc.section.3.2.2.p.4">This field SHOULD NOT contain a simple URL unless this URL is also used as URI.  </p>
-<h1 id="rfc.section.3.2.3"><a href="#rfc.section.3.2.3">3.2.3.</a> <a href="#contact" id="contact">CONTACT</a></h1>
-<p id="rfc.section.3.2.3.p.1">The <samp>CONTACT</samp> meta field contains an email address or similar contact information to reach the creator of the link dump. The field value SHOULD be a mailbox address as specified in section 3.4 of <a href="#RFC5322">[RFC5322]</a>, for instance: </p>
+<p id="rfc.section.3.1.2.p.4">This field SHOULD NOT contain a simple URL unless this URL is also used as URI.  </p>
+<h1 id="rfc.section.3.1.3"><a href="#rfc.section.3.1.3">3.1.3.</a> <a href="#contact" id="contact">CONTACT</a></h1>
+<p id="rfc.section.3.1.3.p.1">The <samp>CONTACT</samp> meta field contains an email address or similar contact information to reach the creator of the link dump. The field value SHOULD be a mailbox address as specified in section 3.4 of <a href="#RFC5322">[RFC5322]</a>, for instance: </p>
 <pre>
  admin@example.com
 
  Bea Beacon &lt;bea@example.org&gt;
 </pre>
-<p id="rfc.section.3.2.3.p.2">The <samp>CONTACT</samp> meta field is mapped to the <samp>foaf:mbox</samp> and to the <samp>foaf:name</samp> RDF properties. The domain of the the field is the BEACON dump. The sample field values can be mapped to: </p>
+<p id="rfc.section.3.1.3.p.2">The <samp>CONTACT</samp> meta field is mapped to the <samp>foaf:mbox</samp> and to the <samp>foaf:name</samp> RDF properties. The domain of the the field is the BEACON dump. The sample field values can be mapped to: </p>
 <pre>
  :dump dcterms:creator [
      foaf:mbox &lt;mailto:admin@example.com&gt;
@@ -710,40 +681,40 @@ bob||42
      foaf:mbox &lt;mailto:bea@example.org&gt;
  ] .
 </pre>
-<h1 id="rfc.section.3.2.4"><a href="#rfc.section.3.2.4">3.2.4.</a> <a href="#homepage" id="homepage">HOMEPAGE</a></h1>
-<p id="rfc.section.3.2.4.p.1">The <samp>HOMEPAGE</samp> meta field contains an URL of a website with additional information about this link dump. This field corresponds to the RDF property <samp>foaf:homepage</samp> with <samp>dump</samp> as subject. Note that this field does not specify the homepage of the target dataset. For instance this field expressed in BEACON text format </p>
+<h1 id="rfc.section.3.1.4"><a href="#rfc.section.3.1.4">3.1.4.</a> <a href="#homepage" id="homepage">HOMEPAGE</a></h1>
+<p id="rfc.section.3.1.4.p.1">The <samp>HOMEPAGE</samp> meta field contains an URL of a website with additional information about this link dump. This field corresponds to the RDF property <samp>foaf:homepage</samp> with <samp>dump</samp> as subject. Note that this field does not specify the homepage of the target dataset. For instance this field expressed in BEACON text format </p>
 <pre>
 #HOMEPAGE: http://example.org/about.html
 </pre>
-<p id="rfc.section.3.2.4.p.2">can be mapped to this RDF triple: </p>
+<p id="rfc.section.3.1.4.p.2">can be mapped to this RDF triple: </p>
 <pre>
 :dump foaf:homepage &lt;http://example.org/about.html&gt; .
 </pre>
-<h1 id="rfc.section.3.2.5"><a href="#rfc.section.3.2.5">3.2.5.</a> <a href="#feed" id="feed">FEED</a></h1>
-<p id="rfc.section.3.2.5.p.1">The <samp>FEED</samp> meta field contains an URL, where to download the link dump from. This field corresponds to the RDF property <samp>void:dataDump</samp>. For instance this field, expressed in BEACON text format </p>
+<h1 id="rfc.section.3.1.5"><a href="#rfc.section.3.1.5">3.1.5.</a> <a href="#feed" id="feed">FEED</a></h1>
+<p id="rfc.section.3.1.5.p.1">The <samp>FEED</samp> meta field contains an URL, where to download the link dump from. This field corresponds to the RDF property <samp>void:dataDump</samp>. For instance this field, expressed in BEACON text format </p>
 <pre>
 #FEED: http://example.com/beacon.txt
 </pre>
-<p id="rfc.section.3.2.5.p.2">can be mapped to this RDF triple: </p>
+<p id="rfc.section.3.1.5.p.2">can be mapped to this RDF triple: </p>
 <pre>
 :dump void:dataDump &lt;http://example.com/beacon.txt&gt; .
 </pre>
-<h1 id="rfc.section.3.2.6"><a href="#rfc.section.3.2.6">3.2.6.</a> <a href="#timestamp" id="timestamp">TIMESTAMP</a></h1>
-<p id="rfc.section.3.2.6.p.1">The <samp>TIMESTAMP</samp> field contains the date of last modification of the link dump. Note that this value MAY be different to the last modification time of a BEACON file that serializes the link dump. The timestamp value MUST conform to the <samp>full-date</samp> or to the <samp>date-time</samp> production rule in <a href="#RFC3339">[RFC3339]</a>. In addition, an uppercase <samp>T</samp> character MUST be used to separate date and time, and an uppercase <samp>Z</samp> character MUST be present in the absence of a numeric time zone offset. This field corresponds to the <samp>dcterms:modified</samp> property.  </p>
-<p id="rfc.section.3.2.6.p.2">For instance the following valid timestamp values, expressed in BEACON text format: </p>
+<h1 id="rfc.section.3.1.6"><a href="#rfc.section.3.1.6">3.1.6.</a> <a href="#timestamp" id="timestamp">TIMESTAMP</a></h1>
+<p id="rfc.section.3.1.6.p.1">The <samp>TIMESTAMP</samp> field contains the date of last modification of the link dump. Note that this value MAY be different to the last modification time of a BEACON file that serializes the link dump. The timestamp value MUST conform to the <samp>full-date</samp> or to the <samp>date-time</samp> production rule in <a href="#RFC3339">[RFC3339]</a>. In addition, an uppercase <samp>T</samp> character MUST be used to separate date and time, and an uppercase <samp>Z</samp> character MUST be present in the absence of a numeric time zone offset. This field corresponds to the <samp>dcterms:modified</samp> property.  </p>
+<p id="rfc.section.3.1.6.p.2">For instance the following valid timestamp values, expressed in BEACON text format: </p>
 <pre>
  #TIMESTAMP: 2012-05-30
  #TIMESTAMP: 2012-05-30T15:17:36+02:00
  #TIMESTAMP: 2012-05-30T13:17:36Z
 </pre>
-<p id="rfc.section.3.2.6.p.3">can be mapped to the following RDF triples, respectively: </p>
+<p id="rfc.section.3.1.6.p.3">can be mapped to the following RDF triples, respectively: </p>
 <pre>
  :dump dcterms:modified "2012-05-30"
  :dump dcterms:modified "2012-05-30T15:17:36+02:00"
  :dump dcterms:modified "2012-05-30T13:17:36Z"
 </pre>
-<h1 id="rfc.section.3.2.7"><a href="#rfc.section.3.2.7">3.2.7.</a> <a href="#update" id="update">UPDATE</a></h1>
-<p id="rfc.section.3.2.7.p.1">The <samp>UPDATE</samp> field specifies how frequently the link dump is likely to change. The field corresponds to the <samp>&lt;changefreq&gt;</samp> element in <a href="#Sitemaps">Sitemaps XML format</a> <cite title="NONE">[Sitemaps]</cite>. Valid values are: </p>
+<h1 id="rfc.section.3.1.7"><a href="#rfc.section.3.1.7">3.1.7.</a> <a href="#update" id="update">UPDATE</a></h1>
+<p id="rfc.section.3.1.7.p.1">The <samp>UPDATE</samp> field specifies how frequently the link dump is likely to change. The field corresponds to the <samp>&lt;changefreq&gt;</samp> element in <a href="#Sitemaps">Sitemaps XML format</a> <cite title="NONE">[Sitemaps]</cite>. Valid values are: </p>
 <p/>
 
 <ul>
@@ -755,28 +726,28 @@ bob||42
   <li><samp>yearly</samp> </li>
   <li><samp>never</samp> </li>
 </ul>
-<p id="rfc.section.3.2.7.p.3">The value "<samp>always</samp>" SHOULD be used to describe link dumps that change each time they are accessed.  The value "<samp>never</samp>" SHOULD be used to describe archived link dumps. Please note that the value of this tag is considered a hint and not a command.  </p>
-<p id="rfc.section.3.2.7.p.4">The RDF property of this field is <samp>rssynd:updatePeriod</samp>. For instance this field, given in BEACON text format: </p>
+<p id="rfc.section.3.1.7.p.3">The value "<samp>always</samp>" SHOULD be used to describe link dumps that change each time they are accessed.  The value "<samp>never</samp>" SHOULD be used to describe archived link dumps. Please note that the value of this tag is considered a hint and not a command.  </p>
+<p id="rfc.section.3.1.7.p.4">The RDF property of this field is <samp>rssynd:updatePeriod</samp>. For instance this field, given in BEACON text format: </p>
 <pre>
 #UPDATE: daily
 </pre>
-<p id="rfc.section.3.2.7.p.5">specifies a daily update, expressible in RDF as: </p>
+<p id="rfc.section.3.1.7.p.5">specifies a daily update, expressible in RDF as: </p>
 <pre>
 :dump rssynd:updatePeriod "daily" .
 </pre>
-<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#link-description" id="link-description">Link description</a></h1>
-<h1 id="rfc.section.3.3.1"><a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#prefix" id="prefix">PREFIX</a></h1>
-<p id="rfc.section.3.3.1.p.1">The <samp>PREFIX</samp> meta field specifies an URI patter to construct link sources. If this field is not specified or set to the empty string, the default value <samp>{+ID}</samp> is used. If the field value contains no template expression, the expression <samp>{ID}</samp> is appended.  </p>
-<p id="rfc.section.3.3.1.p.2">The name <samp>PREFIX</samp> was choosen to keep backwards compatibility with existing BEACON files.  </p>
-<p id="rfc.section.3.3.1.p.3">Applications MAY map this field to the RDF property <samp>void:uriSpace</samp> or <samp>void:uriRegexPattern</samp> with <samp>:sourceset</samp> as RDF subject.  </p>
-<h1 id="rfc.section.3.3.2"><a href="#rfc.section.3.3.2">3.3.2.</a> <a href="#target" id="target">TARGET</a></h1>
-<p id="rfc.section.3.3.2.p.1">The <samp>TARGET</samp> meta field specifies an URI patter to construct link targets. If this field is not specified or set to the empty string, the default value <samp>{+ID}</samp> is used. If the field value field contains no template expression, the expression <samp>{ID}</samp> is appended.  </p>
-<p id="rfc.section.3.3.2.p.2">Applications MAY map this field to the RDF property <samp>void:uriSpace</samp> or <samp>void:uriRegexPattern</samp> with <samp>:targetset</samp> as RDF subject.  </p>
-<h1 id="rfc.section.3.3.3"><a href="#rfc.section.3.3.3">3.3.3.</a> <a href="#message" id="message">MESSAGE</a></h1>
-<p id="rfc.section.3.3.3.p.1">The <samp>MESSAGE</samp> meta field is used as template for link annotations. The default value is <samp>{annotation}</samp>.  </p>
-<h1 id="rfc.section.3.3.4"><a href="#rfc.section.3.3.4">3.3.4.</a> <a href="#relation" id="relation">RELATION</a></h1>
-<p id="rfc.section.3.3.4.p.1">All links in a link dump share a common relation type, specified by the <samp>RELATION</samp> meta field. A relation type MUST be either an URI or a registered link type from the IANA link relations registry <a href="#RFC5988">[RFC5988]</a>. The default relation type is <samp>rdfs:seeAlso</samp>. This field is mapped to the RDF property <samp>void:linkPredicate</samp> with subject <samp>:dump</samp>.  </p>
-<p id="rfc.section.3.3.4.p.2">Some examples of relation types: </p>
+<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#link-description" id="link-description">Link description</a></h1>
+<h1 id="rfc.section.3.2.1"><a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#prefix" id="prefix">PREFIX</a></h1>
+<p id="rfc.section.3.2.1.p.1">The <samp>PREFIX</samp> meta field specifies an URI patter to construct link sources. If this field is not specified or set to the empty string, the default value <samp>{+ID}</samp> is used. If the field value contains no template expression, the expression <samp>{ID}</samp> is appended.  </p>
+<p id="rfc.section.3.2.1.p.2">The name <samp>PREFIX</samp> was choosen to keep backwards compatibility with existing BEACON files.  </p>
+<p id="rfc.section.3.2.1.p.3">Applications MAY map this field to the RDF property <samp>void:uriSpace</samp> or <samp>void:uriRegexPattern</samp> with <samp>:sourceset</samp> as RDF subject.  </p>
+<h1 id="rfc.section.3.2.2"><a href="#rfc.section.3.2.2">3.2.2.</a> <a href="#target" id="target">TARGET</a></h1>
+<p id="rfc.section.3.2.2.p.1">The <samp>TARGET</samp> meta field specifies an URI patter to construct link targets. If this field is not specified or set to the empty string, the default value <samp>{+ID}</samp> is used. If the field value field contains no template expression, the expression <samp>{ID}</samp> is appended.  </p>
+<p id="rfc.section.3.2.2.p.2">Applications MAY map this field to the RDF property <samp>void:uriSpace</samp> or <samp>void:uriRegexPattern</samp> with <samp>:targetset</samp> as RDF subject.  </p>
+<h1 id="rfc.section.3.2.3"><a href="#rfc.section.3.2.3">3.2.3.</a> <a href="#message" id="message">MESSAGE</a></h1>
+<p id="rfc.section.3.2.3.p.1">The <samp>MESSAGE</samp> meta field is used as template for link annotations. The default value is <samp>{annotation}</samp>.  </p>
+<h1 id="rfc.section.3.2.4"><a href="#rfc.section.3.2.4">3.2.4.</a> <a href="#relation" id="relation">RELATION</a></h1>
+<p id="rfc.section.3.2.4.p.1">All links in a link dump share a common relation type, specified by the <samp>RELATION</samp> meta field. A relation type MUST be either an URI or a registered link type from the IANA link relations registry <a href="#RFC5988">[RFC5988]</a>. The default relation type is <samp>rdfs:seeAlso</samp>. This field is mapped to the RDF property <samp>void:linkPredicate</samp> with subject <samp>:dump</samp>.  </p>
+<p id="rfc.section.3.2.4.p.2">Some examples of relation types: </p>
 <pre>
  http://www.w3.org/2002/07/owl#sameAs
  http://xmlns.com/foaf/0.1/isPrimaryTopicOf
@@ -784,15 +755,49 @@ bob||42
  describedby
  replies
 </pre>
-<h1 id="rfc.section.3.3.5"><a href="#rfc.section.3.3.5">3.3.5.</a> <a href="#annotation" id="annotation">ANNOTATION</a></h1>
-<p id="rfc.section.3.3.5.p.1">The <samp>ANNOTATION</samp> field specifies an RDF property for RDF triples between link target and link annotation. Without this field, the link annotation has no explicit meaning. To give an example, the following BEACON text file: </p>
+<h1 id="rfc.section.3.2.5"><a href="#rfc.section.3.2.5">3.2.5.</a> <a href="#annotation" id="annotation">ANNOTATION</a></h1>
+<p id="rfc.section.3.2.5.p.1">The <samp>ANNOTATION</samp> field specifies an RDF property for RDF triples between link target and link annotation. Without this field, the link annotation has no explicit meaning. To give an example, the following BEACON text file: </p>
 <pre>
 #ANNOTATION: http://purl.org/dc/elements/1.1/format
 
 http://example.org/apples|sphere|http://example.org/oranges
 </pre>
-<p id="rfc.section.3.3.5.p.2">implies the following triple if mapped to RDF: </p>
-<p><a href="http://example.org/oranges">http://example.org/oranges</a> dc:format "sphere" .  </p>
+<p id="rfc.section.3.2.5.p.2">implies the following triple if mapped to RDF: </p>
+<pre>
+&lt;http://example.org/oranges&gt; dc:format "sphere" .
+</pre>
+<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#source-and-target-datasets" id="source-and-target-datasets">Source and target datasets</a></h1>
+<p id="rfc.section.3.3.p.1">The set that all source URIs in a link dump originate from is called the <strong>source dataset</strong> and the set that all target URIs originate from is called the <strong>target dataset</strong>.  </p>
+<h1 id="rfc.section.3.3.1"><a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#sourceset" id="sourceset">SOURCESET</a></h1>
+<p id="rfc.section.3.3.1.p.1">The source dataset can be identified by the <samp>SOURCESET</samp> meta field, which MUST be an URI if given. This field replaces the blank node <samp>:sourceset</samp>.  </p>
+<h1 id="rfc.section.3.3.2"><a href="#rfc.section.3.3.2">3.3.2.</a> <a href="#targetset" id="targetset">TARGETSET</a></h1>
+<p id="rfc.section.3.3.2.p.1">The target dataset can be identified by the <samp>TARGETSET</samp> meta field, which MUST be an URI if given. This field replaces the blank node <samp>:targetset</samp>.  </p>
+<h1 id="rfc.section.3.3.3"><a href="#rfc.section.3.3.3">3.3.3.</a> <a href="#name" id="name">NAME</a></h1>
+<p id="rfc.section.3.3.3.p.1">The <samp>NAME</samp> meta field contains a name or title of target dataset. This field is mapped to the RDF property <samp>dcterms:title</samp>. For instance the field value "ACME documents", expressible in BEACON text format as </p>
+<pre>
+#NAME: ACME documents
+</pre>
+<p id="rfc.section.3.3.3.p.2">can be mapped to this RDF triple: </p>
+<pre>
+:targetset dcterms:title "ACME documents" .
+</pre>
+<h1 id="rfc.section.3.3.4"><a href="#rfc.section.3.3.4">3.3.4.</a> <a href="#institution" id="institution">INSTITUTION</a></h1>
+<p id="rfc.section.3.3.4.p.1">The <samp>INSTITUTION</samp> meta field contains the name or URI of the organization or of an individual responsible for making available the target dataset. This field is mapped to the RDF property <samp>dcterms:publisher</samp>. For instance the field value "ACME", expressible in BEACON text format as </p>
+<pre>
+#INSTITUTION: ACME
+</pre>
+<p id="rfc.section.3.3.4.p.2">can be mapped to this RDF triple: </p>
+<pre>
+:targetset dcterms:publisher "ACME" .
+</pre>
+<p id="rfc.section.3.3.4.p.3">A field value starting with <samp>http://</samp> or <samp>https://</samp> is interpreted as URI instead of string. For instance </p>
+<pre>
+#INSTITUTION: http://example.org/acme/
+</pre>
+<p id="rfc.section.3.3.4.p.4">can be mapped to this RDF triple: </p>
+<pre>
+:targetset dcterms:publisher &lt;http://example.org/acme/&gt; .
+</pre>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#beacon-text-format" id="beacon-text-format">BEACON text format</a></h1>
 <p id="rfc.section.4.p.1">A BEACON file is an UTF-8 encoded Unicode file <a href="#RFC3629">[RFC3629]</a>, split into lines by line breaks (rule <samp>LINEBREAK</samp>). The file consists of a set of lines with meta fields, followed by a set of lines with link tokens.  A BEACON file MAY begin with an Unicode Byte Order Mark and it SHOULD end with a line break: </p>
 <pre>
@@ -808,9 +813,11 @@ http://example.org/apples|sphere|http://example.org/oranges
 <pre>
 EMPTY        =  *WHITESPACE LINEBREAK
 </pre>
-<p id="rfc.section.4.p.3">A meta line specifies a meta field (<a href="#meta-fields">Section 3</a>) and its value, separated by colon and/or whitespace: </p>
+<p id="rfc.section.4.p.3">A meta line specifies a meta field (<a href="#meta-fields">Section 3</a>) and its value, separated by colon and/or tabulator or space: </p>
 <pre>
- METALINE    =  "#" METAFIELD ( ":" / ( HTAB / SP ) ) METAVALUE LINEBREAK
+ METALINE    =  "#" METAFIELD SEPARATOR METAVALUE LINEBREAK
+
+ SEPARATOR   =  ":" *( HTAB / SP ) / +( HTAB / SP )
 
  METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
 
@@ -914,7 +921,9 @@ foo||http://example.org/foobar
      void:subjectsTarget :sourceset ;
      void:objectsTarget :targetset .
 </pre>
-<p id="rfc.section.5.1.p.2">Each link can be mapped to at least one RDF triple with: </p>
+<p id="rfc.section.5.1.p.2">The mapping of meta fields that describe source dataset, target datasets, and link dumps is described above (<a href="#source-and-target-datasets">Section 3.3</a>, <a href="#link-dump">Section 3.1</a>).  </p>
+<h1 id="rfc.section.5.1.1"><a href="#rfc.section.5.1.1">5.1.1.</a> <a href="#mapping-links" id="mapping-links">Mapping links</a></h1>
+<p id="rfc.section.5.1.1.p.1">Each link can be mapped to at least one RDF triple with: </p>
 <p/>
 
 <ul>
@@ -922,8 +931,9 @@ foo||http://example.org/foobar
   <li>the relation type used as predicate, </li>
   <li>the target URI used as object IRI.  </li>
 </ul>
-<p id="rfc.section.5.1.p.4">As RDF is not defined on URIs but on URI references or IRIs, all URIs MUST be transformed to an IRI by following the process defined in Section 3.2 of <a href="#RFC3987">[RFC3987]</a>.  Applications MAY reject mapping link dumps with relation type from the IANA link relations registry, in lack of official URIs.  Another valid solution is to extend the RDF model by using blank nodes as predicates.  </p>
-<p id="rfc.section.5.1.p.5">The annotation SHOULD result in an additional RDF triple, unless its value equals to the empty string. The additional triple is mapped with: </p>
+<p id="rfc.section.5.1.1.p.3">As RDF is not defined on URIs but on URI references or IRIs, all URIs MUST be transformed to an IRI by following the process defined in Section 3.2 of <a href="#RFC3987">[RFC3987]</a>.  Applications MAY reject mapping link dumps with relation type from the IANA link relations registry, in lack of official URIs.  Another valid solution is to extend the RDF model by using blank nodes as predicates.  </p>
+<h1 id="rfc.section.5.1.2"><a href="#rfc.section.5.1.2">5.1.2.</a> <a href="#mapping-link-annotations" id="mapping-link-annotations">Mapping link annotations</a></h1>
+<p id="rfc.section.5.1.2.p.1">Each link annotation SHOULD result in an additional RDF triple, unless its value equals to the empty string. The additional triple is mapped with: </p>
 <p/>
 
 <ul>
@@ -931,8 +941,8 @@ foo||http://example.org/foobar
   <li>the <samp>ANNOTATION</samp> meta field used as predicate, </li>
   <li>the annotation value used as literal object.  </li>
 </ul>
-<p id="rfc.section.5.1.p.7">Applications MAY ignore annotations and map annotations to different kinds of RDF triples if the <samp>ANNOTATION</samp> meta field is the default value <samp>rdf:value</samp>. For instance an annotation could contain additional information about a link such as its provenience, date, or probability (reification).  </p>
-<p id="rfc.section.5.1.p.8">Typical use cases of annotations include specification of labels and a "number of hits" at the target dataset. For instance the following BEACON file in BEACON text format (<a href="#beacon-text-format">Section 4</a>): </p>
+<p id="rfc.section.5.1.2.p.3">Applications MAY use a predefined URI as ANNOTATION or process the link annotation by other means. For instance annotations could contain additional information about a link such as its provenience, date, or probability (reification).  </p>
+<p id="rfc.section.5.1.2.p.4">Typical use cases of annotations include specification of labels and a "number of hits" at the target dataset. For instance the following BEACON file in BEACON text format (<a href="#beacon-text-format">Section 4</a>): </p>
 <pre>
  #PREFIX: http://example.org/
  #TARGET: http://example.com/ 
@@ -941,7 +951,7 @@ foo||http://example.org/foobar
 
  abc|12|xy
 </pre>
-<p id="rfc.section.5.1.p.9">is mapped to the following RDF triples: </p>
+<p id="rfc.section.5.1.2.p.5">is mapped to the following RDF triples: </p>
 <pre>
  &lt;http://example.org/abc&gt; foaf:primaryTopic &lt;http://example.com/xy&gt; .
  &lt;http://example.com/xy&gt; dcterms:extent "12" .
@@ -1319,30 +1329,32 @@ ada|bar
 <li>2.3.   <a href="#rfc.section.2.3">Whitespace normalization</a></li>
 <li>2.4.   <a href="#rfc.section.2.4">URI patterns</a></li>
 <li>3.   <a href="#rfc.section.3">Meta fields</a></li>
-<li>3.1.   <a href="#rfc.section.3.1">Source and target datasets</a></li>
-<li>3.1.1.   <a href="#rfc.section.3.1.1">SOURCESET</a></li>
-<li>3.1.2.   <a href="#rfc.section.3.1.2">TARGETSET</a></li>
-<li>3.1.3.   <a href="#rfc.section.3.1.3">NAME</a></li>
-<li>3.1.4.   <a href="#rfc.section.3.1.4">INSTITUTION</a></li>
-<li>3.2.   <a href="#rfc.section.3.2">Link dump</a></li>
-<li>3.2.1.   <a href="#rfc.section.3.2.1">DESCRIPTION</a></li>
-<li>3.2.2.   <a href="#rfc.section.3.2.2">CREATOR</a></li>
-<li>3.2.3.   <a href="#rfc.section.3.2.3">CONTACT</a></li>
-<li>3.2.4.   <a href="#rfc.section.3.2.4">HOMEPAGE</a></li>
-<li>3.2.5.   <a href="#rfc.section.3.2.5">FEED</a></li>
-<li>3.2.6.   <a href="#rfc.section.3.2.6">TIMESTAMP</a></li>
-<li>3.2.7.   <a href="#rfc.section.3.2.7">UPDATE</a></li>
-<li>3.3.   <a href="#rfc.section.3.3">Link description</a></li>
-<li>3.3.1.   <a href="#rfc.section.3.3.1">PREFIX</a></li>
-<li>3.3.2.   <a href="#rfc.section.3.3.2">TARGET</a></li>
-<li>3.3.3.   <a href="#rfc.section.3.3.3">MESSAGE</a></li>
-<li>3.3.4.   <a href="#rfc.section.3.3.4">RELATION</a></li>
-<li>3.3.5.   <a href="#rfc.section.3.3.5">ANNOTATION</a></li>
+<li>3.1.   <a href="#rfc.section.3.1">Link dump</a></li>
+<li>3.1.1.   <a href="#rfc.section.3.1.1">DESCRIPTION</a></li>
+<li>3.1.2.   <a href="#rfc.section.3.1.2">CREATOR</a></li>
+<li>3.1.3.   <a href="#rfc.section.3.1.3">CONTACT</a></li>
+<li>3.1.4.   <a href="#rfc.section.3.1.4">HOMEPAGE</a></li>
+<li>3.1.5.   <a href="#rfc.section.3.1.5">FEED</a></li>
+<li>3.1.6.   <a href="#rfc.section.3.1.6">TIMESTAMP</a></li>
+<li>3.1.7.   <a href="#rfc.section.3.1.7">UPDATE</a></li>
+<li>3.2.   <a href="#rfc.section.3.2">Link description</a></li>
+<li>3.2.1.   <a href="#rfc.section.3.2.1">PREFIX</a></li>
+<li>3.2.2.   <a href="#rfc.section.3.2.2">TARGET</a></li>
+<li>3.2.3.   <a href="#rfc.section.3.2.3">MESSAGE</a></li>
+<li>3.2.4.   <a href="#rfc.section.3.2.4">RELATION</a></li>
+<li>3.2.5.   <a href="#rfc.section.3.2.5">ANNOTATION</a></li>
+<li>3.3.   <a href="#rfc.section.3.3">Source and target datasets</a></li>
+<li>3.3.1.   <a href="#rfc.section.3.3.1">SOURCESET</a></li>
+<li>3.3.2.   <a href="#rfc.section.3.3.2">TARGETSET</a></li>
+<li>3.3.3.   <a href="#rfc.section.3.3.3">NAME</a></li>
+<li>3.3.4.   <a href="#rfc.section.3.3.4">INSTITUTION</a></li>
 <li>4.   <a href="#rfc.section.4">BEACON text format</a></li>
 <li>4.1.   <a href="#rfc.section.4.1">Link construction</a></li>
 <li>4.2.   <a href="#rfc.section.4.2">MIME type</a></li>
 <li>5.   <a href="#rfc.section.5">Mappings</a></li>
 <li>5.1.   <a href="#rfc.section.5.1">Mapping to RDF</a></li>
+<li>5.1.1.   <a href="#rfc.section.5.1.1">Mapping links</a></li>
+<li>5.1.2.   <a href="#rfc.section.5.1.2">Mapping link annotations</a></li>
 <li>5.2.   <a href="#rfc.section.5.2">Mapping to HTML</a></li>
 <li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
 <li>7.   <a href="#rfc.references">References</a></li>
