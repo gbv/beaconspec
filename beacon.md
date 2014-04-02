@@ -6,12 +6,12 @@
 BEACON is a data interchange format for large numbers of uniform links.  A
 BEACON **link dump** consists of:
 
-* a set of links ([](#links)),
-* a set of meta fields ([](#meta-fields)).
+* a set of **links** ([](#links)),
+* a set of **meta fields** ([](#meta-fields)).
 
-Each link consists of a source URI, a target URI, and an annotation. Common
-patterns in source URIs and target URIs respectively can be used to abbreviate
-serializations of link dumps.  This specification defines:
+Each link consists of a source URI, a target URI, and an optional annotation.
+Common patterns in source URIs and target URIs respectively can be used to
+abbreviate serializations of link dumps.  This specification defines:
 
 * a serialization of link dumps (**BEACON files**) in a condense 
   line-oriented text format ([](#beacon-text-format)). A non-normative
@@ -23,19 +23,7 @@ The current specification is managed at <https://github.com/gbv/beaconspec>.
 
 ## Example
 
-To give an example, the "ACME" company wants to provide links from people to
-the documents that each person contributed to. A list of people is available
-from `http://example.com/people/` and a list of documents, titled "ACME
-documents", is available from `http://example.com/documents/`. This information
-can be expressed in BEACON text format as following:
-
-    #INSTITUTION: ACME
-    #SOURCESET:   http://example.com/people/
-    #TARGETSET:   http://example.com/documents/
-    #NAME:        ACME documents
-    #RELATION:    http://purl.org/dc/elements/1.1/contributor
-
-The simplest form of a BEACON text file contains full links separated by a
+The simplest form of a BEACON text file contains full URL links separated by a
 vertical bar:
 
     http://example.com/people/alice|http://example.com/documents/23.about
@@ -47,8 +35,23 @@ bars MUST be used:
 
     http://example.com/people/alice||urn:isbn:0123456789
 
-As both source URIs for people and target URIs for documents follow a pattern,
-links can be abbreviated as following:
+To give an extended example, the "ACME" company wants to provide links from
+people to documents that each person contributed to (a "contributor"
+relationship in terms of Dublin Core). A list of all people is available from
+`http://example.com/people/` and a list of all documents, titled "ACME
+documents", is available from `http://example.com/documents/`. This information
+can be expressed in a serialized link dump with BEACON meta fields as
+following:
+
+    #INSTITUTION: ACME
+    #RELATION:    http://purl.org/dc/elements/1.1/contributor
+    #SOURCESET:   http://example.com/people/
+    #TARGETSET:   http://example.com/documents/
+    #NAME:        ACME documents
+
+If both source URIs for people and target URIs for documents follow a pattern,
+links can be abbreviated with the meta fields `PREFIX` and `TARGET` as
+following:
 
     #PREFIX: http://example.com/people/
     #TARGET: http://example.com/documents/{+ID}.about
@@ -56,14 +59,16 @@ links can be abbreviated as following:
     alice||23
     bob||42
 
-For each link a third element can be added as annotation. The meaning of this annotation is not
-rdf:value
+From this form the same links can be constructed as given at the beginning of
+this example.
+
+The example can be extended by addition of a third element for each link. For
+instance the annotation could be used to specifcy the date of each document:
 
     #ANNOTATION: http://purl.org/dc/elements/1.1/date
 
-    alice||23
-    bob||42
-
+    alice|2014-03-12|23
+    bob|2013-10-21|42
 
 ## Notational Conventions
 
