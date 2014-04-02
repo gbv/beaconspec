@@ -204,78 +204,28 @@ is the empty string unless noted otherwise. The following diagram shows which
 meta fields belong to which dataset. Repeatable fields are marked with a plus
 character (`+`): 
 
-    +----------------+    +------------------+     +-----------------+
-    | source dataset | ---| link dump        |---> | target dataset  |
-    |----------------|    |------------------|     |-----------------|
-    |                | ---|                  |---> |                 |
-    |  * SOURCESET   |    |  * DESCRIPTION+  |     |  * TARGETSET    |
-    |                | ---|  * CREATOR+      |---> |  * NAME+        |
-    +----------------+    |  * CONTACT+      |     |  * INSTITUTION+ |
-                          |  * HOMEPAGE+     |     |                 |
-                          |  * FEED+         |     +-----------------+
+                          +------------------+
+                          | link dump        |
+                          |                  |
+                          |  * DESCRIPTION+  |
+                          |  * CREATOR+      |
+                          |  * CONTACT+      |
+                          |  * HOMEPAGE+     |
+                          |  * FEED+         |
                           |  * TIMESTAMP+    |
                           |  * UPDATE        |
                           |                  |
-                          +------------------+
-                          |                  |
-                          |  * PREFIX        |
-                          |  * TARGET        |
-                          |  * RELATION      |
-                          |  * MESSAGE       |
-                          |  * ANNOTATION    |
-                          |                  |
-                          +------------------+
+                          |------------------|
+                          | link description |
+                          |                  |     +-----------------+
+    +----------------+    |  * PREFIX        |     | target dataset  |
+    | source dataset | ---|  * TARGET        |---> |                 |
+    |                |    |  * RELATION      |     |  * TARGETSET    |
+    |                | ---|  * MESSAGE       |---> |  * NAME+        |
+    |  * SOURCESET   |    |  * ANNOTATION    |     |  * INSTITUTION+ |
+    |                | ---|                  |---> |                 |
+    +----------------+    +------------------+     +-----------------+
 
-
-## Source and target datasets
-
-The set that all source URIs in a link dump originate from is called the
-**source dataset** and the set that all target URIs originate from is called
-the **target dataset**. 
-
-### SOURCESET
-
-The source dataset can be identified by the `SOURCESET` meta field, which MUST
-be an URI if given. This field replaces the blank node `:sourceset`.
-
-### TARGETSET
-
-The target dataset can be identified by the `TARGETSET` meta field, which MUST
-be an URI if given. This field replaces the blank node `:targetset`.
-
-### NAME
-
-The `NAME` meta field contains a name or title of target dataset. This field is
-mapped to the RDF property `dcterms:title`. For instance the field value "ACME
-documents", expressible in BEACON text format as
-
-    #NAME: ACME documents
-
-can be mapped to this RDF triple:
-
-    :targetset dcterms:title "ACME documents" .
-
-### INSTITUTION
-
-The `INSTITUTION` meta field contains the name or URI of the organization or of
-an individual responsible for making available the target dataset. This field
-is mapped to the RDF property `dcterms:publisher`. For instance the field value
-"ACME", expressible in BEACON text format as
-
-    #INSTITUTION: ACME
-
-can be mapped to this RDF triple:
-
-    :targetset dcterms:publisher "ACME" .
-
-A field value starting with `http://` or `https://` is interpreted as URI
-instead of string. For instance
-
-    #INSTITUTION: http://example.org/acme/
-
-can be mapped to this RDF triple:
-
-    :targetset dcterms:publisher <http://example.org/acme/> .
 
 ## Link dump
 
@@ -474,6 +424,58 @@ implies the following triple if mapped to RDF:
 
     <http://example.org/oranges> dc:format "sphere" .
 
+
+## Source and target datasets
+
+The set that all source URIs in a link dump originate from is called the
+**source dataset** and the set that all target URIs originate from is called
+the **target dataset**. 
+
+### SOURCESET
+
+The source dataset can be identified by the `SOURCESET` meta field, which MUST
+be an URI if given. This field replaces the blank node `:sourceset`.
+
+### TARGETSET
+
+The target dataset can be identified by the `TARGETSET` meta field, which MUST
+be an URI if given. This field replaces the blank node `:targetset`.
+
+### NAME
+
+The `NAME` meta field contains a name or title of target dataset. This field is
+mapped to the RDF property `dcterms:title`. For instance the field value "ACME
+documents", expressible in BEACON text format as
+
+    #NAME: ACME documents
+
+can be mapped to this RDF triple:
+
+    :targetset dcterms:title "ACME documents" .
+
+### INSTITUTION
+
+The `INSTITUTION` meta field contains the name or URI of the organization or of
+an individual responsible for making available the target dataset. This field
+is mapped to the RDF property `dcterms:publisher`. For instance the field value
+"ACME", expressible in BEACON text format as
+
+    #INSTITUTION: ACME
+
+can be mapped to this RDF triple:
+
+    :targetset dcterms:publisher "ACME" .
+
+A field value starting with `http://` or `https://` is interpreted as URI
+instead of string. For instance
+
+    #INSTITUTION: http://example.org/acme/
+
+can be mapped to this RDF triple:
+
+    :targetset dcterms:publisher <http://example.org/acme/> .
+
+
 # BEACON text format
 
 A BEACON file is an UTF-8 encoded Unicode file [](#RFC3629), split into lines
@@ -513,10 +515,10 @@ Each link is given on a link line with its source token, optionally follwed by
 annotation token and target token:
 
      LINKLINE    =  SOURCE [ 
-	                  VBAR ANNOTATION /
-					  VBAR ANNOTATION VBAR TARGET /
-					  VBAR TARGET
-					]
+                      VBAR ANNOTATION /
+                      VBAR ANNOTATION VBAR TARGET /
+                      VBAR TARGET
+                    ]
 
      SOURCE      =  TOKEN
 
