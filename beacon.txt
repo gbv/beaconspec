@@ -305,12 +305,12 @@ Internet-Draft                   BEACON                       April 2014
    used to separate meta lines and link lines.  If no empty line is
    given, the first link line MUST NOT begin with ""#"".
 
- BEACONFILE  =  [ %xEF.BB.BF ]           ; Unicode UTF-8 Byte Order Mark
-                [ "#FORMAT" SEPARATOR "BEACON" *SPACE LINEBREAK ]
-                *( METALINE LINEBREAK )
-                *( *SPACE LINEBREAK )    ; empty lines
-                 LINKLINE *( LINEBREAK LINKLINE )
-                [ LINEBREAK ]
+    BEACONFILE  =  [ %xEF.BB.BF ]        ; Unicode UTF-8 Byte Order Mark
+                   [ "#FORMAT" SEPARATOR "BEACON" *SPACE LINEBREAK ]
+                   *( METALINE LINEBREAK )
+                   *( *SPACE LINEBREAK ) ; empty lines
+                    LINKLINE *( LINEBREAK LINKLINE )
+                   [ LINEBREAK ]
 
    The order of meta lines and of link lines, respectively, is
    irrelevant.
@@ -338,11 +338,10 @@ Voss, et al.             Expires October 5, 2014                [Page 6]
 Internet-Draft                   BEACON                       April 2014
 
 
-    LINKLINE    =  SOURCE [
-                     VBAR ANNOTATION /
-                     VBAR ANNOTATION VBAR TARGET /
-                     VBAR TARGET
-                   ]
+    LINKLINE    =  SOURCE /
+                   SOURCE VBAR TARGET /   ; if TARGET is http: or https:
+                   SOURCE VBAR ANNOTATION /
+                   SOURCE VBAR ANNOTATION VBAR TARGET
 
     SOURCE      =  TOKEN
 
@@ -353,10 +352,11 @@ Internet-Draft                   BEACON                       April 2014
    The ambiguity of rule "LINKLINE" with one occurrence of "VBAR" is
    resolved is following:
 
-   o  If the target meta field has its default value "{+ID}", and the
-      message meta field has its default value "{annotation}", and the
-      whitespace-normalized second token begins with "http:" or
-      "https:", then the second token is used as target token.
+   o  If the target meta field (Section 4.1.2) has its default value
+      "{+ID}", and the message meta field (Section 4.1.3) has its
+      default value "{annotation}", and the whitespace-normalized second
+      token begins with "http:" or "https:", then the second token is
+      used as target token.
 
    o  The second token is used as annotation token otherwise.
 
