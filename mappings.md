@@ -23,6 +23,9 @@ The blank node `:dump` denotes the URI of the link dump, the blank node
 `:sourceset` denotes the URI of the source dataset, and the blank node
 `:targetset` denotes the URI of the target dataset.
 
+Note that literal values with language tags or datatypes are not supported when
+mapping BEACON to RDF.
+
 ### Mapping links to RDF
 
 Each link can be mapped to at least one RDF triple with:
