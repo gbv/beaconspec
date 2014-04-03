@@ -136,7 +136,9 @@ A Unicode string is **whitespace-normalized** according to this specification,
 by stripping leading and trailing whitespace and by replacing all `WHITESPACE`
 character sequences by a single space (`SP`). 
 
-     WHITESPACE  =  1*( CR | LF | HTAB | SP )
+     WHITESPACE  =  1*( CR | LF | SPACE )
+
+     SPACE       =  HTAB | SP
 
 ## URI patterns
 
@@ -175,6 +177,144 @@ following the process defined in Section 3.2 of [](#RFC3987).
       Hello%20World     {+ID}       Hello%20World
       M%C3%BCller       {ID}        M%25C3%25BCller
       M%C3%BCller       {+ID}       M%C3%BCller
+
+# BEACON format
+
+A **BEACON file** is an UTF-8 encoded Unicode file [](#RFC3629). The file MAY
+begin with an Unicode Byte Order Mark and it SHOULD end with a line break. The
+first line of a BEACON file SHOULD be the character sequence "`#FORMAT:
+BEACON`". The rest of the file consists of a (possibly empty) set of lines that
+express meta fields ([](#meta-fields)), followed by a set of lines with link
+tokens which links are constructed from ([](#link-construction)).  At least one
+empty line SHOULD be used to separate meta lines and link lines. If no empty
+line is given, the first link line MUST NOT begin with `"#"`.
+
+     BEACONFILE  =  [ %xEF.BB.BF ]           ; Unicode UTF-8 Byte Order Mark
+                    [ "#FORMAT" SEPARATOR "BEACON" *SPACE LINEBREAK ]
+                    *( METALINE LINEBREAK )
+                    *( *SPACE LINEBREAK )    ; empty lines
+                     LINKLINE *( LINEBREAK LINKLINE )
+                    [ LINEBREAK ]
+
+The order of meta lines and of link lines, respectively, is irrelevant. 
+
+A **meta line** specifies a meta field ([](#meta-fields)) and its value,
+separated by colon and/or tabulator or space: 
+
+     METALINE    =  "#" METAFIELD SEPARATOR METAVALUE
+
+     SEPARATOR   =  ":" *SPACE / +SPACE
+
+     METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
+
+     METAVALUE   =  LINE
+
+Each link is given on a **link line** with its source token, optionally follwed by
+annotation token and target token:
+
+     LINKLINE    =  SOURCE [ 
+                      VBAR ANNOTATION /
+                      VBAR ANNOTATION VBAR TARGET /
+                      VBAR TARGET
+                    ]
+
+     SOURCE      =  TOKEN
+
+     TARGET      =  TOKEN
+
+     ANNOTATION  =  TOKEN
+
+The ambiguity of rule `LINKLINE` with one occurrence of `VBAR` is resolved is
+following:
+
+* If the target meta field has its default value `{+ID}`, and the message meta 
+  field has its default value `{annotation}`, and the whitespace-normalized second 
+  token begins with "http:" or "https:", then the second token is used as target token.
+* The second token is used as annotation token otherwise.
+
+This way one can use two forms to encode links to HTTP URIs (given target 
+meta field and message meta field with their default values):
+
+    foo|http://example.org/foobar
+    foo||http://example.org/foobar
+
+## Link construction
+
+Link elements in BEACON format are given in abbreviated form of **link
+tokens**. Each link is constructed from:
+
+* a mandatory source token
+* an optional annotation token
+* an optional target token, which is set to the source token if missing
+
+All tokens MUST be whitespace-normalized before further
+processing.  
+
+Construction rules are based on the value of link construction meta fields
+([](#link-construction-meta-fields)). A link is constructed as following:
+
+* The source URI is constructed from the `PREFIX` meta field URI pattern by 
+  inserting the source token, as defined in [](#uri-patterns).
+* The target URI is constructed from the `TARGET` meta field URI pattern by 
+  inserting the target token, as as defined in [](#uri-patterns).
+* The annotation is constructed from the `MESSAGE` meta field by literally 
+  replacing every occurrence of the character sequence `{annotation}` by the 
+  annotation token.  The resulting string MUST be whitespace-normalized after
+  construction additional encoding MUST NOT be applied.
+
+The following table illustrates construction of a link:
+
+     meta field  +  link token  -->  link element
+    ----------------------------------------------
+     prefix      |  source       |   source URI
+     target      |  target       |   target URI
+     message     |  annotation   |   annotation
+
+Constructed source URI and target URI MUST be syntactically valid.
+Applications MUST ignore links with invalid URIs and SHOULD give a warning.
+Note that annotation tokens are always ignored if the `MESSAGE` meta field does
+not contain the sequence `{annotation}`. Applications SHOULD give a warning in
+this case.
+
+Applications MUST NOT differentiate between equal links constructed from
+different abbreviations. For instance the following BEACON file contains a
+single link:
+
+     #PREFIX: http://example.org/
+     #TARGET: http://example.com/
+     #MESSAGE: Hello World!
+
+     foo
+
+The same link could also be serialized without any meta fields: 
+
+     http://example.org/foo|Hello World!|http://example.com/foo
+
+The default meta fields values could also be specified as:
+
+     #PREFIX: {+ID}
+     #TARGET: {+ID}
+     #MESSAGE: {annotation}
+
+Another possible serialization is:
+
+     #PREFIX: http://example.org/
+     #TARGET: http://example.com/
+     #MESSAGE: Hello {annotation}
+
+     foo|World!
+
+The link line in this example is equal to:
+
+     foo|World!|foo
+
+Multiple occurrences of equal links in one BEACON file SHOULD be ignored.  It
+is RECOMMENDED to indicate duplicated links with a warning.
+
+## MIME type
+
+The RECOMMENDED MIME type of BEACON files is "text/beacon". The file
+extension `.txt` SHOULD be used when storing BEACON files.
 
 # Meta fields
 
@@ -342,146 +482,4 @@ The `NAME` meta field contains a name or title of the target dataset.
 
 The `INSTITUTION` meta field contains the name or HTTP URI of the organization
 or of an individual responsible for making available the target dataset. 
-
-# BEACON format
-
-A BEACON file is an UTF-8 encoded Unicode file [](#RFC3629), split into lines
-by line breaks (rule `LINEBREAK`). The file consists of a set of lines with
-meta fields, followed by a set of lines with link tokens. A BEACON file MAY
-begin with an Unicode Byte Order Mark and it SHOULD end with a line break:
-
-     BEACONTEXT  =  [ BOM ]
-                    *METALINE
-                    *EMPTY
-                     LINKLINE *( LINEBREAK LINKLINE )
-                    [ LINEBREAK ]
-
-     BOM         =  %xEF.BB.BF     ; Unicode UTF-8 Byte Order Mark
-
-The order of meta lines and of link lines, respectively, is irrelevant. At
-least one empty line SHOULD be used to separate meta lines and link lines.
-If no empty line is given, the first link line MUST NOT begin with `"#"`.
-
-    EMPTY        =  *WHITESPACE LINEBREAK
-
-A meta line specifies a meta field ([](#meta-fields)) and its value, separated
-by colon and/or tabulator or space: 
-
-     METALINE    =  "#" METAFIELD SEPARATOR METAVALUE LINEBREAK
-
-     SEPARATOR   =  ":" *( HTAB / SP ) / +( HTAB / SP )
-
-     METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
-
-     METAVALUE   =  LINE
-
-A BEACON file SHOULD start with the fixed meta field `FORMAT` set to
-"BEACON" ("`#FORMAT: BEACON`").
-
-Each link is given on a link line with its source token, optionally follwed by
-annotation token and target token:
-
-     LINKLINE    =  SOURCE [ 
-                      VBAR ANNOTATION /
-                      VBAR ANNOTATION VBAR TARGET /
-                      VBAR TARGET
-                    ]
-
-     SOURCE      =  TOKEN
-
-     TARGET      =  TOKEN
-
-     ANNOTATION  =  TOKEN
-
-The ambiguity of rule `LINKLINE` with one occurrence of `VBAR` is resolved is
-following:
-
-* If the target meta field has its default value `{+ID}`, and the message meta 
-  field has its default value `{annotation}`, and the whitespace-normalized second 
-  token begins with "http:" or "https:", then the second token is used as target token.
-* The second token is used as annotation token otherwise.
-
-This way one can use two forms to encode links to HTTP URIs (given target 
-meta field and message meta field with their default values):
-
-    foo|http://example.org/foobar
-    foo||http://example.org/foobar
-
-## Link construction
-
-Link elements in BEACON format are given in abbreviated form of **link
-tokens**. Each link is constructed from:
-
-* a mandatory source token
-* an optional annotation token
-* an optional target token, which is set to the source token if missing
-
-All tokens MUST be whitespace-normalized before further
-processing.  
-
-Construction rules are based on the value of link construction meta fields
-([](#link-construction-meta-fields)). A link is constructed as following:
-
-* The source URI is constructed from the `PREFIX` meta field URI pattern by 
-  inserting the source token, as defined in [](#uri-patterns).
-* The target URI is constructed from the `TARGET` meta field URI pattern by 
-  inserting the target token, as as defined in [](#uri-patterns).
-* The annotation is constructed from the `MESSAGE` meta field by literally 
-  replacing every occurrence of the character sequence `{annotation}` by the 
-  annotation token.  The resulting string MUST be whitespace-normalized after
-  construction additional encoding MUST NOT be applied.
-
-The following table illustrates construction of a link:
-
-     meta field  +  link token  -->  link element
-    ----------------------------------------------
-     prefix      |  source       |   source URI
-     target      |  target       |   target URI
-     message     |  annotation   |   annotation
-
-Constructed source URI and target URI MUST be syntactically valid.
-Applications MUST ignore links with invalid URIs and SHOULD give a warning.
-Note that annotation tokens are always ignored if the `MESSAGE` meta field does
-not contain the sequence `{annotation}`. Applications SHOULD give a warning in
-this case.
-
-Applications MUST NOT differentiate between equal links constructed from
-different abbreviations. For instance the following BEACON file contains a
-single link:
-
-     #PREFIX: http://example.org/
-     #TARGET: http://example.com/
-     #MESSAGE: Hello World!
-
-     foo
-
-The same link could also be serialized without any meta fields: 
-
-     http://example.org/foo|Hello World!|http://example.com/foo
-
-The default meta fields values could also be specified as:
-
-     #PREFIX: {+ID}
-     #TARGET: {+ID}
-     #MESSAGE: {annotation}
-
-Another possible serialization is:
-
-     #PREFIX: http://example.org/
-     #TARGET: http://example.com/
-     #MESSAGE: Hello {annotation}
-
-     foo|World!
-
-The link line in this example is equal to:
-
-     foo|World!|foo
-
-Multiple occurrences of equal links in one BEACON file SHOULD be ignored.  It
-is RECOMMENDED to indicate duplicated links with a warning.
-
-## MIME type
-
-The recommended MIME type of BEACON files is "text/beacon". The file
-extension `.txt` SHOULD be used when storing BEACON files.
 
