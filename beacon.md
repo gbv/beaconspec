@@ -189,10 +189,10 @@ tokens which links are constructed from ([](#link-construction)).  At least one
 empty line SHOULD be used to separate meta lines and link lines. If no empty
 line is given, the first link line MUST NOT begin with `"#"`.
 
-     BEACONFILE  =  [ %xEF.BB.BF ]           ; Unicode UTF-8 Byte Order Mark
+     BEACONFILE  =  [ %xEF.BB.BF ]        ; Unicode UTF-8 Byte Order Mark
                     [ "#FORMAT" SEPARATOR "BEACON" *SPACE LINEBREAK ]
                     *( METALINE LINEBREAK )
-                    *( *SPACE LINEBREAK )    ; empty lines
+                    *( *SPACE LINEBREAK ) ; empty lines
                      LINKLINE *( LINEBREAK LINKLINE )
                     [ LINEBREAK ]
 
@@ -212,11 +212,10 @@ separated by colon and/or tabulator or space:
 Each link is given on a **link line** with its source token, optionally follwed by
 annotation token and target token:
 
-     LINKLINE    =  SOURCE [ 
-                      VBAR ANNOTATION /
-                      VBAR ANNOTATION VBAR TARGET /
-                      VBAR TARGET
-                    ]
+     LINKLINE    =  SOURCE /
+                    SOURCE VBAR TARGET /   ; if TARGET is http: or https:
+                    SOURCE VBAR ANNOTATION /
+                    SOURCE VBAR ANNOTATION VBAR TARGET
 
      SOURCE      =  TOKEN
 
@@ -227,9 +226,10 @@ annotation token and target token:
 The ambiguity of rule `LINKLINE` with one occurrence of `VBAR` is resolved is
 following:
 
-* If the target meta field has its default value `{+ID}`, and the message meta 
-  field has its default value `{annotation}`, and the whitespace-normalized second 
-  token begins with "http:" or "https:", then the second token is used as target token.
+* If the target meta field ([](#target)) has its default value `{+ID}`, and the 
+  message meta field ([](#message)) has its default value `{annotation}`, and 
+  the whitespace-normalized second token begins with "http:" or "https:", then 
+  the second token is used as target token.
 * The second token is used as annotation token otherwise.
 
 This way one can use two forms to encode links to HTTP URIs (given target 
