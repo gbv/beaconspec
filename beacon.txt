@@ -719,8 +719,8 @@ Internet-Draft                   BEACON                       April 2014
    node ":sourceset" denotes the URI of the source dataset, and the
    blank node ":targetset" denotes the URI of the target dataset.
 
-
-
+   Note that literal values with language tags or datatypes are not
+   supported when mapping BEACON to RDF.
 
 
 
