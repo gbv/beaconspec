@@ -5,10 +5,10 @@
 Network Working Group                                            J. Voss
 Internet-Draft                                   Verbundzentrale des GBV
 Intended status: Informational                                Th. Berger
-Expires: October 5, 2014                                       Gymel.com
+Expires: October 6, 2014                                       Gymel.com
                                                             M. Schindler
                                               Wikimedia Deutschland e.V.
-                                                           April 3, 2014
+                                                           April 4, 2014
 
 
                         BEACON link dump format
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 5, 2014.
+   This Internet-Draft will expire on October 6, 2014.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Voss, et al.             Expires October 5, 2014                [Page 1]
+Voss, et al.             Expires October 6, 2014                [Page 1]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -67,10 +67,10 @@ Internet-Draft                   BEACON                       April 2014
 
    o  a set of *meta fields* (Section 4).
 
-   Each link consists of a source URI, a target URI, and an optional
-   annotation.  Common patterns in source URIs and target URIs
-   respectively can be used to abbreviate serializations of link dumps.
-   This specification defines:
+   Each link consists of a source identifier, a target identifier, and
+   an optional annotation.  Common patterns in these elements can be
+   used to abbreviate serializations of link dumps.  This specification
+   defines:
 
    o  a serialization of link dumps (*BEACON files*) in a condense line-
       oriented text format (Section 3).  A non-normative serialization
@@ -90,9 +90,10 @@ Internet-Draft                   BEACON                       April 2014
    http://example.com/people/alice|http://example.com/documents/23.about
    http://example.com/people/bob|http://example.com/documents/42.about
 
-   The first element of a link is called source URI and the second is
-   called target URI.  If a target URI does not start with "http" or
-   "https", two vertical bars MUST be used:
+   The first element of a link is called source identifier and the
+   second is called target identifier.  In most cases these identifiers
+   are URLs or URIs.  If a target identifier does not start with "http"
+   or "https", two vertical bars MUST be used:
 
    http://example.com/people/alice||urn:isbn:0123456789
 
@@ -108,8 +109,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-
-Voss, et al.             Expires October 5, 2014                [Page 2]
+Voss, et al.             Expires October 6, 2014                [Page 2]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -120,9 +120,9 @@ Internet-Draft                   BEACON                       April 2014
    #TARGETSET:   http://example.com/documents/
    #NAME:        ACME documents
 
-   If both source URIs for people and target URIs for documents follow a
-   pattern, links can be abbreviated with the meta fields "PREFIX" and
-   "TARGET" as following:
+   If both source identifiers for people and target identifiers for
+   documents follow a pattern, links can be abbreviated with the meta
+   fields "PREFIX" and "TARGET" as following:
 
    #PREFIX: http://example.com/people/
    #TARGET: http://example.com/documents/{+ID}.about
@@ -165,7 +165,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014                [Page 3]
+Voss, et al.             Expires October 6, 2014                [Page 3]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -177,23 +177,24 @@ Internet-Draft                   BEACON                       April 2014
 
 2.1.  Links
 
-   A link in a link dump is a directed connection between two resources
-   that are identified by URIs [RFC3986].  A link is compromised of
-   three elements:
+   A link in a link dump is a directed connection between two resources,
+   optionally enriched by an annotation.  A link is compromised of three
+   elements:
 
-   o  a *source URI*,
+   o  a *source identifier*,
 
-   o  a *target URI*,
+   o  a *target identifier*,
 
    o  an *annotation*.
 
-   Source URI and target URI define where a link is pointing from and to
-   respectively.  The annotation is an optional Unicode string, that can
-   be used to further describe the link or parts of it.  Annotations
-   MUST be whitespace-normalized (Section 2.3) and MUST NOT contain a
-   "VBAR" character.  A missing annotation is equal to the empty string.
-   The meaning of a link can be indicated by the *RELATION* meta field
-   (Section 4.1.4).
+   All elements MUST be whitespace-normalized (Section 2.3) Unicode
+   strings that MUST NOT contain a "VBAR" character.  Source identifier
+   and target identifier define where a link is pointing from and to
+   respectively.  The identifiers MUST NOT be empty strings and they
+   SHOULD be URIs [RFC3986].  The annotation can optionally be used to
+   further describe the link or parts of it.  A missing annotation is
+   equal to the empty string.  The meaning of a link can be indicated by
+   the *RELATION* meta field (Section 4.1.4).
 
 2.2.  Allowed characters
 
@@ -220,8 +221,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-
-Voss, et al.             Expires October 5, 2014                [Page 4]
+Voss, et al.             Expires October 6, 2014                [Page 4]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -277,7 +277,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014                [Page 5]
+Voss, et al.             Expires October 6, 2014                [Page 5]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -333,7 +333,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014                [Page 6]
+Voss, et al.             Expires October 6, 2014                [Page 6]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -383,19 +383,19 @@ Internet-Draft                   BEACON                       April 2014
    Construction rules are based on the value of link construction meta
    fields (Section 4.1).  A link is constructed as following:
 
-   o  The source URI is constructed from the "PREFIX" meta field URI
-      pattern by inserting the source token, as defined in Section 2.4.
+   o  The source identifier is constructed from the "PREFIX" meta field
+      URI pattern by inserting the source token, as defined in
+      Section 2.4.
 
 
 
-
-Voss, et al.             Expires October 5, 2014                [Page 7]
+Voss, et al.             Expires October 6, 2014                [Page 7]
 
 Internet-Draft                   BEACON                       April 2014
 
 
-   o  The target URI is constructed from the "TARGET" meta field URI
-      pattern by inserting the target token, as as defined in
+   o  The target identifier is constructed from the "TARGET" meta field
+      URI pattern by inserting the target token, as as defined in
       Section 2.4.
 
    o  The annotation is constructed from the "MESSAGE" meta field by
@@ -407,16 +407,17 @@ Internet-Draft                   BEACON                       April 2014
    The following table illustrates construction of a link:
 
     meta field  +  link token  -->  link element
-   ----------------------------------------------
-    prefix      |  source       |   source URI
-    target      |  target       |   target URI
+   ---------------------------------------------------
+    prefix      |  source       |   source identifier
+    target      |  target       |   target identifier
     message     |  annotation   |   annotation
 
-   Constructed source URI and target URI MUST be syntactically valid.
-   Applications MUST ignore links with invalid URIs and SHOULD give a
-   warning.  Note that annotation tokens are always ignored if the
-   "MESSAGE" meta field does not contain the sequence "{annotation}".
-   Applications SHOULD give a warning in this case.
+   Constructed source identifier and target identifier SHOULD be
+   syntactically valid URIs.  Applications MAY ignore links with invalid
+   URIs and SHOULD give a warning.  Note that annotation tokens are
+   always ignored if the "MESSAGE" meta field does not contain the
+   sequence "{annotation}".  Applications SHOULD give a warning in this
+   case.
 
    Applications MUST NOT differentiate between equal links constructed
    from different abbreviations.  For instance the following BEACON file
@@ -444,8 +445,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-
-Voss, et al.             Expires October 5, 2014                [Page 8]
+Voss, et al.             Expires October 6, 2014                [Page 8]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -501,7 +501,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014                [Page 9]
+Voss, et al.             Expires October 6, 2014                [Page 9]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -538,26 +538,26 @@ Internet-Draft                   BEACON                       April 2014
 
 4.1.1.  PREFIX
 
-   The "PREFIX" meta field specifies an URI patter to construct link
-   sources.  If this field is not specified or set to the empty string,
-   the default value "{+ID}" is used.  If the field value contains no
-   template expression, the expression "{ID}" is appended.  The name
-   "PREFIX" was choosen to keep backwards compatibility with existing
-   BEACON files.
+   The "PREFIX" meta field specifies an URI patter to construct sources
+   identfiers.  If this field is not specified or set to the empty
+   string, the default value "{+ID}" is used.  If the field value
+   contains no template expression, the expression "{ID}" is appended.
+   The name "PREFIX" was choosen to keep backwards compatibility with
+   existing BEACON files.
 
 4.1.2.  TARGET
 
-   The "TARGET" meta field specifies an URI patter to construct link
-   targets.  If this field is not specified or set to the empty string,
-   the default value "{+ID}" is used.  If the field value field contains
-   no template expression, the expression "{ID}" is appended.
+   The "TARGET" meta field specifies an URI patter to construct target
+   identifiers.  If this field is not specified or set to the empty
+   string, the default value "{+ID}" is used.  If the field value field
+   contains no template expression, the expression "{ID}" is appended.
 
 
 
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 10]
+Voss, et al.             Expires October 6, 2014               [Page 10]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -613,7 +613,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 11]
+Voss, et al.             Expires October 6, 2014               [Page 11]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -661,15 +661,15 @@ Internet-Draft                   BEACON                       April 2014
 
 4.3.  Dataset meta fields
 
-   The set that all source URIs in a link dump originate from is called
-   the *source dataset* and the set that all target URIs originate from
-   is called the *target dataset*. Dataset meta fields contain
-   properties of the source dataset or target dataset, respectively.
-   See Section 5.1.5 for examples of this meta fields.
+   The set that all source identifiers in a link dump originate from is
+   called the *source dataset* and the set that all target identifiers
+   originate from is called the *target dataset*. Dataset meta fields
+   contain properties of the source dataset or target dataset,
+   respectively.  See Section 5.1.5 for examples of this meta fields.
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 12]
+Voss, et al.             Expires October 6, 2014               [Page 12]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -725,20 +725,21 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 13]
+Voss, et al.             Expires October 6, 2014               [Page 13]
 
 Internet-Draft                   BEACON                       April 2014
 
 
 5.1.1.  Mapping links to RDF
 
-   Each link can be mapped to at least one RDF triple with:
+   Links with URI source and target identifiers can be mapped to at
+   least one RDF triple with:
 
-   o  the source URI used as subject IRI,
+   o  the source identifier used as subject IRI,
 
    o  the relation type used as predicate,
 
-   o  the target URI used as object IRI.
+   o  the target identifiers used as object IRI.
 
    As RDF is not defined on URIs but on URI references or IRIs, all URIs
    MUST be transformed to an IRI by following the process defined in
@@ -753,7 +754,7 @@ Internet-Draft                   BEACON                       April 2014
    unless its value equals to the empty string.  The additional triple
    is mapped with:
 
-   o  the target URI used as subject IRI,
+   o  the target identifier used as subject IRI,
 
    o  the "ANNOTATION" meta field used as predicate,
 
@@ -780,8 +781,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-
-Voss, et al.             Expires October 5, 2014               [Page 14]
+Voss, et al.             Expires October 6, 2014               [Page 14]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -837,7 +837,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 15]
+Voss, et al.             Expires October 6, 2014               [Page 15]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -893,7 +893,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 16]
+Voss, et al.             Expires October 6, 2014               [Page 16]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -949,7 +949,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 17]
+Voss, et al.             Expires October 6, 2014               [Page 17]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -1005,7 +1005,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 18]
+Voss, et al.             Expires October 6, 2014               [Page 18]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -1061,7 +1061,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 19]
+Voss, et al.             Expires October 6, 2014               [Page 19]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -1117,7 +1117,7 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 20]
+Voss, et al.             Expires October 6, 2014               [Page 20]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -1173,7 +1173,7 @@ Appendix A.  Glossary
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 21]
+Voss, et al.             Expires October 6, 2014               [Page 21]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -1181,9 +1181,9 @@ Internet-Draft                   BEACON                       April 2014
    meta field  is a property to describe a link dump, a source database,
       a target database, or how to construct links from BEACON format.
 
-   source URI  identifier where a link points from.
+   source identifier  identifier where a link points from.
 
-   target URI  identifier where a link points to.
+   target identifier  identifier where a link points to.
 
    source database  is the set (or superset) of all source URIs in a
       link dump.
@@ -1229,7 +1229,7 @@ Appendix B.  BEACON XML format
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 22]
+Voss, et al.             Expires October 6, 2014               [Page 22]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -1249,7 +1249,7 @@ Internet-Draft                   BEACON                       April 2014
      attribute prefix      { text }.
      attribute target      { text },
      attribute message     { text },
-     attribute source      { xsd:anyURI },
+     attribute source      { text },
      attribute name        { text },
      attribute institution { text },
      attribute description { text },
@@ -1285,7 +1285,7 @@ Appendix C.  Example
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 23]
+Voss, et al.             Expires October 6, 2014               [Page 23]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -1341,7 +1341,7 @@ Authors' Addresses
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 24]
+Voss, et al.             Expires October 6, 2014               [Page 24]
 
 Internet-Draft                   BEACON                       April 2014
 
@@ -1397,4 +1397,4 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 5, 2014               [Page 25]
+Voss, et al.             Expires October 6, 2014               [Page 25]

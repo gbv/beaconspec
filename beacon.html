@@ -428,7 +428,7 @@
 
   <meta name="dct.creator" content="Vo&#223;, J., Berger, Th., and M. Schindler" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-voss-beacon-001" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-4-3" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-4-4" />
   <meta name="dct.abstract" content="This document specifies BEACON, a data interchange format for large numbers of uniform links." />
   <meta name="description" content="This document specifies BEACON, a data interchange format for large numbers of uniform links." />
 
@@ -452,7 +452,7 @@
   <td class="right">Th. Berger</td>
 </tr>
 <tr>
-  <td class="left">Expires: October 5, 2014</td>
+  <td class="left">Expires: October 6, 2014</td>
   <td class="right">Gymel.com</td>
 </tr>
 <tr>
@@ -465,7 +465,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">April 3, 2014</td>
+  <td class="right">April 4, 2014</td>
 </tr>
 
     	
@@ -485,7 +485,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on October 5, 2014.</p>
+<p>This Internet-Draft will expire on October 6, 2014.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -499,7 +499,7 @@
   <li>a set of <strong>links</strong> (<a href="#links">Section 2.1</a>), </li>
   <li>a set of <strong>meta fields</strong> (<a href="#meta-fields">Section 4</a>).  </li>
 </ul>
-<p id="rfc.section.1.p.3">Each link consists of a source URI, a target URI, and an optional annotation. Common patterns in source URIs and target URIs respectively can be used to abbreviate serializations of link dumps.  This specification defines: </p>
+<p id="rfc.section.1.p.3">Each link consists of a source identifier, a target identifier, and an optional annotation. Common patterns in these elements can be used to abbreviate serializations of link dumps. This specification defines: </p>
 <p/>
 
 <ul>
@@ -513,7 +513,7 @@
 http://example.com/people/alice|http://example.com/documents/23.about
 http://example.com/people/bob|http://example.com/documents/42.about
 </pre>
-<p id="rfc.section.1.1.p.2">The first element of a link is called source URI and the second is called target URI. If a target URI does not start with <samp>http</samp> or <samp>https</samp>, two vertical bars MUST be used: </p>
+<p id="rfc.section.1.1.p.2">The first element of a link is called source identifier and the second is called target identifier. In most cases these identifiers are URLs or URIs. If a target identifier does not start with <samp>http</samp> or <samp>https</samp>, two vertical bars MUST be used: </p>
 <pre>
 http://example.com/people/alice||urn:isbn:0123456789
 </pre>
@@ -525,7 +525,7 @@ http://example.com/people/alice||urn:isbn:0123456789
 #TARGETSET:   http://example.com/documents/
 #NAME:        ACME documents
 </pre>
-<p id="rfc.section.1.1.p.4">If both source URIs for people and target URIs for documents follow a pattern, links can be abbreviated with the meta fields <samp>PREFIX</samp> and <samp>TARGET</samp> as following: </p>
+<p id="rfc.section.1.1.p.4">If both source identifiers for people and target identifiers for documents follow a pattern, links can be abbreviated with the meta fields <samp>PREFIX</samp> and <samp>TARGET</samp> as following: </p>
 <pre>
 #PREFIX: http://example.com/people/
 #TARGET: http://example.com/documents/{+ID}.about
@@ -556,15 +556,15 @@ bob|2013-10-21|42
 <p id="rfc.section.1.2.p.3">Samples of RDF in this document are expressed in Turtle syntax <a href="#TURTLE">[TURTLE]</a>.  </p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#basic-concepts" id="basic-concepts">Basic concepts</a></h1>
 <h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#links" id="links">Links</a></h1>
-<p id="rfc.section.2.1.p.1">A link in a link dump is a directed connection between two resources that are identified by URIs <a href="#RFC3986">[RFC3986]</a>. A link is compromised of three elements: </p>
+<p id="rfc.section.2.1.p.1">A link in a link dump is a directed connection between two resources, optionally enriched by an annotation. A link is compromised of three elements: </p>
 <p/>
 
 <ul>
-  <li>a <strong>source URI</strong>, </li>
-  <li>a <strong>target URI</strong>, </li>
+  <li>a <strong>source identifier</strong>, </li>
+  <li>a <strong>target identifier</strong>, </li>
   <li>an <strong>annotation</strong>.  </li>
 </ul>
-<p id="rfc.section.2.1.p.3">Source URI and target URI define where a link is pointing from and to respectively. The annotation is an optional Unicode string, that can be used to further describe the link or parts of it.  Annotations MUST be whitespace-normalized (<a href="#whitespace-normalization">Section 2.3</a>) and MUST NOT contain a <samp>VBAR</samp> character. A missing annotation is equal to the empty string. The meaning of a link can be indicated by the <strong>RELATION</strong> meta field (<a href="#relation">Section 4.1.4</a>).  </p>
+<p id="rfc.section.2.1.p.3">All elements MUST be whitespace-normalized (<a href="#whitespace-normalization">Section 2.3</a>) Unicode strings that MUST NOT contain a <samp>VBAR</samp> character. Source identifier and target identifier define where a link is pointing from and to respectively. The identifiers MUST NOT be empty strings and they SHOULD be URIs <a href="#RFC3986">[RFC3986]</a>.  The annotation can optionally be used to further describe the link or parts of it. A missing annotation is equal to the empty string.  The meaning of a link can be indicated by the <strong>RELATION</strong> meta field (<a href="#relation">Section 4.1.4</a>).  </p>
 <h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#allowed-characters" id="allowed-characters">Allowed characters</a></h1>
 <p id="rfc.section.2.2.p.1">The set of allowed Unicode characters in BEACON dumps is the set of valid Unicode characters from UCS which can also be expressed in XML 1.0, excluding some discouraged control characters: </p>
 <pre>
@@ -668,19 +668,19 @@ foo||http://example.org/foobar
 <p/>
 
 <ul>
-  <li>The source URI is constructed from the <samp>PREFIX</samp> meta field URI pattern by inserting the source token, as defined in <a href="#uri-patterns">Section 2.4</a>.  </li>
-  <li>The target URI is constructed from the <samp>TARGET</samp> meta field URI pattern by inserting the target token, as as defined in <a href="#uri-patterns">Section 2.4</a>.  </li>
+  <li>The source identifier is constructed from the <samp>PREFIX</samp> meta field URI pattern by inserting the source token, as defined in <a href="#uri-patterns">Section 2.4</a>.  </li>
+  <li>The target identifier is constructed from the <samp>TARGET</samp> meta field URI pattern by inserting the target token, as as defined in <a href="#uri-patterns">Section 2.4</a>.  </li>
   <li>The annotation is constructed from the <samp>MESSAGE</samp> meta field by literally replacing every occurrence of the character sequence <samp>{annotation}</samp> by the annotation token. The resulting string MUST be whitespace-normalized after construction additional encoding MUST NOT be applied.  </li>
 </ul>
 <p id="rfc.section.3.1.p.6">The following table illustrates construction of a link: </p>
 <pre>
  meta field  +  link token  --&gt;  link element
-----------------------------------------------
- prefix      |  source       |   source URI
- target      |  target       |   target URI
+---------------------------------------------------
+ prefix      |  source       |   source identifier
+ target      |  target       |   target identifier
  message     |  annotation   |   annotation
 </pre>
-<p id="rfc.section.3.1.p.7">Constructed source URI and target URI MUST be syntactically valid.  Applications MUST ignore links with invalid URIs and SHOULD give a warning. Note that annotation tokens are always ignored if the <samp>MESSAGE</samp> meta field does not contain the sequence <samp>{annotation}</samp>. Applications SHOULD give a warning in this case.  </p>
+<p id="rfc.section.3.1.p.7">Constructed source identifier and target identifier SHOULD be syntactically valid URIs. Applications MAY ignore links with invalid URIs and SHOULD give a warning. Note that annotation tokens are always ignored if the <samp>MESSAGE</samp> meta field does not contain the sequence <samp>{annotation}</samp>. Applications SHOULD give a warning in this case.  </p>
 <p id="rfc.section.3.1.p.8">Applications MUST NOT differentiate between equal links constructed from different abbreviations. For instance the following BEACON file contains a single link: </p>
 <pre>
  #PREFIX: http://example.org/
@@ -744,9 +744,9 @@ foo||http://example.org/foobar
 <h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#link-construction-meta-fields" id="link-construction-meta-fields">Link construction meta fields</a></h1>
 <p id="rfc.section.4.1.p.1">Link construction meta fields define how to construct links from link tokens (<a href="#link-construction">Section 3.1</a>). See <a href="#mapping-link-construction-meta-fields-to-rdf">Section 5.1.3</a> for examples.  </p>
 <h1 id="rfc.section.4.1.1"><a href="#rfc.section.4.1.1">4.1.1.</a> <a href="#prefix" id="prefix">PREFIX</a></h1>
-<p id="rfc.section.4.1.1.p.1">The <samp>PREFIX</samp> meta field specifies an URI patter to construct link sources. If this field is not specified or set to the empty string, the default value <samp>{+ID}</samp> is used. If the field value contains no template expression, the expression <samp>{ID}</samp> is appended. The name <samp>PREFIX</samp> was choosen to keep backwards compatibility with existing BEACON files.  </p>
+<p id="rfc.section.4.1.1.p.1">The <samp>PREFIX</samp> meta field specifies an URI patter to construct sources identfiers. If this field is not specified or set to the empty string, the default value <samp>{+ID}</samp> is used. If the field value contains no template expression, the expression <samp>{ID}</samp> is appended. The name <samp>PREFIX</samp> was choosen to keep backwards compatibility with existing BEACON files.  </p>
 <h1 id="rfc.section.4.1.2"><a href="#rfc.section.4.1.2">4.1.2.</a> <a href="#target" id="target">TARGET</a></h1>
-<p id="rfc.section.4.1.2.p.1">The <samp>TARGET</samp> meta field specifies an URI patter to construct link targets. If this field is not specified or set to the empty string, the default value <samp>{+ID}</samp> is used. If the field value field contains no template expression, the expression <samp>{ID}</samp> is appended.  </p>
+<p id="rfc.section.4.1.2.p.1">The <samp>TARGET</samp> meta field specifies an URI patter to construct target identifiers. If this field is not specified or set to the empty string, the default value <samp>{+ID}</samp> is used. If the field value field contains no template expression, the expression <samp>{ID}</samp> is appended.  </p>
 <h1 id="rfc.section.4.1.3"><a href="#rfc.section.4.1.3">4.1.3.</a> <a href="#message" id="message">MESSAGE</a></h1>
 <p id="rfc.section.4.1.3.p.1">The <samp>MESSAGE</samp> meta field is used as template for link annotations. The default value is <samp>{annotation}</samp>.  </p>
 <h1 id="rfc.section.4.1.4"><a href="#rfc.section.4.1.4">4.1.4.</a> <a href="#relation" id="relation">RELATION</a></h1>
@@ -782,7 +782,7 @@ foo||http://example.org/foobar
 </ul>
 <p id="rfc.section.4.2.7.p.3">The value "<samp>always</samp>" SHOULD be used to describe link dumps that change each time they are accessed.  The value "<samp>never</samp>" SHOULD be used to describe archived link dumps. Please note that the value of this tag is considered a hint and not a command.  </p>
 <h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> <a href="#dataset-meta-fields" id="dataset-meta-fields">Dataset meta fields</a></h1>
-<p id="rfc.section.4.3.p.1">The set that all source URIs in a link dump originate from is called the <strong>source dataset</strong> and the set that all target URIs originate from is called the <strong>target dataset</strong>. Dataset meta fields contain properties of the source dataset or target dataset, respectively. See <a href="#mapping-dataset-meta-fields-to-rdf">Section 5.1.5</a> for examples of this meta fields.  </p>
+<p id="rfc.section.4.3.p.1">The set that all source identifiers in a link dump originate from is called the <strong>source dataset</strong> and the set that all target identifiers originate from is called the <strong>target dataset</strong>. Dataset meta fields contain properties of the source dataset or target dataset, respectively. See <a href="#mapping-dataset-meta-fields-to-rdf">Section 5.1.5</a> for examples of this meta fields.  </p>
 <h1 id="rfc.section.4.3.1"><a href="#rfc.section.4.3.1">4.3.1.</a> <a href="#sourceset" id="sourceset">SOURCESET</a></h1>
 <p id="rfc.section.4.3.1.p.1">The source dataset can be identified by the <samp>SOURCESET</samp> meta field, which MUST be an URI if given.  </p>
 <h1 id="rfc.section.4.3.2"><a href="#rfc.section.4.3.2">4.3.2.</a> <a href="#targetset" id="targetset">TARGETSET</a></h1>
@@ -806,13 +806,13 @@ foo||http://example.org/foobar
 <p id="rfc.section.5.1.p.2">The blank node <samp>:dump</samp> denotes the URI of the link dump, the blank node <samp>:sourceset</samp> denotes the URI of the source dataset, and the blank node <samp>:targetset</samp> denotes the URI of the target dataset.  </p>
 <p id="rfc.section.5.1.p.3">Note that literal values with language tags or datatypes are not supported when mapping BEACON to RDF.  </p>
 <h1 id="rfc.section.5.1.1"><a href="#rfc.section.5.1.1">5.1.1.</a> <a href="#mapping-links-to-rdf" id="mapping-links-to-rdf">Mapping links to RDF</a></h1>
-<p id="rfc.section.5.1.1.p.1">Each link can be mapped to at least one RDF triple with: </p>
+<p id="rfc.section.5.1.1.p.1">Links with URI source and target identifiers can be mapped to at least one RDF triple with: </p>
 <p/>
 
 <ul>
-  <li>the source URI used as subject IRI, </li>
+  <li>the source identifier used as subject IRI, </li>
   <li>the relation type used as predicate, </li>
-  <li>the target URI used as object IRI.  </li>
+  <li>the target identifiers used as object IRI.  </li>
 </ul>
 <p id="rfc.section.5.1.1.p.3">As RDF is not defined on URIs but on URI references or IRIs, all URIs MUST be transformed to an IRI by following the process defined in Section 3.2 of <a href="#RFC3987">[RFC3987]</a>.  Applications MAY reject mapping link dumps with relation type from the IANA link relations registry, in lack of official URIs.  Another valid solution is to extend the RDF model by using blank nodes as predicates.  </p>
 <h1 id="rfc.section.5.1.2"><a href="#rfc.section.5.1.2">5.1.2.</a> <a href="#mapping-link-annotations-to-rdf" id="mapping-link-annotations-to-rdf">Mapping link annotations to RDF</a></h1>
@@ -820,7 +820,7 @@ foo||http://example.org/foobar
 <p/>
 
 <ul>
-  <li>the target URI used as subject IRI, </li>
+  <li>the target identifier used as subject IRI, </li>
   <li>the <samp>ANNOTATION</samp> meta field used as predicate, </li>
   <li>the annotation value used as literal object.  </li>
 </ul>
@@ -1171,9 +1171,9 @@ http://example.org/apples|sphere|http://example.org/oranges
   <dd style="margin-left: 8">is a Unicode string in BEACON format used to construct a link.  </dd>
   <dt>meta field</dt>
   <dd style="margin-left: 8">is a property to describe a link dump, a source database, a target database, or how to construct links from BEACON format.  </dd>
-  <dt>source URI</dt>
+  <dt>source identifier</dt>
   <dd style="margin-left: 8">identifier where a link points from.  </dd>
-  <dt>target URI</dt>
+  <dt>target identifier</dt>
   <dd style="margin-left: 8">identifier where a link points to.  </dd>
   <dt>source database</dt>
   <dd style="margin-left: 8">is the set (or superset) of all source URIs in a link dump.  </dd>
@@ -1210,7 +1210,7 @@ element beacon {
   attribute prefix      { text }.
   attribute target      { text },
   attribute message     { text },
-  attribute source      { xsd:anyURI },
+  attribute source      { text },
   attribute name        { text },
   attribute institution { text },
   attribute description { text },
