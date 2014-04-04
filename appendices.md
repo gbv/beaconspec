@@ -1,34 +1,34 @@
 # Glossary
 
 annotation
-  : is an additional description of a link given as Unicode string 
+  : an additional description of a link given as Unicode string 
     (the empty string, if missing).
 BEACON
-  : is a data interchange format as specified in this document.
+  : a data interchange format as specified in this document.
 BEACON file
-  : is a link dump serialized in BEACON format.
+  : a link dump serialized in BEACON format.
 BEACON format
-  : is a condense format to serialize link dumps as specified in this document. 
+  : a condense format to serialize link dumps as specified in this document. 
 link
-  : is a triple of source URI, target URI, and (optional) annotation. Given in
+  : a triple of source identifier, target identifier, and (optional) annotation. Given in
     form of link tokens in BEACON format to construct links from.
 link dump
-  : is a set of links and meta fields with common relation type for all links.
+  : a set of links and meta fields with common relation type for all links.
 link token
-  : is a Unicode string in BEACON format used to construct a link.
+  : a Unicode string in BEACON format used to construct a link.
 meta field
-  : is a property to describe a link dump, a source database, a target database, or
+  : a property to describe a link dump, a source database, a target database, or
     how to construct links from BEACON format.
 source identifier
   : identifier where a link points from.
 target identifier
   : identifier where a link points to.
 source database
-  : is the set (or superset) of all source URIs in a link dump.
+  : the set (or superset) of all source URIs in a link dump.
 target database
-  : is the set (or superset) of all target URIs in a link dump.
+  : the set (or superset) of all target URIs in a link dump.
 relation type
-  : is a common type of connection between target URIs and source URIs in a link dump.
+  : a common type of connection between target identifiers and source identifiers in a link dump.
 
 # BEACON XML format
 
