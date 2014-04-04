@@ -19,9 +19,9 @@ link token
 meta field
   : is a property to describe a link dump, a source database, a target database, or
     how to construct links from BEACON format.
-source URI
+source identifier
   : identifier where a link points from.
-target URI
+target identifier
   : identifier where a link points to.
 source database
   : is the set (or superset) of all source URIs in a link dump.
@@ -68,7 +68,7 @@ given as following:
       attribute prefix      { text }.
       attribute target      { text },
       attribute message     { text },
-      attribute source      { xsd:anyURI },
+      attribute source      { text },
       attribute name        { text },
       attribute institution { text },
       attribute description { text },

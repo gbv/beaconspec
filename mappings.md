@@ -28,11 +28,12 @@ mapping BEACON to RDF.
 
 ### Mapping links to RDF
 
-Each link can be mapped to at least one RDF triple with:
+Links with URI source and target identifiers can be mapped to at least one RDF
+triple with:
 
-* the source URI used as subject IRI,
+* the source identifier used as subject IRI,
 * the relation type used as predicate,
-* the target URI used as object IRI.
+* the target identifiers used as object IRI.
 
 As RDF is not defined on URIs but on URI references or IRIs, all URIs MUST be
 transformed to an IRI by following the process defined in Section 3.2 of
@@ -45,7 +46,7 @@ valid solution is to extend the RDF model by using blank nodes as predicates.
 Each link annotation SHOULD result in an additional RDF triple, unless its
 value equals to the empty string. The additional triple is mapped with: 
 
-* the target URI used as subject IRI,
+* the target identifier used as subject IRI,
 * the `ANNOTATION` meta field used as predicate,
 * the annotation value used as literal object.
 

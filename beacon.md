@@ -9,9 +9,9 @@ BEACON **link dump** consists of:
 * a set of **links** ([](#links)),
 * a set of **meta fields** ([](#meta-fields)).
 
-Each link consists of a source URI, a target URI, and an optional annotation.
-Common patterns in source URIs and target URIs respectively can be used to
-abbreviate serializations of link dumps.  This specification defines:
+Each link consists of a source identifier, a target identifier, and an optional
+annotation. Common patterns in these elements can be used to abbreviate
+serializations of link dumps.  This specification defines:
 
 * a serialization of link dumps (**BEACON files**) in a condense 
   line-oriented text format ([](#beacon-format)). A non-normative
@@ -29,9 +29,10 @@ vertical bar:
     http://example.com/people/alice|http://example.com/documents/23.about
     http://example.com/people/bob|http://example.com/documents/42.about
 
-The first element of a link is called source URI and the second is called
-target URI. If a target URI does not start with `http` or `https`, two vertical
-bars MUST be used:
+The first element of a link is called source identifier and the second is
+called target identifier. In most cases these identifiers are URLs or URIs. If
+a target identifier does not start with `http` or `https`, two vertical bars
+MUST be used:
 
     http://example.com/people/alice||urn:isbn:0123456789
 
@@ -49,9 +50,9 @@ following:
     #TARGETSET:   http://example.com/documents/
     #NAME:        ACME documents
 
-If both source URIs for people and target URIs for documents follow a pattern,
-links can be abbreviated with the meta fields `PREFIX` and `TARGET` as
-following:
+If both source identifiers for people and target identifiers for documents
+follow a pattern, links can be abbreviated with the meta fields `PREFIX` and
+`TARGET` as following:
 
     #PREFIX: http://example.com/people/
     #TARGET: http://example.com/documents/{+ID}.about
@@ -95,21 +96,21 @@ Samples of RDF in this document are expressed in Turtle syntax [](#TURTLE).
 
 ## Links
 
-A link in a link dump is a directed connection between two resources that are
-identified by URIs [](#RFC3986). A link is compromised of three elements:
+A link in a link dump is a directed connection between two resources,
+optionally enriched by an annotation. A link is compromised of
+three elements:
 
-* a **source URI**,
-* a **target URI**,
+* a **source identifier**,
+* a **target identifier**,
 * an **annotation**.
 
-Source URI and target URI define where a link is pointing from and to
-respectively. The annotation is an optional Unicode string, that can be used to
-further describe the link or parts of it. Annotations MUST be
-whitespace-normalized ([](#whitespace-normalization)) and MUST NOT contain a
-`VBAR` character. A missing annotation is equal to the empty string. The
-meaning of a link can be indicated by the **RELATION** meta field
-([](#relation)).
-
+All elements MUST be whitespace-normalized ([](#whitespace-normalization))
+Unicode strings that MUST NOT contain a `VBAR` character. Source identifier and
+target identifier define where a link is pointing from and to respectively. The
+identifiers MUST NOT be empty strings and they SHOULD be URIs [](#RFC3986). The
+annotation can optionally be used to further describe the link or parts of it.
+A missing annotation is equal to the empty string. The meaning of a link can be
+indicated by the **RELATION** meta field ([](#relation)).
 
 ## Allowed characters
 
@@ -253,9 +254,9 @@ processing.
 Construction rules are based on the value of link construction meta fields
 ([](#link-construction-meta-fields)). A link is constructed as following:
 
-* The source URI is constructed from the `PREFIX` meta field URI pattern by 
+* The source identifier is constructed from the `PREFIX` meta field URI pattern by 
   inserting the source token, as defined in [](#uri-patterns).
-* The target URI is constructed from the `TARGET` meta field URI pattern by 
+* The target identifier is constructed from the `TARGET` meta field URI pattern by 
   inserting the target token, as as defined in [](#uri-patterns).
 * The annotation is constructed from the `MESSAGE` meta field by literally 
   replacing every occurrence of the character sequence `{annotation}` by the 
@@ -265,16 +266,16 @@ Construction rules are based on the value of link construction meta fields
 The following table illustrates construction of a link:
 
      meta field  +  link token  -->  link element
-    ----------------------------------------------
-     prefix      |  source       |   source URI
-     target      |  target       |   target URI
+    ---------------------------------------------------
+     prefix      |  source       |   source identifier
+     target      |  target       |   target identifier
      message     |  annotation   |   annotation
 
-Constructed source URI and target URI MUST be syntactically valid.
-Applications MUST ignore links with invalid URIs and SHOULD give a warning.
-Note that annotation tokens are always ignored if the `MESSAGE` meta field does
-not contain the sequence `{annotation}`. Applications SHOULD give a warning in
-this case.
+Constructed source identifier and target identifier SHOULD be syntactically
+valid URIs. Applications MAY ignore links with invalid URIs and SHOULD give a
+warning. Note that annotation tokens are always ignored if the `MESSAGE` meta
+field does not contain the sequence `{annotation}`. Applications SHOULD give a
+warning in this case.
 
 Applications MUST NOT differentiate between equal links constructed from
 different abbreviations. For instance the following BEACON file contains a
@@ -363,18 +364,18 @@ for examples.
 
 ### PREFIX
 
-The `PREFIX` meta field specifies an URI patter to construct link sources. If
-this field is not specified or set to the empty string, the default value
-`{+ID}` is used. If the field value contains no template expression, the
-expression `{ID}` is appended. The name `PREFIX` was choosen to keep backwards
-compatibility with existing BEACON files.
+The `PREFIX` meta field specifies an URI patter to construct sources
+identfiers. If this field is not specified or set to the empty string, the
+default value `{+ID}` is used. If the field value contains no template
+expression, the expression `{ID}` is appended. The name `PREFIX` was choosen to
+keep backwards compatibility with existing BEACON files.
 
 ### TARGET
 
-The `TARGET` meta field specifies an URI patter to construct link targets. If
-this field is not specified or set to the empty string, the default value
-`{+ID}` is used. If the field value field contains no template expression, the
-expression `{ID}` is appended.
+The `TARGET` meta field specifies an URI patter to construct target
+identifiers. If this field is not specified or set to the empty string, the
+default value `{+ID}` is used. If the field value field contains no template
+expression, the expression `{ID}` is appended.
 
 ### MESSAGE
 
@@ -458,10 +459,10 @@ a command.
 
 ## Dataset meta fields
 
-The set that all source URIs in a link dump originate from is called the
-**source dataset** and the set that all target URIs originate from is called
-the **target dataset**. Dataset meta fields contain properties of the source
-dataset or target dataset, respectively.  See
+The set that all source identifiers in a link dump originate from is called the
+**source dataset** and the set that all target identifiers originate from is
+called the **target dataset**. Dataset meta fields contain properties of the
+source dataset or target dataset, respectively.  See
 [](#mapping-dataset-meta-fields-to-rdf) for examples of this meta fields.
 
 ### SOURCESET
