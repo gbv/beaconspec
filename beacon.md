@@ -23,8 +23,6 @@ The current specification is managed at <https://github.com/gbv/beaconspec>.
 
 ## Examples
 
-### Simple links
-
 The simplest form of a BEACON file contains full URL links separated by a
 vertical bar:
 
@@ -37,8 +35,6 @@ a target identifier does not start with `http` or `https`, two vertical bars
 MUST be used:
 
     http://example.com/people/alice||urn:isbn:0123456789
-
-### Links with common patterns
 
 Source and target identifier can be abbreviated with the meta fields `PREFIX`
 and `TARGET`, respectively. A simple BEACON file with such abbreviations can
@@ -55,42 +51,6 @@ In this examples the following two links are encoded:
 
     http://example.org/id/12345|http://example.com/about/12345
     http://example.org/id/6789|http://example.com/about/abc
-
-### Extended example
-
-To give an extended example, the "ACME" company wants to provide links from
-people to documents that each person contributed to (a "contributor"
-relationship in terms of Dublin Core). A list of all people is available from
-`http://example.com/people/` and a list of all documents, titled "ACME
-documents", is available from `http://example.com/documents/`. This information
-can be expressed in a serialized link dump with BEACON meta fields as
-following:
-
-    #FORMAT: BEACON
-    #INSTITUTION: ACME
-    #RELATION: http://purl.org/dc/elements/1.1/contributor
-    #SOURCESET: http://example.com/people/
-    #TARGETSET: http://example.com/documents/
-    #NAME: ACME documents
-
-Both source identifiers for people and target identifiers for documents follow
-a pattern, so links can be abbreviated as following:
-
-    #PREFIX: http://example.com/people/
-    #TARGET: http://example.com/documents/{+ID}.about
-
-    alice||23
-    bob||42
-
-From this form the same links can be constructed as given in the first example.
-
-The example can be extended by addition of a third element for each link. For
-instance the annotation could be used to specifcy the date of each document:
-
-    #ANNOTATION: http://purl.org/dc/elements/1.1/date
-
-    alice|2014-03-12|23
-    bob|2013-10-21|42
 
 ## Notational conventions
 

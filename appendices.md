@@ -139,4 +139,42 @@ The same link dump serialized in BEACON XML format:
        <link source="ada" annotation="bar" />
     </beacon>
 
+# Extended example
+
+To give an extended example, the "ACME" company wants to provide links from
+people to documents that each person contributed to (a "contributor"
+relationship in terms of Dublin Core). A list of all people is available from
+`http://example.com/people/` and a list of all documents, titled "ACME
+documents", is available from `http://example.com/documents/`. This information
+can be expressed in a serialized link dump with BEACON meta fields as
+following:
+
+    #FORMAT: BEACON
+    #INSTITUTION: ACME
+    #RELATION: http://purl.org/dc/elements/1.1/contributor
+    #SOURCESET: http://example.com/people/
+    #TARGETSET: http://example.com/documents/
+    #NAME: ACME documents
+
+Both source identifiers for people and target identifiers for documents follow
+a pattern, so links can be abbreviated as following:
+
+    #PREFIX: http://example.com/people/
+    #TARGET: http://example.com/documents/{+ID}.about
+
+    alice||23
+    bob||42
+
+From this form the following links can be constructed:
+
+    http://example.com/people/alice|http://example.com/documents/23.about
+    http://example.com/people/bob|http://example.com/documents/42.about
+
+The example can be extended by addition of a third element for each link. For
+instance the annotation could be used to specifcy the date of each document:
+
+    #ANNOTATION: http://purl.org/dc/elements/1.1/date
+
+    alice|2014-03-12|23
+    bob|2013-10-21|42
 
