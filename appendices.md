@@ -89,10 +89,11 @@ given as following:
       }*
     }
 
-# Example
+# Mapping example
 
 A short example of a link dump serialized in BEACON text format:
 
+    #FORMAT: BEACON
     #PREFIX: http://example.org/
     #TARGET: http://example.com/
     #NAME:   ACME document

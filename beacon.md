@@ -204,12 +204,13 @@ following the process defined in Section 3.2 of [](#RFC3987).
 
 A **BEACON file** is an UTF-8 encoded Unicode file [](#RFC3629). The file MAY
 begin with an Unicode Byte Order Mark and it SHOULD end with a line break. The
-first line of a BEACON file SHOULD be the character sequence "`#FORMAT:
-BEACON`". The rest of the file consists of a (possibly empty) set of lines that
-express meta fields ([](#meta-fields)), followed by a set of lines with link
-tokens which links are constructed from ([](#link-construction)).  At least one
-empty line SHOULD be used to separate meta lines and link lines. If no empty
-line is given, the first link line MUST NOT begin with `"#"`.
+first line of a BEACON file SHOULD include the meta field `FORMAT` set to
+`BEACON` ("`#FORMAT: BEACON`"). The rest of the file consists of a (possibly
+empty) set of lines that express meta fields ([](#meta-fields)), followed by a
+set of lines with link tokens which links are constructed from
+([](#link-construction)).  At least one empty line SHOULD be used to separate
+meta lines and link lines. If no empty line is given, the first link line MUST
+NOT begin with `"#"`.
 
      BEACONFILE  =  [ %xEF.BB.BF ]        ; Unicode UTF-8 Byte Order Mark
                     [ "#FORMAT" SEPARATOR "BEACON" *SPACE LINEBREAK ]
