@@ -209,8 +209,7 @@ annotation token and target token:
 The ambiguity of rule `LINKLINE` with one occurrence of `VBAR` is resolved is
 following:
 
-* If the target meta field ([](#target)) has its default value `{+ID}`, and the 
-  message meta field ([](#message)) has its default value `{annotation}`, and 
+* If the target meta field ([](#target)) has its default value `{+ID}` and 
   the whitespace-normalized second token begins with "http:" or "https:", then 
   the second token is used as target token.
 * The second token is used as annotation token otherwise.
@@ -240,10 +239,8 @@ Construction rules are based on the value of link construction meta fields
   inserting the source token, as defined in [](#uri-patterns).
 * The target identifier is constructed from the `TARGET` meta field URI pattern by 
   inserting the target token, as as defined in [](#uri-patterns).
-* The annotation is constructed from the `MESSAGE` meta field by literally 
-  replacing every occurrence of the character sequence `{annotation}` by the 
-  annotation token.  The resulting string MUST be whitespace-normalized after
-  construction additional encoding MUST NOT be applied.
+* The annotation is constructed from the annotation token, if given, or from the 
+  `MESSAGE` meta field otherwise.
 
 The following table illustrates construction of a link:
 
@@ -255,9 +252,7 @@ The following table illustrates construction of a link:
 
 Constructed source identifier and target identifier SHOULD be syntactically
 valid URIs. Applications MAY ignore links with invalid URIs and SHOULD give a
-warning. Note that annotation tokens are always ignored if the `MESSAGE` meta
-field does not contain the sequence `{annotation}`. Applications SHOULD give a
-warning in this case.
+warning. 
 
 Applications MUST NOT differentiate between equal links constructed from
 different abbreviations. For instance the following BEACON file contains a
@@ -277,19 +272,6 @@ The default meta fields values could also be specified as:
 
      #PREFIX: {+ID}
      #TARGET: {+ID}
-     #MESSAGE: {annotation}
-
-Another possible serialization is:
-
-     #PREFIX: http://example.org/
-     #TARGET: http://example.com/
-     #MESSAGE: Hello {annotation}
-
-     foo|World!
-
-The link line in this example is equal to:
-
-     foo|World!|foo
 
 Multiple occurrences of equal links in one BEACON file SHOULD be ignored.  It
 is RECOMMENDED to indicate duplicated links with a warning.
@@ -361,8 +343,8 @@ expression, the expression `{ID}` is appended.
 
 ### MESSAGE
 
-The `MESSAGE` meta field is used as template for link annotations. The default
-value is `{annotation}`.
+The `MESSAGE` meta field is used to specify a default value for link
+annotations.
 
 ### RELATION
 
