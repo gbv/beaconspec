@@ -676,8 +676,8 @@ Internet-Draft                   BEACON                        July 2014
 
 5.1.1.  Mapping links to RDF
 
-   Links with URI source and target identifiers can be mapped to at
-   least one RDF triple with:
+   Links with syntactically valid URIs as source and target identifiers
+   can be mapped to at least one RDF triple with:
 
    o  the source identifier used as subject IRI,
 
@@ -691,6 +691,9 @@ Internet-Draft                   BEACON                        July 2014
    with relation type from the IANA link relations registry, in lack of
    official URIs.  Another valid solution is to extend the RDF model by
    using blank nodes as predicates.
+
+   Links with non-URI source and/or target identifiers are allowed but
+   NOT RECOMMENDED.  Such links cannot be mapped to RDF.
 
 5.1.2.  Mapping link annotations to RDF
 
@@ -720,15 +723,14 @@ Internet-Draft                   BEACON                        July 2014
 
     abc|12|xy
 
-   is mapped to the following RDF triples:
-
-
 
 
 Voss & Schindler         Expires January 7, 2015               [Page 13]
 
 Internet-Draft                   BEACON                        July 2014
 
+
+   is mapped to the following RDF triples:
 
     <http://example.org/abc> foaf:primaryTopic <http://example.com/xy> .
     <http://example.com/xy> dcterms:extent "12" .
@@ -773,8 +775,6 @@ Internet-Draft                   BEACON                        July 2014
    implies the following RDF triple
 
    <http://example.org/oranges> dc:format "sphere" .
-
-
 
 
 

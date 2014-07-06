@@ -776,7 +776,7 @@ foo||http://example.org/foobar
 <p id="rfc.section.5.1.p.2">The blank node <samp>:dump</samp> denotes the URI of the link dump, the blank node <samp>:sourceset</samp> denotes the URI of the source dataset, and the blank node <samp>:targetset</samp> denotes the URI of the target dataset.  </p>
 <p id="rfc.section.5.1.p.3">Note that literal values with language tags or datatypes are not supported when mapping BEACON to RDF.  </p>
 <h1 id="rfc.section.5.1.1"><a href="#rfc.section.5.1.1">5.1.1.</a> <a href="#mapping-links-to-rdf" id="mapping-links-to-rdf">Mapping links to RDF</a></h1>
-<p id="rfc.section.5.1.1.p.1">Links with URI source and target identifiers can be mapped to at least one RDF triple with: </p>
+<p id="rfc.section.5.1.1.p.1">Links with syntactically valid URIs as source and target identifiers can be mapped to at least one RDF triple with: </p>
 <p/>
 
 <ul>
@@ -785,6 +785,7 @@ foo||http://example.org/foobar
   <li>the target identifiers used as object IRI.  </li>
 </ul>
 <p id="rfc.section.5.1.1.p.3">As RDF is not defined on URIs but on URI references or IRIs, all URIs MUST be transformed to an IRI by following the process defined in Section 3.2 of <a href="#RFC3987">[RFC3987]</a>.  Applications MAY reject mapping link dumps with relation type from the IANA link relations registry, in lack of official URIs.  Another valid solution is to extend the RDF model by using blank nodes as predicates.  </p>
+<p id="rfc.section.5.1.1.p.4">Links with non-URI source and/or target identifiers are allowed but NOT RECOMMENDED. Such links cannot be mapped to RDF.  </p>
 <h1 id="rfc.section.5.1.2"><a href="#rfc.section.5.1.2">5.1.2.</a> <a href="#mapping-link-annotations-to-rdf" id="mapping-link-annotations-to-rdf">Mapping link annotations to RDF</a></h1>
 <p id="rfc.section.5.1.2.p.1">Each link annotation SHOULD result in an additional RDF triple, unless its value equals to the empty string. The additional triple is mapped with: </p>
 <p/>
