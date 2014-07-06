@@ -336,7 +336,7 @@ is RECOMMENDED to indicate duplicated links with a warning.
 
 ## MIME type
 
-The RECOMMENDED MIME type of BEACON files is "text/beacon". The file
+The RECOMMENDED MIME type of BEACON files is "text/plain". The file
 extension `.txt` SHOULD be used when storing BEACON files.
 
 # Meta fields
