@@ -4,11 +4,9 @@
 
 Network Working Group                                            J. Voss
 Internet-Draft                                   Verbundzentrale des GBV
-Intended status: Informational                                Th. Berger
-Expires: October 6, 2014                                       Gymel.com
-                                                            M. Schindler
-                                              Wikimedia Deutschland e.V.
-                                                           April 4, 2014
+Intended status: Informational                              M. Schindler
+Expires: January 7, 2015                      Wikimedia Deutschland e.V.
+                                                            July 6, 2014
 
 
                         BEACON link dump format
@@ -34,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 6, 2014.
+   This Internet-Draft will expire on January 7, 2015.
 
 Copyright Notice
 
@@ -53,9 +51,11 @@ Copyright Notice
 
 
 
-Voss, et al.             Expires October 6, 2014                [Page 1]
+
+
+Voss & Schindler         Expires January 7, 2015                [Page 1]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
 1.  Introduction
@@ -82,7 +82,7 @@ Internet-Draft                   BEACON                       April 2014
    The current specification is managed at https://github.com/gbv/
    beaconspec .
 
-1.1.  Example
+1.1.  Examples
 
    The simplest form of a BEACON file contains full URL links separated
    by a vertical bar:
@@ -97,52 +97,36 @@ Internet-Draft                   BEACON                       April 2014
 
    http://example.com/people/alice||urn:isbn:0123456789
 
-   To give an extended example, the "ACME" company wants to provide
-   links from people to documents that each person contributed to (a
-   "contributor" relationship in terms of Dublin Core).  A list of all
-   people is available from "http://example.com/people/" and a list of
-   all documents, titled "ACME documents", is available from "http://
-   example.com/documents/".  This information can be expressed in a
-   serialized link dump with BEACON meta fields as following:
+   Source and target identifier can be abbreviated with the meta fields
+   "PREFIX" and "TARGET", respectively.  A simple BEACON file with such
+   abbreviations can look like this:
 
 
 
 
 
-Voss, et al.             Expires October 6, 2014                [Page 2]
+
+
+
+
+Voss & Schindler         Expires January 7, 2015                [Page 2]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
-   #INSTITUTION: ACME
-   #RELATION:    http://purl.org/dc/elements/1.1/contributor
-   #SOURCESET:   http://example.com/people/
-   #TARGETSET:   http://example.com/documents/
-   #NAME:        ACME documents
+   #FORMAT: BEACON
+   #PREFIX: http://example.org/id/
+   #TARGET: http://example.com/about/
 
-   If both source identifiers for people and target identifiers for
-   documents follow a pattern, links can be abbreviated with the meta
-   fields "PREFIX" and "TARGET" as following:
+   12345
+   6789||abc
 
-   #PREFIX: http://example.com/people/
-   #TARGET: http://example.com/documents/{+ID}.about
+   In this examples the following two links are encoded:
 
-   alice||23
-   bob||42
+   http://example.org/id/12345|http://example.com/about/12345
+   http://example.org/id/6789|http://example.com/about/abc
 
-   From this form the same links can be constructed as given at the
-   beginning of this example.
-
-   The example can be extended by addition of a third element for each
-   link.  For instance the annotation could be used to specifcy the date
-   of each document:
-
-   #ANNOTATION: http://purl.org/dc/elements/1.1/date
-
-   alice|2014-03-12|23
-   bob|2013-10-21|42
-
-1.2.  Notational Conventions
+1.2.  Notational conventions
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
@@ -161,15 +145,6 @@ Internet-Draft                   BEACON                       April 2014
 
     VBAR       =  %x7C              ; vertical bar ("|")
 
-
-
-
-
-Voss, et al.             Expires October 6, 2014                [Page 3]
-
-Internet-Draft                   BEACON                       April 2014
-
-
    Samples of RDF in this document are expressed in Turtle syntax
    [TURTLE].
 
@@ -186,6 +161,14 @@ Internet-Draft                   BEACON                       April 2014
    o  a *target identifier*,
 
    o  an *annotation*.
+
+
+
+
+Voss & Schindler         Expires January 7, 2015                [Page 3]
+
+Internet-Draft                   BEACON                        July 2014
+
 
    All elements MUST be whitespace-normalized (Section 2.3) Unicode
    strings that MUST NOT contain a "VBAR" character.  Source identifier
@@ -215,17 +198,6 @@ Internet-Draft                   BEACON                       April 2014
    refusing to process.  Applications SHOULD also apply Unicode
    Normalization Form Canonical Composition (NFKC) to all strings.
 
-
-
-
-
-
-
-Voss, et al.             Expires October 6, 2014                [Page 4]
-
-Internet-Draft                   BEACON                       April 2014
-
-
 2.3.  Whitespace normalization
 
    A Unicode string is *whitespace-normalized* according to this
@@ -246,6 +218,14 @@ Internet-Draft                   BEACON                       April 2014
    A URI pattern is used to construct a URI by replacing all template
    expressions with an identifier value.  All identifier characters in
    the "unreserved" range from [RFC3986], and characters in the
+
+
+
+Voss & Schindler         Expires January 7, 2015                [Page 4]
+
+Internet-Draft                   BEACON                        July 2014
+
+
    "reserved" range or character sequences matching the "pct-encoded"
    rule for expressions being "{+ID}", are copied literally.  All other
    characters are copied to the URI as the sequence of pct-encoded
@@ -266,22 +246,6 @@ Internet-Draft                   BEACON                       April 2014
    transformed to an IRI by following the process defined in Section 3.2
    of [RFC3987].
 
-
-
-
-
-
-
-
-
-
-
-
-Voss, et al.             Expires October 6, 2014                [Page 5]
-
-Internet-Draft                   BEACON                       April 2014
-
-
     Example value    Expression   Copied as
 
      path/dir          {ID}        path%2Fdir
@@ -297,13 +261,26 @@ Internet-Draft                   BEACON                       April 2014
 
    A *BEACON file* is an UTF-8 encoded Unicode file [RFC3629].  The file
    MAY begin with an Unicode Byte Order Mark and it SHOULD end with a
-   line break.  The first line of a BEACON file SHOULD be the character
-   sequence ""#FORMAT: BEACON"".  The rest of the file consists of a
-   (possibly empty) set of lines that express meta fields (Section 4),
-   followed by a set of lines with link tokens which links are
-   constructed from (Section 3.1).  At least one empty line SHOULD be
-   used to separate meta lines and link lines.  If no empty line is
-   given, the first link line MUST NOT begin with ""#"".
+   line break.  The first line of a BEACON file SHOULD include the meta
+   field "FORMAT" set to "BEACON" (""#FORMAT: BEACON"").  The rest of
+   the file consists of a (possibly empty) set of lines that express
+   meta fields (Section 4), followed by a set of lines with link tokens
+   which links are constructed from (Section 3.1).  At least one empty
+   line SHOULD be used to separate meta lines and link lines.  If no
+   empty line is given, the first link line MUST NOT begin with ""#"".
+
+
+
+
+
+
+
+
+
+Voss & Schindler         Expires January 7, 2015                [Page 5]
+
+Internet-Draft                   BEACON                        July 2014
+
 
     BEACONFILE  =  [ %xEF.BB.BF ]        ; Unicode UTF-8 Byte Order Mark
                    [ "#FORMAT" SEPARATOR "BEACON" *SPACE LINEBREAK ]
@@ -329,15 +306,6 @@ Internet-Draft                   BEACON                       April 2014
    Each link is given on a *link line* with its source token, optionally
    follwed by annotation token and target token:
 
-
-
-
-
-Voss, et al.             Expires October 6, 2014                [Page 6]
-
-Internet-Draft                   BEACON                       April 2014
-
-
     LINKLINE    =  SOURCE /
                    SOURCE VBAR TARGET /   ; if TARGET is http: or https:
                    SOURCE VBAR ANNOTATION /
@@ -353,15 +321,22 @@ Internet-Draft                   BEACON                       April 2014
    resolved is following:
 
    o  If the target meta field (Section 4.1.2) has its default value
-      "{+ID}", and the message meta field (Section 4.1.3) has its
-      default value "{annotation}", and the whitespace-normalized second
-      token begins with "http:" or "https:", then the second token is
-      used as target token.
+      "{+ID}" and the whitespace-normalized second token begins with
+      "http:" or "https:", then the second token is used as target
+      token.
 
    o  The second token is used as annotation token otherwise.
 
    This way one can use two forms to encode links to HTTP URIs (given
    target meta field and message meta field with their default values):
+
+
+
+
+Voss & Schindler         Expires January 7, 2015                [Page 6]
+
+Internet-Draft                   BEACON                        July 2014
+
 
    foo|http://example.org/foobar
    foo||http://example.org/foobar
@@ -387,22 +362,12 @@ Internet-Draft                   BEACON                       April 2014
       URI pattern by inserting the source token, as defined in
       Section 2.4.
 
-
-
-Voss, et al.             Expires October 6, 2014                [Page 7]
-
-Internet-Draft                   BEACON                       April 2014
-
-
    o  The target identifier is constructed from the "TARGET" meta field
       URI pattern by inserting the target token, as as defined in
       Section 2.4.
 
-   o  The annotation is constructed from the "MESSAGE" meta field by
-      literally replacing every occurrence of the character sequence
-      "{annotation}" by the annotation token.  The resulting string MUST
-      be whitespace-normalized after construction additional encoding
-      MUST NOT be applied.
+   o  The annotation is constructed from the annotation token, if given,
+      or from the "MESSAGE" meta field otherwise.
 
    The following table illustrates construction of a link:
 
@@ -414,14 +379,20 @@ Internet-Draft                   BEACON                       April 2014
 
    Constructed source identifier and target identifier SHOULD be
    syntactically valid URIs.  Applications MAY ignore links with invalid
-   URIs and SHOULD give a warning.  Note that annotation tokens are
-   always ignored if the "MESSAGE" meta field does not contain the
-   sequence "{annotation}".  Applications SHOULD give a warning in this
-   case.
+   URIs and SHOULD give a warning.
 
    Applications MUST NOT differentiate between equal links constructed
    from different abbreviations.  For instance the following BEACON file
    contains a single link:
+
+
+
+
+
+Voss & Schindler         Expires January 7, 2015                [Page 7]
+
+Internet-Draft                   BEACON                        July 2014
+
 
     #PREFIX: http://example.org/
     #TARGET: http://example.com/
@@ -437,28 +408,6 @@ Internet-Draft                   BEACON                       April 2014
 
     #PREFIX: {+ID}
     #TARGET: {+ID}
-    #MESSAGE: {annotation}
-
-   Another possible serialization is:
-
-
-
-
-
-Voss, et al.             Expires October 6, 2014                [Page 8]
-
-Internet-Draft                   BEACON                       April 2014
-
-
-    #PREFIX: http://example.org/
-    #TARGET: http://example.com/
-    #MESSAGE: Hello {annotation}
-
-    foo|World!
-
-   The link line in this example is equal to:
-
-    foo|World!|foo
 
    Multiple occurrences of equal links in one BEACON file SHOULD be
    ignored.  It is RECOMMENDED to indicate duplicated links with a
@@ -466,7 +415,7 @@ Internet-Draft                   BEACON                       April 2014
 
 3.2.  MIME type
 
-   The RECOMMENDED MIME type of BEACON files is "text/beacon".  The file
+   The RECOMMENDED MIME type of BEACON files is "text/plain".  The file
    extension ".txt" SHOULD be used when storing BEACON files.
 
 4.  Meta fields
@@ -496,14 +445,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-
-
-
-
-
-Voss, et al.             Expires October 6, 2014                [Page 9]
+Voss & Schindler         Expires January 7, 2015                [Page 8]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
                        +-----------------------+
@@ -557,15 +501,15 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 10]
+Voss & Schindler         Expires January 7, 2015                [Page 9]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
 4.1.3.  MESSAGE
 
-   The "MESSAGE" meta field is used as template for link annotations.
-   The default value is "{annotation}".
+   The "MESSAGE" meta field is used to specify a default value for link
+   annotations.
 
 4.1.4.  RELATION
 
@@ -613,9 +557,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 11]
+Voss & Schindler         Expires January 7, 2015               [Page 10]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
 4.2.5.  FEED
@@ -669,9 +613,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 12]
+Voss & Schindler         Expires January 7, 2015               [Page 11]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
 4.3.1.  SOURCESET
@@ -725,9 +669,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 13]
+Voss & Schindler         Expires January 7, 2015               [Page 12]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
 5.1.1.  Mapping links to RDF
@@ -781,9 +725,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 14]
+Voss & Schindler         Expires January 7, 2015               [Page 13]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
     <http://example.org/abc> foaf:primaryTopic <http://example.com/xy> .
@@ -837,9 +781,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 15]
+Voss & Schindler         Expires January 7, 2015               [Page 14]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
 5.1.4.  Mapping link dump meta fields to RDF
@@ -893,9 +837,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 16]
+Voss & Schindler         Expires January 7, 2015               [Page 15]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
    and
@@ -949,9 +893,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 17]
+Voss & Schindler         Expires January 7, 2015               [Page 16]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
    specifies a daily update, expressible in RDF as
@@ -1005,9 +949,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 18]
+Voss & Schindler         Expires January 7, 2015               [Page 17]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
    :targetset dcterms:publisher <http://example.org/acme/> .
@@ -1061,9 +1005,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 19]
+Voss & Schindler         Expires January 7, 2015               [Page 18]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
 6.  Security Considerations
@@ -1117,9 +1061,9 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 20]
+Voss & Schindler         Expires January 7, 2015               [Page 19]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
 7.2.  Informative References
@@ -1151,48 +1095,48 @@ Internet-Draft                   BEACON                       April 2014
 
 Appendix A.  Glossary
 
-   annotation  is an additional description of a link given as Unicode
+   annotation  an additional description of a link given as Unicode
       string (the empty string, if missing).
 
-   BEACON  is a data interchange format as specified in this document.
+   BEACON  a data interchange format as specified in this document.
 
-   BEACON file  is a link dump serialized in BEACON format.
+   BEACON file  a link dump serialized in BEACON format.
 
-   BEACON format  is a condense format to serialize link dumps as
-      specified in this document.
+   BEACON format  a condense format to serialize link dumps as specified
+      in this document.
 
-   link  is a triple of source URI, target URI, and (optional)
-      annotation.  Given in form of link tokens in BEACON format to
-      construct links from.
+   link  a triple of source identifier, target identifier, and
+      (optional) annotation.  Given in form of link tokens in BEACON
+      format to construct links from.
 
-   link dump  is a set of links and meta fields with common relation
-      type for all links.
+   link dump  a set of links and meta fields with common relation type
+      for all links.
 
-   link token  is a Unicode string in BEACON format used to construct a
+   link token  a Unicode string in BEACON format used to construct a
       link.
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 21]
+Voss & Schindler         Expires January 7, 2015               [Page 20]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
-   meta field  is a property to describe a link dump, a source database,
-      a target database, or how to construct links from BEACON format.
+   meta field  a property to describe a link dump, a source database, a
+      target database, or how to construct links from BEACON format.
 
    source identifier  identifier where a link points from.
 
    target identifier  identifier where a link points to.
 
-   source database  is the set (or superset) of all source URIs in a
-      link dump.
+   source database  the set (or superset) of all source URIs in a link
+      dump.
 
-   target database  is the set (or superset) of all target URIs in a
-      link dump.
+   target database  the set (or superset) of all target URIs in a link
+      dump.
 
-   relation type  is a common type of connection between target URIs and
-      source URIs in a link dump.
+   relation type  a common type of connection between target identifiers
+      and source identifiers in a link dump.
 
 Appendix B.  BEACON XML format
 
@@ -1229,9 +1173,9 @@ Appendix B.  BEACON XML format
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 22]
+Voss & Schindler         Expires January 7, 2015               [Page 21]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
    Note that in contrast to BEACON text files, link tokens MAY include
@@ -1270,10 +1214,11 @@ Internet-Draft                   BEACON                       April 2014
      }*
    }
 
-Appendix C.  Example
+Appendix C.  Mapping example
 
    A short example of a link dump serialized in BEACON text format:
 
+   #FORMAT: BEACON
    #PREFIX: http://example.org/
    #TARGET: http://example.com/
    #NAME:   ACME document
@@ -1284,10 +1229,9 @@ Appendix C.  Example
 
 
 
-
-Voss, et al.             Expires October 6, 2014               [Page 23]
+Voss & Schindler         Expires January 7, 2015               [Page 22]
 
-Internet-Draft                   BEACON                       April 2014
+Internet-Draft                   BEACON                        July 2014
 
 
    The link dump can be mapped to RDF as following:
@@ -1327,6 +1271,55 @@ Internet-Draft                   BEACON                       April 2014
       <link source="ada" annotation="bar" />
    </beacon>
 
+Appendix D.  Extended example
+
+   To give an extended example, the "ACME" company wants to provide
+   links from people to documents that each person contributed to (a
+   "contributor" relationship in terms of Dublin Core).  A list of all
+   people is available from "http://example.com/people/" and a list of
+   all documents, titled "ACME documents", is available from "http://
+   example.com/documents/".  This information can be expressed in a
+   serialized link dump with BEACON meta fields as following:
+
+
+
+
+
+Voss & Schindler         Expires January 7, 2015               [Page 23]
+
+Internet-Draft                   BEACON                        July 2014
+
+
+   #FORMAT: BEACON
+   #INSTITUTION: ACME
+   #RELATION: http://purl.org/dc/elements/1.1/contributor
+   #SOURCESET: http://example.com/people/
+   #TARGETSET: http://example.com/documents/
+   #NAME: ACME documents
+
+   Both source identifiers for people and target identifiers for
+   documents follow a pattern, so links can be abbreviated as following:
+
+   #PREFIX: http://example.com/people/
+   #TARGET: http://example.com/documents/{+ID}.about
+
+   alice||23
+   bob||42
+
+   From this form the following links can be constructed:
+
+   http://example.com/people/alice|http://example.com/documents/23.about
+   http://example.com/people/bob|http://example.com/documents/42.about
+
+   The example can be extended by addition of a third element for each
+   link.  For instance the annotation could be used to specifcy the date
+   of each document:
+
+   #ANNOTATION: http://purl.org/dc/elements/1.1/date
+
+   alice|2014-03-12|23
+   bob|2013-10-21|42
+
 Authors' Addresses
 
    Jakob Voss
@@ -1341,18 +1334,16 @@ Authors' Addresses
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 24]
+
+
+
+
+
+
+
+Voss & Schindler         Expires January 7, 2015               [Page 24]
 
-Internet-Draft                   BEACON                       April 2014
-
-
-   Thomas Berger
-   Gymel.com
-   Im Dahl 35
-   Bonn  53117
-   Germany
-
-   Email: ThB@gymel.com
+Internet-Draft                   BEACON                        July 2014
 
 
    Mathias Schindler
@@ -1397,4 +1388,13 @@ Internet-Draft                   BEACON                       April 2014
 
 
 
-Voss, et al.             Expires October 6, 2014               [Page 25]
+
+
+
+
+
+
+
+
+
+Voss & Schindler         Expires January 7, 2015               [Page 25]
