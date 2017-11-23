@@ -124,7 +124,7 @@ character sequences by a single space (`SP`).
 
 ## URI patterns
 
-A **URI pattern** in this specification is an URI Template, as defined in
+A **URI pattern** in this specification is a URI Template, as defined in
 [](#RFC6570), with all template expressions being either `{ID}` for simple
 string expansion or `{+ID}` for reserved expansion.
 
@@ -146,7 +146,7 @@ of pct-encoded triplets corresponding to that character’s encoding in UTF-8
 
 A URI pattern is allowed to contain the broader set of characters allowed in
 Internationalized Resource Identifiers (IRI) [](#RFC3987). The URI constructed
-from a URI pattern by template processing can be transformed to an IRI by
+from a URI pattern by template processing can be transformed to a IRI by
 following the process defined in Section 3.2 of [](#RFC3987).
 
      Example value    Expression   Copied as
@@ -162,8 +162,8 @@ following the process defined in Section 3.2 of [](#RFC3987).
 
 # BEACON format
 
-A **BEACON file** is an UTF-8 encoded Unicode file [](#RFC3629). The file MAY
-begin with an Unicode Byte Order Mark and it SHOULD end with a line break. The
+A **BEACON file** is a UTF-8 encoded Unicode file [](#RFC3629). The file MAY
+begin with a Unicode Byte Order Mark and it SHOULD end with a line break. The
 first line of a BEACON file SHOULD include the meta field `FORMAT` set to
 `BEACON` ("`#FORMAT: BEACON`"). The rest of the file consists of a (possibly
 empty) set of lines that express meta fields ([](#meta-fields)), followed by a
@@ -328,7 +328,7 @@ for examples.
 
 ### PREFIX
 
-The `PREFIX` meta field specifies an URI patter to construct sources
+The `PREFIX` meta field specifies a URI pattern to construct source
 identfiers. If this field is not specified or set to the empty string, the
 default value `{+ID}` is used. If the field value contains no template
 expression, the expression `{ID}` is appended. The name `PREFIX` was choosen to
@@ -336,7 +336,7 @@ keep backwards compatibility with existing BEACON files.
 
 ### TARGET
 
-The `TARGET` meta field specifies an URI patter to construct target
+The `TARGET` meta field specifies a URI pattern to construct target
 identifiers. If this field is not specified or set to the empty string, the
 default value `{+ID}` is used. If the field value field contains no template
 expression, the expression `{ID}` is appended.
@@ -349,15 +349,15 @@ annotations.
 ### RELATION
 
 All links in a link dump share a common relation type, specified by the
-`RELATION` meta field. The default relation type is `rdfs:seeAlso`, but
-application not interested in mapping to RDF can ignore this meta field. A
-relation type MUST be either an URI or a registered link type from the IANA
-link relations registry [](#RFC5988).
+`RELATION` meta field. A relation type MUST be either a URI or a registered
+link type from the IANA link relations registry [](#RFC5988).
+
+The default relation type is `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 
 ### ANNOTATION
 
-The `ANNOTATION` field can be used to specify a specific the meaning of link
-annotations in a link dump. The field value MUST be an URI.
+The `ANNOTATION` field can be used to specify the meaning of link annotations
+in a link dump. The field value MUST be a URI.
 
 
 ## Link dump meta fields
@@ -384,13 +384,13 @@ mailbox address as specified in section 3.4 of [](#RFC5322).
 
 ### HOMEPAGE
 
-The `HOMEPAGE` meta field contains an URL of a website with additional
+The `HOMEPAGE` meta field contains a URL of a website with additional
 information about this link dump. Note that this field does not specify
 the homepage of the target dataset.
 
 ### FEED
 
-The `FEED` meta field contains an URL, where to download the link dump from.
+The `FEED` meta field contains a URL, where to download the link dump from.
 
 ### TIMESTAMP
 
@@ -432,12 +432,12 @@ source dataset or target dataset, respectively.  See
 ### SOURCESET
 
 The source dataset can be identified by the `SOURCESET` meta field, which MUST
-be an URI if given. 
+be a URI if given. 
 
 ### TARGETSET
 
 The target dataset can be identified by the `TARGETSET` meta field, which MUST
-be an URI if given.
+be a URI if given.
 
 ### NAME
 

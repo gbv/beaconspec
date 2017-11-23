@@ -12,12 +12,12 @@ txt: $(TXT)
 .md.xml:
 	pandoc -t docbook -s $< | xsltproc --nonet pandoc2rfc/transform.xsl - > $@
 
-# requires the "new" python-xml2rfc (https://pypi.python.org/pypi/xml2rfc/)
+# requires xml2rfc >=2.5.1 (also available via https://pypi.python.org/pypi/xml2rfc/)
 
 $(TXT): beacon.xml appendices.xml mappings.xml security.xml template.xml
-	xml2rfc template.xml -f $@ --text
+	xml2rfc template.xml -o $@ --text
 $(HTML): beacon.xml appendices.xml mappings.xml security.xml template.xml
-	xml2rfc template.xml -f $@ --html
+	xml2rfc template.xml -o $@ --html
 
 revision: $(HTML)
 	cp $(HTML) $(REVHTML)
