@@ -27,7 +27,7 @@
     <!ENTITY VOID PUBLIC '' 'ref/reference.VOID.xml'>
 ]>
 
-<rfc ipr="trust200902" category="info" docName="draft-voss-beacon-001">
+<rfc ipr="trust200902" category="info" docName="draft-voss-beacon-002">
   <front>
 	<title abbrev="BEACON">BEACON link dump format</title>
 	<author initials="J." surname="Voß" fullname="Jakob Voß">
@@ -44,20 +44,20 @@
 		</address>
 	</author>
 	<author initials="M." surname="Schindler" fullname="Mathias Schindler">
-		<organization>Wikimedia Deutschland e.V.</organization>
+		<!--organization>Wikimedia Deutschland e.V.</organization-->
 		<address>
-			<postal>
+			<!--postal>
 				<street>Tempelhofer Ufer 23-24</street>
 				<city>Berlin</city>
 				<code>10963</code>
 				<country>Germany</country>
 			</postal>
-            <phone>+49(30)21915826-0</phone>
-			<email>mathias.schindler@wikimedia.de</email>
+      <phone>+49(30)21915826-0</phone-->
+			<email>info@mathias-schindler.de</email>
 		</address>
     </author>
 
-    <date month="July" year="2014"/>
+    <date month="November" year="2017"/>
 
 	<!--area>...</area-->
     <!--keyword>...</keyword>

@@ -14,10 +14,13 @@ annotation. Common patterns in these elements can be used to abbreviate
 serializations of link dumps.  This specification defines:
 
 * a serialization of link dumps (**BEACON files**) in a condense 
-  line-oriented text format ([](#beacon-format)). A non-normative
-  serialization based on XML is included in an appendix;
-* two interpretations of link dumps as mapping to HTML and
-  mapping to RDF ([](#mappings)).
+  line-oriented text format ([](#beacon-format)). 
+
+* a mapping of link dumps to RDF ([](#mapping-to-rdf)).
+
+The non-normative appendix contain a mapping of BEACON links to HTML
+([](#mapping-beacon-to-html)) and a serialization based on XML
+([](#beacon-xml-format)).
 
 The current specification is managed at <https://github.com/gbv/beaconspec>.
 
@@ -31,7 +34,7 @@ vertical bar:
 
 The first element of a link is called source identifier and the second is
 called target identifier. In most cases these identifiers are URLs or URIs. If
-a target identifier does not start with `http` or `https`, two vertical bars
+a target identifier does not start with `http:` or `https:`, two vertical bars
 MUST be used:
 
     http://example.com/people/alice||urn:isbn:0123456789
@@ -126,15 +129,24 @@ character sequences by a single space (`SP`).
 
 A **URI pattern** in this specification is a URI Template, as defined in
 [](#RFC6570), with all template expressions being either `{ID}` for simple
-string expansion or `{+ID}` for reserved expansion.
+string expansion or `{+ID}` for reserved expansion. URI patterns are used in
+link construction ([](#link-construction)) to expand link tokens to full
+identifiers (usually URIs).
+
+<!--
 
 A URI pattern is used to construct a URI by replacing all template expressions
-with an identifier value. All identifier characters in the `unreserved` range
+with an identifier value, applying character escaping. 
+
+
+All identifier characters in the `unreserved` range
 from [](#RFC3986), and characters in the `reserved` range or character
 sequences matching the `pct-encoded` rule for expressions being `{+ID}`, are
 copied literally.  All other characters are copied to the URI as the sequence
 of pct-encoded triplets corresponding to that character’s encoding in UTF-8
-[](#RFC3629). The referenced character ranges are imported here from
+[](#RFC3629). 
+
+The referenced character ranges are imported here from
 [](#RFC3986) for convenience:
 
      pct-encoded    =  "%" HEXDIG HEXDIG
@@ -143,34 +155,38 @@ of pct-encoded triplets corresponding to that character’s encoding in UTF-8
      gen-delims     =  ":" / "/" / "?" / "#" / "[" / "]" / "@"
      sub-delims     =  "!" / "$" / "&" / "'" / "(" / ")"
                     /  "*" / "+" / "," / ";" / "="
+-->
+
+     Example value    Expression   Copied as
+
+      /x?a=1&b=2        {ID}        %2F%3Fa%3D1%26b%3D2
+      /x?a=1&b=2        {+ID}       /x?a=1&b=2
+      Hello World!      {+ID}       Hello%20World!
+      Hello World!      {ID}        Hello%20World%21
+      Hello%20World     {+ID}       Hello%20World
+      Hello%20World     {ID}        Hello%2520World
+      Müller            {+ID}       M%C3%BCller
+      Müller            {ID}        M%C3%BCller
+      M%C3%BCller       {+ID}       M%25C3%25BCller
+      M%C3%BCller       {ID}        M%25C3%25BCller
+
 
 A URI pattern is allowed to contain the broader set of characters allowed in
 Internationalized Resource Identifiers (IRI) [](#RFC3987). The URI constructed
 from a URI pattern by template processing can be transformed to a IRI by
 following the process defined in Section 3.2 of [](#RFC3987).
 
-     Example value    Expression   Copied as
-
-      path/dir          {ID}        path%2Fdir
-      path/dir          {+ID}       path/dir
-      Hello World!      {ID}        Hello%20World%21
-      Hello World!      {+ID}       Hello%20World!
-      Hello%20World     {ID}        Hello%2520World
-      Hello%20World     {+ID}       Hello%20World
-      M%C3%BCller       {ID}        M%25C3%25BCller
-      M%C3%BCller       {+ID}       M%C3%BCller
-
 # BEACON format
 
 A **BEACON file** is a UTF-8 encoded Unicode file [](#RFC3629). The file MAY
 begin with a Unicode Byte Order Mark and it SHOULD end with a line break. The
 first line of a BEACON file SHOULD include the meta field `FORMAT` set to
-`BEACON` ("`#FORMAT: BEACON`"). The rest of the file consists of a (possibly
+`BEACON` (`#FORMAT: BEACON`). The rest of the file consists of a (possibly
 empty) set of lines that express meta fields ([](#meta-fields)), followed by a
 set of lines with link tokens which links are constructed from
 ([](#link-construction)).  At least one empty line SHOULD be used to separate
 meta lines and link lines. If no empty line is given, the first link line MUST
-NOT begin with `"#"`.
+NOT begin with `#`.
 
      BEACONFILE  =  [ %xEF.BB.BF ]        ; Unicode UTF-8 Byte Order Mark
                     [ "#FORMAT" SEPARATOR "BEACON" *SPACE LINEBREAK ]
@@ -210,7 +226,7 @@ The ambiguity of rule `LINKLINE` with one occurrence of `VBAR` is resolved is
 following:
 
 * If the target meta field ([](#target)) has its default value `{+ID}` and 
-  the whitespace-normalized second token begins with "http:" or "https:", then 
+  the whitespace-normalized second token begins with `http:` or `https:`, then 
   the second token is used as target token.
 * The second token is used as annotation token otherwise.
 
@@ -233,7 +249,7 @@ All tokens MUST be whitespace-normalized before further
 processing.  
 
 Construction rules are based on the value of link construction meta fields
-([](#link-construction-meta-fields)). A link is constructed as following:
+([](#meta-fields-for-link-construction)). A link is constructed as following:
 
 * The source identifier is constructed from the `PREFIX` meta field URI pattern by 
   inserting the source token, as defined in [](#uri-patterns).
@@ -285,9 +301,9 @@ extension `.txt` SHOULD be used when storing BEACON files.
 
 A link dump SHOULD contain a set of **meta fields**, each identified by its
 name build of uppercase letters `A-Z`.  Relevant meta fields for link
-construction ([](#link-construction-meta-fields)), for description of the link
-dump ([](#link-dump-meta-fields)), and for description of source dataset and
-target dataset ([](#dataset-meta-fields)) are defined in the following.
+construction ([](#meta-fields-for-link-construction)), for description of the link
+dump ([](#meta-fields-for-link-dumps)), and for description of source dataset and
+target dataset ([](#meta-fields-for-datasets)) are defined in the following.
 Additional meta fields, not defined in this specification, SHOULD be ignored.
 All meta field values MUST be whitespace-normalized. Missing meta field values
 and empty strings MUST be set to the field’s default value, which is the empty
@@ -320,11 +336,11 @@ belong to which dataset. Repeatable fields are marked with a plus character
 
 Examples of meta fields are included in [](#mapping-to-rdf).
 
-## Link construction meta fields
+## Meta fields for link construction
 
-Link construction meta fields define how to construct links from link tokens
-([](#link-construction)). See [](#mapping-link-construction-meta-fields-to-rdf)
-for examples.
+The following meta fields define how to construct links from link tokens
+([](#link-construction)). See [](#meta-fields-for-link-construction-in-rdf) for
+mapping of these fields to RDF.
 
 ### PREFIX
 
@@ -360,10 +376,10 @@ The `ANNOTATION` field can be used to specify the meaning of link annotations
 in a link dump. The field value MUST be a URI.
 
 
-## Link dump meta fields
+## Meta fields for link dumps
 
-Link dump meta fields describe the link dump as whole. See
-[](#mapping-link-dump-meta-fields-to-rdf) for examples.
+Meta fields for link dumps describe the link dump as whole. See
+[](#meta-fields-for-link-dumps-in-rdf) for mapping of these fields to RDF.
 
 ### DESCRIPTION
 
@@ -416,18 +432,18 @@ format](#Sitemaps). Valid values are:
 * `yearly`
 * `never` 
 
-The value "`always`" SHOULD be used to describe link dumps that change each
-time they are accessed. The value "`never`" SHOULD be used to describe archived
-link dumps. Please note that the value of this tag is considered a hint and not
-a command. 
+The value `always` SHOULD be used to describe link dumps that change each time
+they are accessed. The value `never` SHOULD be used to describe archived link
+dumps. Please note that the value of this tag is considered a hint and not a
+command. 
 
-## Dataset meta fields
+## Meta fields for datasets
 
 The set that all source identifiers in a link dump originate from is called the
 **source dataset** and the set that all target identifiers originate from is
 called the **target dataset**. Dataset meta fields contain properties of the
 source dataset or target dataset, respectively.  See
-[](#mapping-dataset-meta-fields-to-rdf) for examples of this meta fields.
+[](#meta-fields-for-datasets-in-rdf) for for mapping of these fields to RDF.
 
 ### SOURCESET
 

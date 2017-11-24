@@ -1,11 +1,8 @@
-# Mappings
+# Mapping to RDF
 
-An important use-case of BEACON is the creation of HTML links as described in
-section [](#mapping-to-html). A link dump can also be mapped to an RDF graph
-([](#mapping-to-rdf)) so BEACON provides a RDF serialization format for a
-subset of RDF graphs with uniform links. 
-
-## Mapping to RDF
+BEACON link dump format is also a RDF serialization format for a subset of RDF
+graphs with uniform links.  A link dump can be mapped to an RDF graph as
+described below. 
 
 The following namespace prefixes are used to refer to RDF properties and
 classes from the RDF and RDFS vocabularies [](#RDF), the DCMI Metadata Terms
@@ -23,13 +20,16 @@ The blank node `:dump` denotes the URI of the link dump, the blank node
 `:sourceset` denotes the URI of the source dataset, and the blank node
 `:targetset` denotes the URI of the target dataset.
 
-Note that literal values with language tags or datatypes are not supported when
-mapping BEACON to RDF.
+Literal values with language tags or datatypes are not supported when mapping
+BEACON to RDF. Neither can BEACON express URIs with character sequences `%7C`, 
+`%0A`, `%0D`, or any other percent-encoded character not included in the list
+of allowed characters ([](#allowed-characters) because the unencoded characters
+of this sequences are not allowed in link tokens.
 
-### Mapping links to RDF
+## Links in RDF
 
-Links with syntactically valid URIs as source and target identifiers can be
-mapped to at least one RDF triple with:
+Links ([](#links)) with syntactically valid URIs as source and target
+identifiers can be mapped to at least one RDF triple with:
 
 * the source identifier used as subject IRI,
 * the relation type used as predicate,
@@ -44,7 +44,7 @@ valid solution is to extend the RDF model by using blank nodes as predicates.
 Links with non-URI source and/or target identifiers are allowed but NOT
 RECOMMENDED. Such links cannot be mapped to RDF.
 
-### Mapping link annotations to RDF
+## Link annotations in RDF
 
 Each link annotation SHOULD result in an additional RDF triple, unless its
 value equals to the empty string. The additional triple is mapped with: 
@@ -74,11 +74,10 @@ is mapped to the following RDF triples:
      <http://example.org/abc> foaf:primaryTopic <http://example.com/xy> .
      <http://example.com/xy> dcterms:extent "12" .
 
-### Mapping link construction meta fields to RDF
+## Meta fields for link construction in RDF
 
-Link construction meta fields ([](#link-construction-meta-fields)) are
-primarily required for link construction ([](#link-construction)). Some of
-these fields can further be mapped to RDF triples.
+All meta fields for link construction ([](#meta-fields-for-link-construction))
+except for **MESSAGE** can also be mapped to RDF triples.
 
 The **PREFIX** meta field ([](#prefix)) MAY be mapped to the RDF property
 `void:uriSpace` or `void:uriRegexPattern` with `:sourceset` as RDF subject.
@@ -112,11 +111,12 @@ implies the following RDF triple
 
     <http://example.org/oranges> dc:format "sphere" .
 
-### Mapping link dump meta fields to RDF
+## Meta fields for link dumps in RDF
 
-Link dump meta fields ([](#link-dump-meta-fields)) describe properties of the
-link dump, referred to as blank node `:dump` in the following. The following
-RDF triples are always assumed when mapping link dumps to RDF:
+Meta fields for link dumps ([](#meta-fields-for-link-dumps)) describe
+properties of the link dump, referred to as blank node `:dump` in the
+following. The following RDF triples are always assumed when mapping link dumps
+to RDF:
 
      :dump a void:Linkset ; 
          void:subjectsTarget :sourceset ;
@@ -210,11 +210,11 @@ specifies a daily update, expressible in RDF as
 
     :dump rssynd:updatePeriod "daily" .
 
-### Mapping dataset meta fields to RDF
+## Meta fields for datasets in RDF
 
-Dataset meta fields ([](#dataset-meta-fields)) are mapped to subjects and
-objects of RDF triples to describe the source dataset and target dataset,
-respectively.
+Meta fields for the datasets ([](#meta-fields-for-datasets)) are mapped to
+subjects and objects of RDF triples to describe the source dataset and target
+dataset, respectively.
 
 The following triples are always assumed in mappings of link dumps to RDF:
 
@@ -255,44 +255,5 @@ instead of string. For instance
 can be mapped to this RDF triple:
 
     :targetset dcterms:publisher <http://example.org/acme/> .
-
-## Mapping to HTML
-
-This document does not specify a single mapping of links in a BEACON link dump
-to links in a HTML document, so the following description is non-normative.
-
-A link in a BEACON dump can be mapped to a HTML link (`<a>` element) as
-following:
-
-* link source corresponds to the website which a HTML link is included at,
-* link target corresponds to the `href` attribute,
-* link annotation corresponds to the textual content,
-
-For instance the following link, given in a BEACON file:
-
-     http://example.com|example|http://example.org
-
-can be mapped to the following HTML link:
-
-     <a href="http://example.org">example</a>
-
-Note that the annotation field value may be the empty string. In practice,
-additional meta fields SHOULD be used to construct appropriate HTML links.
-For instance the meta fields
-
-     #RELATION: http://xmlns.com/foaf/0.1/isPrimaryTopicOf
-     #SOURCETYPE: http://xmlns.com/foaf/0.1/Person 
-     #NAME: ACME documents
-
-can be used to create a link such as
-
-     <span>
-       More information about this person
-       <a href="http://example.com/foo">at ACME documents</a>.
-     </span>  
-
-because `foaf:isPrimaryTopicOf` translates to "more information about",
-`foaf:Person` translates to "this person", and the target dataset’s name can
-be used as link label.
 
 

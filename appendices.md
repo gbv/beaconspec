@@ -3,32 +3,82 @@
 annotation
   : an additional description of a link given as Unicode string 
     (the empty string, if missing).
+
 BEACON
   : a data interchange format as specified in this document.
+
 BEACON file
   : a link dump serialized in BEACON format.
+
 BEACON format
   : a condense format to serialize link dumps as specified in this document. 
+
 link
   : a triple of source identifier, target identifier, and (optional) annotation. Given in
     form of link tokens in BEACON format to construct links from.
+
 link dump
   : a set of links and meta fields with common relation type for all links.
+
 link token
   : a Unicode string in BEACON format used to construct a link.
+
 meta field
   : a property to describe a link dump, a source database, a target database, or
     how to construct links from BEACON format.
+
 source identifier
   : identifier where a link points from.
+
 target identifier
   : identifier where a link points to.
+
 source database
   : the set (or superset) of all source URIs in a link dump.
+
 target database
   : the set (or superset) of all target URIs in a link dump.
+
 relation type
   : a common type of connection between target identifiers and source identifiers in a link dump.
+
+# Mapping BEACON to HTML
+
+An important use-case of BEACON is the creation of HTML links to related
+documents.  A link in a BEACON dump can be mapped to a HTML link (`<a>`
+element) as following:
+
+* link source corresponds to the website which a HTML link is included at,
+* link target corresponds to the `href` attribute,
+* link annotation corresponds to the textual content,
+
+For instance the following link, given in a BEACON file:
+
+     http://example.com|example|http://example.org
+
+can be mapped to the following HTML link:
+
+     <a href="http://example.org">example</a>
+
+Note that the annotation field value may be the empty string. In practice,
+additional meta fields SHOULD be used to construct appropriate HTML links.
+For instance the meta fields
+
+     #RELATION: http://xmlns.com/foaf/0.1/isPrimaryTopicOf
+     #SOURCETYPE: http://xmlns.com/foaf/0.1/Person 
+     #NAME: ACME documents
+
+can be used to create a link such as
+
+     <span>
+       More information about this person
+       <a href="http://example.com/foo">at ACME documents</a>.
+     </span>  
+
+because `http://xmlns.com/foaf/0.1/isPrimaryTopicOf` translates to "more
+information about", `http://xmlns.com/foaf/0.1/Person` translates to "this
+person", and the target dataset’s name "ACME documents" can be used as link
+label.
 
 # BEACON XML format
 

@@ -23,9 +23,11 @@ The final set of meta fields is still to be discussed.
 
 # How to modify this specification
 
-The specification of BEACON link dump format is being prepared in this public
-git repository, located at <https://github.com/gbv/beaconspec>. The
-specification is written in Pandoc Markdown syntax in the file `beacon.md`.
+The specification of BEACON link dump format is being prepared in a public git
+repository, located at <https://github.com/gbv/beaconspec>. It uses the
+technique described in [RFC 7328](https://tools.ietf.org/html/rfc7328.html).
+
+The specification is written in Pandoc Markdown syntax in the file `beacon.md`.
 Additional parts are included in the file `appendices.md`, `rfctemplate.xml`,
 and bibliographic references in the directory `ref`. To compile the
 specification in RFC style there is a `Makefile`. To create a snapshot in HTML
@@ -53,6 +55,9 @@ Sources and recent changes can be found at <http://github.com/gbv/beaconspec>.
 A snapshots in HTML formats is at <http://gbv.github.com/beaconspec/beacon.html>.
 
 # Additional files
+
+![](img/beacon16x16.png)
+![](img/beacon_compressed16x16.png)
 
 This repository also includes BEACON icons (`img/`) and tools to process BEACON 
 (`tools/`).
