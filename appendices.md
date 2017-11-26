@@ -1,9 +1,5 @@
 # Glossary
 
-annotation
-  : an additional description of a link given as Unicode string 
-    (the empty string, if missing).
-
 BEACON
   : a data interchange format as specified in this document.
 
@@ -14,11 +10,15 @@ BEACON format
   : a condense format to serialize link dumps as specified in this document. 
 
 link
-  : a triple of source identifier, target identifier, and (optional) annotation. Given in
-    form of link tokens in BEACON format to construct links from.
+  : a source identifier, target identifier, relation type, and (optional) link
+    annotation. Given in form of link tokens in BEACON format to construct links
+    from.
+
+link annotation
+  : an additional description of a link given as non-empty Unicode string. 
 
 link dump
-  : a set of links and meta fields with common relation type for all links.
+  : a set of links and meta fields.
 
 link token
   : a Unicode string in BEACON format used to construct a link.
@@ -40,7 +40,7 @@ target database
   : the set (or superset) of all target URIs in a link dump.
 
 relation type
-  : a common type of connection between target identifiers and source identifiers in a link dump.
+  : the type of connection between target identifier and source identifier.
 
 # Mapping BEACON to HTML
 
@@ -60,9 +60,8 @@ can be mapped to the following HTML link:
 
      <a href="http://example.org">example</a>
 
-Note that the annotation field value may be the empty string. In practice,
-additional meta fields SHOULD be used to construct appropriate HTML links.
-For instance the meta fields
+Note that the link annotation is optional. Additional meta fields can be used
+to construct appropriate HTML links.  For instance the meta fields
 
      #RELATION: http://xmlns.com/foaf/0.1/isPrimaryTopicOf
      #SOURCETYPE: http://xmlns.com/foaf/0.1/Person 

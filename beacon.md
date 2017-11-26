@@ -9,14 +9,16 @@ BEACON **link dump** consists of:
 * a set of **links** ([](#links)),
 * a set of **meta fields** ([](#meta-fields)).
 
-Each link consists of a source identifier, a target identifier, and an optional
-annotation. Common patterns in these elements can be used to abbreviate
-serializations of link dumps.  This specification defines:
+Each link consists of a source identifier, a target identifier, a relation
+type, and an optional link annotation. Common patterns in these elements can be
+used to abbreviate serializations of link dumps.  This specification defines:
 
 * a serialization of link dumps (**BEACON files**) in a condense 
   line-oriented text format ([](#beacon-format)). 
-
 * a mapping of link dumps to RDF ([](#mapping-to-rdf)).
+
+BEACON link dump format can be used as RDF serialization format for RDF graphs
+with uniform links but it can also be used unrelated to RDF. 
 
 The non-normative appendix contain a mapping of BEACON links to HTML
 ([](#mapping-beacon-to-html)) and a serialization based on XML
@@ -251,20 +253,30 @@ processing.
 Construction rules are based on the value of link construction meta fields
 ([](#meta-fields-for-link-construction)). A link is constructed as following:
 
-* The source identifier is constructed from the `PREFIX` meta field URI pattern by 
-  inserting the source token, as defined in [](#uri-patterns).
-* The target identifier is constructed from the `TARGET` meta field URI pattern by 
-  inserting the target token, as as defined in [](#uri-patterns).
-* The annotation is constructed from the annotation token, if given, or from the 
-  `MESSAGE` meta field otherwise.
+* The source identifier is constructed from the `PREFIX` meta field URI pattern
+  by inserting the source token, as defined in [](#uri-patterns).
+
+* The target identifier is constructed from the `TARGET` meta field URI pattern
+  by inserting the target token, as as defined in [](#uri-patterns).
+
+* If the `RELATION` meta field contains a URI pattern, the relation type is
+  constructed from this pattern by inserting the annotation token, as defined
+  in [](#uri-patterns), and the link annotation is set to the value of the
+  `MESSAGE` meta field, if given.
+
+* If the `RELATION` meta field does not contain a URI pattern, the relation
+  type is set to the value of the `RELATION` meta field and the link annotation
+  is constructed from the annotation token, if given, or the `MESSAGE` meta
+  field otherwise.
 
 The following table illustrates construction of a link:
 
      meta field  +  link token  -->  link element
     ---------------------------------------------------
-     prefix      |  source       |   source identifier
-     target      |  target       |   target identifier
-     message     |  annotation   |   annotation
+     PREFIX      |  source       |   source identifier
+     TARGET      |  target       |   target identifier
+     MESSAGE     |  (annotation) |   link annotation
+     RELATION    |  (annotation) |   relation type
 
 Constructed source identifier and target identifier SHOULD be syntactically
 valid URIs. Applications MAY ignore links with invalid URIs and SHOULD give a
@@ -288,6 +300,7 @@ The default meta fields values could also be specified as:
 
      #PREFIX: {+ID}
      #TARGET: {+ID}
+     #RELATION: http://www.w3.org/2000/01/rdf-schema#seeAlso
 
 Multiple occurrences of equal links in one BEACON file SHOULD be ignored.  It
 is RECOMMENDED to indicate duplicated links with a warning.
@@ -359,16 +372,18 @@ expression, the expression `{ID}` is appended.
 
 ### MESSAGE
 
-The `MESSAGE` meta field is used to specify a default value for link
-annotations.
+The `MESSAGE` meta field specifies a default value for link annotations.
 
 ### RELATION
 
-All links in a link dump share a common relation type, specified by the
-`RELATION` meta field. A relation type MUST be either a URI or a registered
-link type from the IANA link relations registry [](#RFC5988).
+The `RELATION` meta field specifies relation types of links. The field value
+MUST be one of:
 
-The default relation type is `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
+* a URI 
+* a registered link type from the IANA link relations registry [](#RFC5988)
+* a URI pattern as described in [](#uri-patterns)
+
+The default value is `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 
 ### ANNOTATION
 
