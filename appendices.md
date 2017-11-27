@@ -85,7 +85,7 @@ A BEACON XML file is a valid XML file conforming to the following schema. The
 file SHOULD be encoded in UTF-8 [](#RFC3629). The file MUST:
 
   * Begin with an opening `<beacon>` tag and end with a closing `</beacon>` tag.
-  * Specify the default namespace `http://purl.org/net/example`.
+  * Specify the default namespace `http://purl.org/net/beacon`.
   * Include an empty `<link/>` tag for each link.
   * Include the source token as XML attribute `source` of each `<link/>` element.
 

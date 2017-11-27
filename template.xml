@@ -27,7 +27,7 @@
     <!ENTITY VOID PUBLIC '' 'ref/reference.VOID.xml'>
 ]>
 
-<rfc ipr="trust200902" category="info" docName="draft-voss-beacon-002">
+<rfc ipr="trust200902" category="info" docName="draft-voss-beacon-002-pre">
   <front>
 	<title abbrev="BEACON">BEACON link dump format</title>
 	<author initials="J." surname="Voß" fullname="Jakob Voß">

@@ -4,27 +4,45 @@
 # Introduction
 
 BEACON is a data interchange format for large numbers of uniform links.  A
-BEACON **link dump** consists of:
+BEACON **link dump** consists of
 
-* a set of **links** ([](#links)),
+* a set of **links** ([](#links)) and
 * a set of **meta fields** ([](#meta-fields)).
 
-Each link consists of a source identifier, a target identifier, a relation
-type, and an optional link annotation. Common patterns in these elements can be
-used to abbreviate serializations of link dumps.  This specification defines:
+Link dumps can be serialized in **BEACON format** ([](#beacon-format)). BEACON
+format is a condense, line-oriented text format that utilizes common patterns
+in links of a link dump form abbreviation. A link dump serialized in BEACON
+format is also referred to as **BEACON file**.
 
-* a serialization of link dumps (**BEACON files**) in a condense 
-  line-oriented text format ([](#beacon-format)). 
-* a mapping of link dumps to RDF ([](#mapping-to-rdf)).
-
-BEACON link dump format can be used as RDF serialization format for RDF graphs
-with uniform links but it can also be used unrelated to RDF. 
+Link dumps can further be mapped to RDF graphs with minor limitations
+([](#mapping-to-rdf)).
 
 The non-normative appendix contain a mapping of BEACON links to HTML
-([](#mapping-beacon-to-html)) and a serialization based on XML
+([](#mapping-beacon-to-html)) and a serialization of link dumps based on XML
 ([](#beacon-xml-format)).
 
 The current specification is managed at <https://github.com/gbv/beaconspec>.
+
+## Notational conventions
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in [](#RFC2119).
+
+The formal grammar rules in this document are to be interpreted as described in
+[](#RFC5234), including the ABNF core rules `HTAB`, `LF`, `CR`, and `SP`. In
+addition, the minus operator (`-`) is used to exclude line breaks and vertical
+bars from the rules LINE and TOKEN:
+
+     LINE       =  *CHAR - ( *CHAR LINEBREAK *CHAR )
+
+     TOKEN      =  *CHAR - ( *CHAR ( LINEBREAK / VBAR ) *CHAR )
+
+     LINEBREAK  =  LF | CR LF | CR   ; "\n", "\r\n", or "\r"
+
+     VBAR       =  %x7C              ; vertical bar ("|")
+
+Samples of RDF graphs in this document are expressed in Turtle syntax [](#TURTLE). 
 
 ## Examples
 
@@ -57,46 +75,35 @@ In this examples the following two links are encoded:
     http://example.org/id/12345|http://example.com/about/12345
     http://example.org/id/6789|http://example.com/about/abc
 
-## Notational conventions
-
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
-"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
-interpreted as described in [](#RFC2119).
-
-The formal grammar rules in this document are to be interpreted as described in
-[](#RFC5234), including the ABNF core rules `HTAB`, `LF`, `CR`, and `SP`. In
-addition, the minus operator (`-`) is used to exclude line breaks and vertical
-bars from the rules LINE and TOKEN:
-
-     LINE       =  *CHAR - ( *CHAR LINEBREAK *CHAR )
-
-     TOKEN      =  *CHAR - ( *CHAR ( LINEBREAK / VBAR ) *CHAR )
-
-     LINEBREAK  =  LF | CR LF | CR   ; "\n", "\r\n", or "\r"
-
-     VBAR       =  %x7C              ; vertical bar ("|")
-
-Samples of RDF in this document are expressed in Turtle syntax [](#TURTLE). 
 
 # Basic concepts
 
 ## Links
 
-A link in a link dump is a directed connection between two resources,
-optionally enriched by an annotation. A link is compromised of
-three elements:
+A link in a link dump is a directed, typed connection between two resources,
+optionally enriched by an annotation. A link is compromised of four elements:
 
 * a **source identifier**,
 * a **target identifier**,
-* an **annotation**.
+* a **relation type**, and
+* a **link annotation**.
 
-All elements MUST be whitespace-normalized ([](#whitespace-normalization))
-Unicode strings that MUST NOT contain a `VBAR` character. Source identifier and
-target identifier define where a link is pointing from and to respectively. The
-identifiers MUST NOT be empty strings and they SHOULD be URIs [](#RFC3986). The
-annotation can optionally be used to further describe the link or parts of it.
-A missing annotation is equal to the empty string. The meaning of a link can be
-indicated by the **RELATION** meta field ([](#relation)).
+All these elements MUST be whitespace-normalized Unicode strings that MUST NOT
+contain a `VBAR` character ([](#whitespace-normalization)). All elements except
+link annotation MUST NOT be empty strings.
+
+Source identifier and target identifier define where a link is pointing from
+and to respectively.  Relation type is an identifier that indicates the meaning
+of a link. All these identifiers SHOULD be URIs [](#RFC3986). A link annotation
+can be used to further describe a link or parts of it.
+
+All links in a link dump share either a common relation type or a common link
+annotation, or both. This uniformity is used to abbreviate links in BEACON
+format ([](#beacon-format)).
+
+The set that all source identifiers in a link dump originate from is called the
+**source dataset** and the set that all target identifiers originate from is
+called the **target dataset**.
 
 ## Allowed characters
 
@@ -181,8 +188,9 @@ following the process defined in Section 3.2 of [](#RFC3987).
 # BEACON format
 
 A **BEACON file** is a UTF-8 encoded Unicode file [](#RFC3629). The file MAY
-begin with a Unicode Byte Order Mark and it SHOULD end with a line break. The
-first line of a BEACON file SHOULD include the meta field `FORMAT` set to
+begin with a Unicode Byte Order Mark and it SHOULD end with a line break. 
+
+The first line of a BEACON file SHOULD include the meta field `FORMAT` set to
 `BEACON` (`#FORMAT: BEACON`). The rest of the file consists of a (possibly
 empty) set of lines that express meta fields ([](#meta-fields)), followed by a
 set of lines with link tokens which links are constructed from
@@ -237,6 +245,10 @@ meta field and message meta field with their default values):
 
     foo|http://example.org/foobar
     foo||http://example.org/foobar
+
+Applications MAY accept link lines with more than two vertical bars but they
+MUST ignore additional content between a third vertical bar and the end of this
+line in this case.
 
 ## Link construction
 
@@ -321,18 +333,17 @@ Additional meta fields, not defined in this specification, SHOULD be ignored.
 All meta field values MUST be whitespace-normalized. Missing meta field values
 and empty strings MUST be set to the field’s default value, which is the empty
 string unless noted otherwise. The following diagram shows which meta fields
-belong to which dataset. Repeatable fields are marked with a plus character
-(`+`): 
+belong to which dataset. 
 
                         +-----------------------+
                         | link dump             |
                         |                       |
-                        |  * DESCRIPTION+       |
-                        |  * CREATOR+           |
-                        |  * CONTACT+           |
-                        |  * HOMEPAGE+          |
-                        |  * FEED+              |
-                        |  * TIMESTAMP+         |
+                        |  * DESCRIPTION        |
+                        |  * CREATOR            |
+                        |  * CONTACT            |
+                        |  * HOMEPAGE           |
+                        |  * FEED               |
+                        |  * TIMESTAMP          |
                         |  * UPDATE             |
                         |                       |
                         | +-------------------+ |
@@ -341,8 +352,8 @@ belong to which dataset. Repeatable fields are marked with a plus character
     +----------------+  | |  * PREFIX         | |   | target dataset  |
     | source dataset | ---|  * TARGET         |---> |                 |
     |                |  | |  * RELATION       | |   |  * TARGETSET    |
-    |                | ---|  * MESSAGE        |---> |  * NAME+        |
-    |  * SOURCESET   |  | |  * ANNOTATION     | |   |  * INSTITUTION+ |
+    |                | ---|  * MESSAGE        |---> |  * NAME         |
+    |  * SOURCESET   |  | |  * ANNOTATION     | |   |  * INSTITUTION  |
     |                | ---|                   |---> |                 |
     +----------------+  | +-------------------+ |   +-----------------+
                         +-----------------------+
@@ -454,21 +465,17 @@ command.
 
 ## Meta fields for datasets
 
-The set that all source identifiers in a link dump originate from is called the
-**source dataset** and the set that all target identifiers originate from is
-called the **target dataset**. Dataset meta fields contain properties of the
-source dataset or target dataset, respectively.  See
-[](#meta-fields-for-datasets-in-rdf) for for mapping of these fields to RDF.
+Dataset meta fields contain properties of the source dataset or target dataset,
+respectively.  See [](#meta-fields-for-datasets-in-rdf) for for mapping of
+these fields to RDF.
 
 ### SOURCESET
 
-The source dataset can be identified by the `SOURCESET` meta field, which MUST
-be a URI if given. 
+The `SOURCESET` meta field contains the URI of the source dataset.
 
 ### TARGETSET
 
-The target dataset can be identified by the `TARGETSET` meta field, which MUST
-be a URI if given.
+The `TARGETSET` meta field contains the URI of the target dataset.
 
 ### NAME
 
