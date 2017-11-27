@@ -714,15 +714,8 @@ foo||http://example.org/foobar
 <h1 id="rfc.section.4.1.3"><a href="#rfc.section.4.1.3">4.1.3.</a> <a href="#message" id="message">MESSAGE</a></h1>
 <p id="rfc.section.4.1.3.p.1">The <samp>MESSAGE</samp> meta field specifies a default value for link annotations.  </p>
 <h1 id="rfc.section.4.1.4"><a href="#rfc.section.4.1.4">4.1.4.</a> <a href="#relation" id="relation">RELATION</a></h1>
-<p id="rfc.section.4.1.4.p.1">The <samp>RELATION</samp> meta field specifies relation types of links. The field value MUST be one of: </p>
-<p/>
-
-<ul>
-  <li>a URI </li>
-  <li>a registered link type from the IANA link relations registry <a href="#RFC5988">[RFC5988]</a> </li>
-  <li>a URI pattern as described in <a href="#uri-patterns">Section 2.4</a> </li>
-</ul>
-<p id="rfc.section.4.1.4.p.3">The default value is <samp>http://www.w3.org/2000/01/rdf-schema#seeAlso</samp>.  </p>
+<p id="rfc.section.4.1.4.p.1">The <samp>RELATION</samp> meta field specifies relation types of links. The field value MUST be either an URI or a URI pattern as described in <a href="#uri-patterns">Section 2.4</a>.  </p>
+<p id="rfc.section.4.1.4.p.2">The default value is <samp>http://www.w3.org/2000/01/rdf-schema#seeAlso</samp>.  </p>
 <h1 id="rfc.section.4.1.5"><a href="#rfc.section.4.1.5">4.1.5.</a> <a href="#annotation" id="annotation">ANNOTATION</a></h1>
 <p id="rfc.section.4.1.5.p.1">The <samp>ANNOTATION</samp> field can be used to specify the meaning of link annotations in a link dump. The field value MUST be a URI.  </p>
 <h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#meta-fields-for-link-dumps" id="meta-fields-for-link-dumps">Meta fields for link dumps</a></h1>
@@ -987,12 +980,6 @@ foo||http://example.org/foobar
     </tr>
     <tr>
       <td class="reference">
-        <b id="RFC5988">[RFC5988]</b>
-      </td>
-      <td class="top"><a>Nottingham, M.</a>, "<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>", RFC 5988, October 2010.</td>
-    </tr>
-    <tr>
-      <td class="reference">
         <b id="RFC6570">[RFC6570]</b>
       </td>
       <td class="top"><a>Gregorio, J.</a>, <a>Fielding, R.</a>, <a>Hadley, M.</a>, <a>Nottingham, M.</a> and <a>D. Orchard</a>, "<a href="http://tools.ietf.org/html/rfc6570">URI Template</a>", RFC 6570, March 2012.</td>
@@ -1001,7 +988,7 @@ foo||http://example.org/foobar
       <td class="reference">
         <b id="Unicode">[Unicode]</b>
       </td>
-      <td class="top"><a>The Unicode Consortium, </a>, "<a>The Unicode Standard, Version 6.1</a>", April 2012.</td>
+      <td class="top"><a>The Unicode Consortium, </a>, "<a>The Unicode Standard, Version 10.0.0</a>", June 2017.</td>
     </tr>
     <tr>
       <td class="reference">
