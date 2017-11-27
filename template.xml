@@ -12,7 +12,6 @@
     <!ENTITY RFC3987 PUBLIC '' 'ref/reference.RFC.3987.xml'>
     <!ENTITY RFC5234 PUBLIC '' 'ref/reference.RFC.5234.xml'>
     <!ENTITY RFC5322 PUBLIC '' 'ref/reference.RFC.5322.xml'>
-    <!ENTITY RFC5988 PUBLIC '' 'ref/reference.RFC.5988.xml'>
     <!ENTITY RFC6570 PUBLIC '' 'ref/reference.RFC.6570.xml'>
     <!ENTITY Unicode PUBLIC '' 'ref/reference.Unicode.xml'>
     <!ENTITY DCTERMS PUBLIC '' 'ref/reference.DCTERMS.xml'>
@@ -85,7 +84,6 @@
         &RFC3987;
         &RFC5234;
         &RFC5322;
-        &RFC5988;
         &RFC6570;
         &Unicode;
         &DCTERMS;

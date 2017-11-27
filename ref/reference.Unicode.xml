@@ -1,10 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <reference anchor='Unicode'>
 	<front>
-		<title abbrev='Unicode'>The Unicode Standard, Version 6.1</title>
+		<title abbrev='Unicode'>The Unicode Standard, Version 10.0.0</title>
 		<author surname="The Unicode Consortium"/>
-		<date year='2012' month='April'/>
+		<date year='2017' month='June'/>
 	</front>
-	<format type='HTML' target="http://www.unicode.org/versions/Unicode6.1.0/"/>
+	<format type='HTML' target="http://www.unicode.org/versions/Unicode10.0.0/"/>
 </reference>
-

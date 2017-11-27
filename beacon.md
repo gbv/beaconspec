@@ -388,11 +388,7 @@ The `MESSAGE` meta field specifies a default value for link annotations.
 ### RELATION
 
 The `RELATION` meta field specifies relation types of links. The field value
-MUST be one of:
-
-* a URI 
-* a registered link type from the IANA link relations registry [](#RFC5988)
-* a URI pattern as described in [](#uri-patterns)
+MUST be either an URI or a URI pattern as described in [](#uri-patterns).
 
 The default value is `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 
