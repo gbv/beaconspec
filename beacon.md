@@ -187,6 +187,8 @@ following the process defined in Section 3.2 of [](#RFC3987).
 
 # BEACON format
 
+## BEACON files
+
 A **BEACON file** is a UTF-8 encoded Unicode file [](#RFC3629). The file MAY
 begin with a Unicode Byte Order Mark and it SHOULD end with a line break. 
 
@@ -247,23 +249,21 @@ meta field and message meta field with their default values):
     foo||http://example.org/foobar
 
 Applications MAY accept link lines with more than two vertical bars but they
-MUST ignore additional content between a third vertical bar and the end of this
-line in this case.
+MUST ignore additional content between a third vertical bar and the end of the
+line.
 
 ## Link construction
 
-Link elements in BEACON format are given in abbreviated form of **link
-tokens**. Each link is constructed from:
+Link elements in BEACON format are given in abbreviated form with **link
+tokens**. Each link is constructed based on meta fields for link construction
+([](#meta-fields-for-link-construction)) and from
 
-* a mandatory source token
-* an optional annotation token
-* an optional target token, which is set to the source token if missing
+* a mandatory **source token**,
+* an optional **annotation token**, and
+* an optional **target token**.
 
-All tokens MUST be whitespace-normalized before further
-processing.  
-
-Construction rules are based on the value of link construction meta fields
-([](#meta-fields-for-link-construction)). A link is constructed as following:
+All tokens MUST be whitespace-normalized before further processing. The link
+elements are the constructed as following:
 
 * The source identifier is constructed from the `PREFIX` meta field URI pattern
   by inserting the source token, as defined in [](#uri-patterns).
@@ -287,8 +287,8 @@ The following table illustrates construction of a link:
     ---------------------------------------------------
      PREFIX      |  source       |   source identifier
      TARGET      |  target       |   target identifier
-     MESSAGE     |  (annotation) |   link annotation
-     RELATION    |  (annotation) |   relation type
+     MESSAGE     |  annotation   |   link annotation
+     RELATION    |  annotation   |   relation type
 
 Constructed source identifier and target identifier SHOULD be syntactically
 valid URIs. Applications MAY ignore links with invalid URIs and SHOULD give a
@@ -308,7 +308,7 @@ The same link could also be serialized without any meta fields:
 
      http://example.org/foo|Hello World!|http://example.com/foo
 
-The default meta fields values could also be specified as:
+The default meta fields values can be specified as:
 
      #PREFIX: {+ID}
      #TARGET: {+ID}
@@ -368,18 +368,22 @@ mapping of these fields to RDF.
 
 ### PREFIX
 
-The `PREFIX` meta field specifies a URI pattern to construct source
-identfiers. If this field is not specified or set to the empty string, the
-default value `{+ID}` is used. If the field value contains no template
-expression, the expression `{ID}` is appended. The name `PREFIX` was choosen to
-keep backwards compatibility with existing BEACON files.
+The `PREFIX` meta field specifies a URI pattern to construct source identfiers.
+If the non-empty field value contains no template expression, the expression
+`{ID}` is appended. 
+
+The default value is `{+ID}`.
+
+The name `PREFIX` was choosen to keep backwards compatibility with existing
+BEACON files.
 
 ### TARGET
 
 The `TARGET` meta field specifies a URI pattern to construct target
-identifiers. If this field is not specified or set to the empty string, the
-default value `{+ID}` is used. If the field value field contains no template
+identifiers. If the non-empty field value field contains no template
 expression, the expression `{ID}` is appended.
+
+The default value is `{+ID}`.
 
 ### MESSAGE
 
@@ -456,8 +460,7 @@ format](#Sitemaps). Valid values are:
 
 The value `always` SHOULD be used to describe link dumps that change each time
 they are accessed. The value `never` SHOULD be used to describe archived link
-dumps. Please note that the value of this tag is considered a hint and not a
-command. 
+dumps. 
 
 ## Meta fields for datasets
 

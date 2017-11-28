@@ -4,7 +4,7 @@ A link dump can be mapped to an RDF graph as described below.  Note that BEACON
 cannot express arbitrary RDF graphs, e.g. language tags and datatypes are not
 supported at all. Neither can BEACON express URIs with character sequences
 `%7C`, `%0A`, `%0D`, or any other percent-encoded character not included in the
-list of allowed characters ([](#allowed-characters) because the unencoded
+list of allowed characters ([](#allowed-characters)) because the unencoded
 characters of this sequences are not allowed in link tokens.
 
 ## Naming conventions
@@ -43,9 +43,7 @@ transformed to an IRI by following the process defined in Section 3.2 of
 
 ## Link annotations in RDF
 
-Each link annotation SHOULD result in an additional RDF triple, unless its
-value equals to the empty stringi or if the **RELATION** meta field contains
-an URI template. The additional triple is mapped with:
+Each non-empty link annotation SHOULD result in an additional RDF triple with:
 
 * the target identifier used as subject IRI,
 * the `ANNOTATION` meta field used as predicate,
@@ -75,7 +73,7 @@ is mapped to the following RDF triples:
 ## Meta fields for link construction in RDF
 
 All meta fields for link construction ([](#meta-fields-for-link-construction))
-except for **MESSAGE** can also be mapped to RDF triples.
+except for **MESSAGE** can be mapped to RDF triples.
 
 The **PREFIX** meta field ([](#prefix)) MAY be mapped to the RDF property
 `void:uriSpace` or `void:uriRegexPattern` with `:sourceset` as RDF subject.
@@ -85,20 +83,6 @@ The **TARGET** meta field ([](#target) MAY be mapped to the RDF property
 
 The **RELATION** meta field ([](#relation)), if its value contains an URI, is
 mapped to the RDF property `void:linkPredicate` with `:dump` as RDF subject.
-
-<!--
-Some examples of relation types and their mapping to RDF triples:
-
-     #RELATION: http://www.w3.org/2002/07/owl#sameAs
-     #RELATION: http://xmlns.com/foaf/0.1/isPrimaryTopicOf
-     #RELATION: http://purl.org/spar/cito/cites
-     #RELATION: describedby
-     #RELATION: replies
-
-     :dump void:linkPredicate <http://www.w3.org/2002/07/owl#sameAs> .
-     :dump void:linkPredicate foaf:isPrimaryTopicOf .
-     :dump void:linkPredicate <http://purl.org/spar/cito/cites> .
--->
 
 The **ANNOTATION** meta field ([](#annotation)) is used to map link annotations
 to RDF ([](#link-annotations-in-rdf)) unless the **RELATION** meta field
@@ -129,17 +113,20 @@ creator is an instace of the class `foaf:Agent`. For instance
 
     #CREATOR: Bea Beacon
 
-and
-
-    #CREATOR: http://example.org/people/bea
-
-can be mapped the the following RDF triples, respectively:
-
-    :dump dcterms:creator "Bea Beacon" .
-    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+can be mapped to
 
     :dump dcterms:creator <http://example.org/people/bea> .
     <http://example.org/people/bea> a foaf:Agent .
+
+A field value starting with `http://` or `https://` is interpreted as URI
+instead of string. For instance
+
+    #CREATOR: http://example.org/people/bea
+
+can be mapped to
+
+    :dump dcterms:creator "Bea Beacon" .
+    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
 
 The **CONTACT** meta field ([](#contact)) is mapped to the `foaf:mbox` and to
 the `foaf:name` RDF properties.  For instance
@@ -195,11 +182,11 @@ can be mapped to the following RDF triples, respectively:
      :dump dcterms:modified "2012-05-30T13:17:36Z"
 
 The **UPDATE** meta field ([](#update)) corresponds to the
-`rssynd:updatePeriod` RDF property. For instance this field
+`rssynd:updatePeriod` RDF property. For instance a daily update
 
     #UPDATE: daily
 
-specifies a daily update, expressible in RDF as
+can be mapped to
 
     :dump rssynd:updatePeriod "daily" .
 
@@ -215,10 +202,10 @@ The following triples are always assumed in mappings of link dumps to RDF:
      :targetset a void:Dataset .
 
 The **SOURCESET** meta field ([](#sourceset)) replaces the blank node
-`:sourceset`, if given.
+`:sourceset`.
 
 The **TARGETSET** meta field ([](#sourceset)) replaces the blank node
-`:targetset`, if given.
+`:targetset`.
 
 The **NAME** meta field ([](#name)) is mapped to the RDF property
 `dcterms:title` with `:targetset` as RDF subject. For instance the field value
@@ -226,7 +213,7 @@ The **NAME** meta field ([](#name)) is mapped to the RDF property
 
     #NAME: ACME documents
 
-can be mapped to this RDF triple:
+can be mapped to
 
     :targetset dcterms:title "ACME documents" .
 
@@ -236,7 +223,7 @@ format as
 
     #INSTITUTION: ACME
 
-can be mapped to this RDF triple:
+can be mapped
 
     :targetset dcterms:publisher "ACME" .
 
@@ -245,7 +232,7 @@ instead of string. For instance
 
     #INSTITUTION: http://example.org/acme/
 
-can be mapped to this RDF triple:
+can be mapped
 
     :targetset dcterms:publisher <http://example.org/acme/> .
 
