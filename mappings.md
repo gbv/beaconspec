@@ -1,11 +1,10 @@
 # Mapping to RDF
 
-A link dump can be mapped to an RDF graph as described below.  Note that BEACON
-cannot express arbitrary RDF graphs, e.g. language tags and datatypes are not
-supported at all. Neither can BEACON express URIs with character sequences
-`%7C`, `%0A`, `%0D`, or any other percent-encoded character not included in the
-list of allowed characters ([](#allowed-characters)) because the unencoded
-characters of this sequences are not allowed in link tokens.
+A link dump can be mapped to an RDF graph as described in this section. The
+mapping excludes all links with one of source identifier, target identifier,
+relation type not being a valid URI.
+
+All URIs MUST be transformed to IRIs as defined in Section 3.2 of [](#RFC3987).
 
 ## Naming conventions
 
@@ -39,7 +38,7 @@ with:
 
 As RDF is not defined on URIs but on URI references or IRIs, all URIs MUST be
 transformed to an IRI by following the process defined in Section 3.2 of
-[](#RFC3987). 
+[](#RFC3987).
 
 ## Link annotations in RDF
 
@@ -236,4 +235,15 @@ can be mapped
 
     :targetset dcterms:publisher <http://example.org/acme/> .
 
+## Limitations and applications
 
+BEACON format ([](#beacon-format)) can be used as serialization format for RDF
+graphs where all parts of RDF triples are IRIs and IRIs do not contain the
+character sequences `%7C`, `%0A`, `%0D`, or any other percent-encoded character
+not included in the list of allowed characters ([](#allowed-characters)). This
+limitation applies because the disallowed character sequences would need to
+result from characters not allowed in link tokens of BEACON format.
+
+BEACON link dumps in particular can be used to express Linked Data Fragments
+[](#LDF) which also consist of a set of links sharing a common pattern, and
+additional metadata.

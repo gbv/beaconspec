@@ -32,25 +32,16 @@ interpreted as described in [](#RFC2119).
 The formal grammar rules in this document are to be interpreted as described in
 [](#RFC5234), including the ABNF core rules `HTAB`, `LF`, `CR`, and `SP`. In
 addition, the minus operator (`-`) is used to exclude line breaks and vertical
-bars from the rules LINE and TOKEN:
+bars from the rules `LINE` and `TOKEN` in [](#beacon-files).
 
-     LINE       =  *CHAR - ( *CHAR LINEBREAK *CHAR )
-
-     TOKEN      =  *CHAR - ( *CHAR ( LINEBREAK / VBAR ) *CHAR )
-
-     LINEBREAK  =  LF | CR LF | CR   ; "\n", "\r\n", or "\r"
-
-     VBAR       =  %x7C              ; vertical bar ("|")
-
-Samples of RDF graphs in this document are expressed in Turtle syntax [](#TURTLE). 
+Samples of RDF graphs in this document are expressed in Turtle syntax [](#TURTLE).
 
 ## Examples
 
-The simplest form of a BEACON file contains full URL links separated by a
-vertical bar:
+The simplest form of a BEACON file contains full URL links separated by one or two vertical bars:
 
     http://example.com/people/alice|http://example.com/documents/23.about
-    http://example.com/people/bob|http://example.com/documents/42.about
+    http://example.com/people/bob||http://example.com/documents/42.about
 
 The first element of a link is called source identifier and the second is
 called target identifier. In most cases these identifiers are URLs or URIs. If
@@ -59,9 +50,9 @@ MUST be used:
 
     http://example.com/people/alice||urn:isbn:0123456789
 
-Source and target identifier can be abbreviated with the meta fields `PREFIX`
-and `TARGET`, respectively. A simple BEACON file with such abbreviations can
-look like this:
+Source identifier and target identifier can be abbreviated with the meta fields
+`PREFIX` and `TARGET`, respectively. A simple BEACON file with such
+abbreviations can look like this:
 
     #FORMAT: BEACON
     #PREFIX: http://example.org/id/
@@ -75,6 +66,7 @@ In this examples the following two links are encoded:
     http://example.org/id/12345|http://example.com/about/12345
     http://example.org/id/6789|http://example.com/about/abc
 
+Links can further be extended by link annotation and relation type.
 
 # Basic concepts
 
@@ -88,9 +80,10 @@ optionally enriched by an annotation. A link is compromised of four elements:
 * a **relation type**, and
 * a **link annotation**.
 
-All these elements MUST be whitespace-normalized Unicode strings that MUST NOT
-contain a `VBAR` character ([](#whitespace-normalization)). All elements except
-link annotation MUST NOT be empty strings.
+Each elements MUST be whitespace-normalized Unicode strings
+([](#whitespace-normalization)) that conforms to the `TOKEN` grammar rule given
+in [](#beacon-files). All elements except link annotation MUST NOT be
+empty strings.
 
 Source identifier and target identifier define where a link is pointing from
 and to respectively.  Relation type is an identifier that indicates the meaning
@@ -124,11 +117,11 @@ replacing them with the replacement character `U+FFFD`, or by refusing to
 process. Applications SHOULD also apply Unicode Normalization Form Canonical
 Composition (NFKC) to all strings.
 
-## Whitespace normalization 
+## Whitespace normalization
 
 A Unicode string is **whitespace-normalized** according to this specification,
 by stripping leading and trailing whitespace and by replacing all `WHITESPACE`
-character sequences by a single space (`SP`). 
+character sequences by a single space (`SP`).
 
      WHITESPACE  =  1*( CR | LF | SPACE )
 
@@ -142,63 +135,52 @@ string expansion or `{+ID}` for reserved expansion. URI patterns are used in
 link construction ([](#link-construction)) to expand link tokens to full
 identifiers (usually URIs).
 
-<!--
-
-A URI pattern is used to construct a URI by replacing all template expressions
-with an identifier value, applying character escaping. 
-
-
-All identifier characters in the `unreserved` range
-from [](#RFC3986), and characters in the `reserved` range or character
-sequences matching the `pct-encoded` rule for expressions being `{+ID}`, are
-copied literally.  All other characters are copied to the URI as the sequence
-of pct-encoded triplets corresponding to that character’s encoding in UTF-8
-[](#RFC3629). 
-
-The referenced character ranges are imported here from
-[](#RFC3986) for convenience:
-
-     pct-encoded    =  "%" HEXDIG HEXDIG
-     unreserved     =  ALPHA / DIGIT / "-" / "." / "_" / "~"
-     reserved       =  gen-delims / sub-delims
-     gen-delims     =  ":" / "/" / "?" / "#" / "[" / "]" / "@"
-     sub-delims     =  "!" / "$" / "&" / "'" / "(" / ")"
-                    /  "*" / "+" / "," / ";" / "="
--->
-
-     Example value    Expression   Copied as
-
-      /x?a=1&b=2        {ID}        %2F%3Fa%3D1%26b%3D2
-      /x?a=1&b=2        {+ID}       /x?a=1&b=2
-      Hello World!      {+ID}       Hello%20World!
-      Hello World!      {ID}        Hello%20World%21
-      Hello%20World     {+ID}       Hello%20World
-      Hello%20World     {ID}        Hello%2520World
-      Müller            {+ID}       M%C3%BCller
-      Müller            {ID}        M%C3%BCller
-      M%C3%BCller       {+ID}       M%25C3%25BCller
-      M%C3%BCller       {ID}        M%25C3%25BCller
-
-
 A URI pattern is allowed to contain the broader set of characters allowed in
 Internationalized Resource Identifiers (IRI) [](#RFC3987). The URI constructed
 from a URI pattern by template processing can be transformed to a IRI by
 following the process defined in Section 3.2 of [](#RFC3987).
+
+For instance the URI pattern `http://example.org/?id={ID}` is expanded to:
+
+     ID variable      Expanded
+
+      Hello World!     http://example.org/?id=Hello%20World%21
+      x/?a=1&b=2       http://example.org/?id=x%2F%3Fa%3D1%26b%3D2
+      M%C3%BCller      http://example.org/?id=M%25C3%25BCller
+
+And the URI pattern `http://example.org/{+ID}` is expanded to:
+
+     ID variable      Expanded
+
+      Hello World!     http://example.org/Hello%20World!
+      x/?a=1&b=2       http://example.org/x/?a=1&b=2
+      M%C3%BCller      http://example.org/?id=M%25C3%25BCller
 
 # BEACON format
 
 ## BEACON files
 
 A **BEACON file** is a UTF-8 encoded Unicode file [](#RFC3629). The file MAY
-begin with a Unicode Byte Order Mark and it SHOULD end with a line break. 
+begin with a Unicode Byte Order Mark and it SHOULD end with a line break. The
+rest of the file consists of four parts in this order:
 
-The first line of a BEACON file SHOULD include the meta field `FORMAT` set to
-`BEACON` (`#FORMAT: BEACON`). The rest of the file consists of a (possibly
-empty) set of lines that express meta fields ([](#meta-fields)), followed by a
-set of lines with link tokens which links are constructed from
-([](#link-construction)).  At least one empty line SHOULD be used to separate
-meta lines and link lines. If no empty line is given, the first link line MUST
-NOT begin with `#`.
+1. a format indicator (`#FORMAT: BEACON`)
+2. a list of meta lines
+3. a list of empty lines
+4. a list of link lines
+
+All four parts are optional but RECOMMENDED. The order of meta lines and of
+link lines, respectively, is irrelevant.
+
+     LINE       =  *CHAR - ( *CHAR LINEBREAK *CHAR )
+
+     TOKEN      =  *CHAR - ( *CHAR ( LINEBREAK / VBAR ) *CHAR )
+
+     LINEBREAK  =  LF | CR LF | CR   ; "\n", "\r\n", or "\r"
+
+     VBAR       =  %x7C              ; vertical bar ("|")
+
+     SEPARATOR   =  ":" *SPACE / +SPACE
 
      BEACONFILE  =  [ %xEF.BB.BF ]        ; Unicode UTF-8 Byte Order Mark
                     [ "#FORMAT" SEPARATOR "BEACON" *SPACE LINEBREAK ]
@@ -207,24 +189,22 @@ NOT begin with `#`.
                      LINKLINE *( LINEBREAK LINKLINE )
                     [ LINEBREAK ]
 
-The order of meta lines and of link lines, respectively, is irrelevant. 
-
 A **meta line** specifies a meta field ([](#meta-fields)) and its value,
-separated by colon and/or tabulator or space: 
+separated by colon and/or tabulator or space:
 
      METALINE    =  "#" METAFIELD SEPARATOR METAVALUE
-
-     SEPARATOR   =  ":" *SPACE / +SPACE
 
      METAFIELD   =  +( %x41-5A )   ;  "A" to "Z"
 
      METAVALUE   =  LINE
 
-Each link is given on a **link line** with its source token, optionally follwed by
-annotation token and target token:
+Each link is given on a **link line** with its source token, optionally follwed
+by annotation token and target token. These link elements are used for
+([](#link-construction)). If no empty line is given, the first link line MUST
+NOT begin with `#`.
 
      LINKLINE    =  SOURCE /
-                    SOURCE VBAR TARGET /   ; if TARGET is http: or https:
+                    SOURCE VBAR TARGET /
                     SOURCE VBAR ANNOTATION /
                     SOURCE VBAR ANNOTATION VBAR TARGET
 
@@ -234,15 +214,14 @@ annotation token and target token:
 
      ANNOTATION  =  TOKEN
 
-The ambiguity of rule `LINKLINE` with one occurrence of `VBAR` is resolved is
-following:
+The ambiguity of rule `LINKLINE` with one `VBAR` is resolved is following:
 
-* If the target meta field ([](#target)) has its default value `{+ID}` and 
-  the whitespace-normalized second token begins with `http:` or `https:`, then 
+* If the target meta field ([](#target)) has its default value `{+ID}` and
+  the whitespace-normalized second token begins with `http:` or `https:`, then
   the second token is used as target token.
 * The second token is used as annotation token otherwise.
 
-This way one can use two forms to encode links to HTTP URIs (given target 
+This way one can use two forms to encode links to HTTP URIs (given target
 meta field and message meta field with their default values):
 
     foo|http://example.org/foobar
@@ -263,23 +242,24 @@ tokens**. Each link is constructed based on meta fields for link construction
 * an optional **target token**.
 
 All tokens MUST be whitespace-normalized before further processing. The link
-elements are the constructed as following:
+elements are then constructed as following (see [](#uri-patterns) for how to
+construct values from URI patterns):
 
 * The source identifier is constructed from the `PREFIX` meta field URI pattern
-  by inserting the source token, as defined in [](#uri-patterns).
+  by inserting the source token.
 
 * The target identifier is constructed from the `TARGET` meta field URI pattern
-  by inserting the target token, as as defined in [](#uri-patterns).
+  by inserting either the target token if this token is given, or the source
+  token otherwise.
 
-* If the `RELATION` meta field contains a URI pattern, the relation type is
-  constructed from this pattern by inserting the annotation token, as defined
-  in [](#uri-patterns), and the link annotation is set to the value of the
-  `MESSAGE` meta field, if given.
+* The link annotation is set to the annotation token unless the `RELATION` meta
+  field contains an URI pattern or no annotation token is given. Otherwise the
+  link annotation is set to the `MESSAGE` meta field. 
 
-* If the `RELATION` meta field does not contain a URI pattern, the relation
-  type is set to the value of the `RELATION` meta field and the link annotation
-  is constructed from the annotation token, if given, or the `MESSAGE` meta
-  field otherwise.
+* The relation type is set to the `RELATION` meta field if this field contains
+  an URI. If this field contains an URI pattern, the relation type is
+  constructed from this pattern by inserting the annotation token or the empty
+  string if no annotation token is given.
 
 The following table illustrates construction of a link:
 
@@ -290,9 +270,9 @@ The following table illustrates construction of a link:
      MESSAGE     |  annotation   |   link annotation
      RELATION    |  annotation   |   relation type
 
-Constructed source identifier and target identifier SHOULD be syntactically
-valid URIs. Applications MAY ignore links with invalid URIs and SHOULD give a
-warning. 
+Constructed source identifier, target identifier, and relation types SHOULD be
+syntactically valid URIs. Applications MAY ignore links with invalid URIs and
+SHOULD emit a warning.
 
 Applications MUST NOT differentiate between equal links constructed from
 different abbreviations. For instance the following BEACON file contains a
@@ -304,7 +284,7 @@ single link:
 
      foo
 
-The same link could also be serialized without any meta fields: 
+The same link could also be serialized without any meta fields:
 
      http://example.org/foo|Hello World!|http://example.com/foo
 
@@ -333,7 +313,7 @@ Additional meta fields, not defined in this specification, SHOULD be ignored.
 All meta field values MUST be whitespace-normalized. Missing meta field values
 and empty strings MUST be set to the field’s default value, which is the empty
 string unless noted otherwise. The following diagram shows which meta fields
-belong to which dataset. 
+belong to which dataset.
 
                         +-----------------------+
                         | link dump             |
@@ -370,7 +350,7 @@ mapping of these fields to RDF.
 
 The `PREFIX` meta field specifies a URI pattern to construct source identfiers.
 If the non-empty field value contains no template expression, the expression
-`{ID}` is appended. 
+`{ID}` is appended.
 
 The default value is `{+ID}`.
 
@@ -456,11 +436,11 @@ format](#Sitemaps). Valid values are:
 * `weekly`
 * `monthly`
 * `yearly`
-* `never` 
+* `never`
 
 The value `always` SHOULD be used to describe link dumps that change each time
 they are accessed. The value `never` SHOULD be used to describe archived link
-dumps. 
+dumps.
 
 ## Meta fields for datasets
 
@@ -483,5 +463,5 @@ The `NAME` meta field contains a name or title of the target dataset.
 ### INSTITUTION
 
 The `INSTITUTION` meta field contains the name or HTTP URI of the organization
-or of an individual responsible for making available the target dataset. 
+or of an individual responsible for making available the target dataset.
 

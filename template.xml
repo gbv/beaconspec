@@ -24,9 +24,10 @@
     <!ENTITY RSSSYND PUBLIC '' 'ref/reference.RSSSYND.xml'>
     <!ENTITY RDF PUBLIC '' 'ref/reference.RDF.xml'>
     <!ENTITY VOID PUBLIC '' 'ref/reference.VOID.xml'>
+    <!ENTITY LDF PUBLIC '' 'ref/reference.LDF.xml'>
 ]>
 
-<rfc ipr="trust200902" category="info" docName="draft-voss-beacon-002-pre">
+<rfc ipr="trust200902" category="info" docName="draft-voss-beacon-002">
   <front>
 	<title abbrev="BEACON">BEACON link dump format</title>
 	<author initials="J." surname="Voß" fullname="Jakob Voß">
@@ -98,6 +99,7 @@
         &RSSSYND;
         &RDF;
         &VOID;
+        &LDF;
     </references>
     &pandocAppendices;
 </back>
