@@ -6,39 +6,52 @@ relation type not being a valid URI.
 
 All URIs MUST be transformed to IRIs as defined in Section 3.2 of [](#RFC3987).
 
+Examples link dumps mapped to RDF is given in [](#mapping-examples).
+
 ## Naming conventions
 
 The following namespace prefixes are used to refer to RDF properties and
 classes from the RDF and RDFS vocabularies [](#RDF), the DCMI Metadata Terms
 [](#DCTERMS), the FOAF vocabulary [](#FOAF), the VoID vocabulary [](#VOID), and
-the RSS 1.0 Syndication Module [](#RSSSYND):
+the Hydra Core Vocabulary [](#Hydra), the RSS 1.0 Syndication Module
+[](#RSSSYND):
 
      rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
      rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
      dcterms: <http://purl.org/dc/terms/extent>
      foaf:    <http://xmlns.com/foaf/0.1/>
      void:    <http://rdfs.org/ns/void#>
+     hydra:   <http://www.w3.org/ns/hydra/core#>
      rssynd:  <http://web.resource.org/rss/1.0/modules/syndication/>
 
-The blank node `:dump` denotes the URI of the link dump, the blank node
-`:sourceset` denotes the URI of the source dataset, and the blank node
-`:targetset` denotes the URI of the target dataset. Source datatset and target
-datatset can also be given an absolute URI with meta fields `SOURCESET` and
-`TARGETSET`, respectively ([](#meta-fields-for-datasets)).
+The blank node `:dump` denotes the the link dump, the blank node `:sourceset`
+denotes the the source dataset, and the blank node `:targetset` denotes the the
+target dataset. Source datatset and target datatset can also be given an
+absolute IRI with meta fields `SOURCESET` and `TARGETSET`, respectively
+([](#meta-fields-for-datasets)).
+
+The following RDF triples can always be assumed when mapping link dumps to RDF:
+
+     :dump a void:Linkset, hydra:Collection ;
+         void:subjectsTarget :sourceset ;
+         void:objectsTarget :targetset .
+
+     :sourceset a void:Dataset .
+     :targetset a void:Dataset .
 
 ## Links in RDF
 
-Links ([](#links)) with syntactically valid URIs as source and target
-identifiers and URI relation types can be mapped to at least one RDF triple
-with:
+Links ([](#links)) with source identifier, target identifier, and relation type
+being valid URIs can be mapped to at least one RDF triple with:
 
 * the source identifier used as subject IRI,
 * the relation type used as predicate,
 * the target identifiers used as object IRI.
 
-As RDF is not defined on URIs but on URI references or IRIs, all URIs MUST be
-transformed to an IRI by following the process defined in Section 3.2 of
-[](#RFC3987).
+The total number of mappable links in a link dump SHOULD result in an
+additional RDF triple whith `COUNT` being the number of links:
+
+     :dump a hydra:totalItems COUNT .
 
 ## Link annotations in RDF
 
@@ -48,10 +61,10 @@ Each non-empty link annotation SHOULD result in an additional RDF triple with:
 * the `ANNOTATION` meta field used as predicate,
 * the link annotation value used as literal object.
 
-Applications MAY use a predefined URI as link annotation or process the link
-annotation by other means. For instance annotations could contain additional
-information about a link such as its provenience, date, or probability
-(reification).
+Applications MAY use a predefined IRI as link annotation or process the link
+annotation by other means, for instance for provenience and versioning of
+links. Applications MAY assign a default language tag or datatype to all
+literal objects derived from link annotations.
 
 Typical use cases of link annotations include specification of labels and a
 "number of hits" at the target dataset. For instance the following file in
@@ -64,10 +77,17 @@ BEACON format ([](#beacon-format)):
 
      abc|12|xy
 
-is mapped to the following RDF triples:
+can be mapped to
 
      <http://example.org/abc> foaf:primaryTopic <http://example.com/xy> .
      <http://example.com/xy> dcterms:extent "12" .
+
+The total number of mappable links and link annotations in a link dump SHOULD
+result in an additional RDF triple whith `TRIPLES` being the sum of both
+numbers:
+
+     :dump a void:triples TRIPLES .
+
 
 ## Meta fields for link construction in RDF
 
@@ -90,15 +110,9 @@ contains an URI template.
 ## Meta fields for link dumps in RDF
 
 Meta fields for link dumps ([](#meta-fields-for-link-dumps)) describe
-properties of the link dump, referred to as blank node `:dump` in the
-following. The following RDF triples are always assumed when mapping link dumps
-to RDF:
+properties of the link dump.
 
-     :dump a void:Linkset ;
-         void:subjectsTarget :sourceset ;
-         void:objectsTarget :targetset .
-
-The **DESCRIPTION** meta field is mapped to the `dcterms:description` RDF
+The **DESCRIPTION** meta field corresponds to the `dcterms:description` RDF
 property.  For instance
 
     #DESCRIPTION: Mapping from ids to documents
@@ -107,15 +121,16 @@ can be mapped to
 
     :dump dcterms:description "Mapping from ids to documents" .
 
-The **CREATOR** meta field is mapped to the `dcterms:creator` RDF property. The
-creator is an instace of the class `foaf:Agent`. For instance
+The **CREATOR** meta field corresponds to the `dcterms:creator` RDF property.
+The creator can be given as string or as instace of the class `foaf:Agent`. For
+instance
 
     #CREATOR: Bea Beacon
 
 can be mapped to
 
-    :dump dcterms:creator <http://example.org/people/bea> .
-    <http://example.org/people/bea> a foaf:Agent .
+    :dump dcterms:creator "Bea Beacon" .
+    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
 
 A field value starting with `http://` or `https://` is interpreted as URI
 instead of string. For instance
@@ -124,11 +139,11 @@ instead of string. For instance
 
 can be mapped to
 
-    :dump dcterms:creator "Bea Beacon" .
-    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+    :dump dcterms:creator <http://example.org/people/bea> .
+    <http://example.org/people/bea> a foaf:Agent .
 
-The **CONTACT** meta field ([](#contact)) is mapped to the `foaf:mbox` and to
-the `foaf:name` RDF properties.  For instance
+The **CONTACT** meta field ([](#contact)) corresponds to the `foaf:mbox` and
+`foaf:name` RDF properties.  For instance
 
      #CONTACT: admin@example.com
 
@@ -149,7 +164,7 @@ can be mapped to
          foaf:mbox <mailto:bea@example.org>
      ] .
 
-The **HOMEPAGE** meta field ([](#homepage)) is mapped to the `foaf:homepage`
+The **HOMEPAGE** meta field ([](#homepage)) corresponds to the `foaf:homepage`
 RDF property. For instance
 
     #HOMEPAGE: http://example.org/about.html
@@ -195,11 +210,6 @@ Meta fields for the datasets ([](#meta-fields-for-datasets)) are mapped to
 subjects and objects of RDF triples to describe the source dataset and target
 dataset, respectively.
 
-The following triples are always assumed in mappings of link dumps to RDF:
-
-     :sourceset a void:Dataset .
-     :targetset a void:Dataset .
-
 The **SOURCESET** meta field ([](#sourceset)) replaces the blank node
 `:sourceset`.
 
@@ -208,32 +218,32 @@ The **TARGETSET** meta field ([](#sourceset)) replaces the blank node
 
 The **NAME** meta field ([](#name)) is mapped to the RDF property
 `dcterms:title` with `:targetset` as RDF subject. For instance the field value
-"ACME documents", expressible in BEACON format as
+"Wikipedia", expressible in BEACON format as
 
-    #NAME: ACME documents
+    #NAME: Wikipedia
 
 can be mapped to
 
-    :targetset dcterms:title "ACME documents" .
+    :targetset dcterms:title "Wikipedia" .
 
-The **INSTITUTION** meta field ([](#institution)) is mapped to the RDF property
-`dcterms:publisher`. For instance the field value "ACME", expressible in BEACON
-format as
+The **INSTITUTION** meta field ([](#institution)) corresponds to the RDF
+property `dcterms:publisher`. For instance the field value "Wikimedia
+Foundation", expressible in BEACON format as
 
-    #INSTITUTION: ACME
+    #INSTITUTION: Wikimedia Foundation
 
 can be mapped
 
-    :targetset dcterms:publisher "ACME" .
+    :targetset dcterms:publisher "Wikimedia Foundation" .
 
 A field value starting with `http://` or `https://` is interpreted as URI
 instead of string. For instance
 
-    #INSTITUTION: http://example.org/acme/
+    #INSTITUTION: http://viaf.org/viaf/137022054/
 
-can be mapped
+can be mapped to
 
-    :targetset dcterms:publisher <http://example.org/acme/> .
+    :targetset dcterms:publisher http://viaf.org/viaf/137022054/ .
 
 ## Limitations and applications
 

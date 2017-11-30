@@ -59,48 +59,54 @@
 
     <date month="November" year="2017"/>
 
-	<!--area>...</area-->
-    <!--keyword>...</keyword>
-	<keyword>...</keyword>
-	<keyword>...</keyword-->
-    
+    <!--area>...</area-->
+      <!--keyword>...</keyword>
+    <keyword>...</keyword>
+    <keyword>...</keyword-->
+      
     <abstract>
-		<t>This document specifies BEACON, a data interchange 
-		   format for large numbers of uniform links.</t>
-	</abstract>
-</front>
-
-<middle>
-&pandocMiddle;
-&beaconMappings;
-&beaconSecurity;
-</middle>
-
-<back>
+      <t>This document specifies BEACON, a data interchange 
+         format for large numbers of uniform links.</t>
+    </abstract>
+  </front>
+  <middle>
+    &pandocMiddle;
+    &beaconMappings;
+    &beaconSecurity;
+  </middle>
+  <back>
     <references title="Normative References">
-        &RFC2119;
-        &RFC3339;
-        &RFC3629;
-        &RFC3986;
-        &RFC3987;
-        &RFC5234;
-        &RFC5322;
-        &RFC6570;
-        &Unicode;
-        &DCTERMS;
+      &RFC2119;
+      &RFC3339;
+      &RFC3629;
+      &RFC3986;
+      &RFC3987;
+      &RFC5234;
+      &RFC5322;
+      &RFC6570;
+      &Unicode;
+      &DCTERMS;
     </references>
     <references title="Informative References">
-        &FOAF;
-        &RFC5013;
-        &sitemaps;
-        &SAX;
-        &Turtle;
-        &RELAX-NGC;
-        &RSSSYND;
-        &RDF;
-        &VOID;
-        &LDF;
+      &FOAF;
+      &RFC5013;
+      &sitemaps;
+      &SAX;
+      &Turtle;
+      &RELAX-NGC;
+      &RSSSYND;
+      &RDF;
+      &VOID;
+      &LDF;
+      <reference anchor='Hydra'>
+        <front>
+          <title abbrev='Hydra'>Hydra Core Vocabulary</title>
+          <author initials="M." surname="Lanthaler" fullname="Markus Lanthaler"/>
+          <date year='2017' month='Oct'/>
+        </front>
+        <format type='HTML' target="http://www.hydra-cg.com/spec/latest/core/"/>
+      </reference>
     </references>
     &pandocAppendices;
-</back>
+  </back>
 </rfc>
