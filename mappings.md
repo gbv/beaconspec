@@ -57,7 +57,7 @@ being valid URIs can be mapped to at least one RDF triple with:
 The total number of mappable links in a link dump SHOULD result in an
 additional RDF triple whith `COUNT` being the number of links:
 
-     :dump a hydra:totalItems COUNT .
+     :dump hydra:totalItems COUNT .
 
 ## Link annotations in RDF
 
@@ -92,7 +92,7 @@ The total number of mappable links and link annotations in a link dump SHOULD
 result in an additional RDF triple whith `TRIPLES` being the sum of both
 numbers:
 
-     :dump a void:triples TRIPLES .
+     :dump void:triples TRIPLES .
 
 
 ## Meta fields for link construction in RDF

@@ -198,6 +198,10 @@ separated by colon and/or tabulator or space:
 
      METAVALUE   =  LINE
 
+If a BEACON file contains multiple meta lines with same field name, all but one
+of these lines MUST be ignored. Applications SHOULD emit a warning for multiple
+meta lines with same field name.
+
 Each link is given on a **link line** with its source token, optionally follwed
 by annotation token and target token. These link elements are used for
 ([](#link-construction)). If no empty line is given, the first link line MUST
@@ -309,7 +313,10 @@ name build of uppercase letters `A-Z`.  Relevant meta fields for link
 construction ([](#meta-fields-for-link-construction)), for description of the link
 dump ([](#meta-fields-for-link-dumps)), and for description of source dataset and
 target dataset ([](#meta-fields-for-datasets)) are defined in the following.
-Additional meta fields, not defined in this specification, SHOULD be ignored.
+
+A link dump can only contain one value for each meta field. Additional meta
+fields, not defined in this specification, SHOULD be ignored. 
+
 All meta field values MUST be whitespace-normalized. Missing meta field values
 and empty strings MUST be set to the field’s default value, which is the empty
 string unless noted otherwise. The following diagram shows which meta fields
