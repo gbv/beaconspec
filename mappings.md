@@ -39,6 +39,12 @@ The following RDF triples can always be assumed when mapping link dumps to RDF:
      :sourceset a void:Dataset .
      :targetset a void:Dataset .
 
+All publically available BEACON data dumps SHOULD be Open Data, so the
+following triple MAY be assumed as well:
+
+    :dump <http://creativecommons.org/ns#license>
+        <http://creativecommons.org/publicdomain/zero/1.0/> .
+
 ## Links in RDF
 
 Links ([](#links)) with source identifier, target identifier, and relation type
