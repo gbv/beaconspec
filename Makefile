@@ -1,7 +1,7 @@
 REVSHRT = $(shell git log -1 --format="%h" beacon.md)
 REVHTML = beacon-$(REVSHRT).html
 
-all: html txt
+all: html txt index.html
 
 HTML = beacon.html
 TXT  = beacon.txt
@@ -22,18 +22,23 @@ $(HTML): beacon.xml appendices.xml mappings.xml security.xml template.xml
 revision: $(HTML)
 	cp $(HTML) $(REVHTML)
 
-website: $(HTML) $(TXT)
+index.html: README.md
+	pandoc --standalone -t html5 -o $@ $<
+
+website: $(HTML) $(TXT) index.html
 	@cp $(HTML) new.html
 	@cp $(TXT) new.txt
+	@mv index.html new-index.html
 	git checkout gh-pages
-	@cp new.html $(HTML)
-	@cp new.txt $(TXT)
-	git add $(HTML) $(TXT)
+	@mv new.html $(HTML)
+	@mv new-index.html index.html
+	@mv new.txt $(TXT)
+	git add $(HTML) $(TXT) index.html
 	git commit -m "added revision $(REVSHRT)"
 	git checkout master
 
 clean:
-	rm -f $(HTML) $(TXT) appendices.xml beacon.xml beacon-*.html new.*
+	rm -f $(HTML) $(TXT) appendices.xml beacon.xml beacon-*.html index.html new.*
 
 new: clean all
 
