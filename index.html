@@ -1,17 +1,61 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>BEACON specification</title>
-  </head>
-  <body>
-		<ul>
-  		<li><a href="beacon.html">latest</a></li>
-			<li><a href="draft-voss-beacon-002.html">draft-voss-beacon-002</a></li>
-			<li><a href="draft-voss-beacon-001.html">draft-voss-beacon-001</a></li>
-		</ul>		
-	  <p>
-			The specification is managed in
-      <a href="https://github.com/gbv/beaconspec">a GitHub repository</a>
-    </p>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="beacon-link-dump-format">BEACON link dump format</h1>
+<p>This repository contains drafts of the <strong>BEACON link dump format</strong> specification. BEACON is a data interchange format for large numbers of uniform links.</p>
+<p>The format was developed to exchange mappings between authority files and resources incultural institutions but it can also serve as serialization format for RDF graphs with uniform triples.</p>
+<h2 id="specification">Specification</h2>
+<p>Specification drafts are managed and published <a href="https://github.com/gbv/beaconspec">in a GitHub repository</a>:</p>
+<ul>
+<li><a href="https://gbv.github.io/beaconspec/beacon.html">latest version</a></li>
+<li><a href="https://gbv.github.io/beaconspec/draft-voss-beacon-002.html">draft-002</a> (November 2017)</li>
+<li><a href="https://gbv.github.io/beaconspec/draft-voss-beacon-002.html">draft-001</a> (July 2014)</li>
+</ul>
+<p>Earlier drafts had been developed in Wikipedia starting in February 2010:</p>
+<ul>
+<li><a href="https://de.wikipedia.org/wiki/Wikipedia:BEACON/Format">BEACON format</a> (German Wikipedia)</li>
+</ul>
+<h2 id="use-cases">Use cases</h2>
+<ul>
+<li><a href="https://de.wikipedia.org/wiki/Wikipedia:BEACON">BEACON files used in/by Wikipedia</a> (most comprehensive list)</li>
+<li><a href="https://tools.wmflabs.org/wikidata-todo/beacon.php">BEACON exported by Wikidata tool</a></li>
+<li><a href="https://beacon.findbuch.de/">findbuch.de link aggregator</a></li>
+<li>Link shorteners archived by http://urlte.am/ are BEACON without meta fields (see <a href="https://github.com/ArchiveTeam/urlteam-stuff/blob/master/tools/mkbeacon.pl">helper script</a> to add metadata)</li>
+<li><a href="https://wdmapper.readthedocs.io/">wdmapper</a> uses BEACON as output format for mappings extracted from Wikidata, see <a href="http://coli-conc.gbv.de/concordances/wikidata/">BEACON files at project coli-conc</a></li>
+<li><a href="https://www.npmjs.com/package/wikidata-taxonomy">wikidata-taxonomy</a> contains the script <code>wdmappings</code> to extract ontology mappings in BEACON format</li>
+<li>...</li>
+</ul>
+<h2 id="implementations">Implementations</h2>
+<p>The implementations are not fully aligned with the current state of specification. Most applications don't use dedicated implementations because the format is simple enough to create/parse &quot;by hand&quot;.</p>
+<ul>
+<li><a href="https://github.com/thunken/beacon">Java implementation</a></li>
+<li><a href="https://metacpan.org/release/Data-Beacon">Perl implementation</a></li>
+<li><a href="https://github.com/gbv/beacon-js">JavaScript implementation</a> (work in progress)</li>
+<li>...</li>
+</ul>
+<h2 id="how-to-modify-this-specification">How to modify this specification</h2>
+<p>The specification of BEACON link dump format is being prepared in a public git repository, located at <a href="https://github.com/gbv/beaconspec" class="uri">https://github.com/gbv/beaconspec</a>. It uses the technique described in <a href="https://tools.ietf.org/html/rfc7328.html">RFC 7328</a>.</p>
+<p>The specification is written in Pandoc Markdown syntax in the file <code>beacon.md</code>. Additional parts are included in the file <code>appendices.md</code>, <code>rfctemplate.xml</code>, and bibliographic references in the directory <code>ref</code>. To compile the specification in RFC style there is a <code>Makefile</code>. To create a snapshot in HTML and TXT format you need:</p>
+<ul>
+<li><a href="http://johnmacfarlane.net/pandoc/">Pandoc</a>,</li>
+<li>an XSLT transformator (<code>xsltproc</code>),</li>
+<li><a href="http://xml.resource.org/">xml2rfc</a> version 2.</li>
+</ul>
+<p>To install at Ubuntu Linux with Python, call:</p>
+<pre><code>sudo apt-get install pandoc xsltproc xml2rfc
+sudo pip install xml2rfc</code></pre>
+<p>To further install <code>pandoc2rfc</code> after cloning the repository you must call:</p>
+<pre><code>git submodule update --init</code></pre>
+<p>You can then modify <code>beacon.md</code>, <code>appendices.md</code>, <code>rfctemplate.xml</code> and create a nice HTML version by simply invoking <code>make</code>.</p>
+</body>
 </html>
