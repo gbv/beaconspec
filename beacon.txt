@@ -314,8 +314,9 @@ Internet-Draft                   BEACON                    November 2017
 
    Each link is given on a *link line* with its source token, optionally
    follwed by annotation token and target token.  These link elements
-   are used for (Section 3.2).  If no empty line is given, the first
-   link line MUST NOT begin with "#".
+   are used for (Section 3.2) unless the source token consists of
+   whitespace only.  If no empty line is given, the first link line MUST
+   NOT begin with "#".
 
     LINKLINE    =  SOURCE /
                    SOURCE VBAR TARGET /
@@ -328,8 +329,7 @@ Internet-Draft                   BEACON                    November 2017
 
     ANNOTATION  =  TOKEN
 
-   The ambiguity of rule "LINKLINE" with one "VBAR" is resolved is
-   following:
+
 
 
 
@@ -337,6 +337,9 @@ Voss & Schindler           Expires May 5, 2018                  [Page 6]
 
 Internet-Draft                   BEACON                    November 2017
 
+
+   The ambiguity of rule "LINKLINE" with one "VBAR" is resolved is
+   following:
 
    o  If the target meta field (Section 4.1.2) has its default value
       "{+ID}" and the whitespace-normalized second token begins with
@@ -348,8 +351,8 @@ Internet-Draft                   BEACON                    November 2017
    This way one can use two forms to encode links to HTTP URIs (given
    target meta field and message meta field with their default values):
 
-   foo|http://example.org/foobar
-   foo||http://example.org/foobar
+   foo|http://example.org/bar
+   foo||http://example.org/bar
 
    Applications MAY accept link lines with more than two vertical bars
    but they MUST ignore additional content between a third vertical bar
@@ -361,7 +364,8 @@ Internet-Draft                   BEACON                    November 2017
    *link tokens*. Each link is constructed based on meta fields for link
    construction (Section 4.1) and from
 
-   o  a mandatory *source token*,
+   o  a mandatory *source token* which MUST NOT consist of whitespace
+      only,
 
    o  an optional *annotation token*, and
 
@@ -375,17 +379,13 @@ Internet-Draft                   BEACON                    November 2017
       URI pattern by inserting the source token.
 
    o  The target identifier is constructed from the "TARGET" meta field
-      URI pattern by inserting either the target token if this token is
-      given, or the source token otherwise.
+      URI pattern by inserting either the target token if the target
+      token is given and not empty, or the source token otherwise.
 
-   o  The link annotation is set to the annotation token unless the
-      "RELATION" meta field contains an URI pattern or no annotation
-      token is given.  Otherwise the link annotation is set to the
+   o  The link annotation is set to the annotation token if the
+      "RELATION" meta field contains a URI and the annotation token is
+      given and not empty.  Otherwise the link annotation is set to the
       "MESSAGE" meta field.
-
-   o  The relation type is set to the "RELATION" meta field if this
-      field contains an URI.  If this field contains an URI pattern, the
-      relation type is constructed from this pattern by inserting the
 
 
 
@@ -394,8 +394,11 @@ Voss & Schindler           Expires May 5, 2018                  [Page 7]
 Internet-Draft                   BEACON                    November 2017
 
 
-      annotation token or the empty string if no annotation token is
-      given.
+   o  The relation type is set to the "RELATION" meta field if this
+      field contains a URI.  If this field contains a URI pattern
+      instead, the relation type is constructed from this pattern by
+      inserting the annotation token or the empty string if no
+      annotation token is given.
 
    The following table illustrates construction of a link:
 
@@ -438,9 +441,6 @@ Internet-Draft                   BEACON                    November 2017
 
    The RECOMMENDED MIME type of BEACON files is "text/plain".  The file
    extension ".txt" SHOULD be used when storing BEACON files.
-
-
-
 
 
 
@@ -495,7 +495,7 @@ Internet-Draft                   BEACON                    November 2017
 4.1.  Meta fields for link construction
 
    The following meta fields define how to construct links from link
-   tokens (Section 3.2).  See Section 5.4 for mapping of these fields to
+   tokens (Section 3.2).  See Section 5.5 for mapping of these fields to
    RDF.
 
 
@@ -508,9 +508,9 @@ Internet-Draft                   BEACON                    November 2017
 
 4.1.1.  PREFIX
 
-   The "PREFIX" meta field specifies a URI pattern to construct source
-   identfiers.  If the non-empty field value contains no template
-   expression, the expression "{ID}" is appended.
+   The "PREFIX" meta field specifies a URI pattern (Section 2.4) to
+   construct source identfiers.  If the non-empty field value contains
+   no URI pattern, the expression "{ID}" is appended.
 
    The default value is "{+ID}".
 
@@ -519,9 +519,9 @@ Internet-Draft                   BEACON                    November 2017
 
 4.1.2.  TARGET
 
-   The "TARGET" meta field specifies a URI pattern to construct target
-   identifiers.  If the non-empty field value field contains no template
-   expression, the expression "{ID}" is appended.
+   The "TARGET" meta field specifies a URI pattern (Section 2.4) to
+   construct target identifiers.  If the non-empty field value field
+   contains no URI pattern, the expression "{ID}" is appended.
 
    The default value is "{+ID}".
 
@@ -533,8 +533,8 @@ Internet-Draft                   BEACON                    November 2017
 4.1.4.  RELATION
 
    The "RELATION" meta field specifies relation types of links.  The
-   field value MUST be either an URI or a URI pattern as described in
-   Section 2.4.
+   field value MUST be either a URI as defined in [RFC3986] or a URI
+   pattern as described in Section 2.4.
 
    The default value is "http://www.w3.org/2000/01/rdf-schema#seeAlso".
 
@@ -546,7 +546,7 @@ Internet-Draft                   BEACON                    November 2017
 4.2.  Meta fields for link dumps
 
    Meta fields for link dumps describe the link dump as whole.  See
-   Section 5.5 for mapping of these fields to RDF.
+   Section 5.6 for mapping of these fields to RDF.
 
 4.2.1.  DESCRIPTION
 
@@ -631,7 +631,7 @@ Internet-Draft                   BEACON                    November 2017
 4.3.  Meta fields for datasets
 
    Dataset meta fields contain properties of the source dataset or
-   target dataset, respectively.  See Section 5.6 for for mapping of
+   target dataset, respectively.  See Section 5.7 for for mapping of
    these fields to RDF.
 
 4.3.1.  SOURCESET
@@ -661,7 +661,7 @@ Internet-Draft                   BEACON                    November 2017
    All URIs MUST be transformed to IRIs as defined in Section 3.2 of
    [RFC3987].
 
-   Examples link dumps mapped to RDF is given in Appendix D.
+   Examples of link dumps mapped to RDF are given in Appendix D.
 
 
 
@@ -677,14 +677,13 @@ Internet-Draft                   BEACON                    November 2017
 5.1.  Naming conventions
 
    The following namespace prefixes are used to refer to RDF properties
-   and classes from the RDF and RDFS vocabularies [RDF], the DCMI
-   Metadata Terms [DCTERMS], the FOAF vocabulary [FOAF], the VoID
-   vocabulary [VOID], and the Hydra Core Vocabulary [Hydra], the RSS 1.0
-   Syndication Module [RSSSYND]:
+   and classes from the RDFS vocabulary [RDF], the DCMI Metadata Terms
+   [DCTERMS], the FOAF vocabulary [FOAF], the VoID vocabulary [VOID],
+   and the Hydra Core Vocabulary [Hydra], the RSS 1.0 Syndication Module
+   [RSSSYND]:
 
-    rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
-    dcterms: <http://purl.org/dc/terms/extent>
+    dcterms: <http://purl.org/dc/terms/>
     foaf:    <http://xmlns.com/foaf/0.1/>
     void:    <http://rdfs.org/ns/void#>
     hydra:   <http://www.w3.org/ns/hydra/core#>
@@ -695,6 +694,8 @@ Internet-Draft                   BEACON                    November 2017
    ":targetset" denotes the the target dataset.  Source datatset and
    target datatset can also be given an absolute IRI with meta fields
    "SOURCESET" and "TARGETSET", respectively (Section 4.3).
+
+5.2.  Default triples
 
    The following RDF triples can always be assumed when mapping link
    dumps to RDF:
@@ -712,7 +713,7 @@ Internet-Draft                   BEACON                    November 2017
    :dump <http://creativecommons.org/ns#license>
        <http://creativecommons.org/publicdomain/zero/1.0/> .
 
-5.2.  Links in RDF
+5.3.  Links in RDF
 
    Links (Section 2.1) with source identifier, target identifier, and
    relation type being valid URIs can be mapped to at least one RDF
@@ -724,7 +725,6 @@ Internet-Draft                   BEACON                    November 2017
 
 
 
-
 Voss & Schindler           Expires May 5, 2018                 [Page 13]
 
 Internet-Draft                   BEACON                    November 2017
@@ -732,12 +732,13 @@ Internet-Draft                   BEACON                    November 2017
 
    o  the target identifiers used as object IRI.
 
-   The total number of mappable links in a link dump SHOULD result in an
-   additional RDF triple whith "COUNT" being the number of links:
+   The total number of mappable links in a link dump SHOULD result in
+   two additional RDF triples whith "COUNT" being the number of links:
 
     :dump hydra:totalItems COUNT .
+    :dump void:entities COUNT .
 
-5.3.  Link annotations in RDF
+5.4.  Link annotations in RDF
 
    Each non-empty link annotation SHOULD result in an additional RDF
    triple with:
@@ -780,34 +781,33 @@ Internet-Draft                   BEACON                    November 2017
 
 
 
-
 Voss & Schindler           Expires May 5, 2018                 [Page 14]
 
 Internet-Draft                   BEACON                    November 2017
 
 
-5.4.  Meta fields for link construction in RDF
+5.5.  Meta fields for link construction in RDF
 
    All meta fields for link construction (Section 4.1) except for
    *MESSAGE* can be mapped to RDF triples.
 
-   The *PREFIX* meta field (Section 4.1.1) MAY be mapped to the RDF
+   The *PREFIX* meta field (Section 4.1.1) SHOULD be mapped to the RDF
    property "void:uriSpace" or "void:uriRegexPattern" with ":sourceset"
    as RDF subject.
 
-   The *TARGET* meta field (Section 4.1.2 MAY be mapped to the RDF
+   The *TARGET* meta field (Section 4.1.2 SHOULD be mapped to the RDF
    property "void:uriSpace" or "void:uriRegexPattern" with ":targetset"
    as RDF subject.
 
    The *RELATION* meta field (Section 4.1.4), if its value contains an
-   URI, is mapped to the RDF property "void:linkPredicate" with ":dump"
-   as RDF subject.
+   URI, SHOULD mapped to the RDF property "void:linkPredicate" with
+   ":dump" as RDF subject.
 
    The *ANNOTATION* meta field (Section 4.1.5) is used to map link
-   annotations to RDF (Section 5.3) unless the *RELATION* meta field
+   annotations to RDF (Section 5.4) unless the *RELATION* meta field
    contains an URI template.
 
-5.5.  Meta fields for link dumps in RDF
+5.6.  Meta fields for link dumps in RDF
 
    Meta fields for link dumps (Section 4.2) describe properties of the
    link dump.
@@ -829,11 +829,11 @@ Internet-Draft                   BEACON                    November 2017
 
    can be mapped to
 
-   :dump dcterms:creator "Bea Beacon" .
    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
 
    A field value starting with "http://" or "https://" is interpreted as
    URI instead of string.  For instance
+
 
 
 
@@ -921,7 +921,7 @@ Internet-Draft                   BEACON                    November 2017
 
    :dump rssynd:updatePeriod "daily" .
 
-5.6.  Meta fields for datasets in RDF
+5.7.  Meta fields for datasets in RDF
 
    Meta fields for the datasets (Section 4.3) are mapped to subjects and
    objects of RDF triples to describe the source dataset and target
@@ -954,11 +954,11 @@ Voss & Schindler           Expires May 5, 2018                 [Page 17]
 Internet-Draft                   BEACON                    November 2017
 
 
-   #INSTITUTION: Wikimedia Foundation
+   #INSTITUTION: Wikimedia
 
    can be mapped
 
-   :targetset dcterms:publisher "Wikimedia Foundation" .
+   :dump dcterms:publisher [ a foaf:Agent ; foaf:name "Wikimedia" ] .
 
    A field value starting with "http://" or "https://" is interpreted as
    URI instead of string.  For instance
@@ -969,7 +969,7 @@ Internet-Draft                   BEACON                    November 2017
 
    :targetset dcterms:publisher http://viaf.org/viaf/137022054/ .
 
-5.7.  Limitations and applications
+5.8.  Limitations and applications
 
    BEACON format (Section 3) can be used as serialization format for RDF
    graphs where all parts of RDF triples are IRIs and IRIs do not
@@ -1305,6 +1305,7 @@ Internet-Draft                   BEACON                    November 2017
        void:objectsTarget :targetset ;
        void:linkPredicate rdfs:seeAlso ;
        hydra:totalItems 3 ;
+       void:entities 3 ;
        void:triples 4 .
 
    <http://example.org/alice>
@@ -1336,7 +1337,6 @@ Internet-Draft                   BEACON                    November 2017
 
    This information can be expressed in a serialized link dump with
    BEACON meta fields as following:
-
 
 
 
@@ -1412,6 +1412,7 @@ Internet-Draft                   BEACON                    November 2017
        void:objectsTarget <http://example.com/people/> ;
        void:linkPredicate dc:contributor ;
        hydra:totalItems 2 ;
+       void:entities 2 ;
        void:triples 4 .
 
    <http://example.com/documents/> a void:Dataset ;
@@ -1447,7 +1448,6 @@ Authors' Addresses
    Mathias Schindler
 
    Email: info@mathias-schindler.de
-
 
 
 
