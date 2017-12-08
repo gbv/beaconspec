@@ -204,8 +204,8 @@ meta lines with same field name.
 
 Each link is given on a **link line** with its source token, optionally follwed
 by annotation token and target token. These link elements are used for
-([](#link-construction)). If no empty line is given, the first link line MUST
-NOT begin with `#`.
+([](#link-construction)) unless the source token consists of whitespace only.
+If no empty line is given, the first link line MUST NOT begin with `#`.
 
      LINKLINE    =  SOURCE /
                     SOURCE VBAR TARGET /
@@ -228,8 +228,8 @@ The ambiguity of rule `LINKLINE` with one `VBAR` is resolved is following:
 This way one can use two forms to encode links to HTTP URIs (given target
 meta field and message meta field with their default values):
 
-    foo|http://example.org/foobar
-    foo||http://example.org/foobar
+    foo|http://example.org/bar
+    foo||http://example.org/bar
 
 Applications MAY accept link lines with more than two vertical bars but they
 MUST ignore additional content between a third vertical bar and the end of the
@@ -241,7 +241,7 @@ Link elements in BEACON format are given in abbreviated form with **link
 tokens**. Each link is constructed based on meta fields for link construction
 ([](#meta-fields-for-link-construction)) and from
 
-* a mandatory **source token**,
+* a mandatory **source token** which MUST NOT consist of whitespace only,
 * an optional **annotation token**, and
 * an optional **target token**.
 
@@ -253,15 +253,15 @@ construct values from URI patterns):
   by inserting the source token.
 
 * The target identifier is constructed from the `TARGET` meta field URI pattern
-  by inserting either the target token if this token is given, or the source
-  token otherwise.
+  by inserting either the target token if the target token is given and not
+  empty, or the source token otherwise.
 
-* The link annotation is set to the annotation token unless the `RELATION` meta
-  field contains an URI pattern or no annotation token is given. Otherwise the
-  link annotation is set to the `MESSAGE` meta field. 
+* The link annotation is set to the annotation token if the `RELATION` meta
+  field contains a URI and the annotation token is given and not empty.
+  Otherwise the link annotation is set to the `MESSAGE` meta field.
 
 * The relation type is set to the `RELATION` meta field if this field contains
-  an URI. If this field contains an URI pattern, the relation type is
+  a URI. If this field contains a URI pattern instead, the relation type is
   constructed from this pattern by inserting the annotation token or the empty
   string if no annotation token is given.
 
@@ -355,9 +355,9 @@ mapping of these fields to RDF.
 
 ### PREFIX
 
-The `PREFIX` meta field specifies a URI pattern to construct source identfiers.
-If the non-empty field value contains no template expression, the expression
-`{ID}` is appended.
+The `PREFIX` meta field specifies a URI pattern ([](#uri-patterns)) to
+construct source identfiers. If the non-empty field value contains no URI
+pattern, the expression `{ID}` is appended.
 
 The default value is `{+ID}`.
 
@@ -366,9 +366,9 @@ BEACON files.
 
 ### TARGET
 
-The `TARGET` meta field specifies a URI pattern to construct target
-identifiers. If the non-empty field value field contains no template
-expression, the expression `{ID}` is appended.
+The `TARGET` meta field specifies a URI pattern ([](#uri-patterns)) to
+construct target identifiers. If the non-empty field value field contains no
+URI pattern, the expression `{ID}` is appended.
 
 The default value is `{+ID}`.
 
@@ -379,7 +379,8 @@ The `MESSAGE` meta field specifies a default value for link annotations.
 ### RELATION
 
 The `RELATION` meta field specifies relation types of links. The field value
-MUST be either an URI or a URI pattern as described in [](#uri-patterns).
+MUST be either a URI as defined in [](#RFC3986) or a URI pattern as
+described in [](#uri-patterns).
 
 The default value is `http://www.w3.org/2000/01/rdf-schema#seeAlso`.
 

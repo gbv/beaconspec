@@ -168,6 +168,7 @@ The link dump can be mapped to RDF as following:
         void:objectsTarget :targetset ;
         void:linkPredicate rdfs:seeAlso ;
         hydra:totalItems 3 ;
+        void:entities 3 ;
         void:triples 4 .
 
     <http://example.org/alice>
@@ -241,6 +242,7 @@ This link dump can be mapped to RDF as following:
         void:objectsTarget <http://example.com/people/> ;
         void:linkPredicate dc:contributor ;
         hydra:totalItems 2 ;
+        void:entities 2 ;
         void:triples 4 .
 
     <http://example.com/documents/> a void:Dataset ;

@@ -6,19 +6,18 @@ relation type not being a valid URI.
 
 All URIs MUST be transformed to IRIs as defined in Section 3.2 of [](#RFC3987).
 
-Examples link dumps mapped to RDF is given in [](#mapping-examples).
+Examples of link dumps mapped to RDF are given in [](#mapping-examples).
 
 ## Naming conventions
 
 The following namespace prefixes are used to refer to RDF properties and
-classes from the RDF and RDFS vocabularies [](#RDF), the DCMI Metadata Terms
+classes from the RDFS vocabulary [](#RDF), the DCMI Metadata Terms
 [](#DCTERMS), the FOAF vocabulary [](#FOAF), the VoID vocabulary [](#VOID), and
 the Hydra Core Vocabulary [](#Hydra), the RSS 1.0 Syndication Module
 [](#RSSSYND):
 
-     rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
      rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
-     dcterms: <http://purl.org/dc/terms/extent>
+     dcterms: <http://purl.org/dc/terms/>
      foaf:    <http://xmlns.com/foaf/0.1/>
      void:    <http://rdfs.org/ns/void#>
      hydra:   <http://www.w3.org/ns/hydra/core#>
@@ -29,6 +28,8 @@ denotes the the source dataset, and the blank node `:targetset` denotes the the
 target dataset. Source datatset and target datatset can also be given an
 absolute IRI with meta fields `SOURCESET` and `TARGETSET`, respectively
 ([](#meta-fields-for-datasets)).
+
+## Default triples
 
 The following RDF triples can always be assumed when mapping link dumps to RDF:
 
@@ -54,10 +55,11 @@ being valid URIs can be mapped to at least one RDF triple with:
 * the relation type used as predicate,
 * the target identifiers used as object IRI.
 
-The total number of mappable links in a link dump SHOULD result in an
-additional RDF triple whith `COUNT` being the number of links:
+The total number of mappable links in a link dump SHOULD result in two
+additional RDF triples whith `COUNT` being the number of links:
 
      :dump hydra:totalItems COUNT .
+     :dump void:entities COUNT .
 
 ## Link annotations in RDF
 
@@ -100,14 +102,15 @@ numbers:
 All meta fields for link construction ([](#meta-fields-for-link-construction))
 except for **MESSAGE** can be mapped to RDF triples.
 
-The **PREFIX** meta field ([](#prefix)) MAY be mapped to the RDF property
+The **PREFIX** meta field ([](#prefix)) SHOULD be mapped to the RDF property
 `void:uriSpace` or `void:uriRegexPattern` with `:sourceset` as RDF subject.
 
-The **TARGET** meta field ([](#target) MAY be mapped to the RDF property
+The **TARGET** meta field ([](#target) SHOULD be mapped to the RDF property
 `void:uriSpace` or `void:uriRegexPattern` with `:targetset` as RDF subject.
 
-The **RELATION** meta field ([](#relation)), if its value contains an URI, is
-mapped to the RDF property `void:linkPredicate` with `:dump` as RDF subject.
+The **RELATION** meta field ([](#relation)), if its value contains an URI,
+SHOULD mapped to the RDF property `void:linkPredicate` with `:dump` as RDF
+subject.
 
 The **ANNOTATION** meta field ([](#annotation)) is used to map link annotations
 to RDF ([](#link-annotations-in-rdf)) unless the **RELATION** meta field
@@ -135,7 +138,6 @@ instance
 
 can be mapped to
 
-    :dump dcterms:creator "Bea Beacon" .
     :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
 
 A field value starting with `http://` or `https://` is interpreted as URI
@@ -236,11 +238,11 @@ The **INSTITUTION** meta field ([](#institution)) corresponds to the RDF
 property `dcterms:publisher`. For instance the field value "Wikimedia
 Foundation", expressible in BEACON format as
 
-    #INSTITUTION: Wikimedia Foundation
+    #INSTITUTION: Wikimedia
 
 can be mapped
 
-    :targetset dcterms:publisher "Wikimedia Foundation" .
+    :dump dcterms:publisher [ a foaf:Agent ; foaf:name "Wikimedia" ] .
 
 A field value starting with `http://` or `https://` is interpreted as URI
 instead of string. For instance
