@@ -430,7 +430,7 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Vo&#223;, J. and M. Schindler" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-voss-beacon-002" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-voss-beacon-003" />
   <meta name="dct.issued" scheme="ISO8601" content="2017-11" />
   <meta name="dct.abstract" content="This document specifies BEACON, a data interchange format for large numbers of uniform links." />
   <meta name="description" content="This document specifies BEACON, a data interchange format for large numbers of uniform links." />
@@ -464,7 +464,7 @@
   </table>
 
   <p class="title">BEACON link dump format<br />
-  <span class="filename">draft-voss-beacon-002</span></p>
+  <span class="filename">draft-voss-beacon-003</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
@@ -487,8 +487,8 @@
 <p/>
 
 <ul>
-  <li>a set of <strong>links</strong> (<a href="#links">Section 2.1</a>) and </li>
-  <li>a set of <strong>meta fields</strong> (<a href="#meta-fields">Section 4</a>).  </li>
+  <li>a set of <strong>meta fields</strong> (<a href="#meta-fields">Section 4</a>) and </li>
+  <li>a set of <strong>links</strong> (<a href="#links">Section 2.1</a>).  </li>
 </ul>
 <p id="rfc.section.1.p.3">Link dumps can be serialized in <strong>BEACON format</strong> (<a href="#beacon-format">Section 3</a>). BEACON format is a condense, line-oriented text format that utilizes common patterns in links of a link dump form abbreviation. A link dump serialized in BEACON format is also referred to as <strong>BEACON file</strong>.  </p>
 <p id="rfc.section.1.p.4">Link dumps can further be mapped to RDF graphs with minor limitations (<a href="#mapping-to-rdf">Section 5</a>).  </p>
@@ -574,7 +574,7 @@ http://example.org/id/6789|http://example.com/about/abc
 
   Hello World!     http://example.org/Hello%20World!
   x/?a=1&amp;b=2       http://example.org/x/?a=1&amp;b=2
-  M%C3%BCller      http://example.org/?id=M%25C3%25BCller
+  M%C3%BCller      http://example.org/M%25C3%25BCller
 </pre>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#beacon-format" id="beacon-format">BEACON format</a></h1>
 <h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#beacon-files" id="beacon-files">BEACON files</a></h1>
@@ -742,7 +742,7 @@ foo||http://example.org/bar
 <h1 id="rfc.section.4.2.2"><a href="#rfc.section.4.2.2">4.2.2.</a> <a href="#creator" id="creator">CREATOR</a></h1>
 <p id="rfc.section.4.2.2.p.1">The <samp>CREATOR</samp> meta field contains the URI or the name of the person, organization, or a service primarily responsible for making the link dump. The field SHOULD NOT contain a simple URL, unless this URL is also used as URI.  </p>
 <h1 id="rfc.section.4.2.3"><a href="#rfc.section.4.2.3">4.2.3.</a> <a href="#contact" id="contact">CONTACT</a></h1>
-<p id="rfc.section.4.2.3.p.1">The <samp>CONTACT</samp> meta field contains an email address or similar contact information to reach the creator of the link dump. The field value SHOULD be a mailbox address as specified in section 3.4 of <a href="#RFC5322">[RFC5322]</a>.  </p>
+<p id="rfc.section.4.2.3.p.1">The <samp>CONTACT</samp> meta field contains an email address or similar contact information to reach the creator of the link dump. The field value SHOULD be an individual mailbox address as specified in section 3.4 of <a href="#RFC5322">[RFC5322]</a>.  </p>
 <h1 id="rfc.section.4.2.4"><a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#homepage" id="homepage">HOMEPAGE</a></h1>
 <p id="rfc.section.4.2.4.p.1">The <samp>HOMEPAGE</samp> meta field contains a URL of a website with additional information about this link dump. Note that this field does not specify the homepage of the target dataset.  </p>
 <h1 id="rfc.section.4.2.5"><a href="#rfc.section.4.2.5">4.2.5.</a> <a href="#feed" id="feed">FEED</a></h1>
@@ -853,7 +853,7 @@ foo||http://example.org/bar
 <p id="rfc.section.5.5.p.5">The <strong>ANNOTATION</strong> meta field (<a href="#annotation">Section 4.1.5</a>) is used to map link annotations to RDF (<a href="#link-annotations-in-rdf">Section 5.4</a>) unless the <strong>RELATION</strong> meta field contains an URI template.  </p>
 <h1 id="rfc.section.5.6"><a href="#rfc.section.5.6">5.6.</a> <a href="#meta-fields-for-link-dumps-in-rdf" id="meta-fields-for-link-dumps-in-rdf">Meta fields for link dumps in RDF</a></h1>
 <p id="rfc.section.5.6.p.1">Meta fields for link dumps (<a href="#meta-fields-for-link-dumps">Section 4.2</a>) describe properties of the link dump.  </p>
-<p id="rfc.section.5.6.p.2">The <strong>DESCRIPTION</strong> meta field corresponds to the <samp>dcterms:description</samp> RDF property. For instance </p>
+<p id="rfc.section.5.6.p.2">The <strong>DESCRIPTION</strong> meta field (<a href="#description">Section 4.2.1</a>) corresponds to the <samp>dcterms:description</samp> RDF property. For instance </p>
 <pre>
 #DESCRIPTION: Mapping from ids to documents
 </pre>
@@ -861,13 +861,13 @@ foo||http://example.org/bar
 <pre>
 :dump dcterms:description "Mapping from ids to documents" .
 </pre>
-<p id="rfc.section.5.6.p.4">The <strong>CREATOR</strong> meta field corresponds to the <samp>dcterms:creator</samp> RDF property. The creator can be given as string or as instace of the class <samp>foaf:Agent</samp>. For instance </p>
+<p id="rfc.section.5.6.p.4">The <strong>CREATOR</strong> meta field (<a href="#creator">Section 4.2.2</a>) corresponds to the <samp>dcterms:creator</samp> RDF property. The RDF object SHOULD NOT be a literal node. For instance </p>
 <pre>
 #CREATOR: Bea Beacon
 </pre>
 <p id="rfc.section.5.6.p.5">can be mapped to </p>
 <pre>
-:dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+:dump dcterms:creator [ foaf:name "Bea Beacon" ] .
 </pre>
 <p id="rfc.section.5.6.p.6">A field value starting with <samp>http://</samp> or <samp>https://</samp> is interpreted as URI instead of string. For instance </p>
 <pre>
@@ -876,17 +876,14 @@ foo||http://example.org/bar
 <p id="rfc.section.5.6.p.7">can be mapped to </p>
 <pre>
 :dump dcterms:creator &lt;http://example.org/people/bea&gt; .
-&lt;http://example.org/people/bea&gt; a foaf:Agent .
 </pre>
-<p id="rfc.section.5.6.p.8">The <strong>CONTACT</strong> meta field (<a href="#contact">Section 4.2.3</a>) corresponds to the <samp>foaf:mbox</samp> and <samp>foaf:name</samp> RDF properties. For instance </p>
+<p id="rfc.section.5.6.p.8">The <strong>CONTACT</strong> meta field (<a href="#contact">Section 4.2.3</a>) corresponds to the <samp>foaf:mbox</samp> RDF property. The RDF object SHOULD NOT be a literal node. For instance </p>
 <pre>
  #CONTACT: admin@example.com
 </pre>
 <p id="rfc.section.5.6.p.9">can be mapped to </p>
 <pre>
- :dump dcterms:creator [
-     foaf:mbox &lt;mailto:admin@example.com&gt;
- ] .
+ :dump dcterms:creator [ foaf:mbox &lt;mailto:admin@example.com&gt; ] .
 </pre>
 <p id="rfc.section.5.6.p.10">and </p>
 <pre>
@@ -915,7 +912,7 @@ foo||http://example.org/bar
 <pre>
 :dump void:dataDump &lt;http://example.com/beacon.txt&gt; .
 </pre>
-<p id="rfc.section.5.6.p.16">The <strong>TIMESTAMP</strong> meta field (<a href="#timestamp">Section 4.2.6</a> corresponds to the <samp>dcterms:modified</samp> RDF property. For instance the following valid timestamps </p>
+<p id="rfc.section.5.6.p.16">The <strong>TIMESTAMP</strong> meta field (<a href="#timestamp">Section 4.2.6</a>) corresponds to the <samp>dcterms:modified</samp> RDF property. For instance the following valid timestamps </p>
 <pre>
  #TIMESTAMP: 2012-05-30
  #TIMESTAMP: 2012-05-30T15:17:36+02:00
@@ -923,9 +920,9 @@ foo||http://example.org/bar
 </pre>
 <p id="rfc.section.5.6.p.17">can be mapped to the following RDF triples, respectively: </p>
 <pre>
- :dump dcterms:modified "2012-05-30"
- :dump dcterms:modified "2012-05-30T15:17:36+02:00"
- :dump dcterms:modified "2012-05-30T13:17:36Z"
+ :dump dcterms:modified "2012-05-30"^^xsd:date
+ :dump dcterms:modified "2012-05-30T15:17:36+02:00"^^xsd:dateTime
+ :dump dcterms:modified "2012-05-30T13:17:36Z"^^xsd:dateTime
 </pre>
 <p id="rfc.section.5.6.p.18">The <strong>UPDATE</strong> meta field (<a href="#update">Section 4.2.7</a>) corresponds to the <samp>rssynd:updatePeriod</samp> RDF property. For instance a daily update </p>
 <pre>
@@ -947,13 +944,13 @@ foo||http://example.org/bar
 <pre>
 :targetset dcterms:title "Wikipedia" .
 </pre>
-<p id="rfc.section.5.7.p.6">The <strong>INSTITUTION</strong> meta field (<a href="#institution">Section 4.3.4</a>) corresponds to the RDF property <samp>dcterms:publisher</samp>. For instance the field value "Wikimedia Foundation", expressible in BEACON format as </p>
+<p id="rfc.section.5.7.p.6">The <strong>INSTITUTION</strong> meta field (<a href="#institution">Section 4.3.4</a>) corresponds to the RDF property <samp>dcterms:publisher</samp>. The RDF object SHOULD NOT be a literal node. For instance </p>
 <pre>
-#INSTITUTION: Wikimedia
+#INSTITUTION: Wikimedia Foundation
 </pre>
 <p id="rfc.section.5.7.p.7">can be mapped </p>
 <pre>
-:dump dcterms:publisher [ a foaf:Agent ; foaf:name "Wikimedia" ] .
+:dump dcterms:publisher [ foaf:name "Wikimedia" ] .
 </pre>
 <p id="rfc.section.5.7.p.8">A field value starting with <samp>http://</samp> or <samp>https://</samp> is interpreted as URI instead of string. For instance </p>
 <pre>
@@ -965,7 +962,7 @@ foo||http://example.org/bar
 </pre>
 <h1 id="rfc.section.5.8"><a href="#rfc.section.5.8">5.8.</a> <a href="#limitations-and-applications" id="limitations-and-applications">Limitations and applications</a></h1>
 <p id="rfc.section.5.8.p.1">BEACON format (<a href="#beacon-format">Section 3</a>) can be used as serialization format for RDF graphs where all parts of RDF triples are IRIs and IRIs do not contain the character sequences <samp>%7C</samp>, <samp>%0A</samp>, <samp>%0D</samp>, or any other percent-encoded character not included in the list of allowed characters (<a href="#allowed-characters">Section 2.2</a>). This limitation applies because the disallowed character sequences would need to result from characters not allowed in link tokens of BEACON format.  </p>
-<p id="rfc.section.5.8.p.2">BEACON link dumps in particular can be used to express Linked Data Fragments <a href="#LDF">[LDF]</a> which also consist of a set of links sharing a common pattern, and additional metadata.  </p>
+<p id="rfc.section.5.8.p.2">BEACON link dumps can be served for instance as Triple Pattern Fragments <a href="#TPF">[TPF]</a> which also consist of a set of links sharing a common pattern, and additional metadata.  </p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
 <p id="rfc.section.6.p.1">Programs should be prepared for malformed and malicious content when parsing BEACON files, when constructing links from link tokens, and when mapping links to RDF or HTML. Possible attacks of parsing contain broken UTF-8 and buffer overflows. Link construction can result in unexpectedly long strings and character sequences that may be harmless when analyzed as parts. Most notably, BEACON data may store strings containing HTML and JavaScript code to be used for cross-site scripting attacks on the site displaying BEACON links.  Applications should therefore escape or filter accordingly all content with established libraries, such as Apache Escape Utils.  </p>
 <h1 id="rfc.references"><a href="#rfc.references">7.</a> References</h1>
@@ -1093,9 +1090,9 @@ foo||http://example.org/bar
     </tr>
     <tr>
       <td class="reference">
-        <b id="LDF">[LDF]</b>
+        <b id="TPF">[TPF]</b>
       </td>
-      <td class="top"><a>Verborgh, R.</a>, "<a>Linked Data Fragments</a>", Jun 2016.</td>
+      <td class="top"><a>Verborgh, R.</a>, "<a>Triple Pattern Fragments</a>", Jan 2017.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -1369,13 +1366,14 @@ http://example.com/documents/42|http://example.com/people/bob.about
 	</span>
 	<span class="org vcardline"></span>
 	<span class="adr">
-	  
+	  <span class="vcardline">Bundestagsb&#252;ro Julia Reda, MdEP, Platz der Republik 1</span>
+
 	  <span class="vcardline">
-		<span class="locality"></span> 
+		<span class="locality">Berlin</span>,  
 		<span class="region"></span>
-		<span class="code"></span>
+		<span class="code">11011</span>
 	  </span>
-	  <span class="country-name vcardline"></span>
+	  <span class="country-name vcardline">Germany</span>
 	</span>
 	<span class="vcardline">EMail: <a href="mailto:info@mathias-schindler.de">info@mathias-schindler.de</a></span>
 

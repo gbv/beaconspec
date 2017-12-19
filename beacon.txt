@@ -9,7 +9,7 @@ Expires: May 5, 2018                                       November 2017
 
 
                         BEACON link dump format
-                         draft-voss-beacon-002
+                         draft-voss-beacon-003
 
 Abstract
 
@@ -63,9 +63,9 @@ Internet-Draft                   BEACON                    November 2017
    BEACON is a data interchange format for large numbers of uniform
    links.  A BEACON *link dump* consists of
 
-   o  a set of *links* (Section 2.1) and
+   o  a set of *meta fields* (Section 4) and
 
-   o  a set of *meta fields* (Section 4).
+   o  a set of *links* (Section 2.1).
 
    Link dumps can be serialized in *BEACON format* (Section 3).  BEACON
    format is a condense, line-oriented text format that utilizes common
@@ -250,7 +250,7 @@ Internet-Draft                   BEACON                    November 2017
 
      Hello World!     http://example.org/Hello%20World!
      x/?a=1&b=2       http://example.org/x/?a=1&b=2
-     M%C3%BCller      http://example.org/?id=M%25C3%25BCller
+     M%C3%BCller      http://example.org/M%25C3%25BCller
 
 3.  BEACON format
 
@@ -573,7 +573,8 @@ Internet-Draft                   BEACON                    November 2017
 
    The "CONTACT" meta field contains an email address or similar contact
    information to reach the creator of the link dump.  The field value
-   SHOULD be a mailbox address as specified in section 3.4 of [RFC5322].
+   SHOULD be an individual mailbox address as specified in section 3.4
+   of [RFC5322].
 
 4.2.4.  HOMEPAGE
 
@@ -609,7 +610,6 @@ Internet-Draft                   BEACON                    November 2017
 
    o  "daily"
 
-   o  "weekly"
 
 
 
@@ -617,6 +617,8 @@ Voss & Schindler           Expires May 5, 2018                 [Page 11]
 
 Internet-Draft                   BEACON                    November 2017
 
+
+   o  "weekly"
 
    o  "monthly"
 
@@ -662,8 +664,6 @@ Internet-Draft                   BEACON                    November 2017
    [RFC3987].
 
    Examples of link dumps mapped to RDF are given in Appendix D.
-
-
 
 
 
@@ -812,8 +812,8 @@ Internet-Draft                   BEACON                    November 2017
    Meta fields for link dumps (Section 4.2) describe properties of the
    link dump.
 
-   The *DESCRIPTION* meta field corresponds to the "dcterms:description"
-   RDF property.  For instance
+   The *DESCRIPTION* meta field (Section 4.2.1) corresponds to the
+   "dcterms:description" RDF property.  For instance
 
    #DESCRIPTION: Mapping from ids to documents
 
@@ -821,15 +821,15 @@ Internet-Draft                   BEACON                    November 2017
 
    :dump dcterms:description "Mapping from ids to documents" .
 
-   The *CREATOR* meta field corresponds to the "dcterms:creator" RDF
-   property.  The creator can be given as string or as instace of the
-   class "foaf:Agent".  For instance
+   The *CREATOR* meta field (Section 4.2.2) corresponds to the
+   "dcterms:creator" RDF property.  The RDF object SHOULD NOT be a
+   literal node.  For instance
 
    #CREATOR: Bea Beacon
 
    can be mapped to
 
-   :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+   :dump dcterms:creator [ foaf:name "Bea Beacon" ] .
 
    A field value starting with "http://" or "https://" is interpreted as
    URI instead of string.  For instance
@@ -847,18 +847,16 @@ Internet-Draft                   BEACON                    November 2017
    can be mapped to
 
    :dump dcterms:creator <http://example.org/people/bea> .
-   <http://example.org/people/bea> a foaf:Agent .
 
    The *CONTACT* meta field (Section 4.2.3) corresponds to the
-   "foaf:mbox" and "foaf:name" RDF properties.  For instance
+   "foaf:mbox" RDF property.  The RDF object SHOULD NOT be a literal
+   node.  For instance
 
     #CONTACT: admin@example.com
 
    can be mapped to
 
-    :dump dcterms:creator [
-        foaf:mbox <mailto:admin@example.com>
-    ] .
+    :dump dcterms:creator [ foaf:mbox <mailto:admin@example.com> ] .
 
    and
 
@@ -889,7 +887,9 @@ Internet-Draft                   BEACON                    November 2017
 
    :dump void:dataDump <http://example.com/beacon.txt> .
 
-
+   The *TIMESTAMP* meta field (Section 4.2.6) corresponds to the
+   "dcterms:modified" RDF property.  For instance the following valid
+   timestamps
 
 
 
@@ -898,19 +898,15 @@ Voss & Schindler           Expires May 5, 2018                 [Page 16]
 Internet-Draft                   BEACON                    November 2017
 
 
-   The *TIMESTAMP* meta field (Section 4.2.6 corresponds to the
-   "dcterms:modified" RDF property.  For instance the following valid
-   timestamps
-
     #TIMESTAMP: 2012-05-30
     #TIMESTAMP: 2012-05-30T15:17:36+02:00
     #TIMESTAMP: 2012-05-30T13:17:36Z
 
    can be mapped to the following RDF triples, respectively:
 
-    :dump dcterms:modified "2012-05-30"
-    :dump dcterms:modified "2012-05-30T15:17:36+02:00"
-    :dump dcterms:modified "2012-05-30T13:17:36Z"
+    :dump dcterms:modified "2012-05-30"^^xsd:date
+    :dump dcterms:modified "2012-05-30T15:17:36+02:00"^^xsd:dateTime
+    :dump dcterms:modified "2012-05-30T13:17:36Z"^^xsd:dateTime
 
    The *UPDATE* meta field (Section 4.2.7) corresponds to the
    "rssynd:updatePeriod" RDF property.  For instance a daily update
@@ -944,8 +940,12 @@ Internet-Draft                   BEACON                    November 2017
    :targetset dcterms:title "Wikipedia" .
 
    The *INSTITUTION* meta field (Section 4.3.4) corresponds to the RDF
-   property "dcterms:publisher".  For instance the field value
-   "Wikimedia Foundation", expressible in BEACON format as
+   property "dcterms:publisher".  The RDF object SHOULD NOT be a literal
+   node.  For instance
+
+   #INSTITUTION: Wikimedia Foundation
+
+   can be mapped
 
 
 
@@ -954,11 +954,7 @@ Voss & Schindler           Expires May 5, 2018                 [Page 17]
 Internet-Draft                   BEACON                    November 2017
 
 
-   #INSTITUTION: Wikimedia
-
-   can be mapped
-
-   :dump dcterms:publisher [ a foaf:Agent ; foaf:name "Wikimedia" ] .
+   :dump dcterms:publisher [ foaf:name "Wikimedia" ] .
 
    A field value starting with "http://" or "https://" is interpreted as
    URI instead of string.  For instance
@@ -979,8 +975,8 @@ Internet-Draft                   BEACON                    November 2017
    disallowed character sequences would need to result from characters
    not allowed in link tokens of BEACON format.
 
-   BEACON link dumps in particular can be used to express Linked Data
-   Fragments [LDF] which also consist of a set of links sharing a common
+   BEACON link dumps can be served for instance as Triple Pattern
+   Fragments [TPF] which also consist of a set of links sharing a common
    pattern, and additional metadata.
 
 6.  Security Considerations
@@ -998,9 +994,13 @@ Internet-Draft                   BEACON                    November 2017
 
 7.  References
 
+7.1.  Normative References
 
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
 
-
+   [RFC3339]  Klyne, G., Ed. and C. Newman, "Date and Time on the
+              Internet: Timestamps", RFC 3339, July 2002.
 
 
 
@@ -1009,14 +1009,6 @@ Voss & Schindler           Expires May 5, 2018                 [Page 18]
 
 Internet-Draft                   BEACON                    November 2017
 
-
-7.1.  Normative References
-
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119, March 1997.
-
-   [RFC3339]  Klyne, G., Ed. and C. Newman, "Date and Time on the
-              Internet: Timestamps", RFC 3339, July 2002.
 
    [RFC3629]  Yergeau, F., "UTF-8, a transformation format of ISO
               10646", STD 63, RFC 3629, November 2003.
@@ -1057,6 +1049,14 @@ Internet-Draft                   BEACON                    November 2017
    [TURTLE]   Beckett, D. and T. Berners-Lee, "Turtle - Terse RDF Triple
               Language", Mar 2011.
 
+   [RELAX-NGC]
+              Clark, J., "RELAX NG Compact Syntax", Nov 2002.
+
+   [RSSSYND]  RSS-DEV Working Group, , "RDF Site Summary 1.0 Modules:
+              Syndication", Dec 2000.
+
+   [RDF]      Hayes, P., "RDF Semantics", Feb 2004.
+
 
 
 
@@ -1066,18 +1066,10 @@ Voss & Schindler           Expires May 5, 2018                 [Page 19]
 Internet-Draft                   BEACON                    November 2017
 
 
-   [RELAX-NGC]
-              Clark, J., "RELAX NG Compact Syntax", Nov 2002.
-
-   [RSSSYND]  RSS-DEV Working Group, , "RDF Site Summary 1.0 Modules:
-              Syndication", Dec 2000.
-
-   [RDF]      Hayes, P., "RDF Semantics", Feb 2004.
-
    [VOID]     Cyganiak, R., Zhao, J., Alexander, K., and M. Hausenblas,
               "Vocabulary of Interlinked Datasets (VoID)", Mar 2011.
 
-   [LDF]      Verborgh, R., "Linked Data Fragments", Jun 2016.
+   [TPF]      Verborgh, R., "Triple Pattern Fragments", Jan 2017.
 
    [Hydra]    Lanthaler, M., "Hydra Core Vocabulary", Oct 2017.
 
@@ -1115,15 +1107,20 @@ Appendix A.  Glossary
    target database  the set (or superset) of all target URIs in a link
       dump.
 
+   relation type  the type of connection between target identifier and
+      source identifier.
+
+
+
+
+
+
 
 
 Voss & Schindler           Expires May 5, 2018                 [Page 20]
 
 Internet-Draft                   BEACON                    November 2017
 
-
-   relation type  the type of connection between target identifier and
-      source identifier.
 
 Appendix B.  Mapping BEACON to HTML
 
@@ -1166,8 +1163,11 @@ Appendix B.  Mapping BEACON to HTML
    translates to "this person", and the target dataset's name "ACME
    documents" can be used as link label.
 
+Appendix C.  BEACON XML format
 
-
+   A BEACON XML file is a valid XML file conforming to the following
+   schema.  The file SHOULD be encoded in UTF-8 [RFC3629].  The file
+   MUST:
 
 
 
@@ -1177,12 +1177,6 @@ Voss & Schindler           Expires May 5, 2018                 [Page 21]
 
 Internet-Draft                   BEACON                    November 2017
 
-
-Appendix C.  BEACON XML format
-
-   A BEACON XML file is a valid XML file conforming to the following
-   schema.  The file SHOULD be encoded in UTF-8 [RFC3629].  The file
-   MUST:
 
    o  Begin with an opening "<beacon>" tag and end with a closing
       "</beacon>" tag.
@@ -1218,6 +1212,12 @@ Appendix C.  BEACON XML format
 
    A schema of BEACON XML format in RELAX NG Compact syntax [RELAX-NGC]
    can be given as following:
+
+
+
+
+
+
 
 
 
@@ -1445,7 +1445,23 @@ Authors' Addresses
    Email: voss@gbv.de
 
 
+
+
+
+
+
+
+
+
+Voss & Schindler           Expires May 5, 2018                 [Page 26]
+
+Internet-Draft                   BEACON                    November 2017
+
+
    Mathias Schindler
+   Bundestagsbuero Julia Reda, MdEP, Platz der Republik 1
+   Berlin  11011
+   Germany
 
    Email: info@mathias-schindler.de
 
@@ -1453,4 +1469,44 @@ Authors' Addresses
 
 
 
-Voss & Schindler           Expires May 5, 2018                 [Page 26]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Voss & Schindler           Expires May 5, 2018                 [Page 27]
