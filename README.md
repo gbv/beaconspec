@@ -9,6 +9,7 @@ The format was developed to exchange mappings between authority files and resour
 Specification drafts are managed and published [in a GitHub repository](https://github.com/gbv/beaconspec):
 
 * [latest version](https://gbv.github.io/beaconspec/beacon.html)
+* [draft-003](https://gbv.github.io/beaconspec/draft-voss-beacon-003.html) (December 2017)
 * [draft-002](https://gbv.github.io/beaconspec/draft-voss-beacon-002.html) (November 2017)
 * [draft-001](https://gbv.github.io/beaconspec/draft-voss-beacon-002.html) (July 2014)
 

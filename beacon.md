@@ -6,8 +6,8 @@
 BEACON is a data interchange format for large numbers of uniform links.  A
 BEACON **link dump** consists of
 
-* a set of **links** ([](#links)) and
-* a set of **meta fields** ([](#meta-fields)).
+* a set of **meta fields** ([](#meta-fields)) and
+* a set of **links** ([](#links)).
 
 Link dumps can be serialized in **BEACON format** ([](#beacon-format)). BEACON
 format is a condense, line-oriented text format that utilizes common patterns
@@ -154,7 +154,7 @@ And the URI pattern `http://example.org/{+ID}` is expanded to:
 
       Hello World!     http://example.org/Hello%20World!
       x/?a=1&b=2       http://example.org/x/?a=1&b=2
-      M%C3%BCller      http://example.org/?id=M%25C3%25BCller
+      M%C3%BCller      http://example.org/M%25C3%25BCller
 
 # BEACON format
 
@@ -409,8 +409,8 @@ field SHOULD NOT contain a simple URL, unless this URL is also used as URI.
 ### CONTACT
 
 The `CONTACT` meta field contains an email address or similar contact
-information to reach the creator of the link dump.  The field value SHOULD be a
-mailbox address as specified in section 3.4 of [](#RFC5322).
+information to reach the creator of the link dump.  The field value SHOULD be
+an individual mailbox address as specified in section 3.4 of [](#RFC5322).
 
 ### HOMEPAGE
 

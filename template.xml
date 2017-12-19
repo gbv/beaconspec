@@ -24,10 +24,9 @@
     <!ENTITY RSSSYND PUBLIC '' 'ref/reference.RSSSYND.xml'>
     <!ENTITY RDF PUBLIC '' 'ref/reference.RDF.xml'>
     <!ENTITY VOID PUBLIC '' 'ref/reference.VOID.xml'>
-    <!ENTITY LDF PUBLIC '' 'ref/reference.LDF.xml'>
 ]>
 
-<rfc ipr="trust200902" category="info" docName="draft-voss-beacon-002">
+<rfc ipr="trust200902" category="info" docName="draft-voss-beacon-003">
   <front>
 	<title abbrev="BEACON">BEACON link dump format</title>
 	<author initials="J." surname="Voß" fullname="Jakob Voß">
@@ -46,13 +45,13 @@
 	<author initials="M." surname="Schindler" fullname="Mathias Schindler">
 		<!--organization>Wikimedia Deutschland e.V.</organization-->
 		<address>
-			<!--postal>
-				<street>Tempelhofer Ufer 23-24</street>
+			<postal>
+				<street>Bundestagsbüro Julia Reda, MdEP, Platz der Republik 1</street>
 				<city>Berlin</city>
-				<code>10963</code>
+				<code>11011</code>
 				<country>Germany</country>
 			</postal>
-      <phone>+49(30)21915826-0</phone-->
+      <!--phone>+49(30)21915826-0</phone-->
 			<email>info@mathias-schindler.de</email>
 		</address>
     </author>
@@ -97,7 +96,14 @@
       &RSSSYND;
       &RDF;
       &VOID;
-      &LDF;
+      <reference anchor='TPF'>
+        <front>
+          <title abbrev='TPF'>Triple Pattern Fragments</title>
+          <author initials="R." surname="Verborgh" fullname="Ruben"/>
+          <date year='2017' month='Jan'/>
+        </front>
+        <format type='HTML' target="http://www.hydra-cg.com/spec/latest/triple-pattern-fragments/"/>
+      </reference>
       <reference anchor='Hydra'>
         <front>
           <title abbrev='Hydra'>Hydra Core Vocabulary</title>

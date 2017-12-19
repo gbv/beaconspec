@@ -121,8 +121,8 @@ contains an URI template.
 Meta fields for link dumps ([](#meta-fields-for-link-dumps)) describe
 properties of the link dump.
 
-The **DESCRIPTION** meta field corresponds to the `dcterms:description` RDF
-property.  For instance
+The **DESCRIPTION** meta field ([](#description)) corresponds to the
+`dcterms:description` RDF property.  For instance
 
     #DESCRIPTION: Mapping from ids to documents
 
@@ -130,15 +130,14 @@ can be mapped to
 
     :dump dcterms:description "Mapping from ids to documents" .
 
-The **CREATOR** meta field corresponds to the `dcterms:creator` RDF property.
-The creator can be given as string or as instace of the class `foaf:Agent`. For
-instance
+The **CREATOR** meta field ([](#creator)) corresponds to the `dcterms:creator`
+RDF property. The RDF object SHOULD NOT be a literal node. For instance
 
     #CREATOR: Bea Beacon
 
 can be mapped to
 
-    :dump dcterms:creator [ a foaf:Agent ; foaf:name "Bea Beacon" ] .
+    :dump dcterms:creator [ foaf:name "Bea Beacon" ] .
 
 A field value starting with `http://` or `https://` is interpreted as URI
 instead of string. For instance
@@ -148,18 +147,15 @@ instead of string. For instance
 can be mapped to
 
     :dump dcterms:creator <http://example.org/people/bea> .
-    <http://example.org/people/bea> a foaf:Agent .
 
-The **CONTACT** meta field ([](#contact)) corresponds to the `foaf:mbox` and
-`foaf:name` RDF properties.  For instance
+The **CONTACT** meta field ([](#contact)) corresponds to the `foaf:mbox` RDF
+property. The RDF object SHOULD NOT be a literal node. For instance
 
      #CONTACT: admin@example.com
 
 can be mapped to
 
-     :dump dcterms:creator [
-         foaf:mbox <mailto:admin@example.com>
-     ] .
+     :dump dcterms:creator [ foaf:mbox <mailto:admin@example.com> ] .
 
 and
 
@@ -190,7 +186,7 @@ can be mapped to
 
     :dump void:dataDump <http://example.com/beacon.txt> .
 
-The **TIMESTAMP** meta field ([](#timestamp) corresponds to the
+The **TIMESTAMP** meta field ([](#timestamp)) corresponds to the
 `dcterms:modified` RDF property.  For instance the following valid timestamps
 
      #TIMESTAMP: 2012-05-30
@@ -199,9 +195,9 @@ The **TIMESTAMP** meta field ([](#timestamp) corresponds to the
 
 can be mapped to the following RDF triples, respectively:
 
-     :dump dcterms:modified "2012-05-30"
-     :dump dcterms:modified "2012-05-30T15:17:36+02:00"
-     :dump dcterms:modified "2012-05-30T13:17:36Z"
+     :dump dcterms:modified "2012-05-30"^^xsd:date
+     :dump dcterms:modified "2012-05-30T15:17:36+02:00"^^xsd:dateTime
+     :dump dcterms:modified "2012-05-30T13:17:36Z"^^xsd:dateTime
 
 The **UPDATE** meta field ([](#update)) corresponds to the
 `rssynd:updatePeriod` RDF property. For instance a daily update
@@ -235,14 +231,14 @@ can be mapped to
     :targetset dcterms:title "Wikipedia" .
 
 The **INSTITUTION** meta field ([](#institution)) corresponds to the RDF
-property `dcterms:publisher`. For instance the field value "Wikimedia
-Foundation", expressible in BEACON format as
+property `dcterms:publisher`. The RDF object SHOULD NOT be a literal node. For
+instance
 
-    #INSTITUTION: Wikimedia
+    #INSTITUTION: Wikimedia Foundation
 
 can be mapped
 
-    :dump dcterms:publisher [ a foaf:Agent ; foaf:name "Wikimedia" ] .
+    :dump dcterms:publisher [ foaf:name "Wikimedia" ] .
 
 A field value starting with `http://` or `https://` is interpreted as URI
 instead of string. For instance
@@ -262,6 +258,6 @@ not included in the list of allowed characters ([](#allowed-characters)). This
 limitation applies because the disallowed character sequences would need to
 result from characters not allowed in link tokens of BEACON format.
 
-BEACON link dumps in particular can be used to express Linked Data Fragments
-[](#LDF) which also consist of a set of links sharing a common pattern, and
+BEACON link dumps can be served for instance as Triple Pattern Fragments
+[](#TPF) which also consist of a set of links sharing a common pattern, and
 additional metadata.

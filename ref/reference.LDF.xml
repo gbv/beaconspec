@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<reference anchor='LDF'>
-	<front>
-		<title abbrev='LDF'>Linked Data Fragments</title>
-		<author initials="R." surname="Verborgh" fullname="Ruben"/>
-		<date year='2016' month='Jun'/>
-	</front>
-  <format type='HTML' target="http://www.hydra-cg.com/spec/latest/linked-data-fragments/"/>
-</reference>
