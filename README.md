@@ -31,9 +31,9 @@ Earlier drafts had been developed in Wikipedia starting in February 2010:
 
 The implementations are not fully aligned with the current state of specification. Most applications don't use dedicated implementations because the format is simple enough to create/parse "by hand".
 
+* [JavaScript implementation](https://github.com/gbv/beacon-js) (*reference implementation*)
 * [Java implementation](https://github.com/thunken/beacon)
-* [Perl implementation](https://metacpan.org/release/Data-Beacon)
-* [JavaScript implementation](https://github.com/gbv/beacon-js) (work in progress)
+* [Perl implementation](https://metacpan.org/release/Data-Beacon) (slightly outdated)
 * ... 
 
 ## How to modify this specification
